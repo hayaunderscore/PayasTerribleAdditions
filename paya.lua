@@ -8,6 +8,9 @@ SMODS.optional_features.retrigger_joker = true
 -- Joker atlas
 SMODS.Atlas{ key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 
+-- Descriptions
+assert(SMODS.load_file("content/desc.lua"))()
+
 -- Load all jokers
 local path = PTASaka.Mod.path.."/content/jokers/"
 local files = NFS.getDirectoryItemsInfo(path)

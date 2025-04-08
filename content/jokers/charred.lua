@@ -2,16 +2,6 @@
 SMODS.Joker {
 	name = "Charred Joker",
 	key = "charred",
-	loc_txt = {
-		name = "Charred Joker",
-		text = {
-			"Upgrade the level of",
-			"the first {C:attention}discarded",
-			"poker hand each round by {C:attention}#1#{}",
-			"{C:red}-1{} Discard",
-			"{C:inactive,s:0.8}Look at this joker...{}",
-		}
-	},
 	config = { extra = { levels = 2 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.levels } }

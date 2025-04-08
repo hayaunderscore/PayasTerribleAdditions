@@ -1,82 +1,64 @@
-function PTASaka.calculate_adult_card_area(_type, context, args)
-	local flags = {}
-	
-	for _, area in ipairs(SMODS.get_card_areas("adult_card")) do
-		if args and args.joker_area and not args.has_area then context.cardarea = area end
-		for _, _card in ipairs(area.cards) do
-			--calculate the joker effects
-			local eval, post = eval_card(_card, context)
-			if args and args.main_scoring and eval.jokers then
-				eval.jokers.juice_card = eval.jokers.juice_card or eval.jokers.card or _card
-				eval.jokers.message_card = eval.jokers.message_card or eval.jokers.card or context.other_card
-			end
-
-			local effects = {eval}
-			for _,v in ipairs(post) do effects[#effects+1] = v end
-	
-			if context.other_joker then
-				for k, v in pairs(effects[1]) do
-					v.other_card = _card
-				end
-			end
-
-			if eval.retriggers then
-				context.retrigger_joker = true
-				for rt = 1, #eval.retriggers do
-					context.retrigger_joker = eval.retriggers[rt].retrigger_card
-					local rt_eval, rt_post = eval_card(_card, context)
-					if args and args.main_scoring and rt_eval.jokers then
-						rt_eval.jokers.juice_card = rt_eval.jokers.juice_card or rt_eval.jokers.card or _card
-						rt_eval.jokers.message_card = rt_eval.jokers.message_card or rt_eval.jokers.card or context.other_card
-					end
-					table.insert(effects, {eval.retriggers[rt]})
-					table.insert(effects, rt_eval)
-					for _,v in ipairs(rt_post) do effects[#effects+1] = v end
-				end
-				context.retrigger_joker = nil
-			end
-
-			local f = SMODS.trigger_effects(effects, _card)
-			for k,v in pairs(f) do flags[k] = v end
-		end
-	end
+local cest = card_eval_status_text
+function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
+	if card.area == PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.pta_owner then card = PTASaka.adultcard_cardarea.pta_owner end
+	cest(card, eval_type, amt, percent, dir, extra)
 end
 
 -- Adult Card
 SMODS.Joker {
 	name = "Adult Card",
 	key = "buruakacard",
-	loc_txt = {
-		name = "Adult Card",
-		text = {
-			"Sold {C:attention}Jokers{}' effects",
-			"can be mimicked by this Joker",
-			"Joker mimicked changes every time",
-			"a Joker could be triggered",
-			"{C:inactive,s:0.8}Does not count other Adult Cards",
-			"{C:inactive,s:0.8}A Blue Archive reference in my Balatro?",
-			"{C:inactive,s:0.8}How absurd.",
-		}
-	},
 	rarity = 3,
 	atlas = "JOE_Jokers",
 	pos = { x = 1, y = 1 },
 	config = { extra = { next_joker = nil, next_joker_name = nil, rigged_next_joker = 1 } },
 	cost = 10,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_adultcard_area"]
+		return { 
+			key = "j_payasaka_buruakacard"..((card.ability and card.ability.cry_rigged) and "_alt" or ""),
+			set = "Joker",
+		}
+	end,
 	blueprint_compat = true,
+	update = function(self, card, dt)
+		-- Sanity checks
+		if not G.STAGE == G.STAGES.RUN then return nil end
+		
+		-- Rigged
+		if card.ability.cry_rigged and not PTASaka.adultcard_fucked then
+			-- Write a better solution to this that does not put this globally
+			card.config.center.rarity = "cry_exotic"
+			card.children.center:set_sprite_pos({x = 2, y = 1})
+			PTASaka.adultcard_fucked = true
+		end
+	end,
 	calculate = function(self, card, context)
 		-- Sanity checks
 		if not G.STAGE == G.STAGES.RUN then return nil end
 		if not PTASaka.adultcard_cardarea then return nil end
 		if not PTASaka.adultcard_cardarea.cards[1] then return nil end
 		
-		-- Rigged
-		if card.ability.cry_rigged and not PTASaka.adultcard_fucked then
-			-- Write a better solution to this that does not put this globally
-			card.config.center.rarity = "cry_exotic"
-			G.P_CENTERS.j_payasaka_buruakacard.pos.x = 2
-			PTASaka.adultcard_fucked = true
+		--[[
+		if card.ability.cry_rigged then
+			PTASaka.adultcard_cardarea.T.x = card.VT.x
+			
+			-- Go through all cards
+			for i = 1, #PTASaka.adultcard_cardarea.cards do
+				--G.E_MANAGER:add_event(Event({blocking = false, 
+				--function()
+					local joker = PTASaka.adultcard_cardarea.cards[i]
+					local ret = joker:calculate_joker(context)
+					--print("joker mr")
+					if ret and type(ret) == "table" then ret.message_card = card; ret.card = card; SMODS.calculate_effect(ret, card) end
+				--	return true
+				--end
+				--}))
+			end
+			
+			return
 		end
+		]]
 		
 		-- Randomly use a different joker if we don't have a next one set yet
 		local jkr = card.ability.extra.next_joker
@@ -84,30 +66,42 @@ SMODS.Joker {
 		local joker = PTASaka.adultcard_cardarea.cards[jkr]
 		if not joker then return end
 		PTASaka.adultcard_cardarea.T.x = card.VT.x
+		PTASaka.adultcard_cardarea.pta_owner = card
 		--local new_context = PTASaka.deep_copy(context)
-			
+		
 		local ret = joker:calculate_joker(context)
-		--[[ This causes a crash when going back to the main menu for some reason
+
 		if not joker.ptasaka_juice_up then
 			joker.ptasaka_juice_up = joker.juice_up
 		end
 		rawset(joker, "juice_up", function(self, m, m2)
-			if not card then return self:ptasaka_juice_up(m,m2) end
+			if (not card) and self.ptasaka_juice_up then return self:ptasaka_juice_up(m,m2) end
 			return card:juice_up(m,m2)
 		end)
-		]]
+		
 		-- Only change when we NEED to
 		-- todo: figure that out
 	--	if change then
+		if ret and type(ret) == "table" then 
+			ret.message_card = card 
+			ret.card = card
+		end
 		card.ability.extra.next_joker = pseudorandom(pseudoseed('payasaka_adultcard'), 1, #PTASaka.adultcard_cardarea.cards)
 		--end
 		return ret
 	end,
 	remove_from_deck = function(self, card, debuff)
-		card.config.center.rarity = 3
-		G.P_CENTERS.j_payasaka_buruakacard.pos.x = 1
-		PTASaka.adultcard_fucked = false
+		if card.ability.cry_rigged then
+			card.config.center.rarity = 3
+			--G.P_CENTERS.j_payasaka_buruakacard.pos.x = 1
+			PTASaka.adultcard_fucked = false
+		end
 	end,
+	draw = function(self, card, layer)
+		if card.ability.cry_rigged then
+			card.children.center:draw_shader('voucher', nil, card.ARGS.send_to_shader)
+		end
+	end
 }
 
 -- Handle Adult Card saving
@@ -117,6 +111,7 @@ function Game:start_run(args)
 	G.P_CENTERS.j_payasaka_buruakacard.config.rarity = 3
 	self.payasaka_adultcard_cardarea = CardArea(0,0,self.CARD_W,self.CARD_H,{card_limit = 1, type = 'joker', highlight_limit = 1})
 	PTASaka.adultcard_cardarea = self.payasaka_adultcard_cardarea
+	PTASaka.adultcard_fucked = false
 	-- Do not draw the current card area
 	-- We don't need to anyway
 	PTASaka.adultcard_cardarea.draw = function() end

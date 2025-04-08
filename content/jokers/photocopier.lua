@@ -104,15 +104,6 @@ end
 SMODS.Joker {
 	name = "Photocopier",
 	key = "photocopier",
-	loc_txt = {
-		name = "Photocopier",
-		text = {
-			"{C:attention}Multiplies{} the effects",
-			"of adjacent Jokers by {X:attention,C:white}X#1#{C:inactive}",
-			"{C:inactive,s:0.8}Does not affect other Photocopier{}",
-			"{C:inactive,s:0.8}If it did, that would be silly.{}"
-		}
-	},
 	config = { extra = { coolmult = 2, old_jkrs = {nil, nil} } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.coolmult } }

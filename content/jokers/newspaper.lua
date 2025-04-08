@@ -2,16 +2,6 @@
 SMODS.Joker {
 	name = "Daily Newspaper",
 	key = "newspaper",
-	loc_txt = {
-		name = "Daily Newspaper",
-		text = {
-			"When {C:attention}Blind{} is selected,",
-			"add a card with a random",
-			"{C:attention}edition{} to your deck",
-			"{C:inactive,s:0.8}Random card takes suit from",
-			"{C:inactive,s:0.8}available suits in the deck",
-		}
-	},
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }

@@ -2,19 +2,6 @@
 SMODS.Joker {
 	name = "Reistorm",
 	key = "reistorm",
-	loc_txt = {
-		name = "Reistorm",
-		text = {
-			"Retriggers all Jokers",
-			"an additional {C:attention}#1#{} times",
-			"with {C:green}#2# in #3#{} chance of",
-			"creating a random",
-			"{C:dark_edition}Negative{} {C:red}Rare{C:attention} Joker{}",
-			"at end of round",
-			"{C:inactive,s:0.8}Technically not a Brainstorm{}",
-			"{C:inactive,s:0.8}but whatever{}",
-		}
-	},
 	config = { extra = { repetitions = 2, odds = 2 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.repetitions, (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
