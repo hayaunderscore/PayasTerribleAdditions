@@ -1,0 +1,17 @@
+{
+	"id": "pta_saka",
+	"name": "Paya's Terrible Additions",
+	"author": ["haya3218"],
+	"description": "Yet another mod that adds whatever the hell I want to Balatro.",
+	"prefix": "payasaka",
+	"main_file": "paya.lua",
+	"priority": 100,
+	"display_name": "PayaIsTerrible",
+	"badge_colour": "",
+	"badge_text_colour": "",
+	"version": "0.0.1",
+	"dependencies": [
+		"Steamodded (>=1.0.0~BETA-0321a)", 
+		"Lovely (*)", 
+		"Balatro (>=1.0.1o)"],
+}
