@@ -70,7 +70,8 @@ PTASaka.card_area_preview = function(cardArea, desc_nodes, config)
 			, width * G.CARD_W, height * G.CARD_H,
 			{card_limit = card_limit, type = type, highlight_limit = highlight_limit, collection = true,temporary = true}
 		)
-		for i, card in ipairs(cards) do
+		for i = 1, #cards do
+			local card = cards[i]
 			card.T.w = card.T.w * scale
 			card.T.h = card.T.h * scale
 			card.VT.h = card.T.h
@@ -139,17 +140,18 @@ end
 local cardarea_desccache = {}
 
 -- Adult card card list
-local dummy = PTASaka.DescriptionDummy{
+local dummy = PTASaka.DescriptionDummy {
 	key = "adultcard_area",
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		if not PTASaka.adultcard_cardarea then return end
 		local cards = {}
-		for k, v in pairs(PTASaka.adultcard_cardarea.cards) do
+		for i = 1, #PTASaka.adultcard_cardarea.cards do
+			local v = PTASaka.adultcard_cardarea.cards[i]
 			--if not cardarea_desccache[v.config.center.key] then
 			--	cardarea_desccache[v.config.center.key] = PTASaka.deep_copy(v)
 			--end
-			table.insert(cards, SMODS.create_card{key=v.config.center.key,no_edition=true})
+			cards[#cards+1] = SMODS.create_card{key=v.config.center.key,no_edition=true}
 		end
 		
 		if desc_nodes ~= full_UI_table.main then
@@ -167,5 +169,4 @@ local dummy = PTASaka.DescriptionDummy{
 		end
 	end
 }
-
-PTASaka.DescriptionDummies["dd_adultcard_area"] = dummy
+--PTASaka.DescriptionDummies["dd_adultcard_area"] = dummy

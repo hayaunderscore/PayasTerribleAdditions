@@ -14,7 +14,7 @@ SMODS.Joker {
 	config = { extra = { next_joker = nil, next_joker_name = nil, rigged_next_joker = 1 } },
 	cost = 10,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_adultcard_area"]
+		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_adultcard_area"]
 		return { 
 			key = "j_payasaka_buruakacard"..((card.ability and card.ability.cry_rigged) and "_alt" or ""),
 			set = "Joker",
