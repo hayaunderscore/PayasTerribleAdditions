@@ -1,7 +1,7 @@
 PTASaka.DescriptionDummies = {}
 
 -- ui stuff Taken from Aikoyori thanks aikoyori
-PTASaka.DescriptionDummy = SMODS.Center:extend{
+PTASaka.DescriptionDummy = SMODS.Center:extend {
 	set = 'DescriptionDummy',
 	obj_buffer = {},
 	obj_table = PTASaka.DescriptionDummies,
@@ -23,122 +23,6 @@ PTASaka.DescriptionDummy = SMODS.Center:extend{
 	end
 }
 
-PTASaka.get_speed_mult = function(card)
-	return ((card and (card.area == G.jokers or
-		card.area == G.consumeables or
-		card.area == G.hand or 
-		card.area == G.play or
-		card.area == G.shop_jokers or 
-		card.area == G.shop_booster or
-		card.area == G.load_shop_vouchers
-	)) and G.SETTINGS.GAMESPEED) or 1
-end
-
-local cardHoverHook = Card.hover
-function Card:hover()
-	if self.area == PTASaka.adultcard_cardarea then return end
-	PTASaka.current_hover_card = self
-	local ret = cardHoverHook(self)
-	return ret
-end
-
--- credit to nh6574 for helping with this bit
-PTASaka.card_area_preview = function(cardArea, desc_nodes, config)
-	if not config then config = {} end
-	local height = config.h or 1.25
-	local width = config.w or 1
-	local original_card = nil
-	local speed_mul = config.speed or PTASaka.get_speed_mult(original_card)
-	local card_limit = config.card_limit or #config.cards or 1
-	local override = config.override or false
-	local cards = config.cards or {}
-	local padding = config.padding or 0.07
-	local func_after = config.func_after or nil
-	local init_delay = config.init_delay or 1
-	local func_list = config.func_list or nil
-	local func_delay = config.func_delay or 0.2
-	local margin_left = config.ml or 0.2
-	local margin_top = config.mt or 0
-	local alignment = config.alignment or "cm"
-	local scale = config.scale or 1
-	local type = config.type or "title"
-	local box_height = config.box_height or 0
-	local highlight_limit = config.highlight_limit or 0
-	if override or not cardArea then
-		cardArea = CardArea(
-			G.ROOM.T.x + margin_left * G.ROOM.T.w, G.ROOM.T.h + margin_top
-			, width * G.CARD_W, height * G.CARD_H,
-			{card_limit = card_limit, type = type, highlight_limit = highlight_limit, collection = true,temporary = true}
-		)
-		for i = 1, #cards do
-			local card = cards[i]
-			card.T.w = card.T.w * scale
-			card.T.h = card.T.h * scale
-			card.VT.h = card.T.h
-			card.VT.h = card.T.h
-			local area = cardArea
-			if(card.config.center and card.set_sprites) then
-				-- this properly sets the sprite size <3
-				card:set_sprites(card.config.center)
-			end
-			area:emplace(card)
-		end
-	end
-	local uiEX = {
-		n = G.UIT.R,
-		config = { align = alignment , padding = padding, no_fill = true, minh = box_height },
-		nodes = {
-			{n = G.UIT.O, config = { object = cardArea }}
-		}
-	}
-	if cardArea then
-		if desc_nodes then
-			desc_nodes[#desc_nodes+1] = {
-				uiEX
-			}
-		end
-	end
-	if func_after or func_list then 
-		G.E_MANAGER:clear_queue("pta_desc")
-	end
-	if func_after then 
-		G.E_MANAGER:add_event(Event{
-			delay = init_delay * speed_mul,
-			blockable = false,
-			trigger = "after",
-			func = function ()
-				func_after(cardArea)
-				return true
-			end
-		},"pta_desc")
-	end
-	
-	if func_list then 
-		for i, k in ipairs(func_list) do
-			G.E_MANAGER:add_event(Event{
-				delay = func_delay * i * speed_mul,
-				blockable = false,
-				trigger = "after",
-				func = function ()
-					k(cardArea)
-					return true
-				end
-			},"pta_desc")
-		end
-	end
-	return uiEX
-end
-
-function PTASaka.shallow_copy(t)
-	local t2 = {}
-	for k,v in pairs(t) do
-		t2[k] = v
-	end
-	return t2
-end
-
-local cardarea_desccache = {}
-
 -- Adult card card list
 local dummy = PTASaka.DescriptionDummy {
 	key = "adultcard_area",
@@ -148,14 +32,9 @@ local dummy = PTASaka.DescriptionDummy {
 		local cards = {}
 		for i = 1, #PTASaka.adultcard_cardarea.cards do
 			local v = PTASaka.adultcard_cardarea.cards[i]
-			--if not cardarea_desccache[v.config.center.key] then
-			--	cardarea_desccache[v.config.center.key] = PTASaka.deep_copy(v)
-			--end
-			--print(v.config.center.key)
-			cards[#cards+1] = Card(0,0, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[v.config.center.key])
-			--cards[#cards+1] = SMODS.create_card{key=v.config.center.key,no_edition=true}
+			cards[#cards + 1] = Card(0, 0, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[v.config.center.key])
 		end
-		
+
 		if desc_nodes ~= full_UI_table.main then
 			PTASaka.card_area_preview(PTASaka.adultcard_cardarea_ui, desc_nodes, {
 				cards = cards,
