@@ -9,7 +9,6 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "-- TARGET: add your own CardAreas for joker evaluation"
 position = "after"
 payload = '''
--- TARGET: add your own CardAreas for joker evaluation
 if PTASaka and PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards[1] and PTASaka.adultcard_fucked then
 	table.insert(t, PTASaka.adultcard_cardarea)
 end

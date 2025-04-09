@@ -151,7 +151,9 @@ local dummy = PTASaka.DescriptionDummy {
 			--if not cardarea_desccache[v.config.center.key] then
 			--	cardarea_desccache[v.config.center.key] = PTASaka.deep_copy(v)
 			--end
-			cards[#cards+1] = SMODS.create_card{key=v.config.center.key,no_edition=true}
+			print(v.config.center.key)
+			cards[#cards+1] = Card(0,0, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[v.config.center.key])
+			--cards[#cards+1] = SMODS.create_card{key=v.config.center.key,no_edition=true}
 		end
 		
 		if desc_nodes ~= full_UI_table.main then

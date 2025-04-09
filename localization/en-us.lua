@@ -18,10 +18,10 @@ return {
 				text = {
 					"Sold {C:attention}Jokers{}' effects",
 					"can be mimicked by this Joker",
-					"{X:attention,C:white}All{} Joker effects are applicable",
+					"{X:attention,C:white}ALL{} Joker effects are applicable",
 					"{C:inactive,s:0.8}Does not count other Adult Cards",
-					"{C:inactive,s:0.8}Probably REALLY broken so you can",
-					"{C:inactive,s:0.8}only have one of these at a time",
+					"{C:inactive,s:0.8}A Blue Archive reference in my Balatro?",
+					"{C:inactive,s:0.8}How absurd.",
 				}
 			},
 			j_payasaka_charred = {
