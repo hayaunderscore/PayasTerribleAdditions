@@ -167,7 +167,7 @@ function Card:sell_card()
 			if G.jokers.cards[i].ability.name == "Adult Card" then 
 				G.jokers.cards[i].ability.extra.next_joker = #PTASaka.adultcard_cardarea.cards 
 				card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil,
-					{ message = "Changed!" })
+					{ message = "Added!" })
 			end
 		end
 		return true
