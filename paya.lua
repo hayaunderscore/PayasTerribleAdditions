@@ -14,12 +14,23 @@ assert(SMODS.load_file("content/utils.lua"))()
 -- Descriptions
 assert(SMODS.load_file("content/desc.lua"))()
 
--- Load all jokers
-local path = PTASaka.Mod.path .. "/content/jokers/"
-local files = NFS.getDirectoryItemsInfo(path)
-for i = 1, #files do
-	local file_name = files[i].name
-	if file_name:sub(-4) == ".lua" then
-		assert(SMODS.load_file("content/jokers/" .. file_name))()
+-- Load all files in a folder
+function PTASaka.RequireFolder(path)
+	local files = NFS.getDirectoryItemsInfo(PTASaka.Mod.path .. "/" .. path)
+	for i = 1, #files do
+		local file_name = files[i].name
+		if file_name:sub(-4) == ".lua" then
+			assert(SMODS.load_file(path .. file_name))()
+		end
 	end
 end
+
+-- Load all jokers
+-- Common
+PTASaka.RequireFolder("content/jokers/common/")
+-- Uncommon
+PTASaka.RequireFolder("content/jokers/uncommon/")
+-- Rare
+PTASaka.RequireFolder("content/jokers/rare/")
+-- Legendary
+PTASaka.RequireFolder("content/jokers/legendary/")
