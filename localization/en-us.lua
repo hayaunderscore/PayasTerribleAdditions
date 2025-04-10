@@ -66,6 +66,18 @@ return {
 					"{C:inactive,s:0.8}but whatever{}",
 				}
 			},
+			j_payasaka_goodnevil = {
+				name = "Good 'n Evil",
+				text = {
+					"For every scored card {C:attention}triggered{}",
+					"Add {C:red}#1#{} Mult to current Mult",
+					"Amount is {C:attention}incremented{} every time",
+					"this Joker is {C:attention}triggered{}",
+					"as well as its {C:dark_edition}sign{}",
+					"{C:inactive,s:0.8}(Currently {C:red}#2#{C:inactive,s:0.8} Mult)",
+					"{C:inactive,s:0.8}Turn the lights off...",
+				}
+			},
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } }
