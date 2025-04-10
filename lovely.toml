@@ -29,8 +29,8 @@ if G and G.GAME and ((G.GAME.markiplier_prob_xmult_chance and G.GAME.markiplier_
 	and pseudorandom("payasaka_multiplier_xmult") < G.GAME.markiplier_prob_xmult_odds*prob / G.GAME.markiplier_prob_xmult_chance) or G.GAME.markiplier_prob_rigged) then
 	mult = mod_mult(old_mult * amount)
 	--G.GAME.payasaka_markiplier_multiplied = true
-	if PTASaka and PTASaka.markiplier_jokers then
-		card_eval_status_text(pseudorandom_element(PTASaka.markiplier_jokers, pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
+	if next(SMODS.find_card("j_payasaka_markiplier_punch_gif")) then
+		card_eval_status_text(pseudorandom_element(SMODS.find_card("j_payasaka_markiplier_punch_gif"), pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
 			{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1.0, 0.5) end })
 	end
 end
@@ -50,8 +50,8 @@ if G and G.GAME and ((G.GAME.markiplier_prob_xchips_chance and G.GAME.markiplier
 	and pseudorandom("payasaka_multiplier_xchips") < G.GAME.markiplier_prob_xchips_odds*prob / G.GAME.markiplier_prob_xchips_chance) or G.GAME.markiplier_prob_rigged) then
 	hand_chips = mod_chips(old_chips * amount)
 	--G.GAME.payasaka_markiplier_multiplied = true
-	if PTASaka and PTASaka.markiplier_jokers then
-		card_eval_status_text(pseudorandom_element(PTASaka.markiplier_jokers, pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
+	if next(SMODS.find_card("j_payasaka_markiplier_punch_gif")) then
+		card_eval_status_text(pseudorandom_element(SMODS.find_card("j_payasaka_markiplier_punch_gif"), pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
 			{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1.0, 0.5) end })
 	end
 end
