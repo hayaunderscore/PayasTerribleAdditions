@@ -60,6 +60,8 @@ SMODS.Joker {
 		G.GAME.markiplier_prob_xchips_chance = G.GAME.markiplier_prob_xchips_chance - card.ability.extra.xchips_chance
 		G.GAME.markiplier_prob_xchips_odds = G.GAME.markiplier_prob_xchips_odds - card.ability.extra.xchips_odds
 		G.GAME.markiplier_prob_rigged = false
+		-- no
+		PTASaka.markiplier_jokers[card.ID] = nil
 	end
 }
 
