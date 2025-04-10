@@ -25,6 +25,10 @@ SMODS.Joker {
 				end
 			end
 
+			-- erm...
+			if cards[1] then cards[1].ability.payasaka_photocopied = cards[1].ability.payasaka_photocopied or {} end
+			if cards[2] then cards[2].ability.payasaka_photocopied = cards[2].ability.payasaka_photocopied or {} end
+
 			-- Do not affect other Photocopiers....
 			if cards[1] and cards[1].config.center.key == card2.config.center.key then cards[1] = nil end
 			if cards[2] and cards[2].config.center.key == card2.config.center.key then cards[2] = nil end
