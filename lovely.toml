@@ -31,7 +31,7 @@ if G and G.GAME and ((G.GAME.markiplier_prob_xmult_chance and G.GAME.markiplier_
 	--G.GAME.payasaka_markiplier_multiplied = true
 	if PTASaka and PTASaka.markiplier_jokers then
 		card_eval_status_text(pseudorandom_element(PTASaka.markiplier_jokers, pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
-			{ message = "Multiplied!", extrafunc = function() play_sound("payasaka_markiplier_ngahh") end })
+			{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1.0, 0.5) end })
 	end
 end
 '''
@@ -52,7 +52,7 @@ if G and G.GAME and ((G.GAME.markiplier_prob_xchips_chance and G.GAME.markiplier
 	--G.GAME.payasaka_markiplier_multiplied = true
 	if PTASaka and PTASaka.markiplier_jokers then
 		card_eval_status_text(pseudorandom_element(PTASaka.markiplier_jokers, pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
-			{ message = "Multiplied!", extrafunc = function() play_sound("payasaka_markiplier_ngahh") end })
+			{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1.0, 0.5) end })
 	end
 end
 '''

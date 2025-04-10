@@ -33,7 +33,8 @@ SMODS.Joker {
 	config = { extra = { xmult_odds = 1, xmult_chance = 4, xchips_odds = 1, xchips_chance = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local r = card.ability.cry_rigged
-		return { vars = { r and card.ability.extra.xmult_chance or card.ability.extra.xmult_odds, card.ability.extra.xmult_chance, r and card.ability.extra.xchips_chance or card.ability.extra.xchips_odds, card.ability.extra.xchips_chance } }
+		local oddmult = G.GAME.probabilities.normal or 1
+		return { vars = { r and card.ability.extra.xmult_chance or card.ability.extra.xmult_odds*oddmult, card.ability.extra.xmult_chance, r and card.ability.extra.xchips_chance or card.ability.extra.xchips_odds*oddmult, card.ability.extra.xchips_chance } }
 	end,
 	rarity = 2,
 	atlas = "JOE_Jokers",
@@ -74,5 +75,6 @@ function Game:init_game_object()
 	ret.markiplier_prob_xchips_chance = 0
 	ret.markiplier_prob_xchips_odds = 0
 	ret.markiplier_prob_rigged = false
+	PTASaka.markiplier_jokers = {}
 	return ret
 end
