@@ -15,3 +15,58 @@ end
 '''
 match_indent = true
 times = 1
+
+# Multiplier effects
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = "mult = mod_mult(mult + amount)"
+position = "after"
+payload = '''
+local old_mult = mod_mult(mult - amount)
+local prob = G.GAME and G.GAME.probabilities.normal or 1
+if G and G.GAME and ((G.GAME.markiplier_prob_xmult_chance and G.GAME.markiplier_prob_xmult_odds and G.GAME.markiplier_prob_xmult_chance > 0 and G.GAME.markiplier_prob_xmult_odds > 0
+	and pseudorandom("payasaka_multiplier_xmult") < G.GAME.markiplier_prob_xmult_odds*prob / G.GAME.markiplier_prob_xmult_chance) or G.GAME.markiplier_prob_rigged) then
+	mult = mod_mult(old_mult * amount)
+	--G.GAME.payasaka_markiplier_multiplied = true
+	if PTASaka and PTASaka.markiplier_jokers then
+		card_eval_status_text(pseudorandom_element(PTASaka.markiplier_jokers, pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
+			{ message = "Multiplied!", extrafunc = function() play_sound("payasaka_markiplier_ngahh") end })
+	end
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = "hand_chips = mod_chips(hand_chips + amount)"
+position = "after"
+payload = '''
+local old_chips = mod_chips(hand_chips - amount)
+local prob = G.GAME and G.GAME.probabilities.normal or 1
+if G and G.GAME and ((G.GAME.markiplier_prob_xchips_chance and G.GAME.markiplier_prob_xchips_odds and G.GAME.markiplier_prob_xchips_chance > 0 and G.GAME.markiplier_prob_xchips_odds > 0
+	and pseudorandom("payasaka_multiplier_xchips") < G.GAME.markiplier_prob_xchips_odds*prob / G.GAME.markiplier_prob_xchips_chance) or G.GAME.markiplier_prob_rigged) then
+	hand_chips = mod_chips(old_chips * amount)
+	--G.GAME.payasaka_markiplier_multiplied = true
+	if PTASaka and PTASaka.markiplier_jokers then
+		card_eval_status_text(pseudorandom_element(PTASaka.markiplier_jokers, pseudoseed('payasaka_multiplier')), 'extra', nil, nil, nil,
+			{ message = "Multiplied!", extrafunc = function() play_sound("payasaka_markiplier_ngahh") end })
+	end
+end
+'''
+match_indent = true
+times = 1
+
+# Oh you...
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "local extrafunc = nil"
+position = "after"
+payload = '''
+if extra and extra.extrafunc then extrafunc = extra.extrafunc end
+'''
+match_indent = true
+times = 1
