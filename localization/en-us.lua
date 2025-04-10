@@ -88,6 +88,16 @@ return {
 					"{C:inactive,s:0.8}The messages lie...",
 				}
 			},
+			j_payasaka_tentens = {
+				name = "Ten 10s",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"retriggering a scored",
+					"card {C:attention}#3#{} times",
+					"{C:inactive,s:0.8}look at what you",
+					"{C:inactive,s:0.8}made me do ari",
+				}
+			},
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } }
