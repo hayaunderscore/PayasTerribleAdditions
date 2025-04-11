@@ -98,6 +98,16 @@ return {
 					"{C:inactive,s:0.8}made me do ari",
 				}
 			},
+			j_payasaka_phil = {
+				name = "Phil {s:0.5}& Shirt{}",
+				text = {
+					"{X:red,C:white}X#1#{} Mult",
+					"{C:green}#2# in #3#{} chance of",
+					"giving {X:red,C:white}X0{} Mult instead",
+					"{C:inactive,s:0.8}when your {X:black,C:white,s:0.8}shirt",
+					"{C:inactive,s:0.8}is a geek :laugh:",
+				}
+			},
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } }
