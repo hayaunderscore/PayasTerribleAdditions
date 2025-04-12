@@ -108,6 +108,29 @@ return {
 					"{C:inactive,s:0.8}is a geek :laugh:",
 				}
 			},
+			j_payasaka_arona = {
+				name = "Arona",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips {C:inactive,s:0.8}:<{}",
+					"unless {C:dark_edition,E:2}Plana{} is around",
+					"gives {X:chips,C:white}X#2#{} Chips instead",
+					"Gains {X:chips,C:white}X#3#{} every time",
+					"this Joker is triggered",
+					"{C:inactive,s:0.8}stop stealing my fucking chips",
+				}
+			},
+			j_payasaka_plana = {
+				name = "Plana",
+				text = {
+					"Creates a random {C:dark_edition}Negative",
+					"{C:spectral}Spectral{} card every round",
+					"Gives {X:red,C:white}X#1#{} Mult",
+					"if {C:green,E:2}Arona{} is around",
+					"Gains {X:mult,C:white}X#2#{} every time",
+					"this Joker is triggered",
+					"{C:inactive,s:0.8}now THIS this is a good one",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
