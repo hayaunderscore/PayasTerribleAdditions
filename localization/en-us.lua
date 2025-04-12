@@ -109,6 +109,14 @@ return {
 				}
 			},
 		},
+		Blind = {
+			bl_payasaka_nether = {
+				name = "The Nether",
+				text = {
+					"All played cards are destroyed",
+				}
+			},
+		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } }
 		},

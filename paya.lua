@@ -8,6 +8,9 @@ SMODS.optional_features.retrigger_joker = true
 -- Joker atlas
 SMODS.Atlas { key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 
+-- Blind atlas
+SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
+
 -- Utilities
 assert(SMODS.load_file("content/utils.lua"))()
 
@@ -27,6 +30,9 @@ function PTASaka.RequireFolder(path)
 		end
 	end
 end
+
+-- Blinds
+PTASaka.RequireFolder("content/blinds/")
 
 -- Load all jokers
 -- Common
