@@ -43,8 +43,6 @@ SMODS.Joker {
 	blueprint_compat = true,
 	update = function (self, card, dt)
 		if card.ability.cry_rigged then G.GAME.markiplier_prob_rigged = true end
-		PTASaka.markiplier_jokers = PTASaka.markiplier_jokers or {}
-		PTASaka.markiplier_jokers[card.ID] = card
 	end,
 	add_to_deck = function (self, card, from_debuff)
 		G.GAME.markiplier_prob_xmult_chance = G.GAME.markiplier_prob_xmult_chance + card.ability.extra.xmult_chance
@@ -61,8 +59,6 @@ SMODS.Joker {
 		G.GAME.markiplier_prob_xchips_chance = G.GAME.markiplier_prob_xchips_chance - card.ability.extra.xchips_chance
 		G.GAME.markiplier_prob_xchips_odds = G.GAME.markiplier_prob_xchips_odds - card.ability.extra.xchips_odds
 		G.GAME.markiplier_prob_rigged = false
-		-- no
-		PTASaka.markiplier_jokers[card.ID] = nil
 	end
 }
 
@@ -75,6 +71,5 @@ function Game:init_game_object()
 	ret.markiplier_prob_xchips_chance = 0
 	ret.markiplier_prob_xchips_odds = 0
 	ret.markiplier_prob_rigged = false
-	PTASaka.markiplier_jokers = {}
 	return ret
 end

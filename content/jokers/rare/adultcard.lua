@@ -19,21 +19,18 @@ function Card:juice_up(m, m2)
 	juice(c, m, m2)
 end
 
--- fixme: this dont work
--- Extra table already exists and has values?
-function PTASaka.get_extra_table_for_ret(ret, extra)
-	if (not extra) or next(extra) == nil then return extra end
-	-- Otherwise, create an extra table for that extra table.
-	ret.extra = PTASaka.get_extra_table_for_ret(ret.extra, extra)
-	return ret.extra
-end
-
 -- Recursively create an extra table for each returned effect table
 function PTASaka.recursive_extra(table_return_table, index)
 	local ret = table_return_table[index]
 	if index <= #table_return_table then
-		--local extra = PTASaka.get_extra_table_for_ret(ret, ret.extra)
-		ret.extra = PTASaka.recursive_extra(table_return_table, index + 1)
+		local function getDeepest(tbl)
+			while tbl.extra do
+				tbl = tbl.extra
+			end
+			return tbl
+		end
+		local prev = getDeepest(ret)
+		prev.extra = PTASaka.recursive_extra(table_return_table, index + 1)
 	end
 	--if ret ~= nil and index == 1 then print(ret) end
 	return ret
@@ -210,8 +207,8 @@ function Card:sell_card()
 			local new_joker = PTASaka.deep_copy(self)
 			PTASaka.adultcard_cardarea.config.card_limit = PTASaka.adultcard_cardarea.config.card_limit + 1
 			--G.jokers:remove_card(self)
-			new_joker:add_to_deck()
 			PTASaka.adultcard_cardarea:emplace(new_joker)
+			new_joker:add_to_deck()
 			-- Prioritize sold card
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.name == "Adult Card" then
