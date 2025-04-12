@@ -27,7 +27,7 @@ function SMODS.find_card(key, count_debuffed)
 	local ret = find_old(key, count_debuffed)
 	if not PTASaka.adultcard_cardarea then return ret end
 	if not PTASaka.adultcard_cardarea.cards[1] then return ret end
-	
+
 	for _, v in ipairs(PTASaka.adultcard_cardarea.cards) do
 		if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
 			ret[#ret+1] = v
@@ -64,7 +64,10 @@ SMODS.Joker {
 	config = { extra = { next_joker = nil } },
 	cost = 10,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = PTASaka.DescriptionDummies["dd_payasaka_adultcard_area"]
+		-- Only show up when we actually have something in it
+		if PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards[1] then
+			info_queue[#info_queue + 1] = PTASaka.DescriptionDummies["dd_payasaka_adultcard_area"]
+		end
 		return {
 			key = "j_payasaka_buruakacard" .. ((card.ability and card.ability.cry_rigged) and "_alt" or ""),
 			set = "Joker",
@@ -126,7 +129,7 @@ SMODS.Joker {
 
 		-- Set the current owner of the card area to this card.
 		-- Used in card_eval_status_text to change the card that gets the juice up
-		PTASaka.adultcard_cardarea.pta_owner = card
+		PTASaka.adultcard_cardarea.pta_owner = context.blueprint_card or card
 
 		-- Rigged >:))
 		if card.ability.cry_rigged then
