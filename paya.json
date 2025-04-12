@@ -6,8 +6,8 @@
 	"prefix": "payasaka",
 	"main_file": "paya.lua",
 	"priority": -1000,
-	"display_name": "PayaIsTerrible",
-	"badge_colour": "",
+	"display_name": "Paya Is Terrible",
+	"badge_colour": "4A3570",
 	"badge_text_colour": "",
 	"version": "0.0.1",
 	"dependencies": [
