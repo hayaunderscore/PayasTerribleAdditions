@@ -1,3 +1,5 @@
+-- HOOKS --
+
 -- Hook to change card juiced in text notifications
 local cest = card_eval_status_text
 function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
@@ -17,6 +19,22 @@ function Card:juice_up(m, m2)
 		c = PTASaka.adultcard_cardarea.pta_owner
 	end
 	juice(c, m, m2)
+end
+
+-- Hook to find cards in PTASaka.adultcard_cardarea
+local find_old = SMODS.find_card
+function SMODS.find_card(key, count_debuffed)
+	local ret = find_old(key, count_debuffed)
+	if not PTASaka.adultcard_cardarea then return ret end
+	if not PTASaka.adultcard_cardarea.cards[1] then return ret end
+	
+	for _, v in ipairs(PTASaka.adultcard_cardarea.cards) do
+		if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
+			ret[#ret+1] = v
+		end
+	end
+
+	return ret
 end
 
 -- Recursively create an extra table for each returned effect table
