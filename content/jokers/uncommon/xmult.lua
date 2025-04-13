@@ -34,17 +34,17 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		local r = card.ability.cry_rigged
 		local oddmult = G.GAME.probabilities.normal or 1
-		return { vars = { r and card.ability.extra.xmult_chance or card.ability.extra.xmult_odds*oddmult, card.ability.extra.xmult_chance, r and card.ability.extra.xchips_chance or card.ability.extra.xchips_odds*oddmult, card.ability.extra.xchips_chance } }
+		return { vars = { r and card.ability.extra.xmult_chance or card.ability.extra.xmult_odds * oddmult, card.ability.extra.xmult_chance, r and card.ability.extra.xchips_chance or card.ability.extra.xchips_odds * oddmult, card.ability.extra.xchips_chance } }
 	end,
 	rarity = 2,
 	atlas = "JOE_Jokers",
 	pos = { x = 4, y = 1 },
 	cost = 10,
 	blueprint_compat = true,
-	update = function (self, card, dt)
+	update = function(self, card, dt)
 		if card.ability.cry_rigged then G.GAME.markiplier_prob_rigged = true end
 	end,
-	add_to_deck = function (self, card, from_debuff)
+	add_to_deck = function(self, card, from_debuff)
 		G.GAME.markiplier_prob_xmult_chance = G.GAME.markiplier_prob_xmult_chance + card.ability.extra.xmult_chance
 		G.GAME.markiplier_prob_xmult_odds = G.GAME.markiplier_prob_xmult_odds + card.ability.extra.xmult_odds
 		G.GAME.markiplier_prob_xchips_chance = G.GAME.markiplier_prob_xchips_chance + card.ability.extra.xchips_chance
@@ -53,7 +53,7 @@ SMODS.Joker {
 			play_sound("payasaka_markiplier_helloeverybody")
 		end
 	end,
-	remove_from_deck = function (self, card, from_debuff)
+	remove_from_deck = function(self, card, from_debuff)
 		G.GAME.markiplier_prob_xmult_chance = G.GAME.markiplier_prob_xmult_chance - card.ability.extra.xmult_chance
 		G.GAME.markiplier_prob_xmult_odds = G.GAME.markiplier_prob_xmult_odds - card.ability.extra.xmult_odds
 		G.GAME.markiplier_prob_xchips_chance = G.GAME.markiplier_prob_xchips_chance - card.ability.extra.xchips_chance

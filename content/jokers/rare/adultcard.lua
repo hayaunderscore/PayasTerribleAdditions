@@ -30,7 +30,7 @@ function SMODS.find_card(key, count_debuffed)
 
 	for _, v in ipairs(PTASaka.adultcard_cardarea.cards) do
 		if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
-			ret[#ret+1] = v
+			ret[#ret + 1] = v
 		end
 	end
 

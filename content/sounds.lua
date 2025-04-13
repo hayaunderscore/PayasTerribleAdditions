@@ -1,5 +1,5 @@
 local function create_sound(key)
-	SMODS.Sound {key = key, path = key .. ".ogg"}
+	SMODS.Sound { key = key, path = key .. ".ogg" }
 end
 
 -- Multiplier

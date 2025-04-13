@@ -5,7 +5,7 @@ SMODS.Joker {
 	config = { extra = { odds = 20, chance = 1, repetitions = 20 } },
 	loc_vars = function(self, info_queue, card)
 		local chancemult = G.GAME.probabilities.normal or 1
-		return { vars = { card.ability.extra.chance*chancemult, card.ability.extra.odds, card.ability.extra.repetitions } }
+		return { vars = { card.ability.extra.chance * chancemult, card.ability.extra.odds, card.ability.extra.repetitions } }
 	end,
 	rarity = 2,
 	atlas = "JOE_Jokers",
@@ -16,7 +16,7 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			local chancemult = G.GAME.probabilities.normal or 1
-			if pseudorandom('payasaka_tentens') < (card.ability.extra.chance*chancemult)/card.ability.extra.odds then
+			if pseudorandom('payasaka_tentens') < (card.ability.extra.chance * chancemult) / card.ability.extra.odds then
 				if not Talisman or not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
