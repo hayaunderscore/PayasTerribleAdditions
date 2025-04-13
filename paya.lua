@@ -11,6 +11,9 @@ SMODS.Atlas { key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 -- Blind atlas
 SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
 
+-- Property atlas
+SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 }
+
 -- Utilities
 assert(SMODS.load_file("content/utils.lua"))()
 
@@ -43,3 +46,6 @@ PTASaka.RequireFolder("content/jokers/uncommon/")
 PTASaka.RequireFolder("content/jokers/rare/")
 -- Legendary
 PTASaka.RequireFolder("content/jokers/legendary/")
+
+-- Property cards
+assert(SMODS.load_file("content/properties.lua"))()

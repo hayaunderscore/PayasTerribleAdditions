@@ -143,5 +143,101 @@ return {
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } }
 		},
+		Property = {
+			c_payasaka_brownproperty = {
+				name = 'Brown Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Does nothing else when used",
+				}
+			},
+			c_payasaka_blueproperty = {
+				name = 'Blue Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Gives a random edition",
+					"to {C:attention}#2#{} selected card",
+					"when used",
+				}
+			},
+			c_payasaka_pinkproperty = {
+				name = 'Pink Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Creates a random Food Joker",
+					"when used",
+				}
+			},
+			c_payasaka_orangeproperty = {
+				name = 'Orange Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Creates a {C:tarot}Tarot{} card",
+					"when used",
+					"{C:inactive,s:0.8}(Must have room)",
+				}
+			},
+			c_payasaka_redproperty = {
+				name = 'Red Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Gains {C:money}$#2#{} per round",
+					"Creates a {C:red}Rare{} Joker",
+					"when used",
+					"{C:inactive,s:0.8}(Must have room)",
+				}
+			},
+			c_payasaka_yellowproperty = {
+				name = 'Yellow Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Gains {C:money}$#2#{} per round",
+					"Levels up your {C:attention}most played{} hand",
+					"by {C:attention}5{} levels",
+					"when used",
+				}
+			},
+			c_payasaka_greenproperty = {
+				name = 'Green Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Gains {C:money}$#2#{} per round",
+					"Creates a {C:dark_edition}Legendary{} Joker",
+					"when used",
+					"{C:inactive,s:0.8}(Must have room)",
+				}
+			},
+			c_payasaka_darkblueproperty = {
+				name = 'Dark Blue Property',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Gains {C:money}$#2#{} per round",
+					"Creates {C:attention}#3#{} {C:dark_edition}Negative{}",
+					"{C:planet}Planet{} cards for your",
+					"most played hand when used",
+					"{C:inactive,s:0.8}(Must have room)",
+				}
+			},
+			c_payasaka_niyaniya = {
+				name = 'Niyaniya',
+				text = {
+					"Gives {C:money}$#1#{} per round",
+					"Gains {C:money}$#2#{} per round",
+					"Creates {C:attention}any{} card",
+					"of your choice",
+					"{C:inactive,s:0.8}Jokers, Tarots, Planets,",
+					"{C:inactive,s:0.8}Other consumables, playing cards",
+					"{C:inactive,s:0.8}(Niyaniya excluded)",
+					"{C:inactive,s:0.8}(Must have room)",
+				}
+			},
+		}
+	},
+	misc = {
+		dictionary = {
+			k_property = "Property",
+			b_property_cards = "Property Cards",
+			b_property_pack = "Property Pack",
+		}
 	}
 }
