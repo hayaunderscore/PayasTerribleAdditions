@@ -106,7 +106,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     }
 
     //Time varying pixel colour
-    col += 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
+    col += 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0.,2.,4.));
 	//col = pow(col, vec3(1.-0.4545));
 
 	tex = vec4(compress_ycbcr_844(col),tex.a*jpeg.r);
