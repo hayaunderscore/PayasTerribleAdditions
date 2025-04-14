@@ -11,3 +11,6 @@ create_sound("lucky")
 -- The Nether
 create_sound("nether")
 create_sound("flint")
+
+-- JPEG/YCbCr
+create_sound("jpej")

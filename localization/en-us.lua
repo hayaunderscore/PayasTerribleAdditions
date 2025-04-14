@@ -140,6 +140,20 @@ return {
 				}
 			},
 		},
+		Edition = {
+			e_payasaka_jpeg = {
+				name = "xX_rainbow_Xx",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"{X:mult,C:white}X#2#{} Mult",
+					"{C:green}#3# in #4#{} chance of",
+					"turning into a",
+					"random {C:green}edition{}",
+					"or {C:dark_edition}enhancement{}",
+					"{C:inactive,s:0.8,E:2}What the fuck?"
+				}
+			}
+		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
 			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" }}
@@ -301,6 +315,9 @@ return {
 			k_property = "Property",
 			b_property_cards = "Property Cards",
 			k_property_pack = "Property Pack",
+		},
+		labels = {
+			payasaka_jpeg = 'YCbCr'
 		}
 	},
 	labels = {

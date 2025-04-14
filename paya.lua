@@ -38,6 +38,9 @@ end
 -- Blinds
 PTASaka.RequireFolder("content/blinds/")
 
+-- Editions
+PTASaka.RequireFolder("content/editions/")
+
 -- Load all jokers
 -- Common
 PTASaka.RequireFolder("content/jokers/common/")
