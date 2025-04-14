@@ -23,6 +23,10 @@ PTASaka.DescriptionDummy = SMODS.Center:extend {
 	end
 }
 
+PTASaka.DescriptionDummy {
+	key = "property_card"
+}
+
 -- Adult card card list
 local dummy = PTASaka.DescriptionDummy {
 	key = "adultcard_area",

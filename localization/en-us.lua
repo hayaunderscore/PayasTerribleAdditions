@@ -141,7 +141,19 @@ return {
 			},
 		},
 		DescriptionDummy = {
-			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } }
+			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
+			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,0.8}Hotels are equivalent{}", "{C:inactive,0.8}to 5 houses{}" }}
+		},
+		Tarot = {
+			c_payasaka_greed = {
+				name = "The Greed",
+				text = {
+					"Adds a house to {C:attention}#1#",
+					"selected {C:property}Property{} cards",
+					"{C:inactive,s:0.8}Having more than 4 houses",
+					"{C:inactive,s:0.8}replaces it with a hotel",
+				}
+			}
 		},
 		Property = {
 			c_payasaka_brownproperty = {
@@ -174,7 +186,7 @@ return {
 					"Gives {C:money}$#1#{} per round",
 					"Creates a {C:tarot}Tarot{} card",
 					"when used",
-					"{C:inactive,s:0.8}(Must have room)",
+					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_redproperty = {
@@ -184,7 +196,7 @@ return {
 					"Gains {C:money}$#2#{} per round",
 					"Creates a {C:red}Rare{} Joker",
 					"when used",
-					"{C:inactive,s:0.8}(Must have room)",
+					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_yellowproperty = {
@@ -192,8 +204,8 @@ return {
 				text = {
 					"Gives {C:money}$#1#{} per round",
 					"Gains {C:money}$#2#{} per round",
-					"Levels up your {C:attention}most played{} hand",
-					"by {C:attention}5{} levels",
+					"Levels up your {C:attention}most played{}",
+					"hand by {C:attention}#3#{} levels",
 					"when used",
 				}
 			},
@@ -202,9 +214,9 @@ return {
 				text = {
 					"Gives {C:money}$#1#{} per round",
 					"Gains {C:money}$#2#{} per round",
-					"Creates a {C:dark_edition}Legendary{} Joker",
-					"when used",
-					"{C:inactive,s:0.8}(Must have room)",
+					"Creates a {C:dark_edition}Legendary{}",
+					"Joker when used",
+					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_darkblueproperty = {
@@ -212,10 +224,7 @@ return {
 				text = {
 					"Gives {C:money}$#1#{} per round",
 					"Gains {C:money}$#2#{} per round",
-					"Creates {C:attention}#3#{} {C:dark_edition}Negative{}",
-					"{C:planet}Planet{} cards for your",
-					"most played hand when used",
-					"{C:inactive,s:0.8}(Must have room)",
+					"{C:inactive,s:0.8}Does nothing..?",
 				}
 			},
 			c_payasaka_niyaniya = {
@@ -223,12 +232,66 @@ return {
 				text = {
 					"Gives {C:money}$#1#{} per round",
 					"Gains {C:money}$#2#{} per round",
-					"Creates {C:attention}any{} card",
-					"of your choice",
-					"{C:inactive,s:0.8}Jokers, Tarots, Planets,",
-					"{C:inactive,s:0.8}Other consumables, playing cards",
-					"{C:inactive,s:0.8}(Niyaniya excluded)",
-					"{C:inactive,s:0.8}(Must have room)",
+					"{C:inactive,s:0.8}(WIP, undecided yet)",
+				}
+			},
+		},
+		Other = {
+			undiscovered_property = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does"
+				}
+			},
+			p_payasaka_property_normal_1 = {
+				name = "Property Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:property} Property{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_property_normal_2 = {
+				name = "Property Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:property} Property{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_property_mega_1 = {
+				name = "Mega Property Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:property} Property{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_property_mega_2 = {
+				name = "Mega Property Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:property} Property{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_property_jumbo_1 = {
+				name = "Jumbo Property Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:property} Property{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_property_jumbo_2 = {
+				name = "Jumbo Property Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:property} Property{} cards to",
+					"add to your consumeables"
 				}
 			},
 		}
@@ -237,7 +300,10 @@ return {
 		dictionary = {
 			k_property = "Property",
 			b_property_cards = "Property Cards",
-			b_property_pack = "Property Pack",
+			k_property_pack = "Property Pack",
 		}
-	}
+	},
+	labels = {
+		property = "Property"
+	},
 }

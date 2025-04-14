@@ -11,8 +11,9 @@ SMODS.Atlas { key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 -- Blind atlas
 SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
 
--- Property atlas
+-- Property atlas(es)
 SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Properties_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
 
 -- Utilities
 assert(SMODS.load_file("content/utils.lua"))()

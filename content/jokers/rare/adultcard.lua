@@ -26,6 +26,7 @@ local find_old = SMODS.find_card
 function SMODS.find_card(key, count_debuffed)
 	local ret = find_old(key, count_debuffed)
 	if not PTASaka.adultcard_cardarea then return ret end
+	if not PTASaka.adultcard_cardarea.cards then return ret end
 	if not PTASaka.adultcard_cardarea.cards[1] then return ret end
 
 	for _, v in ipairs(PTASaka.adultcard_cardarea.cards) do
