@@ -321,7 +321,9 @@ PTASaka.Property {
 				_tally = G.GAME.hands[v].played
 			end
 		end
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(_hand, 'poker_hands'),chips = G.GAME.hands[_hand].chips, mult = G.GAME.hands[_hand].mult, level=G.GAME.hands[_hand].level})
 		level_up_hand(copier or card, _hand, false, card.ability.extra.levels)
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
