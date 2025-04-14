@@ -65,6 +65,7 @@ SMODS.Consumable {
 	config = { extra = { max_highlighted = 2 } },
 	unlocked = true,
 	discovered = true,
+	cost = 4,
 	can_use = function(self, card)
 		local highlighted = {}
 		for _, v in ipairs(G.consumeables.highlighted) do
@@ -110,6 +111,7 @@ PTASaka.Property {
 	can_use = function(self, card)
 		return false
 	end,
+	cost = 4,
 	use = function(self, card, area, copier) end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
@@ -126,6 +128,7 @@ PTASaka.Property {
 	config = { extra = { money = 4, max_highlighted = 1 } },
 	unlocked = true,
 	discovered = true,
+	cost = 8,
 	can_use = function(self, card)
 		local highlighted = PTASaka.shallow_copy(G.hand.highlighted) or {}
 		for _, v in ipairs(G.jokers.highlighted) do
@@ -226,6 +229,7 @@ PTASaka.Property {
 	config = { extra = { money = 6 } },
 	unlocked = true,
 	discovered = true,
+	cost = 12,
 	can_use = function(self, card)
 		return true
 	end,
@@ -248,6 +252,7 @@ PTASaka.Property {
 	config = { extra = { money = 8, gain = 1 } },
 	unlocked = true,
 	discovered = true,
+	cost = 16,
 	can_use = function(self, card)
 		return true
 	end,
@@ -270,6 +275,7 @@ PTASaka.Property {
 	config = { extra = { money = 10, gain = 2 } },
 	unlocked = true,
 	discovered = true,
+	cost = 20,
 	can_use = function(self, card)
 		return true
 	end,
@@ -293,6 +299,7 @@ PTASaka.Property {
 	config = { extra = { money = 12, gain = 2, levels = 5 } },
 	unlocked = true,
 	discovered = true,
+	cost = 24,
 	can_use = function(self, card)
 		return true
 	end,
@@ -323,6 +330,7 @@ PTASaka.Property {
 	config = { extra = { money = 12, gain = 4 } },
 	unlocked = true,
 	discovered = true,
+	cost = 24,
 	can_use = function(self, card)
 		return true
 	end,
@@ -351,6 +359,7 @@ PTASaka.Property {
 	hidden = true,
 	soul_set = 'Property',
 	soul_rate = 0.01,
+	cost = 40,
 	can_use = function(self, card)
 		return false
 	end,
