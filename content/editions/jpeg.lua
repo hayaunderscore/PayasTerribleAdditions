@@ -32,12 +32,12 @@ SMODS.Edition {
 			}
 		end
 		if context.end_of_round and not context.game_over then
-			local thunk = not card.base or card.ability.scored
+			local thunk = card.ability.scored
 			if thunk and pseudorandom('payasaka_jpeg') < ((G.GAME.probabilities.normal or 1) / card.edition.extra.odds) then
 				local coin = pseudorandom('payasaka_jpeg') >= 0.5
-				if coin or not card.base then
+				if coin or card:get_id() > 1 then
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Editioned!" })
-					card:set_edition(poll_edition('payasaka_newspaper', nil, Cryptid == nil, true), true)
+					card:set_edition(poll_edition('payasaka_jpeg', nil, Cryptid == nil, true), true)
 				else
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Enhanced!" })
 					card:set_ability(pseudorandom_element(G.P_CENTER_POOLS["Enhanced"], pseudorandom('payasaka_jpeg')), nil, true)
