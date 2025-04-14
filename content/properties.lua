@@ -92,14 +92,34 @@ SMODS.Consumable {
 				table.insert(highlighted, v)
 			end
 		end
-		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
-			play_sound('timpani')
-            for i = 1, #highlighted do
-				highlighted[i].ability.house_status = (highlighted[i].ability.house_status or 0)
-				highlighted[i].ability.house_status = highlighted[i].ability.house_status + 1
-			end
-			used_tarot:juice_up(0.3, 0.5)
-			return true end }))
+		for i = 1, #highlighted do
+			local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
+				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted[i]
+					:juice_up(0.3, 0.3); return true
+			end }))
+		end
+		delay(0.2)
+		for i = 1, #highlighted do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					for i = 1, #highlighted do
+						highlighted[i].ability.house_status = (highlighted[i].ability.house_status or 0)
+						highlighted[i].ability.house_status = highlighted[i].ability.house_status + 1
+					end
+					return true
+				end
+			}))
+		end
+		for i = 1, #highlighted do
+			local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
+				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('tarot2', percent, 0.6); highlighted
+					[i]:juice_up(0.3, 0.3); return true
+			end }))
+		end
 		delay(0.6)
 	end,
 	loc_vars = function(self, info_queue, card)
