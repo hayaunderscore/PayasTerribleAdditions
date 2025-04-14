@@ -43,7 +43,7 @@ PTASaka.Property = SMODS.Consumable:extend {
 			card.children.soul_parts.T.y = card.T.y
 			card.children.soul_parts.T.x = card.T.x
 			card.children.soul_parts.T.r = card.T.r
-			card.children.soul_parts:set_sprite_pos({ x = math.min((card.ability.extra.house_status or 0), 5), y = 2 })
+			card.children.soul_parts:set_sprite_pos({ x = math.min((card.ability.house_status or 0), 5), y = 2 })
 			-- draw it
 			card.children.soul_parts:draw_shader('dissolve', 0, nil, nil, card.children.center)
 			card.children.soul_parts:draw_shader('dissolve', nil, nil, nil, card.children.center)
@@ -53,7 +53,7 @@ PTASaka.Property = SMODS.Consumable:extend {
 		if card.ability.extra.gain then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
 		end
-		return card.ability.extra.money + ((card.ability.extra.house_status or 0) * (card.ability.extra.money/2))
+		return card.ability.extra.money + ((card.ability.house_status or 0) * (card.ability.extra.money/2))
 	end
 }
 
@@ -75,6 +75,15 @@ SMODS.Consumable {
 		end
 		return #highlighted ~= 0 and #highlighted <= card.ability.extra.max_highlighted
 	end,
+	in_pool = function(self, args)
+		local properties = {}
+		for _, v in ipairs(G.consumeables.cards) do
+			if v.ability.set == 'Property' then
+				table.insert(properties, v)
+			end
+		end
+		return #properties > 0
+	end,
 	use = function(self, card, area, copier)
 		local used_tarot = copier or card
 		local highlighted = {}
@@ -86,8 +95,8 @@ SMODS.Consumable {
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
 			play_sound('timpani')
             for i = 1, #highlighted do
-				highlighted[i].ability.extra.house_status = (highlighted[i].ability.extra.house_status or 0)
-				highlighted[i].ability.extra.house_status = highlighted[i].ability.extra.house_status + 1
+				highlighted[i].ability.house_status = (highlighted[i].ability.house_status or 0)
+				highlighted[i].ability.house_status = highlighted[i].ability.house_status + 1
 			end
 			used_tarot:juice_up(0.3, 0.5)
 			return true end }))
@@ -323,7 +332,6 @@ PTASaka.Property {
 }
 
 PTASaka.Property {
-	set = 'Property',
 	key = 'greenproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 0, y = 1 },
@@ -349,7 +357,6 @@ PTASaka.Property {
 }
 
 PTASaka.Property {
-	set = 'Property',
 	key = 'darkblueproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 1, y = 1 },
