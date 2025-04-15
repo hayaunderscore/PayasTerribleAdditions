@@ -86,8 +86,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	vec2 rndcoords = texture_coords;
 
-	float iTime = jpeg.r*4. + time;
-	float t = jpeg.r + time*8.;
+	float iTime = jpeg.r*4.;
+	float t = jpeg.r;
 
 	rndcoords.x += 0.0005 * (rand(vec2(iTime, uv.y)) - rand(vec2(iTime*6., uv.y*0.9)));
 	rndcoords.y += 0.00025 * (rand(vec2(iTime*2., uv.y*0.9)) - rand(vec2(iTime*5., uv.y*0.8)));
