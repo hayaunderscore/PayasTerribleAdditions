@@ -82,7 +82,9 @@ SMODS.Joker {
 		-- Rigged, special conditions
 		if card.ability.cry_rigged then
 			-- Write a better solution to changing the rarity that does not put this globally
-			card.config.center.rarity = "cry_exotic"
+			if Cryptid then
+				card.config.center.rarity = "cry_exotic"
+			end
 			card.children.center:set_sprite_pos({ x = 2, y = 1 })
 			for i = 1, #PTASaka.adultcard_cardarea.cards do
 				-- fix me

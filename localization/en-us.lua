@@ -1,5 +1,36 @@
 return {
 	descriptions = {
+		Back = {
+			b_payasaka_shittim = {
+				name = "Shittim Deck",
+				text = {
+					"Start run with",
+					"an {C:attention,T:j_payasaka_buruakacard}Adult Card{}",
+					"with {C:blue,T:j_payasaka_arona}Arona{} and {C:dark_edition,T:j_payasaka_plana}Plana{}",
+				}
+			},
+			b_payasaka_dark_shittim = {
+				name = "Shittim Deck?",
+				text = {
+					"Start run with",
+					"an {C:attention,T:j_payasaka_buruakacard}Adult Card?{}",
+					"with {C:blue,T:j_payasaka_arona}Arona{} and {C:dark_edition,T:j_payasaka_plana}Plana{}",
+				}
+			},
+			b_payasaka_monopoly = {
+				name = "Monopoly Deck",
+				text = {
+					"Start the run",
+					"with a {C:attention,T:v_payasaka_monopolizer}Monopolizer{},",
+					"a {C:attention,T:v_payasaka_meritocracy}Meritocracy{}",
+					"and {C:attention}#1#{} random {C:property}Property{} cards",
+					"No {C:attention}numbered{} cards in the deck",
+					--"{C:property}Property Packs{} are more common",
+					--"in the shop",
+					"{C:attention}+#2#{} consumable slots",
+				}
+			}
+		},
 		Joker = {
 			j_payasaka_buruakacard = {
 				name = "Adult Card",
@@ -178,6 +209,22 @@ return {
 					"{C:inactive,s:0.8}(Must have room)"
 				}
 			}
+		},
+		Voucher = {
+			v_payasaka_monopolizer = {
+				name = "Monopolizer",
+				text = {
+					"Property cards each",
+					"give {C:mult}+#1#{} Mult"
+				}
+			},
+			v_payasaka_meritocracy = {
+				name = "Meritocracy",
+				text = {
+					"Property cards each",
+					"give {X:mult,C:white}X#1#{} Mult"
+				}
+			},
 		},
 		Property = {
 			c_payasaka_brownproperty = {

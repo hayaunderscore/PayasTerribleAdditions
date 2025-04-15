@@ -27,7 +27,7 @@ PTASaka.Property = SMODS.Consumable:extend {
 		'config'
 	},
 	calculate = function(self, card, context)
-		if context.before then
+		if context.before and card.config.center.key ~= "c_payasaka_niyaniya" then
 			if (next(context.poker_hands[card.ability.extra.poker_hand]) and card.config.center.key ~= "c_payasaka_brownproperty")
 				or (context.scoring_hand == card.ability.extra.poker_hand and card.config.center.key == "c_payasaka_brownproperty") then
 				card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
@@ -36,6 +36,12 @@ PTASaka.Property = SMODS.Consumable:extend {
 					colour = G.C.MONEY
 				}
 			end
+		end
+		if context.joker_main then
+			return {
+				mult = G.GAME.payasaka_monopolizer_mult,
+				x_mult = G.GAME.payasaka_monopolizer_x_mult
+			}
 		end
 	end,
 	can_use = function(self, card)

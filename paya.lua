@@ -4,6 +4,7 @@ PTASaka.Mod = SMODS.current_mod
 
 -- hiii
 SMODS.optional_features.retrigger_joker = true
+SMODS.optional_features.cardareas.deck = true
 
 -- ATLASES --
 
@@ -16,6 +17,12 @@ SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas
 -- Property atlas(es)
 SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
 SMODS.Atlas { key = "JOE_Properties_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
+
+-- Voucher atlas
+SMODS.Atlas { key = "JOE_Vouchers", path = "vouchers.png", px = 71, py = 95 }
+
+-- Deck atlas
+SMODS.Atlas { key = "JOE_Decks", path = "backs.png", px = 71, py = 95 }
 
 -- Cross mod content
 SMODS.Atlas { key = "JOE_Rotarots", path = "mf/rotarots.png", px = 107, py = 107 }
@@ -63,6 +70,12 @@ PTASaka.RequireFolder("content/jokers/legendary/")
 
 -- Property cards
 assert(SMODS.load_file("content/properties.lua"))()
+
+-- Vouchers
+assert(SMODS.load_file("content/vouchers.lua"))()
+
+-- Decks
+assert(SMODS.load_file("content/decks.lua"))()
 
 -- Cross mod content: JokerDisplay
 if JokerDisplay then
