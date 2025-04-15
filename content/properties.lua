@@ -473,7 +473,7 @@ PTASaka.Property {
 		return false
 	end,
 	calculate = function (self, card, context)
-		if context.end_of_round and not context.game_over then
+		if context.end_of_round and not context.game_over and context.cardarea == G.jokers then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
 			return {
 				message = localize('k_upgrade_ex'),
