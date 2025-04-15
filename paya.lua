@@ -63,3 +63,8 @@ PTASaka.RequireFolder("content/jokers/legendary/")
 
 -- Property cards
 assert(SMODS.load_file("content/properties.lua"))()
+
+-- Cross mod content: JokerDisplay
+if JokerDisplay then
+assert(SMODS.load_file("content/jokerdisplay.lua"))()
+end
