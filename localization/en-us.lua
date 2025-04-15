@@ -169,6 +169,15 @@ return {
 				}
 			}
 		},
+		Rotarot = {
+			c_payasaka_rot_greed = {
+				name = "The Greed!",
+				text = {
+					"Creates up to {C:attention}#1#",
+					"{C:property}Property{} cards",
+				}
+			}
+		},
 		Property = {
 			c_payasaka_brownproperty = {
 				name = 'Brown Property',

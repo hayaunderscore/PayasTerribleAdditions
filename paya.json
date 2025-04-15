@@ -5,7 +5,7 @@
 	"description": "Yet another mod that adds whatever the hell I want to Balatro.",
 	"prefix": "payasaka",
 	"main_file": "paya.lua",
-	"priority": 0,
+	"priority": 420,
 	"display_name": "Paya Is Terrible",
 	"badge_colour": "4A3570",
 	"badge_text_colour": "",

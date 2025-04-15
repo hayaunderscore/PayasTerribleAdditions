@@ -139,6 +139,43 @@ SMODS.Consumable {
 	end,
 }
 
+-- Rotarot version of above, for More Fluff
+if next(SMODS.find_mod("MoreFluff")) then
+SMODS.Consumable {
+	set = "Rotarot",
+	name = "rot_Greed",
+	key = "rot_greed",
+	pos = { x = 0, y = 0 },
+	atlas = 'JOE_Rotarots',
+	config = { extra = { count = 2 } },
+	unlocked = true,
+    discovered = true,
+	display_size = { w = 107, h = 107 },
+	can_use = function(self, card)
+		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
+	end,
+	use = function(self, card, area, copier)
+		local used_rotarot = copier or card
+		for i = 1, math.min(used_rotarot.ability.extra.count, G.consumeables.config.card_limit - #G.consumeables.cards) do
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				if G.consumeables.config.card_limit > #G.consumeables.cards then
+					play_sound('timpani')
+					local _card = create_card("Property", G.consumeables, nil, nil, nil, nil, nil, nil)
+					_card:add_to_deck()
+					G.consumeables:emplace(_card)
+					used_rotarot:juice_up(0.3, 0.5)
+				end
+			return true end }))
+		end
+		delay(0.6)
+	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
+		return { vars = { card.ability.extra.count } }
+	end
+}
+end
+
 PTASaka.Property {
 	key = 'brownproperty',
 	atlas = 'JOE_Properties',
@@ -273,7 +310,7 @@ PTASaka.Property {
 	end,
 	use = function(self, card, area, copier)
 		-- myeah
-		for i = 1, #card.ability.extra.food do
+		for i = 1, card.ability.extra.food do
 			SMODS.add_card { set = "Food" }
 		end
 	end,

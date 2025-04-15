@@ -5,6 +5,8 @@ PTASaka.Mod = SMODS.current_mod
 -- hiii
 SMODS.optional_features.retrigger_joker = true
 
+-- ATLASES --
+
 -- Joker atlas
 SMODS.Atlas { key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 
@@ -12,8 +14,16 @@ SMODS.Atlas { key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
 
 -- Property atlas(es)
-SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
 SMODS.Atlas { key = "JOE_Properties_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
+
+-- Cross mod content
+SMODS.Atlas { key = "JOE_Rotarots", path = "mf/rotarots.png", px = 107, py = 107 }
+
+-- Icon lmao
+SMODS.Atlas { key = "modicon", path = "icon.png", px = 34, py = 34 }
+
+-- MAIN CODE --
 
 -- Utilities
 assert(SMODS.load_file("content/utils.lua"))()
