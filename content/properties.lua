@@ -26,6 +26,18 @@ PTASaka.Property = SMODS.Consumable:extend {
 		'key',
 		'config'
 	},
+	calculate = function(self, card, context)
+		if context.before then
+			if (next(context.poker_hands[card.ability.extra.poker_hand]) and card.config.center.key ~= "c_payasaka_brownproperty")
+				or (context.scoring_hand == card.ability.extra.poker_hand and card.config.center.key == "c_payasaka_brownproperty") then
+				card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
+				return {
+					message = localize('k_upgrade_ex'),
+					colour = G.C.MONEY
+				}
+			end
+		end
+	end,
 	can_use = function(self, card)
 		return false
 	end,
@@ -50,9 +62,6 @@ PTASaka.Property = SMODS.Consumable:extend {
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.gain then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
-		end
 		return card.ability.extra.money + ((card.ability.house_status or 0) * (card.ability.extra.money/2))
 	end
 }
@@ -100,7 +109,7 @@ SMODS.Consumable {
 			end }))
 		end
 		delay(0.2)
-		for i = 1, #highlighted do
+		--for i = 1, #highlighted do
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
 				delay = 0.1,
@@ -112,7 +121,7 @@ SMODS.Consumable {
 					return true
 				end
 			}))
-		end
+		--end
 		for i = 1, #highlighted do
 			local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
@@ -134,7 +143,7 @@ PTASaka.Property {
 	key = 'brownproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 0, y = 0 },
-	config = { extra = { money = 2 } },
+	config = { extra = { money = 2, gain = 2, poker_hand = "High Card" } },
 	unlocked = true,
 	discovered = true,
 	can_use = function(self, card)
@@ -145,7 +154,7 @@ PTASaka.Property {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand }
 		}
 	end,
 }
@@ -154,7 +163,7 @@ PTASaka.Property {
 	key = 'blueproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 1, y = 0 },
-	config = { extra = { money = 4, max_highlighted = 1 } },
+	config = { extra = { money = 4, gain = 2, poker_hand = "Pair", max_highlighted = 1 } },
 	unlocked = true,
 	discovered = true,
 	cost = 8,
@@ -223,7 +232,7 @@ PTASaka.Property {
 			info_queue[#info_queue + 1] = thing
 		end
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.max_highlighted }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.max_highlighted }
 		}
 	end,
 }
@@ -255,7 +264,7 @@ PTASaka.Property {
 	key = 'pinkproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 2, y = 0 },
-	config = { extra = { money = 6 } },
+	config = { extra = { money = 6, gain = 4, poker_hand = "Two Pair", food = 1 } },
 	unlocked = true,
 	discovered = true,
 	cost = 12,
@@ -264,12 +273,14 @@ PTASaka.Property {
 	end,
 	use = function(self, card, area, copier)
 		-- myeah
-		SMODS.add_card { set = "Food" }
+		for i = 1, #card.ability.extra.food do
+			SMODS.add_card { set = "Food" }
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.food }
 		}
 	end,
 }
@@ -278,7 +289,7 @@ PTASaka.Property {
 	key = 'orangeproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 3, y = 0 },
-	config = { extra = { money = 8, gain = 1 } },
+	config = { extra = { money = 8, gain = 8, poker_hand = "Three of a Kind", tarots = 1 } },
 	unlocked = true,
 	discovered = true,
 	cost = 16,
@@ -292,7 +303,7 @@ PTASaka.Property {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.tarots }
 		}
 	end,
 }
@@ -301,7 +312,7 @@ PTASaka.Property {
 	key = 'redproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 4, y = 0 },
-	config = { extra = { money = 10, gain = 2 } },
+	config = { extra = { money = 10, gain = 10, poker_hand = "Straight" } },
 	unlocked = true,
 	discovered = true,
 	cost = 20,
@@ -316,7 +327,7 @@ PTASaka.Property {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand }
 		}
 	end,
 }
@@ -325,7 +336,7 @@ PTASaka.Property {
 	key = 'yellowproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 5, y = 0 },
-	config = { extra = { money = 12, gain = 2, levels = 5 } },
+	config = { extra = { money = 12, gain = 12, poker_hand = "Flush", levels = 2 } },
 	unlocked = true,
 	discovered = true,
 	cost = 24,
@@ -348,7 +359,7 @@ PTASaka.Property {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.levels }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.levels }
 		}
 	end,
 }
@@ -357,7 +368,7 @@ PTASaka.Property {
 	key = 'greenproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 0, y = 1 },
-	config = { extra = { money = 12, gain = 4 } },
+	config = { extra = { money = 12, gain = 16, poker_hand = "Four of a Kind" } },
 	unlocked = true,
 	discovered = true,
 	cost = 24,
@@ -373,7 +384,7 @@ PTASaka.Property {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand }
 		}
 	end,
 }
@@ -382,7 +393,7 @@ PTASaka.Property {
 	key = 'darkblueproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 1, y = 1 },
-	config = { extra = { money = 20, gain = 10 } },
+	config = { extra = { money = 20, gain = 20, poker_hand = "Full House" } },
 	unlocked = true,
 	discovered = true,
 	hidden = true,
@@ -398,7 +409,7 @@ PTASaka.Property {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand }
 		}
 	end,
 }
@@ -417,6 +428,15 @@ PTASaka.Property {
 	soul_rate = 0.003,
 	can_use = function(self, card)
 		return false
+	end,
+	calculate = function (self, card, context)
+		if context.end_of_round and not context.game_over then
+			card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
+			return {
+				message = localize('k_upgrade_ex'),
+				colour = G.C.MONEY
+			}
+		end
 	end,
 	use = function(self, card, area, copier) end,
 	loc_vars = function(self, info_queue, card)

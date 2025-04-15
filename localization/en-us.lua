@@ -173,80 +173,92 @@ return {
 			c_payasaka_brownproperty = {
 				name = 'Brown Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
+					"Gains {C:money}$#2#{} if played hand",
+					"is a {C:attention}#3#{}",
 					"Does nothing else when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_blueproperty = {
 				name = 'Blue Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Gives a random edition",
-					"to {C:attention}#2#{} selected card",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
+					"Randomizes the {C:dark_edition}edition{} of up",
+					"to {C:attention}#4#{} selected cards",
 					"when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_pinkproperty = {
 				name = 'Pink Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Creates a random Food Joker",
-					"when used",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
+					"Creates {C:attention}#4#{} random Food",
+					"Jokers when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_orangeproperty = {
 				name = 'Orange Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Creates a {C:tarot}Tarot{} card",
-					"when used",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
+					"Creates {C:attention}#4#{} {C:tarot}Tarot{}",
+					"cards when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_redproperty = {
 				name = 'Red Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Gains {C:money}$#2#{} per round",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
 					"Creates a {C:red}Rare{} Joker",
 					"when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_yellowproperty = {
 				name = 'Yellow Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Gains {C:money}$#2#{} per round",
-					"Levels up your {C:attention}most played{}",
-					"hand by {C:attention}#3#{} levels",
-					"when used",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
+					"Levels up your {C:attention}most{}",
+					"{C:attention}played{} hand by {C:attention}#4#{}",
+					"levels when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_greenproperty = {
 				name = 'Green Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Gains {C:money}$#2#{} per round",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
 					"Creates a {C:dark_edition}Legendary{}",
 					"Joker when used",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_darkblueproperty = {
 				name = 'Dark Blue Property',
 				text = {
-					"Gives {C:money}$#1#{} per round",
-					"Gains {C:money}$#2#{} per round",
+					"Gains {C:money}$#2#{} if played hand",
+					"contains a {C:attention}#3#{}",
 					"{C:inactive,s:0.8}Does nothing..?",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_niyaniya = {
 				name = 'Niyaniya',
 				text = {
-					"Gives {C:money}$#1#{} per round",
 					"Gains {C:money}$#2#{} per round",
 					"{C:inactive,s:0.8}(WIP, undecided yet)",
+					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 		},
