@@ -175,6 +175,7 @@ return {
 				text = {
 					"Creates up to {C:attention}#1#",
 					"{C:property}Property{} cards",
+					"{C:inactive,s:0.8}(Must have room)"
 				}
 			}
 		},
