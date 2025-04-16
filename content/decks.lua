@@ -30,8 +30,8 @@ SMODS.Back {
 				if G.jokers then
 					local shit = SMODS.add_card({ key = "j_payasaka_buruakacard" })
 					shit.ability.cry_rigged = true
-					SMODS.add_card({ key = "j_payasaka_arona" })
-					SMODS.add_card({ key = "j_payasaka_plana" })
+					SMODS.add_card({ key = "j_payasaka_arona", area = PTASaka.adultcard_cardarea })
+					SMODS.add_card({ key = "j_payasaka_plana", area = PTASaka.adultcard_cardarea })
 				end
 				return true
 			end,
@@ -39,12 +39,36 @@ SMODS.Back {
 	end
 }
 
+local reroll_butan = {
+	{
+		n = G.UIT.R,
+		config = { align = "cm", maxw = 1.3 },
+		nodes = {
+			{ n = G.UIT.T, config = { text = localize('k_reroll'), scale = 0.4, colour = G.C.WHITE, shadow = true } },
+		}
+	},
+	{
+		n = G.UIT.R,
+		config = { align = "cm", maxw = 1.3, minw = 0.6 },
+		nodes = {
+			{ n = G.UIT.T, config = { text = localize('$'), scale = 0.5, colour = G.C.WHITE, shadow = true } },
+			{ n = G.UIT.T, config = { ref_table = booster_obj, ref_value = 'cost', scale = 0.55, colour = G.C.WHITE, shadow = true } },
+		}
+	}
+}
+
+to_big = to_big or function(a) return a end
+
 -- Shittim deck rerolling
 G.FUNCS.can_reroll_booster = function(e)
-	if G.GAME and G.GAME.payasaka_allow_reroll and not G.CONTROLLER.locks.booster_reroll and G.pack_cards and (G.pack_cards.cards[1]) and
-		(G.STATE == G.STATES.SMODS_BOOSTER_OPENED or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.BUFFOON_PACK or (G.hand and (G.hand.cards[1] or (G.hand.config.card_limit <= 0)))) then
+	if G.GAME and G.GAME.payasaka_allow_reroll and not G.CONTROLLER.locks.use and not G.CONTROLLER.locks.booster_reroll and G.pack_cards and (G.pack_cards.cards[1]) and
+		(G.STATE == G.STATES.SMODS_BOOSTER_OPENED or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.BUFFOON_PACK or (G.hand and (G.hand.cards[1] or (G.hand.config.card_limit <= 0))))
+		and booster_obj and booster_obj.cost ~= 0 and not (to_big(G.GAME.dollars-G.GAME.bankrupt_at) - to_big(booster_obj.cost or 0) < to_big(0)) then
 		e.config.colour = G.C.GREY
 		e.config.button = 'reroll_booster'
+		e.states.visible = true
+	elseif not (G.GAME and G.GAME.payasaka_allow_reroll) then
+		e.states.visible = false
 	else
 		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 		e.config.button = nil
@@ -76,8 +100,7 @@ G.FUNCS.reroll_booster = function(e)
 
 			for i = #G.pack_cards.cards, 1, -1 do
 				local c = G.pack_cards:remove_card(G.pack_cards.cards[i])
-				c:remove()
-				c = nil
+				c:start_dissolve({G.C.WHITE, G.C.WHITE}, false, 0.75, true)
 			end
 
 			--save_run()
@@ -149,7 +172,7 @@ G.FUNCS.reroll_booster = function(e)
 					end
 				end
 				if card then
-					card:juice_up()
+					card:start_materialize({G.C.WHITE, G.C.WHITE}, true)
 					G.pack_cards:emplace(card)
 				end
 			end

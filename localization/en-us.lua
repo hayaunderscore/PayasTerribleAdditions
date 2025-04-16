@@ -16,6 +16,7 @@ return {
 					"Start run with",
 					"an {C:attention,T:j_payasaka_buruakacard}Adult Card?{}",
 					"with {C:blue,T:j_payasaka_arona}Arona{} and {C:dark_edition,T:j_payasaka_plana}Plana{}",
+					"as {C:green}Sold{} jokers",
 					"Can {C:attention}reroll{} Booster Packs in the {C:green}shop",
 				}
 			},
@@ -377,6 +378,15 @@ return {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
 					"add to your consumeables"
+				}
+			},
+		},
+		Sleeve = {
+			sleeve_payasaka_gambling = {
+				name = "Gambling Sleeve",
+				text = {
+					"Can {C:attention}reroll{} Booster Packs",
+					"in the {C:green}shop",
 				}
 			},
 		}
