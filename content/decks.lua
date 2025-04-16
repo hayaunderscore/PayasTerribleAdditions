@@ -214,6 +214,7 @@ SMODS.Back {
 					for i = #cardtable, 1, -1 do
 						if cardtable[i].base.id < 11 then
 							cardtable[i]:remove()
+							--G.playing_cards[i] = nil
 						end
 					end
 					local n = #G.playing_cards
@@ -230,6 +231,7 @@ SMODS.Back {
 						SMODS.add_card { set = "Property" }
 					end
 				end
+				G.GAME.starting_deck_size = #G.deck.cards
 				return true
 			end,
 		}))

@@ -178,7 +178,11 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
 		return { vars = { card.ability.extra.count } }
-	end
+	end,
+	set_badges = function(self, card, badges)
+		local clr = HEX('814BA8')
+		badges[#badges+#badges] = create_badge("More Fluff", clr, G.C.WHITE,1)
+	end,
 }
 end
 
