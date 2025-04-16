@@ -7,6 +7,7 @@ return {
 					"Start run with",
 					"an {C:attention,T:j_payasaka_buruakacard}Adult Card{}",
 					"with {C:blue,T:j_payasaka_arona}Arona{} and {C:dark_edition,T:j_payasaka_plana}Plana{}",
+					"Can {C:attention}reroll{} Booster Packs in the {C:green}shop",
 				}
 			},
 			b_payasaka_dark_shittim = {
@@ -15,6 +16,7 @@ return {
 					"Start run with",
 					"an {C:attention,T:j_payasaka_buruakacard}Adult Card?{}",
 					"with {C:blue,T:j_payasaka_arona}Arona{} and {C:dark_edition,T:j_payasaka_plana}Plana{}",
+					"Can {C:attention}reroll{} Booster Packs in the {C:green}shop",
 				}
 			},
 			b_payasaka_monopoly = {
@@ -384,6 +386,7 @@ return {
 			k_property = "Property",
 			b_property_cards = "Property Cards",
 			k_property_pack = "Property Pack",
+			b_payasaka_reroll = "Reroll",
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr'

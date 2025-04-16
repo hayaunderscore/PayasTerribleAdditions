@@ -70,3 +70,49 @@ if extra and extra.extrafunc then extrafunc = extra.extrafunc end
 '''
 match_indent = true
 times = 1
+
+# Shittim deck rerolling
+# Hopefully no other mods override this...
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '{n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},'
+position = "at"
+payload = '''
+{
+	n = G.UIT.C,
+	config = { align = "tm", padding = 0.05, minw = 2.4 },
+	nodes = {
+		{ n = G.UIT.R, config = { minh = 0.2 }, nodes = {} },
+		{
+			n = G.UIT.R,
+			config = { align = "cm", minw = 1.8, minh = 1.2, r = 0.15, colour = G.C.GREY, button = 'reroll_booster', func = 'can_reroll_booster', hover = true, shadow = true },
+			nodes = {
+				{
+					n = G.UIT.R,
+					config = { align = "cm", padding = 0.07, focus_args = { button = 'c', orientation = 'cr' }, func = 'set_button_pip' },
+					nodes = {
+						{
+							n = G.UIT.R,
+							config = { align = "cm", maxw = 1.3 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = localize('k_reroll'), scale = 0.4, colour = G.C.WHITE, shadow = true } },
+							}
+						},
+						{
+							n = G.UIT.R,
+							config = { align = "cm", maxw = 1.3, minw = 0.6 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = localize('$'), scale = 0.5, colour = G.C.WHITE, shadow = true } },
+								{ n = G.UIT.T, config = { ref_table = booster_obj, ref_value = 'cost', scale = 0.55, colour = G.C.WHITE, shadow = true } },
+							}
+						}
+					}
+				}
+			}
+		},
+	}
+},
+'''
+match_indent = true
+times = 1
