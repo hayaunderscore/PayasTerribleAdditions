@@ -5,7 +5,8 @@ SMODS.Joker {
 	-- Note: old_jkrs isn't saved
 	config = { extra = { coolmult = 2, old_jkrs = { nil, nil } } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.coolmult } }
+		local mult = card.ability.extra.coolmult >= 1e300 and "a lot" or card.ability.extra.coolmult
+		return { vars = { mult } }
 	end,
 	rarity = 3,
 	atlas = "JOE_Jokers",
@@ -13,7 +14,7 @@ SMODS.Joker {
 	cost = 15,
 	blueprint_compat = false,
 	update = function(self, card2, dt)
-		if G.STAGE == G.STAGES.RUN then
+		if G.STAGE == G.STAGES.RUN and card2.added_to_deck then
 			-- Get cards from left and right
 			local cards = { nil, nil }
 			for i = 1, #G.jokers.cards do
@@ -24,6 +25,9 @@ SMODS.Joker {
 					end
 				end
 			end
+
+			-- do NOT exceed coolmult
+			card2.ability.extra.coolmult = math.min(card2.ability.extra.coolmult, 1e300)
 
 			-- erm...
 			if cards[1] then cards[1].ability.payasaka_photocopied = cards[1].ability.payasaka_photocopied or {} end
@@ -59,4 +63,39 @@ SMODS.Joker {
 			card2.ability.extra.old_jkrs = cards
 		end
 	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if G.STAGE ~= G.STAGES.RUN then return end
+		-- Get cards from left and right
+		local cards = { nil, nil }
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i] == card then
+				cards[1] = G.jokers.cards[i + 1]
+				if i > 1 then
+					cards[2] = G.jokers.cards[i - 1]
+				end
+			end
+		end
+
+		-- erm...
+		if cards[1] then cards[1].ability.payasaka_photocopied = cards[1].ability.payasaka_photocopied or {} end
+		if cards[2] then cards[2].ability.payasaka_photocopied = cards[2].ability.payasaka_photocopied or {} end
+
+		-- Do not affect other Photocopiers....
+		if cards[1] and cards[1].config.center.key == card.config.center.key then cards[1] = nil end
+		if cards[2] and cards[2].config.center.key == card.config.center.key then cards[2] = nil end
+
+		local mult = card.ability.extra.coolmult
+		if cards[1] then
+			local jkr = cards[1]
+			if jkr.config and not Card.no(jkr, "immutable", true) then
+				PTASaka.Photocopy(jkr, mult, true, card.ID)
+			end
+		end
+		if cards[2] then
+			local jkr = cards[2]
+			if jkr.config and not Card.no(jkr, "immutable", true) then
+				PTASaka.Photocopy(jkr, mult, true, card.ID)
+			end
+		end
+	end
 }
