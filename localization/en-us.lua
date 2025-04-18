@@ -165,6 +165,23 @@ return {
 					"{C:inactive,s:0.8}now THIS this is a good one",
 				}
 			},
+			j_payasaka_flintnsteel2 = {
+				name = "Flint and Steel 2",
+				text = {
+					"For every {C:attention}Pair{} that contains",
+					"one {C:hearts}Hearts{} or {C:diamonds}Diamonds{} suit",
+					"and one {C:spades}Spades{} or {C:clubs}Clubs{} suit",
+					"give {C:mult}+#1#{} Mult",
+					"{C:inactive,s:0.8}(e.g. {C:hearts,s:0.8}H{C:inactive,s:0.8}+{C:spades,s:0.8}S{C:inactive,s:0.8}, \
+{C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
+{C:hearts,s:0.8}H+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
+{C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:spades,s:0.8}S{C:inactive,s:0.8})",
+					"{C:inactive,s:0.8}Must be in order!",
+					"{C:inactive,s:0.8}Not to be confused with",
+					"{C:inactive,s:0.8}the Joker of the same name",
+					"{C:inactive,s:0.8}from MoreFluff",
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
