@@ -88,4 +88,6 @@ end
 assert(SMODS.load_file("content/sleeve.lua"))()
 
 -- Cross mod content: Revo's Vault
+if RevosVault then
 assert(SMODS.load_file("content/printers.lua"))()
+end
