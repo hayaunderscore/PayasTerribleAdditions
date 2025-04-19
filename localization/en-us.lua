@@ -180,6 +180,14 @@ return {
 					"{C:inactive,s:0.8}Not to be confused with the Joker",
 					"{C:inactive,s:0.8}of the same name from MoreFluff",
 				}
+			},
+			j_payasaka_inkblot = {
+				name = "Inkblot Printer",
+				text = {
+					"When Blind is selected,",
+					"print a {C:attention}Photocopier{}",
+					"{C:inactive,s:0.8}(Must have room)"
+				}
 			}
 		},
 		Blind = {
