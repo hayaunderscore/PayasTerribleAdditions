@@ -204,7 +204,8 @@ return {
 			bl_payasaka_nether = {
 				name = "The Nether",
 				text = {
-					"All played cards are destroyed",
+					"All played cards",
+					"are destroyed",
 				}
 			},
 		},
