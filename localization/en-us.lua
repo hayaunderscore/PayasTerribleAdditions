@@ -186,7 +186,8 @@ return {
 				text = {
 					"When Blind is selected,",
 					"print a {C:attention}Photocopier{}",
-					"{C:inactive,s:0.8}(Must have room)"
+					"{C:inactive,s:0.8}(Must have room)",
+					"{C:inactive,s:0.8}insert witty comment here"
 				}
 			},
 			j_payasaka_rainy = {
@@ -197,6 +198,16 @@ return {
 					"into {C:attention}Damp Cards{}",
 					"Prevents {C:attention}Damp Cards{} from",
 					"turning into {C:attention}Wet Cards{}",
+					"{C:inactive,s:0.8}It took me 40 minutes",
+					"{C:inactive,s:0.8}to get this screenshot",
+				}
+			},
+			j_payasaka_mrseal = {
+				name = "Mr. Seal",
+				text = {
+					"Retrigger all cards",
+					"with a {C:attention}seal{}",
+					"{C:inactive,s:0.8}Any seal, really!",
 				}
 			}
 		},
