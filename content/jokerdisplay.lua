@@ -191,3 +191,20 @@ jd_def["j_payasaka_markiplier_punch_gif"] = {
 		} }
 	end
 }
+
+jd_def["j_payasaka_flintnsteel2"] = {
+	text = {
+		{ text = "+" },
+		{ ref_table = "card.joker_display_values", ref_value = "current_mult", retrigger_type = "add" }
+	},
+	text_config = { colour = G.C.MULT },
+	reminder_text = {
+		{ text = "(" },
+		{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+		{ text = ")" },
+	},
+	calc_function = function(card)
+		card.joker_display_values.current_mult = math.min(card.ability.dark_cards, card.ability.light_cards) * card.ability.extra.mult
+		card.joker_display_values.localized_text = localize('Pair', 'poker_hands')
+	end
+}
