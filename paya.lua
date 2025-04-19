@@ -24,6 +24,9 @@ SMODS.Atlas { key = "JOE_Vouchers", path = "vouchers.png", px = 71, py = 95 }
 -- Deck atlas
 SMODS.Atlas { key = "JOE_Decks", path = "backs.png", px = 71, py = 95 }
 
+-- Enhancement atlas
+SMODS.Atlas { key = "JOE_Enhancements", path = "enhancements.png", px = 71, py = 95 }
+
 -- Cross mod content
 SMODS.Atlas { key = "JOE_Rotarots", path = "mf/rotarots.png", px = 107, py = 107 }
 SMODS.Atlas { key = "JOE_Sleeves", path = "sleeves.png", px = 73, py = 95 }
@@ -78,6 +81,9 @@ assert(SMODS.load_file("content/vouchers.lua"))()
 
 -- Decks
 assert(SMODS.load_file("content/decks.lua"))()
+
+-- Enhancements
+assert(SMODS.load_file("content/enhancements.lua"))()
 
 -- Cross mod content: JokerDisplay
 if JokerDisplay then

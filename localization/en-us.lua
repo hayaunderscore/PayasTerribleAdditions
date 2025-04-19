@@ -188,6 +188,16 @@ return {
 					"print a {C:attention}Photocopier{}",
 					"{C:inactive,s:0.8}(Must have room)"
 				}
+			},
+			j_payasaka_rainy = {
+				name = "Rainy Apartments",
+				text = {
+					"All played cards without",
+					"an enhancement are turned",
+					"into {C:attention}Damp Cards{}",
+					"Prevents {C:attention}Damp Cards{} from",
+					"turning into {C:attention}Wet Cards{}",
+				}
 			}
 		},
 		Blind = {
@@ -209,6 +219,27 @@ return {
 					"random {C:green}edition{}",
 					"or {C:dark_edition}enhancement{}",
 					"{C:inactive,s:0.8,E:2}What the fuck?"
+				}
+			}
+		},
+		Enhanced = {
+			m_payasaka_damp = {
+				name = "Damp Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"{X:mult,C:white}X#2#{} Mult",
+					"{C:green}#3# in #4#{} chance to",
+					"turn into a",
+					"{C:attention}Wet Card{}",
+				}
+			},
+			m_payasaka_wet = {
+				name = "Wet Card",
+				text = {
+					"{C:chips}+#1#{} Chips",
+					"No rank but",
+					"Can be used",
+                    "as any suit",
 				}
 			}
 		},

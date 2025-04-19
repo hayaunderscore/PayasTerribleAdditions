@@ -8,12 +8,12 @@ jd_def["j_payasaka_buruakacard"] = {
 	},
 	calc_function = function(card)
 		card.joker_display_values = card.joker_display_values or {}
-		if not (PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards and PTASaka.adultcard_cardarea.cards[1] and PTASaka.adultcard_cardarea.cards[card.ability.extra.next_joker]) then
-			card.joker_display_values.adultcard_current = "???"
-			return
-		end
 		if card.ability.cry_rigged then
 			card.joker_display_values.adultcard_current = "ALL"
+			return
+		end
+		if not (PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards and PTASaka.adultcard_cardarea.cards[1] and PTASaka.adultcard_cardarea.cards[card.ability.extra.next_joker]) then
+			card.joker_display_values.adultcard_current = "???"
 			return
 		end
 		local jkrkey = PTASaka.adultcard_cardarea.cards[card.ability.extra.next_joker].config.center.key
