@@ -31,6 +31,7 @@ SMODS.Atlas { key = "JOE_Enhancements", path = "enhancements.png", px = 71, py =
 SMODS.Atlas { key = "JOE_Rotarots", path = "mf/rotarots.png", px = 107, py = 107 }
 SMODS.Atlas { key = "JOE_Sleeves", path = "sleeves.png", px = 73, py = 95 }
 SMODS.Atlas { key = "REVO_JOE_Printers", path = "revo/printers.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Exotic", path = "cryptid/exotics.png", px = 71, py = 95 }
 
 -- Icon lmao
 SMODS.Atlas { key = "modicon", path = "icon.png", px = 34, py = 34 }
@@ -96,4 +97,9 @@ assert(SMODS.load_file("content/sleeve.lua"))()
 -- Cross mod content: Revo's Vault
 if RevosVault then
 assert(SMODS.load_file("content/printers.lua"))()
+end
+
+-- Cross mod content: Cryptid
+if Cryptid then
+assert(SMODS.load_file("content/exotic.lua"))()
 end

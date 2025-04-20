@@ -242,6 +242,31 @@ return {
 				comment = {
 					"{C:inactive,s:0.8}Any seal, really!",
 				}
+			},
+			j_payasaka_doodlekosmos = {
+				name = "Doodle Kosmos",
+				text = {
+					"This Joker gains {X:dark_edition,C:white}^^#2#{} Mult",
+					"for every card held in hand",
+					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
+					"at the end of a round",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^^#1#{C:inactive} Mult)",
+				},
+				comment = {
+					"{C:inactive,s:0.8}Dollar store kosmos",
+				}
+			},
+			j_payasaka_doodlekosmos_alt = {
+				name = "Doodle Kosmos",
+				text = {
+					"This Joker gains {X:dark_edition,C:white}^^^#2#{} Mult",
+					"for every card held in hand",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^^^#1#{C:inactive} Mult)",
+				},
+				comment = {
+					"{C:inactive,s:0.8}The cooler",
+					"{C:inactive,s:0.8}Dollar store kosmos",
+				}
 			}
 		},
 		Blind = {
