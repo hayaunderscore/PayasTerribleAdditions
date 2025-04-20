@@ -2,20 +2,6 @@
 version = "1.0.0"
 priority = 69
 
-# Rigged adult cards now will always trigger
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS _ "src/utils.lua"]'''
-pattern = "-- TARGET: add your own CardAreas for joker evaluation"
-position = "after"
-payload = '''
-if PTASaka and PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards[1] and PTASaka.adultcard_fucked then
-	table.insert(t, PTASaka.adultcard_cardarea)
-end
-'''
-match_indent = true
-times = 1
-
 # Multiplier effects
 [[patches]]
 [patches.pattern]
@@ -113,6 +99,78 @@ payload = '''
 		},
 	}
 },
+'''
+match_indent = true
+times = 1
+
+# Comments
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = 'if center.unlock then'
+position = 'before'
+payload = '''
+center.comment_parsed = {}
+if center.comment then
+	for _, line in ipairs(center.comment) do
+		center.comment_parsed[#center.comment_parsed+1] = loc_parse_string(line)
+	end
+end
+'''
+match_indent = true
+times = 1
+
+# Use descriptions set if type is 'payasaka_comment'
+# elseif args.type == 'descriptions' or args.type == 'unlocks' then 
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = "elseif args.type == 'descriptions' or args.type == 'unlocks' then "
+position = 'at'
+payload = '''
+elseif args.type == 'descriptions' or args.type == 'unlocks' or args.type == 'payasaka_comment' then 
+'''
+match_indent = true
+times = 1
+
+# Use comment_parsed if type is 'payasaka_comment'
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = "for _, lines in ipairs(args.type == 'unlocks' and loc_target.unlock_parsed or args.type == 'name' and loc_target.name_parsed or (args.type == 'text' or args.type == 'tutorial' or args.type == 'quips') and loc_target or loc_target.text_parsed) do"
+position = 'at'
+payload = '''
+for _, lines in ipairs(args.type == 'unlocks' and loc_target.unlock_parsed or args.type == 'name' and loc_target.name_parsed or (args.type == 'text' or args.type == 'tutorial' or args.type == 'quips') and loc_target or args.type == 'payasaka_comment' and loc_target.comment_parsed or loc_target.text_parsed) do
+'''
+match_indent = true
+times = 1
+
+# Render comment if available
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "if AUT.badges.card_type or AUT.badges.force_rarity then"
+position = 'before'
+payload = '''
+local comment_nodes, comment_main = {}, nil
+if pcall(function() return G.localization.descriptions[card.ability.set][card.config.center.key].comment end) and G.localization.descriptions[card.ability.set][card.config.center.key].comment then
+	localize { type = 'payasaka_comment', key = card.config.center.key, set = card.ability.set, nodes = comment_nodes }
+	comment_main = desc_from_rows(comment_nodes)
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "desc_from_rows(AUT.main),"
+position = 'after'
+payload = '''
+comment_main and {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.GREY, 0.15), r = 0.1}, nodes={
+      {n=G.UIT.R, config={align = "tm", minh = 0.36, padding = 0.03}, nodes={{n=G.UIT.T, config={text = "Paya's comment:", scale = 0.32, colour = G.C.UI.TEXT_LIGHT}}}},
+    }} or nil,
+comment_main,
 '''
 match_indent = true
 times = 1

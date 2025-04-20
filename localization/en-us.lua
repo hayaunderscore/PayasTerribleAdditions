@@ -43,6 +43,8 @@ return {
 					"Joker mimicked changes every time",
 					"a Joker could be triggered",
 					"{C:inactive,s:0.8}Does not count other Adult Cards",
+				},
+				comment = {
 					"{C:inactive,s:0.8}A Blue Archive reference in my Balatro?",
 					"{C:inactive,s:0.8}How absurd.",
 				}
@@ -54,6 +56,8 @@ return {
 					"can be mimicked by this Joker",
 					"{X:attention,C:white}ALL{} Joker effects are applicable",
 					"{C:inactive,s:0.8}Does not count other Adult Cards",
+				},
+				comment = {
 					"{C:inactive,s:0.8}A Blue Archive reference in my Balatro?",
 					"{C:inactive,s:0.8}How absurd.",
 				}
@@ -65,6 +69,8 @@ return {
 					"the first {C:attention}discarded",
 					"poker hand each round by {C:attention}#1#{}",
 					"{C:red}-1{} Discard",
+				},
+				comment = {
 					"{C:inactive,s:0.8}Look at this joker...{}",
 				}
 			},
@@ -76,6 +82,9 @@ return {
 					"{C:attention}edition{} to your deck",
 					"{C:inactive,s:0.8}Random card takes suit from",
 					"{C:inactive,s:0.8}available suits in the deck",
+				},
+				comment = {
+					"{C:inactive,s:0.8}'The Onion'. Or is it 'The Joker'?{}",
 				}
 			},
 			j_payasaka_photocopier = {
@@ -83,6 +92,8 @@ return {
 				text = {
 					"{C:attention}Multiplies{} the effects",
 					"of adjacent Jokers by {X:attention,C:white}X#1#{C:inactive}",
+				},
+				comment = {
 					"{C:inactive,s:0.8}Does not affect other Photocopier{}",
 					"{C:inactive,s:0.8}If it did, that would be silly.{}"
 				}
@@ -96,6 +107,8 @@ return {
 					"creating a random",
 					"{C:dark_edition}Negative{} {C:red}Rare{C:attention} Joker{}",
 					"at end of round",
+				},
+				comment = {
 					"{C:inactive,s:0.8}Technically not a Brainstorm{}",
 					"{C:inactive,s:0.8}but whatever{}",
 				}
@@ -109,6 +122,8 @@ return {
 					"this Joker is {C:attention}triggered{}",
 					"as well as its {C:dark_edition}sign{}",
 					"{C:inactive,s:0.8}(Currently {C:red}#2#{C:inactive,s:0.8} Mult)",
+				},
+				comment = {
 					"{C:inactive,s:0.8}Turn the lights off...",
 				}
 			},
@@ -119,6 +134,8 @@ return {
 					"turning {C:red}+Mult{} to {X:red,C:white}XMult{}",
 					"{C:green}#3# in #4#{} chance of",
 					"turning {C:chips}+Chips{} to {X:chips,C:white}XChips{}",
+				},
+				comment = {
 					"{C:inactive,s:0.8}The messages lie...",
 				}
 			},
@@ -128,6 +145,8 @@ return {
 					"{C:green}#1# in #2#{} chance of",
 					"retriggering a scored",
 					"card {C:attention}#3#{} times",
+				},
+				comment = {
 					"{C:inactive,s:0.8}look at what you",
 					"{C:inactive,s:0.8}made me do ari",
 				}
@@ -138,6 +157,8 @@ return {
 					"{X:red,C:white}X#1#{} Mult",
 					"{C:green}#2# in #3#{} chance of",
 					"giving {X:red,C:white}X0{} Mult instead",
+				},
+				comment = {
 					"{C:inactive,s:0.8}when your {X:black,C:white,s:0.8}shirt",
 					"{C:inactive,s:0.8}is a geek :laugh:",
 				}
@@ -150,6 +171,8 @@ return {
 					"gives {X:chips,C:white}X#2#{} Chips instead",
 					"Gains {X:chips,C:white}X#3#{} every time",
 					"this Joker is triggered",
+				},
+				comment = {
 					"{C:inactive,s:0.8}stop stealing my fucking chips",
 				}
 			},
@@ -162,6 +185,8 @@ return {
 					"if {C:green,E:2}Arona{} is around",
 					"Gains {X:mult,C:white}X#2#{} every time",
 					"this Joker is triggered",
+				},
+				comment = {
 					"{C:inactive,s:0.8}now THIS this is a good one",
 				}
 			},
@@ -177,6 +202,8 @@ return {
 {C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
 {C:hearts,s:0.8}H+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
 {C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:spades,s:0.8}S{C:inactive,s:0.8})",
+				},
+				comment = {
 					"{C:inactive,s:0.8}Not to be confused with the Joker",
 					"{C:inactive,s:0.8}of the same name from MoreFluff",
 				}
@@ -187,6 +214,8 @@ return {
 					"When Blind is selected,",
 					"print a {C:attention}Photocopier{}",
 					"{C:inactive,s:0.8}(Must have room)",
+				},
+				comment = {
 					"{C:inactive,s:0.8}insert witty comment here"
 				}
 			},
@@ -198,6 +227,8 @@ return {
 					"into {C:attention}Damp Cards{}",
 					"Prevents {C:attention}Damp Cards{} from",
 					"turning into {C:attention}Wet Cards{}",
+				},
+				comment = {
 					"{C:inactive,s:0.8}It took me 40 minutes",
 					"{C:inactive,s:0.8}to get this screenshot",
 				}
@@ -207,6 +238,8 @@ return {
 				text = {
 					"Retrigger all cards",
 					"with a {C:attention}seal{}",
+				},
+				comment = {
 					"{C:inactive,s:0.8}Any seal, really!",
 				}
 			}
