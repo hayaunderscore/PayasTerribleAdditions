@@ -9,7 +9,7 @@
 	"display_name": "Paya Is Terrible",
 	"badge_colour": "4A3570",
 	"badge_text_colour": "",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"dependencies": [
 		"StrangeLib (>=2.1.3)",
 		"Steamodded (>=1.0.0~BETA-0323b)", 
