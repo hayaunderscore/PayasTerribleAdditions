@@ -1,6 +1,16 @@
 -- uhhh
 PTASaka = {}
 PTASaka.Mod = SMODS.current_mod
+local conf = PTASaka.Mod.config
+
+local nil_sane = function(val, def) if val == nil then val = def end return val end
+
+-- Config values
+conf["Balanced-ish"] = nil_sane(conf["Balanced-ish"], false) -- currently does nothing :P
+conf["Property Cards"] = nil_sane(conf["Property Cards"], true)
+conf["Cross Mod Content"] = nil_sane(conf["Cross Mod Content"], true)
+conf["Music"] = nil_sane(conf["Music"], true)
+conf["Witty Comments"] = nil_sane(conf["Witty Comments"], true)
 
 -- hiii
 SMODS.optional_features.retrigger_joker = true
@@ -81,7 +91,9 @@ PTASaka.RequireFolder("content/jokers/legendary/")
 assert(SMODS.load_file("content/tarots.lua"))()
 
 -- Property cards
-assert(SMODS.load_file("content/properties.lua"))()
+if conf["Property Cards"] then
+	assert(SMODS.load_file("content/properties.lua"))()
+end
 
 -- Vouchers
 assert(SMODS.load_file("content/vouchers.lua"))()
@@ -101,11 +113,110 @@ end
 assert(SMODS.load_file("content/sleeve.lua"))()
 
 -- Cross mod content: Revo's Vault
-if RevosVault then
+if RevosVault and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/printers.lua"))()
 end
 
 -- Cross mod content: Cryptid
-if Cryptid then
+if Cryptid and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
+
+-- This is different from the info argument in the usual create_toggle
+local function create_toggle_with_description(toggle, desc)
+	local text_nodes = {}
+	localize { type = 'descriptions', key = desc, set = "PTAOptions", default_col = G.C.UI.TEXT_LIGHT, nodes = text_nodes }
+	local final_nodes = {}
+	for _, v in ipairs(text_nodes) do
+		final_nodes[#final_nodes+1] = {
+			n = G.UIT.R,
+			config = {
+				align = "cm",
+				padding = 0,
+			},
+			nodes = v,
+		}
+	end
+	return {
+		n = G.UIT.C,
+		config = {
+			align = "cm",
+			padding = 0.1,
+		},
+		nodes = {
+			create_toggle(toggle),
+			{
+				n = G.UIT.R,
+				config = {
+					colour = { 0, 0, 0, 0.1 },
+					r = 0.2,
+					minw = 3,
+					minh = 1.5,
+					maxw = 3,
+					maxh = 1.5,
+					align = "cm",
+					padding = 0.03,
+				},
+				nodes = final_nodes
+			}
+		}
+	}
+end
+
+-- TODO: probably separate these into a different file
+local tabs = function() return
+{
+	{
+		label = "Features",
+		chosen = true,
+		tab_definition_function = function()
+			return {
+				n = G.UIT.ROOT,
+				config = {
+					emboss = 0.05,
+					minh = 6,
+					r = 0.1,
+					minw = 10,
+					align = "cm",
+					-- padding = 0.2,
+					colour = G.C.BLACK,
+				},
+				nodes = {
+					{
+						n = G.UIT.C,
+						config = { align = "tm" },
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									create_toggle_with_description({label = "Balanced-ish", ref_table = conf, ref_value = "Balanced-ish"}, "option_balanced"),
+									--{n = G.UIT.R, config = {padding = 0.2}},
+									create_toggle_with_description({label = "Property Cards", ref_table = conf, ref_value = "Property Cards"}, "option_property_cards"),
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									create_toggle_with_description({label = "Cross Mod Content", ref_table = conf, ref_value = "Cross Mod Content"}, "option_crossmod"),
+									--{n = G.UIT.R, config = {padding = 0.2}},
+									create_toggle_with_description({label = "Music", ref_table = conf, ref_value = "Music"}, "option_music"),
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									create_toggle_with_description({label = "Witty Comments", ref_table = conf, ref_value = "Witty Comments"}, "option_wittycomments"),
+								}
+							}
+						}
+					}
+				}
+			}
+		end
+	}
+}
+end
+PTASaka.Mod.extra_tabs = tabs

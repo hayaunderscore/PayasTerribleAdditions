@@ -432,7 +432,8 @@ SMODS.Sound({
 	select_music_track = function()
 		return (
 				(
-					G.pack_cards
+					PTASaka.Mod.config["Music"]
+					and G.pack_cards
 					and G.pack_cards.cards
 					and G.pack_cards.cards[1]
 					and G.pack_cards.cards[1].ability.set == "Property"

@@ -567,6 +567,48 @@ return {
 					"in the {C:green}shop",
 				}
 			},
+		},
+		PTAOptions = {
+			option_balanced = {
+				name = "Balanced",
+				text = {
+					"{E:2,C:edition}Not functional yet!"
+				}
+			},
+			option_property_cards = {
+				name = "Property Cards",
+				text = {
+					"Toggles Property Cards",
+					"They're from Monopoly!",
+					"Who {E:1,C:white}doesn't{} like Monopoly?",
+					"{C:inactive,s:0.8}(Requires a restart)"
+				}
+			},
+			option_crossmod = {
+				name = "Cross-Mod Content",
+				text = {
+					"Toggles Cross-Mod content",
+					"with {C:dark_edition}Cryptid{}, {C:edition}Revo's Vault",
+					"and possibly more",
+					"{C:inactive,s:0.8}(Requires a restart)"
+				}
+			},
+			option_music = {
+				name = "Music",
+				text = {
+					"Toggles custom music",
+					"tracks for specific occassions",
+					"{C:inactive,s:0.8}(Currently only Property booster packs)"
+				}
+			},
+			option_wittycomments = {
+				name = "Witty Comments",
+				text = {
+					"Toggles additional comments",
+					"for specific cards",
+					"(mostly Jokers)"
+				}
+			}
 		}
 	},
 	misc = {

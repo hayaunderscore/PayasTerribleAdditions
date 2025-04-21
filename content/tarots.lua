@@ -1,3 +1,4 @@
+if PTASaka.Mod.config["Property Cards"] then
 -- The Greed
 SMODS.Consumable {
 	set = 'Tarot',
@@ -73,7 +74,7 @@ SMODS.Consumable {
 }
 
 -- Rotarot version of above, for More Fluff
-if next(SMODS.find_mod("MoreFluff")) then
+if next(SMODS.find_mod("MoreFluff")) and PTASaka.Mod.config["Cross Mod Content"] then
 SMODS.Consumable {
 	set = "Rotarot",
 	name = "rot_Greed",
@@ -111,6 +112,7 @@ SMODS.Consumable {
 		badges[#badges+#badges] = create_badge("More Fluff", clr, G.C.WHITE,1)
 	end,
 }
+end
 end
 
 -- Crack

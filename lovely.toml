@@ -111,7 +111,7 @@ pattern = "if AUT.badges.card_type or AUT.badges.force_rarity then"
 position = 'before'
 payload = '''
 local comment_nodes, comment_main = {}, nil
-if card.config and card.config.center then
+if card.config and card.config.center and PTASaka.Mod.config["Witty Comments"] then
 	local _key, _set, _vars = card.config.center.key, card.ability.set, {}
 	if card.config.center.loc_vars and type(card.config.center.loc_vars) == 'function' then
 		local res = card.config.center:loc_vars({}, card) or {}
