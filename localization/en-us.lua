@@ -247,9 +247,9 @@ return {
 				name = "Doodle Kosmos",
 				text = {
 					"This Joker gains {X:dark_edition,C:white}#2#{} Mult",
-					"for every card held in hand",
+					"for every card held in {C:attention}hand",
 					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
-					"at the end of a round",
+					"at the {C:attention}end of a round",
 					"{C:inactive}(Currently {X:dark_edition,C:white}#1#{C:inactive} Mult)",
 				},
 				payasaka_comment = {
@@ -260,9 +260,9 @@ return {
 				name = "Doodle Kosmos",
 				text = {
 					"This Joker gains {X:dark_edition,C:white}#2#{} Mult",
-					"for every card held in hand",
+					"for every card held in {C:attention}hand",
 					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
-					"at the end of a round",
+					"at the {C:attention}end of a round",
 					"{C:inactive}(Currently {X:dark_edition,C:white}#1#{C:inactive} Mult)",
 				},
 				payasaka_comment = {
@@ -311,13 +311,13 @@ return {
 					"{C:chips}+#1#{} Chips",
 					"No rank but",
 					"Can be used",
-                    "as any suit",
+					"as any suit",
 				}
 			}
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
-			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" }}
+			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } }
 		},
 		Tarot = {
 			c_payasaka_greed = {
@@ -530,22 +530,34 @@ return {
 			},
 			payasaka_randomeffects = {
 				name = "Effects:",
-                text = {
-                    "{C:money}$#1#{}",
+				text = {
+					"{C:money}$#1#{}",
 					"{X:chips,C:white}X#2#{} Chips",
 					"{X:mult,C:white}X#3#{} Mult"
-                },
+				},
 			},
 			payasaka_randomeffects_talisman = {
 				name = "Effects",
-                text = {
+				text = {
 					"{C:money}$#1#{}",
 					"{X:chips,C:white}X#2#{} Chips",
 					"{X:mult,C:white}X#3#{} Mult",
-                    "{X:dark_edition,C:white}^#4#{} Chips",
+					"{X:dark_edition,C:white}^#4#{} Chips",
 					"{X:dark_edition,C:white}^#5#{} Mult"
-                },
+				},
 			},
+			payasaka_doodlekosmos_evolution = {
+				name = "Evolution",
+				text = {
+					"Each evolution adds",
+					"{C:attention}1{} additional",
+					"arrow to {C:dark_edition}Mult",
+					"and decreases {C:green}odds",
+					"of evolving",
+					"{C:inactive,s:0.8}tetration -> pentation ->",
+					"{C:inactive,s:0.8}hyper-6 -> hyper-7, etc.",
+				},
+			}
 		},
 		Sleeve = {
 			sleeve_payasaka_gambling = {

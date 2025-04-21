@@ -14,6 +14,7 @@ SMODS.Joker {
 	-- If Photocopier, Oil Lamp and Gemini could control the level that would be *too* broken
 	config = { extra = { ee_mult = 1, ee_mult_add = .06, odds = 16 }, immutable = { level = 2 } },
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = { key = "payasaka_doodlekosmos_evolution", set = "Other" }
 		local prefix = ((card.ability.immutable.level > 5 and ('{' .. card.ability.immutable.level .. '}') or string.rep('^', card.ability.immutable.level))).."%s"
 		return { vars = { prefix:format(number_format(card.ability.extra.ee_mult)), prefix:format(number_format(card.ability.extra.ee_mult_add)), card.ability.cry_rigged and card.ability.extra.odds or (G.GAME.probabilities.normal or 1), card.ability.extra.odds },
 		key = "j_payasaka_doodlekosmos"..(card.ability.immutable.level > 2 and "_alt" or "") }
