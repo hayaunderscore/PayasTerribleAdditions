@@ -16,6 +16,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.ee_mult, card.ability.extra.ee_mult_add, card.ability.cry_rigged and card.ability.extra.odds or (G.GAME.probabilities.normal or 1), card.ability.extra.odds },
 		key = "j_payasaka_doodlekosmos"..(card.ability.extra.evolved and "_alt" or "") }
 	end,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
@@ -37,13 +38,18 @@ SMODS.Joker {
 			local rng = pseudorandom("payasaka_doodlekosmos")
 			if rng < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds or card.ability.cry_rigged then
 				G.E_MANAGER:add_event(Event{
+					trigger = 'before',
+					delay = 0.8125,
 					func = function()
 						card.ability.extra.evolved = true
 						card.ability.cry_rigged = false
+						card:juice_up()
 						play_sound('talisman_eeemult')
 						card_eval_status_text(card, 'extra', nil, nil, nil, {
 							message = "Evolved!",
 							colour = G.C.DARK_EDITION,
+							instant = true,
+							delay = 0.8125,
 						})
 						return true
 					end
