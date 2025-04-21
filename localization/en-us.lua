@@ -44,7 +44,7 @@ return {
 					"a Joker could be triggered",
 					"{C:inactive,s:0.8}Does not count other Adult Cards",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}A Blue Archive reference in my Balatro?",
 					"{C:inactive,s:0.8}How absurd.",
 				}
@@ -57,7 +57,7 @@ return {
 					"{X:attention,C:white}ALL{} Joker effects are applicable",
 					"{C:inactive,s:0.8}Does not count other Adult Cards",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}A Blue Archive reference in my Balatro?",
 					"{C:inactive,s:0.8}How absurd.",
 				}
@@ -70,7 +70,7 @@ return {
 					"poker hand each round by {C:attention}#1#{}",
 					"{C:red}-1{} Discard",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Look at this joker...{}",
 				}
 			},
@@ -83,7 +83,7 @@ return {
 					"{C:inactive,s:0.8}Random card takes suit from",
 					"{C:inactive,s:0.8}available suits in the deck",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}'The Onion'. Or is it 'The Joker'?{}",
 				}
 			},
@@ -93,7 +93,7 @@ return {
 					"{C:attention}Multiplies{} the effects",
 					"of adjacent Jokers by {X:attention,C:white}X#1#{C:inactive}",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Does not affect other Photocopier{}",
 					"{C:inactive,s:0.8}If it did, that would be silly.{}"
 				}
@@ -108,7 +108,7 @@ return {
 					"{C:dark_edition}Negative{} {C:red}Rare{C:attention} Joker{}",
 					"at end of round",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Technically not a Brainstorm{}",
 					"{C:inactive,s:0.8}but whatever{}",
 				}
@@ -123,7 +123,7 @@ return {
 					"as well as its {C:dark_edition}sign{}",
 					"{C:inactive,s:0.8}(Currently {C:red}#2#{C:inactive,s:0.8} Mult)",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Turn the lights off...",
 				}
 			},
@@ -135,7 +135,7 @@ return {
 					"{C:green}#3# in #4#{} chance of",
 					"turning {C:chips}+Chips{} to {X:chips,C:white}XChips{}",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}The messages lie...",
 				}
 			},
@@ -146,7 +146,7 @@ return {
 					"retriggering a scored",
 					"card {C:attention}#3#{} times",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}look at what you",
 					"{C:inactive,s:0.8}made me do ari",
 				}
@@ -158,7 +158,7 @@ return {
 					"{C:green}#2# in #3#{} chance of",
 					"giving {X:red,C:white}X0{} Mult instead",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}when your {X:black,C:white,s:0.8}shirt",
 					"{C:inactive,s:0.8}is a geek :laugh:",
 				}
@@ -172,7 +172,7 @@ return {
 					"Gains {X:chips,C:white}X#3#{} every time",
 					"this Joker is triggered",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}stop stealing my fucking chips",
 				}
 			},
@@ -186,7 +186,7 @@ return {
 					"Gains {X:mult,C:white}X#2#{} every time",
 					"this Joker is triggered",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}now THIS this is a good one",
 				}
 			},
@@ -203,7 +203,7 @@ return {
 {C:hearts,s:0.8}H+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
 {C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:spades,s:0.8}S{C:inactive,s:0.8})",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Not to be confused with the Joker",
 					"{C:inactive,s:0.8}of the same name from MoreFluff",
 				}
@@ -215,7 +215,7 @@ return {
 					"print a {C:attention}Photocopier{}",
 					"{C:inactive,s:0.8}(Must have room)",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}insert witty comment here"
 				}
 			},
@@ -228,7 +228,7 @@ return {
 					"Prevents {C:attention}Damp Cards{} from",
 					"turning into {C:attention}Wet Cards{}",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}It took me 40 minutes",
 					"{C:inactive,s:0.8}to get this screenshot",
 				}
@@ -239,7 +239,7 @@ return {
 					"Retrigger all cards",
 					"with a {C:attention}seal{}",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Any seal, really!",
 				}
 			},
@@ -252,7 +252,7 @@ return {
 					"at the end of a round",
 					"{C:inactive}(Currently {X:dark_edition,C:white}^^#1#{C:inactive} Mult)",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Dollar store kosmos",
 				}
 			},
@@ -263,7 +263,7 @@ return {
 					"for every card held in hand",
 					"{C:inactive}(Currently {X:dark_edition,C:white}^^^#1#{C:inactive} Mult)",
 				},
-				comment = {
+				payasaka_comment = {
 					"{C:inactive,s:0.8}The cooler",
 					"{C:inactive,s:0.8}Dollar store kosmos",
 				}
@@ -522,6 +522,7 @@ return {
 			b_property_cards = "Property Cards",
 			k_property_pack = "Property Pack",
 			b_payasaka_reroll = "Reroll",
+			k_payasaka_comment = "Paya's comment:"
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr'

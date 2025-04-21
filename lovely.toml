@@ -103,48 +103,6 @@ payload = '''
 match_indent = true
 times = 1
 
-# Comments
-[[patches]]
-[patches.pattern]
-target = 'functions/misc_functions.lua'
-pattern = 'if center.unlock then'
-position = 'before'
-payload = '''
-center.comment_parsed = {}
-if center.comment then
-	for _, line in ipairs(center.comment) do
-		center.comment_parsed[#center.comment_parsed+1] = loc_parse_string(line)
-	end
-end
-'''
-match_indent = true
-times = 1
-
-# Use descriptions set if type is 'payasaka_comment'
-# elseif args.type == 'descriptions' or args.type == 'unlocks' then 
-[[patches]]
-[patches.pattern]
-target = 'functions/misc_functions.lua'
-pattern = "elseif args.type == 'descriptions' or args.type == 'unlocks' then "
-position = 'at'
-payload = '''
-elseif args.type == 'descriptions' or args.type == 'unlocks' or args.type == 'payasaka_comment' then 
-'''
-match_indent = true
-times = 1
-
-# Use comment_parsed if type is 'payasaka_comment'
-[[patches]]
-[patches.pattern]
-target = 'functions/misc_functions.lua'
-pattern = "for _, lines in ipairs(args.type == 'unlocks' and loc_target.unlock_parsed or args.type == 'name' and loc_target.name_parsed or (args.type == 'text' or args.type == 'tutorial' or args.type == 'quips') and loc_target or loc_target.text_parsed) do"
-position = 'at'
-payload = '''
-for _, lines in ipairs(args.type == 'unlocks' and loc_target.unlock_parsed or args.type == 'name' and loc_target.name_parsed or (args.type == 'text' or args.type == 'tutorial' or args.type == 'quips') and loc_target or args.type == 'payasaka_comment' and loc_target.comment_parsed or loc_target.text_parsed) do
-'''
-match_indent = true
-times = 1
-
 # Render comment if available
 [[patches]]
 [patches.pattern]
@@ -153,8 +111,15 @@ pattern = "if AUT.badges.card_type or AUT.badges.force_rarity then"
 position = 'before'
 payload = '''
 local comment_nodes, comment_main = {}, nil
-if pcall(function() return G.localization.descriptions[card.ability.set][card.config.center.key].comment end) and G.localization.descriptions[card.ability.set][card.config.center.key].comment then
-	localize { type = 'payasaka_comment', key = card.config.center.key, set = card.ability.set, nodes = comment_nodes }
+local _key, _set, _vars = card.config.center.key, card.ability.set, {}
+if card.config.center.loc_vars and type(card.config.center.loc_vars) == 'function' then
+	local res = card.config.center:loc_vars({}, card) or {}
+	_key = res.key or _key
+	_set = res.set or _set
+	_vars = res.vars or _vars
+end
+if pcall(function() return G.localization.descriptions[_set][_key].payasaka_comment end) and G.localization.descriptions[_set][_key].payasaka_comment then
+	localize { type = 'payasaka_comment', key = _key, set = _set, vars = _vars, nodes = comment_nodes }
 	comment_main = desc_from_rows(comment_nodes)
 end
 '''

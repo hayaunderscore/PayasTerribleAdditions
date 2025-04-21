@@ -233,3 +233,127 @@ PTASaka.card_area_preview = function(cardArea, desc_nodes, config)
 	end
 	return uiEX
 end
+
+-- Hooks to localize functions for comments
+local init_ref = init_localization
+function init_localization()
+	init_ref()
+	-- This is awfully nested....
+	for g_k, group in pairs(G.localization) do
+		if g_k == 'descriptions' then
+			for _, set in pairs(group) do
+				for _, center in pairs(set) do
+					center.payasaka_comment_parsed = {}
+					if center.payasaka_comment then
+						for _, line in ipairs(center.payasaka_comment) do
+							center.payasaka_comment_parsed[#center.payasaka_comment_parsed + 1] = loc_parse_string(line)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+local localize_ref = localize
+function localize(args, misc_cat)
+	if args and not (type(args) == 'table') then
+		return localize_ref(args, misc_cat)
+	end
+
+	local loc_target = nil
+	if args.type == 'payasaka_comment' then
+		loc_target = G.localization.descriptions[(args.set or args.node.config.center.set)]
+			[args.key or args.node.config.center.key]
+
+		if loc_target then
+			for _, lines in ipairs(loc_target[args.type .. "_parsed"]) do
+				local final_line = {}
+				for _, part in ipairs(lines) do
+					local assembled_string = ''
+					for _, subpart in ipairs(part.strings) do
+						assembled_string = assembled_string ..
+						(type(subpart) == 'string' and subpart or args.vars[tonumber(subpart[1])] or 'ERROR')
+					end
+					local desc_scale = G.LANG.font.DESCSCALE
+					if G.F_MOBILE_UI then desc_scale = desc_scale * 1.5 end
+					if args.type == 'name' then
+						final_line[#final_line + 1] = {
+							n = G.UIT.O,
+							config = {
+								object = DynaText({
+									string = { assembled_string },
+									colours = { (part.control.V and args.vars.colours[tonumber(part.control.V)]) or (part.control.C and loc_colour(part.control.C)) or G.C.UI.TEXT_LIGHT },
+									bump = true,
+									silent = true,
+									pop_in = 0,
+									pop_in_rate = 4,
+									maxw = 5,
+									shadow = true,
+									y_offset = -0.6,
+									spacing = math.max(0, 0.32 * (17 - #assembled_string)),
+									scale = (0.55 - 0.004 * #assembled_string) *
+									(part.control.s and tonumber(part.control.s) or 1)
+								})
+							}
+						}
+					elseif part.control.E then
+						local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil
+						if part.control.E == '1' then
+							_float = true; _silent = true; _pop_in = 0
+						elseif part.control.E == '2' then
+							_bump = true; _spacing = 1
+						end
+						final_line[#final_line + 1] = {
+							n = G.UIT.O,
+							config = {
+								object = DynaText({
+									string = { assembled_string },
+									colours = { part.control.V and args.vars.colours[tonumber(part.control.V)] or loc_colour(part.control.C or nil) },
+									float = _float,
+									silent = _silent,
+									pop_in = _pop_in,
+									bump = _bump,
+									spacing = _spacing,
+									scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale
+								})
+							}
+						}
+					elseif part.control.X then
+						final_line[#final_line + 1] = {
+							n = G.UIT.C,
+							config = { align = "m", colour = loc_colour(part.control.X), r = 0.05, padding = 0.03, res = 0.15 },
+							nodes = {
+								{
+									n = G.UIT.T,
+									config = {
+										text = assembled_string,
+										colour = loc_colour(part.control.C or nil),
+										scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale
+									}
+								},
+							}
+						}
+					else
+						final_line[#final_line + 1] = {
+							n = G.UIT.T,
+							config = {
+								detailed_tooltip = part.control.T and
+								(G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,
+								text = assembled_string,
+								shadow = args.shadow,
+								colour = part.control.V and args.vars.colours[tonumber(part.control.V)] or
+								loc_colour(part.control.C or nil, args.default_col),
+								scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale
+							},
+						}
+					end
+				end
+				if args.type == 'name' or args.type == 'text' then return final_line end
+				args.nodes[#args.nodes + 1] = final_line
+			end
+		end
+	else
+		return localize_ref(args, misc_cat)
+	end
+end
