@@ -37,9 +37,11 @@ SMODS.Edition {
 				local coin = pseudorandom('payasaka_jpeg') >= 0.5
 				if coin or card:get_id() > 1 then
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Editioned!" })
+					card:juice_up()
 					card:set_edition(poll_edition('payasaka_jpeg', nil, Cryptid == nil, true), true)
 				else
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Enhanced!" })
+					card:juice_up()
 					card:set_ability(pseudorandom_element(G.P_CENTER_POOLS["Enhanced"], pseudorandom('payasaka_jpeg')), nil, true)
 				end
 			end
