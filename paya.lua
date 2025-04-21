@@ -14,6 +14,9 @@ SMODS.Atlas { key = "JOE_Jokers", path = "jokers.png", px = 71, py = 95 }
 -- Blind atlas
 SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
 
+-- Tarots and Spectrals
+SMODS.Atlas { key = "JOE_Tarots", path = "tarots.png", px = 71, py = 95 }
+
 -- Property atlas(es)
 SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
 SMODS.Atlas { key = "JOE_Properties_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
@@ -73,6 +76,9 @@ PTASaka.RequireFolder("content/jokers/uncommon/")
 PTASaka.RequireFolder("content/jokers/rare/")
 -- Legendary
 PTASaka.RequireFolder("content/jokers/legendary/")
+
+-- Tarots, spectrals and seals
+assert(SMODS.load_file("content/tarots.lua"))()
 
 -- Property cards
 assert(SMODS.load_file("content/properties.lua"))()

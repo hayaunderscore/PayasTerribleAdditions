@@ -328,6 +328,18 @@ return {
 				}
 			}
 		},
+		Spectral = {
+			c_payasaka_crack = {
+				name = "Crack",
+				text = {
+					"Add either a",
+					"{C:legendary}Random Seal{} or",
+					"a {C:dark_edition}xX_rainbow_Xx{}",
+					"to #1# selected",
+					"card in your hand"
+				}
+			}
+		},
 		Rotarot = {
 			c_payasaka_rot_greed = {
 				name = "The Greed!",
@@ -505,6 +517,33 @@ return {
 					"add to your consumeables"
 				}
 			},
+			payasaka_random_seal = {
+				name = "Random Seal",
+				text = {
+					"{C:attention}Each effect{} has a",
+					"{C:green}#1# in #2#{} chance",
+					"to be given",
+					"when played",
+				}
+			},
+			payasaka_randomeffects = {
+				name = "Effects:",
+                text = {
+                    "{C:money}$#1#{}",
+					"{X:chips,C:white}X#2#{} Chips",
+					"{X:mult,C:white}X#3#{} Mult"
+                },
+			},
+			payasaka_randomeffects_talisman = {
+				name = "Effects",
+                text = {
+					"{C:money}$#1#{}",
+					"{X:chips,C:white}X#2#{} Chips",
+					"{X:mult,C:white}X#3#{} Mult",
+                    "{X:dark_edition,C:white}^#4#{} Chips",
+					"{X:dark_edition,C:white}^#5#{} Mult"
+                },
+			},
 		},
 		Sleeve = {
 			sleeve_payasaka_gambling = {
@@ -525,7 +564,8 @@ return {
 			k_payasaka_comment = "Paya's comment:"
 		},
 		labels = {
-			payasaka_jpeg = 'YCbCr'
+			payasaka_jpeg = 'YCbCr',
+			payasaka_random_seal = "Random Seal"
 		}
 	},
 	labels = {

@@ -111,16 +111,18 @@ pattern = "if AUT.badges.card_type or AUT.badges.force_rarity then"
 position = 'before'
 payload = '''
 local comment_nodes, comment_main = {}, nil
-local _key, _set, _vars = card.config.center.key, card.ability.set, {}
-if card.config.center.loc_vars and type(card.config.center.loc_vars) == 'function' then
-	local res = card.config.center:loc_vars({}, card) or {}
-	_key = res.key or _key
-	_set = res.set or _set
-	_vars = res.vars or _vars
-end
-if pcall(function() return G.localization.descriptions[_set][_key].payasaka_comment end) and G.localization.descriptions[_set][_key].payasaka_comment then
-	localize { type = 'payasaka_comment', key = _key, set = _set, vars = _vars, nodes = comment_nodes }
-	comment_main = desc_from_rows(comment_nodes)
+if card.config and card.config.center then
+	local _key, _set, _vars = card.config.center.key, card.ability.set, {}
+	if card.config.center.loc_vars and type(card.config.center.loc_vars) == 'function' then
+		local res = card.config.center:loc_vars({}, card) or {}
+		_key = res.key or _key
+		_set = res.set or _set
+		_vars = res.vars or _vars
+	end
+	if pcall(function() return G.localization.descriptions[_set][_key].payasaka_comment end) and G.localization.descriptions[_set][_key].payasaka_comment then
+		localize { type = 'payasaka_comment', key = _key, set = _set, vars = _vars, nodes = comment_nodes }
+		comment_main = desc_from_rows(comment_nodes)
+	end
 end
 '''
 match_indent = true
