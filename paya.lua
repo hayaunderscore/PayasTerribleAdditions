@@ -102,10 +102,10 @@ assert(SMODS.load_file("content/sleeve.lua"))()
 
 -- Cross mod content: Revo's Vault
 if RevosVault then
-assert(SMODS.load_file("content/printers.lua"))()
+assert(SMODS.load_file("content/jokers/printers.lua"))()
 end
 
 -- Cross mod content: Cryptid
 if Cryptid then
-assert(SMODS.load_file("content/exotic.lua"))()
+assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
