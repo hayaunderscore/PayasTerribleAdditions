@@ -150,3 +150,5 @@ position = 'at'
 payload = '''
 if G.F_MOBILE_UI and args.set ~= "PTACredits" then desc_scale = desc_scale * 1.5 end
 '''
+match_indent = true
+times = 1
