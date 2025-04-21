@@ -136,6 +136,7 @@ return {
 					"turning {C:chips}+Chips{} to {X:chips,C:white}XChips{}",
 				},
 				payasaka_comment = {
+					"{C:inactive,s:0.8}Does not work on MacOS",
 					"{C:inactive,s:0.8}The messages lie...",
 				}
 			},
@@ -565,7 +566,8 @@ return {
 				text = {
 					"Can {C:attention}reroll{} Booster Packs",
 					"in the {C:green}shop",
-				}
+					"{C:inactive,s:0.8}Does not work on MacOS",
+				},
 			},
 		},
 		PTAOptions = {
