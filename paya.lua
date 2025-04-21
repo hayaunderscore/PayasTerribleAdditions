@@ -163,6 +163,53 @@ local function create_toggle_with_description(toggle, desc)
 	}
 end
 
+local function create_credit(_key)
+	local text_nodes = {}
+	localize { type = 'descriptions', key = _key, set = "PTACredits", nodes = text_nodes }
+	local name = localize { type = 'name_text', key = _key, set = "PTACredits" }
+	return {
+		n = G.UIT.C,
+		config = {
+			align = "cm",
+			padding = 0.05,
+			r = 0.12, colour = lighten(G.C.JOKER_GREY, 0.5), emboss = 0.07,
+		},
+		nodes = {
+			{
+				n = G.UIT.C,
+				config = {
+					align = "cm", padding = 0.07, r = 0.1,
+					colour = G.C.BLACK, 0.1
+				},
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {align = "cm", padding = 0.05, r = 0.1},
+						nodes = {
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText{
+										string = name,
+										bump = true,
+										pop_in = 0,
+										pop_in_rate = 4,
+										silent = true,
+										shadow = true,
+										scale = (0.55 - 0.004*#name),
+										colours = {G.C.UI.TEXT_LIGHT}
+									}
+								}
+							}
+						}
+					},
+					desc_from_rows(text_nodes),
+				}
+			}
+		}
+	}
+end
+
 -- TODO: probably separate these into a different file
 local tabs = function() return
 {
@@ -211,6 +258,69 @@ local tabs = function() return
 									create_toggle_with_description({label = "Witty Comments", ref_table = conf, ref_value = "Witty Comments"}, "option_wittycomments"),
 								}
 							}
+						}
+					}
+				}
+			}
+		end
+	},
+	{
+		label = "Credits",
+		chosen = true,
+		tab_definition_function = function()
+			return {
+				n = G.UIT.ROOT,
+				config = {
+					emboss = 0.05,
+					minh = 6,
+					r = 0.1,
+					minw = 10,
+					align = "cm",
+					--padding = 0.2,
+					colour = G.C.BLACK,
+				},
+				nodes = {
+					{
+						n = G.UIT.C,
+						config = { align = "tm" },
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									{
+										n = G.UIT.O,
+										config = {
+											object = DynaText{
+												string = "Credits",
+												float = true,
+												pop_in = 0,
+												pop_in_rate = 4,
+												silent = true,
+												shadow = true,
+												scale = 1,
+												colours = {G.C.EDITION}
+											}
+										}
+									}
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.1 },
+								nodes = {
+									create_credit("credit_haya"),
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.1 },
+								nodes = {
+									create_credit("credit_ari"),
+									create_credit("credit_aikoyori"),
+									create_credit("credit_airrice"),
+								}
+							},
 						}
 					}
 				}

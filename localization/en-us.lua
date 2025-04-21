@@ -611,6 +611,34 @@ return {
 					"(mostly Jokers)"
 				}
 			}
+		},
+		PTACredits = {
+			credit_haya = {
+				name = "haya3218",
+				text = {
+					"Made {C:attention}almost{} everything",
+					"Don't take my word for it"
+				}
+			},
+			credit_ari = {
+				name = "ariyi",
+				text = {
+					"Some joker ideas"
+				}
+			},
+			credit_aikoyori = {
+				name = "Aikoyori",
+				text = {
+					"Emotional support :-)"
+				}
+			},
+			credit_airrice = {
+				name = "AirRice",
+				text = {
+					"Balatro theme MIDI",
+					"used for Property Cards"
+				}
+			}
 		}
 	},
 	misc = {

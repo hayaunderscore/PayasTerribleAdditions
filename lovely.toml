@@ -141,3 +141,12 @@ comment_main,
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = 'if G.F_MOBILE_UI then desc_scale = desc_scale * 1.5 end'
+position = 'at'
+payload = '''
+if G.F_MOBILE_UI and args.set ~= "PTACredits" then desc_scale = desc_scale * 1.5 end
+'''
