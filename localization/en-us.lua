@@ -292,6 +292,9 @@ return {
                     "{C:spades}Spade{} suit to give",
                     "{X:chips,C:white} X#3# {} Chips when scored",
                 },
+				payasaka_comment = {
+					"{C:inactive,s:0.8}:drool:",
+				}
 			},
 			j_payasaka_drapingtablet = {
 				name = "Draping Tablet",
@@ -301,6 +304,32 @@ return {
 					"for each card with",
 					"{C:spades}Spade{} suit",
 					"in your {C:attention}hand",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}For all those Flush bros out there....",
+				}
+			},
+			j_payasaka_locomotive = {
+				name = "Locomotive Getaway",
+				text = {
+					"Turn Jokers to the right",
+					"of this Joker to {C:red}nil{}",
+					"This Joker will {C:attention}always{} move",
+					"to the right of the list",
+					"{X:chips,C:white}X#1#{} Chips for every",
+					"Joker replaced",
+					"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}- shupo -",
+					"{C:inactive,s:0.8}A japanese onomatopoeia",
+					"{C:inactive,s:0.8}meaning 'train'",
+				}
+			},
+			j_payasaka_nil = {
+				name = "",
+				text = {
+					""
 				}
 			}
 		},
@@ -360,6 +389,15 @@ return {
 					"selected {C:property}Property{} cards",
 					"{C:inactive,s:0.8}Having more than 4 houses",
 					"{C:inactive,s:0.8}replaces it with a hotel",
+				}
+			},
+			c_payasaka_stamp = {
+				name = "The Stamp",
+				text = {
+					"Turns up to {C:attention}#1#",
+					"selected {C:red}nil{} cards",
+					"to a {C:attention}random{} Joker",
+					"{C:inactive,s:0.8}No regards to weight.",
 				}
 			}
 		},

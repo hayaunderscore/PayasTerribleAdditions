@@ -64,6 +64,7 @@ SMODS.Consumable {
 			end }))
 		end
 		delay(0.6)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.consumeables:unhighlight_all(); return true end }))
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
@@ -115,12 +116,82 @@ SMODS.Consumable {
 end
 end
 
+-- The Greed
+SMODS.Consumable {
+	set = 'Tarot',
+	key = 'stamp',
+	atlas = 'JOE_Tarots',
+	pos = { x = 1, y = 0 },
+	config = { extra = { max_highlighted = 2 } },
+	unlocked = true,
+	discovered = true,
+	cost = 4,
+	can_use = function(self, card)
+		local highlighted = {}
+		for _, v in ipairs(G.jokers.highlighted) do
+			if v.config.center.key == "j_payasaka_nil" then
+				table.insert(highlighted, v)
+			end
+		end
+		return #highlighted ~= 0 and #highlighted <= card.ability.extra.max_highlighted
+	end,
+	in_pool = function(self, args)
+		return next(find_joker("payasaka_nil")) ~= nil
+	end,
+	use = function(self, card, area, copier)
+		local used_tarot = copier or card
+		local highlighted = {}
+		for _, v in ipairs(G.jokers.highlighted) do
+			if v.config.center.key == "j_payasaka_nil" then
+				table.insert(highlighted, v)
+			end
+		end
+		for i = 1, #highlighted do
+			local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
+				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted[i]
+					:juice_up(0.3, 0.3); return true
+			end }))
+		end
+		delay(0.2)
+		--for i = 1, #highlighted do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					for i = 1, #highlighted do
+						highlighted[i]:remove_from_deck()
+						highlighted[i]:set_ability(pseudorandom_element(G.P_CENTER_POOLS["Joker"], pseudoseed('payasaka_stamp')))
+						highlighted[i]:add_to_deck()
+					end
+					return true
+				end
+			}))
+		--end
+		for i = 1, #highlighted do
+			local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
+				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('tarot2', percent, 0.6); highlighted
+					[i]:juice_up(0.3, 0.3); return true
+			end }))
+		end
+		delay(0.6)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.jokers:unhighlight_all(); return true end }))
+	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.j_payasaka_nil
+		return {
+			vars = { card.ability.extra.max_highlighted }
+		}
+	end,
+}
+
 -- Crack
 SMODS.Consumable {
 	set = 'Spectral',
 	key = 'crack',
 	atlas = "JOE_Tarots",
-	pos = { x = 1, y = 0 },
+	pos = { x = 2, y = 0 },
 	cost = 5,
 	config = { max_highlighted = 1, extra = 'payasaka_random', edition = 'e_payasaka_jpeg' },
 	loc_vars = function(self, info_queue, card)
