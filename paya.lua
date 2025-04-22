@@ -240,24 +240,17 @@ local tabs = function() return
 									create_toggle_with_description({label = "Balanced-ish", ref_table = conf, ref_value = "Balanced-ish"}, "option_balanced"),
 									--{n = G.UIT.R, config = {padding = 0.2}},
 									create_toggle_with_description({label = "Property Cards", ref_table = conf, ref_value = "Property Cards"}, "option_property_cards"),
-								}
-							},
-							{
-								n = G.UIT.R,
-								config = { align = "cm", padding = 0.2 },
-								nodes = {
 									create_toggle_with_description({label = "Cross Mod Content", ref_table = conf, ref_value = "Cross Mod Content"}, "option_crossmod"),
-									--{n = G.UIT.R, config = {padding = 0.2}},
-									create_toggle_with_description({label = "Music", ref_table = conf, ref_value = "Music"}, "option_music"),
 								}
 							},
 							{
 								n = G.UIT.R,
 								config = { align = "cm", padding = 0.2 },
 								nodes = {
+									create_toggle_with_description({label = "Music", ref_table = conf, ref_value = "Music"}, "option_music"),
 									create_toggle_with_description({label = "Witty Comments", ref_table = conf, ref_value = "Witty Comments"}, "option_wittycomments"),
 								}
-							}
+							},
 						}
 					}
 				}
