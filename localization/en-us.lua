@@ -270,6 +270,25 @@ return {
 					"{C:inactive,s:0.8}The cooler",
 					"{C:inactive,s:0.8}Dollar store kosmos",
 				}
+			},
+			j_payasaka_arrowstone = {
+				name = "Arrowstone",
+				text={
+                    "{C:green}#1# in #2#{} chance for",
+                    "played cards with",
+                    "{C:spades}Spade{} suit to give",
+                    "{X:chips,C:white} X#3# {} Chips when scored",
+                },
+			},
+			j_payasaka_drapingtablet = {
+				name = "Draping Tablet",
+				text = {
+					"Retrigger {C:attention}first{} played",
+					"card used in scoring",
+					"for each card with",
+					"{C:spades}Spade{} suit",
+					"in your {C:attention}hand",
+				}
 			}
 		},
 		Blind = {
@@ -647,11 +666,13 @@ return {
 			b_property_cards = "Property Cards",
 			k_property_pack = "Property Pack",
 			b_payasaka_reroll = "Reroll",
-			k_payasaka_comment = "Paya's comment:"
+			k_payasaka_comment = "Paya's comment:",
+			k_payasaka_ahead = "Ahead",
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',
-			payasaka_random_seal = "Random Seal"
+			payasaka_random_seal = "Random Seal",
+			k_payasaka_ahead = "Ahead",
 		}
 	},
 	labels = {

@@ -18,7 +18,8 @@ jd_def["j_payasaka_buruakacard"] = {
 		end
 		local jkrkey = PTASaka.adultcard_cardarea.cards[card.ability.extra.next_joker].config.center.key
 		-- Strip possible styling, we can't render it, and we don't need it
-		cached_adultcard_names[jkrkey] = cached_adultcard_names[jkrkey] or string.gsub(G.localization.descriptions.Joker[jkrkey].name, "{.-}", "")
+		cached_adultcard_names[jkrkey] = cached_adultcard_names[jkrkey] or
+			string.gsub(G.localization.descriptions.Joker[jkrkey].name, "{.-}", "")
 		card.joker_display_values.adultcard_current = cached_adultcard_names[jkrkey]
 	end
 }
@@ -119,13 +120,15 @@ jd_def["j_payasaka_photocopier"] = {
 			},
 			border_color = G.C.ATTENTION
 		},
-		{ ref_table = "card.joker_display_values", ref_value = "compatible_left", colour = G.C.GREEN },
+		{ ref_table = "card.joker_display_values", ref_value = "compatible_left",  colour = G.C.GREEN },
 		{ ref_table = "card.joker_display_values", ref_value = "compatible_right", colour = G.C.GREEN },
 	},
 	extra_config = { scale = 0.3 },
 	calc_function = function(card)
-		card.joker_display_values.compatible_left = card.ability.extra.old_jkrs[1] ~= nil and "Compatible!" or "Incompatible..."
-		card.joker_display_values.compatible_right = card.ability.extra.old_jkrs[2] ~= nil and "Compatible!" or "Incompatible..."
+		card.joker_display_values.compatible_left = card.ability.extra.old_jkrs[1] ~= nil and "Compatible!" or
+			"Incompatible..."
+		card.joker_display_values.compatible_right = card.ability.extra.old_jkrs[2] ~= nil and "Compatible!" or
+			"Incompatible..."
 	end,
 	style_function = function(card, text, reminder_text, extra)
 		if extra and extra.children[1] then
@@ -181,11 +184,11 @@ jd_def["j_payasaka_markiplier_punch_gif"] = {
 	calc_function = function(card)
 		local chancemult = G.GAME.probabilities.normal or 1
 		local r = card.ability.cry_rigged
-		card.joker_display_values.mult_odds = localize { type = 'variable', key = "jdis_odds", vars = { 
+		card.joker_display_values.mult_odds = localize { type = 'variable', key = "jdis_odds", vars = {
 			r and card.ability.extra.xmult_chance or card.ability.extra.xmult_odds * chancemult,
 			card.ability.extra.xmult_chance
 		} }
-		card.joker_display_values.chips_odds = localize { type = 'variable', key = "jdis_odds", vars = { 
+		card.joker_display_values.chips_odds = localize { type = 'variable', key = "jdis_odds", vars = {
 			r and card.ability.extra.xchips_chance or card.ability.extra.xchips_odds * chancemult,
 			card.ability.extra.xchips_chance
 		} }
@@ -204,7 +207,85 @@ jd_def["j_payasaka_flintnsteel2"] = {
 		{ text = ")" },
 	},
 	calc_function = function(card)
-		card.joker_display_values.current_mult = math.min(card.ability.dark_cards, card.ability.light_cards) * card.ability.extra.mult
+		card.joker_display_values.current_mult = math.min(card.ability.dark_cards, card.ability.light_cards) *
+			card.ability.extra.mult
 		card.joker_display_values.localized_text = localize('Pair', 'poker_hands')
 	end
 }
+
+jd_def["j_payasaka_arrowstone"] = {
+	text = {
+		{ ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" },
+		{ text = "x",                              scale = 0.35 },
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.ability.extra", ref_value = "x_chips" }
+			},
+			border_colour = G.C.CHIPS
+		}
+	},
+	reminder_text = {
+		{ text = "(" },
+		{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = lighten(G.C.SUITS["Spades"], 0.35) },
+		{ text = ")" }
+	},
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+			{ text = ")" },
+		}
+	},
+	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+	calc_function = function(card)
+		local count = 0
+		if G.play then
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand()
+			if text ~= 'Unknown' then
+				for _, scoring_card in pairs(scoring_hand) do
+					if scoring_card:is_suit("Spades") then
+						count = count +
+							JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					end
+				end
+			end
+		else
+			count = 3
+		end
+		card.joker_display_values.count = count
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+		card.joker_display_values.localized_text = localize("Spades", 'suits_plural')
+	end
+}
+
+-- Quite laggy currently!
+--[[
+jd_def["j_payasaka_drapingtablet"] = {
+	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+		if held_in_hand then return 0 end
+		local first_card = scoring_hand and JokerDisplay.calculate_leftmost_card(scoring_hand)
+		return first_card and playing_card == first_card and
+			PTASaka.payasaka_hand_spades_amount * JokerDisplay.calculate_joker_triggers(joker_card) or 0
+	end
+}
+
+local old_update = Game.update
+function Game:update(dt)
+	old_update(self, dt)
+	if G.GAME and G.hand and G.hand.cards then
+		local amt, amt_sub = 0, 0
+		for i = 1, #G.hand.cards do
+			if G.hand.cards[i]:is_suit("Spades") then
+				for j = 1, #G.hand.highlighted do
+					if G.hand.highlighted[j] == G.hand.cards[i] then
+						amt_sub = amt_sub + 1
+					end
+				end
+				amt = amt + 1
+			end
+		end
+		PTASaka.payasaka_hand_spades_amount = amt - amt_sub
+	end
+end
+]]

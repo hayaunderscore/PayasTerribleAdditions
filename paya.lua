@@ -78,6 +78,9 @@ PTASaka.RequireFolder("content/blinds/")
 PTASaka.RequireFolder("content/editions/")
 
 -- Load all jokers
+
+-- Rarity definitions
+assert(SMODS.load_file("content/jokers/rarity_definitions.lua"))()
 -- Common
 PTASaka.RequireFolder("content/jokers/common/")
 -- Uncommon
@@ -86,6 +89,8 @@ PTASaka.RequireFolder("content/jokers/uncommon/")
 PTASaka.RequireFolder("content/jokers/rare/")
 -- Legendary
 PTASaka.RequireFolder("content/jokers/legendary/")
+-- Ahead
+PTASaka.RequireFolder("content/jokers/ahead/")
 
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/tarots.lua"))()
