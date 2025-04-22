@@ -271,6 +271,19 @@ return {
 					"{C:inactive,s:0.8}Dollar store kosmos",
 				}
 			},
+			j_payasaka_joyousspring = {
+				name = "Joyous Spring",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for each time either",
+					"the words {C:attention}\"joyousspring\"{} or {C:attention}\"joyous spring\"{}",
+					"have been said in the {C:attention}Balatro Discord{}",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:blue,s:0.7}https://discord.gg/balatro{}",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}You should play JoyousSpring",
+				}
+			},
 			j_payasaka_arrowstone = {
 				name = "Arrowstone",
 				text={
