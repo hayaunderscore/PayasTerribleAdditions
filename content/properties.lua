@@ -47,6 +47,9 @@ PTASaka.Property = SMODS.Consumable:extend {
 	can_use = function(self, card)
 		return false
 	end,
+	in_pool = function(self, args)
+		return true, { allow_duplicates = true }
+	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('negative_shine', nil, card.ARGS.send_to_shader)
 		-- update soul_parts
@@ -249,6 +252,9 @@ PTASaka.Property {
 	unlocked = true,
 	discovered = true,
 	cost = 20,
+	hidden = true,
+	soul_set = 'Property',
+	soul_rate = 0.1,
 	can_use = function(self, card)
 		return true
 	end,
@@ -273,6 +279,9 @@ PTASaka.Property {
 	unlocked = true,
 	discovered = true,
 	cost = 24,
+	hidden = true,
+	soul_set = 'Property',
+	soul_rate = 0.1,
 	can_use = function(self, card)
 		return true
 	end,
@@ -305,6 +314,9 @@ PTASaka.Property {
 	unlocked = true,
 	discovered = true,
 	cost = 24,
+	hidden = true,
+	soul_set = 'Property',
+	soul_rate = 0.01,
 	can_use = function(self, card)
 		return true
 	end,
@@ -415,8 +427,12 @@ StrangeLib.make_boosters('property',
 		kind = 'Property',
 		weight = 0.7,
 		select_card = 'consumeables',
+		allow_duplicates = true,
 		create_card = function(self, card, i)
 			return create_card("Property", G.pack_cards, nil, nil, true, true, nil)
+		end,
+		in_pool = function(self, args)
+			return true, { allow_duplicates = true }
 		end,
 		group_key = 'k_property_pack',
 		ease_background_colour = function(self)
