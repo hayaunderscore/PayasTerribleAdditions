@@ -399,6 +399,10 @@ return {
 					"selected {C:red}nil{} cards",
 					"to a {C:attention}random{} Joker",
 					"{C:inactive,s:0.8}No regards to weight.",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Stamping? I did",
+					"{C:inactive,s:0.8}stamping once.",
 				}
 			}
 		},
@@ -411,6 +415,10 @@ return {
 					"a {C:dark_edition}xX_rainbow_Xx{}",
 					"to #1# selected",
 					"card in your hand"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Peter, what are",
+					"{C:inactive,s:0.8}you doing?",
 				}
 			},
 			c_payasaka_mechanic = {
@@ -420,6 +428,9 @@ return {
 					"selected {C:red}nil{} card",
 					"to a Joker of choice",
 					"{C:inactive,s:0.8}No limits.",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Fluffy...",
 				}
 			}
 		},
