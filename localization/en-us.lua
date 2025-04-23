@@ -413,7 +413,7 @@ return {
 					"Add either a",
 					"{C:legendary}Random Seal{} or",
 					"a {C:dark_edition}xX_rainbow_Xx{}",
-					"to #1# selected",
+					"to {C:attention}#1#{} selected",
 					"card in your hand"
 				},
 				payasaka_comment = {

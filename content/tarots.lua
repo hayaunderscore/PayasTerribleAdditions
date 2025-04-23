@@ -307,6 +307,7 @@ SMODS.Consumable {
 	cost = 5,
 	config = { max_highlighted = 1 },
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.j_payasaka_nil
 		return {vars = {(card.ability or self.config).max_highlighted}}
 	end,
 	can_use = function(self, card)
