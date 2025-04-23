@@ -442,6 +442,14 @@ return {
 					"{C:property}Property{} cards",
 					"{C:inactive,s:0.8}(Must have room)"
 				}
+			},
+			c_payasaka_rot_stamp = {
+				name = "The Stamp!",
+				text = {
+					"Creates up to {C:attention}#1#",
+					"{C:red}nil{} cards",
+					"{C:inactive,s:0.8}(Must have room)"
+				}
 			}
 		},
 		Voucher = {
