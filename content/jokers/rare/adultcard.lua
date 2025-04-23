@@ -216,6 +216,7 @@ function Card:sell_card()
 	-- Not a joker....
 	if self.ability.set ~= "Joker" then return end
 	if self.ability.name == "Adult Card" then return end -- No.
+	if self.ability.name == "payasaka_nil" then return end -- No!
 	-- We don have it yet!
 	local wehavit = false
 	for i = 1, #G.jokers.cards do
