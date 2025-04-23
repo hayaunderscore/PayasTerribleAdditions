@@ -307,6 +307,7 @@ SMODS.Consumable {
 				G.FUNCS.your_collection_jokers(nil)
 				G.SETTINGS.paused = true
 				PTASaka.mechanic_menu = true
+				PTASaka.mechanic_got_selected = false
 				return true
 			end
 		}))
@@ -358,6 +359,17 @@ function Card:click()
 	old_click(self)
 	if self.area and PTASaka.mechanic_menu then
 		PTASaka.mechanic_selected_card = self.config.center.key
+		PTASaka.mechanic_got_selected = true
 		G.FUNCS.exit_overlay_menu()
 	end
+end
+
+-- Mechanic doesn't disintegrate when used without selecting a joker
+local old_start_dissolve = Card.start_dissolve
+function Card:start_dissolve(c, s, t, j)
+	if not PTASaka.mechanic_got_selected and self.config.center.key == "c_payasaka_mechanic" then
+		draw_card(G.play, G.consumeables, 1, 'up', true, self, nil, true)
+		return
+	end
+	return old_start_dissolve(self, c, s, t, j)
 end
