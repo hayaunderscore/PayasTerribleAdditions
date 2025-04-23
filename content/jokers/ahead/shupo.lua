@@ -6,7 +6,7 @@ SMODS.Joker {
 	cost = 10,
 	unlocked = true,
 	discovered = true,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
 	pos = { x = 2, y = 3 },
@@ -18,11 +18,11 @@ SMODS.Joker {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.setting_blind then
+		if context.setting_blind and not context.blueprint then
 			local start_here = false
 			local played_sound = false
 			for j = 1, #G.jokers.cards do
-				if start_here and not G.jokers.cards[j].ability.eternal and G.jokers.cards[j].config.center.key ~= "j_payasaka_locomotive" then
+				if start_here and not G.jokers.cards[j].ability.eternal and G.jokers.cards[j].config.center.key ~= "j_payasaka_locomotive" and G.jokers.cards[j].config.center.key ~= "j_payasaka_nil" then
 					if G.jokers.cards[j].ability.name ~= "cry-altgoogol" then
 						G.jokers.cards[j]:remove_from_deck()
 					end
@@ -86,12 +86,14 @@ SMODS.Joker {
 	pos = { x = 5, y = 3 },
 	atlas = "JOE_Jokers",
 	no_doe = false, -- There is no reason for this to be available in DOE/Balanced sleeve
+	--[[
 	add_to_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit + 1
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - 1
 	end,
+	]]
 	in_pool = function(self, args)
 		return false
 	end,

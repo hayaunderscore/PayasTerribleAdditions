@@ -146,7 +146,7 @@ SMODS.Consumable {
 				table.insert(highlighted, v)
 			end
 		end
-		for i = 1, #highlighted do
+		for i = 1, math.min(#highlighted, card.ability.extra.max_highlighted) do
 			local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
 				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted[i]
@@ -262,3 +262,102 @@ SMODS.Seal {
 		return 0
 	end
 }
+
+-- Mechanic
+SMODS.Consumable {
+	set = 'Spectral',
+	key = 'mechanic',
+	atlas = "JOE_Tarots",
+	pos = { x = 3, y = 0 },
+	cost = 5,
+	config = { max_highlighted = 1 },
+	loc_vars = function(self, info_queue, card)
+		return {vars = {(card.ability or self.config).max_highlighted}}
+	end,
+	can_use = function(self, card)
+		local highlighted = {}
+		for _, v in ipairs(G.jokers.highlighted) do
+			if v.config.center.key == "j_payasaka_nil" then
+				table.insert(highlighted, v)
+			end
+		end
+		return #highlighted ~= 0 and #highlighted <= card.ability.max_highlighted
+	end,
+	in_pool = function(self, args)
+		return next(find_joker("payasaka_nil")) ~= nil
+	end,
+	use = function(self, card, area, copier)
+		local highlighted = {}
+		for _, v in ipairs(G.jokers.highlighted) do
+			if v.config.center.key == "j_payasaka_nil" then
+				table.insert(highlighted, v)
+			end
+		end
+		for i = 1, math.min(#highlighted, card.ability.max_highlighted) do
+			local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
+				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted[i]
+					:juice_up(0.3, 0.3); return true
+			end }))
+		end
+
+		-- Trigger the Joker collection menu
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.FUNCS.your_collection_jokers(nil)
+				G.SETTINGS.paused = true
+				PTASaka.mechanic_menu = true
+				return true
+			end
+		}))
+		
+		-- Exit out when selecting a card
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.OVERLAY_MENU and not PTASaka.mechanic_selected_card then
+					return false
+				end
+				G.SETTINGS.paused = false
+				PTASaka.mechanic_menu = false
+				return true
+			end
+		}))
+
+		delay(0.2)
+		--for i = 1, #highlighted do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					for i = 1, #highlighted do
+						highlighted[i]:remove_from_deck()
+						highlighted[i]:set_ability(G.P_CENTERS[PTASaka.mechanic_selected_card])
+						highlighted[i]:add_to_deck()
+					end
+					PTASaka.mechanic_selected_card = nil
+					return true
+				end
+			}))
+		--end
+		for i = 1, #highlighted do
+			local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.15, func = function()
+				if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('tarot2', percent, 0.6); highlighted
+					[i]:juice_up(0.3, 0.3); return true
+			end }))
+		end
+		delay(0.6)
+
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.jokers:unhighlight_all(); return true end }))
+	end
+}
+
+-- Hook onto Card:click for mechanic menu
+local old_click = Card.click
+function Card:click()
+	old_click(self)
+	if self.area and PTASaka.mechanic_menu then
+		PTASaka.mechanic_selected_card = self.config.center.key
+		G.FUNCS.exit_overlay_menu()
+	end
+end

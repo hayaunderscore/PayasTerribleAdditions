@@ -282,6 +282,7 @@ return {
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}You should play JoyousSpring",
+					"{C:inactive,s:0.8}Usually updated daily",
 				}
 			},
 			j_payasaka_arrowstone = {
@@ -410,6 +411,15 @@ return {
 					"a {C:dark_edition}xX_rainbow_Xx{}",
 					"to #1# selected",
 					"card in your hand"
+				}
+			},
+			c_payasaka_mechanic = {
+				name = "Mechanic",
+				text = {
+					"Turns up to {C:attention}#1#",
+					"selected {C:red}nil{} card",
+					"to a Joker of choice",
+					"{C:inactive,s:0.8}No limits.",
 				}
 			}
 		},
