@@ -1,3 +1,9 @@
+if not Card.no then
+	function Card:no(m, no_no)
+		return false
+	end
+end
+
 -- Photocopier
 SMODS.Joker {
 	name = "Photocopier",
