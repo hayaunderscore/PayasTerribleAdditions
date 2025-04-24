@@ -77,6 +77,9 @@ PTASaka.RequireFolder("content/blinds/")
 -- Editions
 PTASaka.RequireFolder("content/editions/")
 
+-- Challenges
+assert(SMODS.load_file("content/challenges.lua"))()
+
 -- Load all jokers
 
 -- Rarity definitions

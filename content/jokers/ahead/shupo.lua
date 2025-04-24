@@ -43,6 +43,7 @@ SMODS.Joker {
 					-- pin it to the far right
 					G.E_MANAGER:add_event(Event {
 						func = function()
+							card.old_pinned = card.pinned
 							card.ability.pinned = true
 							card.pinned = true
 							card.old_sort_id = card.sort_id
@@ -56,8 +57,8 @@ SMODS.Joker {
 			G.E_MANAGER:add_event(Event {
 				trigger = "after",
 				func = function()
-					card.ability.pinned = false
-					card.pinned = false
+					card.ability.pinned = card.old_pinned
+					card.pinned = card.old_pinned
 					card.sort_id = card.old_sort_id
 					return true
 				end

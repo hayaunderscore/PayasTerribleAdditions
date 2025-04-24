@@ -774,7 +774,13 @@ return {
 			payasaka_jpeg = 'YCbCr',
 			payasaka_random_seal = "Random Seal",
 			k_payasaka_ahead = "Ahead",
-		}
+		},
+		challenge_names = {
+			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place"
+		},
+		hardcore_challenge_names = {
+			hc_payasaka_ultrastuckrock = "Trains vs. Jimbo"
+		},
 	},
 	labels = {
 		property = "Property"
