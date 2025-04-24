@@ -465,6 +465,18 @@ return {
 					"give {X:mult,C:white}X#1#{} Mult"
 				}
 			},
+			v_payasaka_tmtrainer = {
+				name = "TMTRAINER",
+				text = {
+					"",
+				}
+			},
+			v_payasaka_cooltrainer = {
+				name = "CoolTrainer(F)",
+				text = {
+					"",
+				}
+			},
 		},
 		Property = {
 			c_payasaka_brownproperty = {
