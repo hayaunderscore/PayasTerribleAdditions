@@ -28,8 +28,6 @@ return {
 					"a {C:attention,T:v_payasaka_meritocracy}Meritocracy{}",
 					"and {C:attention}#1#{} random {C:property}Property{} cards",
 					"No {C:attention}numbered{} cards in the deck",
-					--"{C:property}Property Packs{} are more common",
-					--"in the shop",
 					"{C:attention}+#2#{} consumable slots",
 				}
 			}
@@ -251,7 +249,7 @@ return {
 					"for every card held in {C:attention}hand",
 					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
 					"at the {C:attention}end of a round",
-					"{C:inactive}(Currently {X:dark_edition,C:white}#1#{C:inactive} Mult)",
+					"{C:inactive,s:0.8}(Currently {X:dark_edition,C:white}#1#{C:inactive,s:0.8} Mult)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Dollar store kosmos",
@@ -264,7 +262,7 @@ return {
 					"for every card held in {C:attention}hand",
 					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
 					"at the {C:attention}end of a round",
-					"{C:inactive}(Currently {X:dark_edition,C:white}#1#{C:inactive} Mult)",
+					"{C:inactive,s:0.8}(Currently {X:dark_edition,C:white}#1#{C:inactive,s:0.8} Mult)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}The cooler",
@@ -277,7 +275,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult for each time either",
 					"the words {C:attention}\"joyousspring\"{} or {C:attention}\"joyous spring\"{}",
 					"have been said in the {C:attention}Balatro Discord{}",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:inactive,s:0.8}(Currently {X:mult,C:white}X#2#{C:inactive,s:0.8} Mult)",
 					"{C:blue,s:0.7}https://discord.gg/balatro{}",
 				},
 				payasaka_comment = {
@@ -319,7 +317,7 @@ return {
 					"to the right of the list",
 					"{X:chips,C:white}X#1#{} Chips for every",
 					"Joker replaced",
-					"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)",
+					"{C:inactive,s:0.8}(Currently {X:chips,C:white}X#2#{C:inactive,s:0.8} Chips)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}- shupo -",
@@ -668,6 +666,17 @@ return {
 					"{C:inactive,s:0.8}Does not work on MacOS",
 				},
 			},
+		},
+		Seal = {
+			payasaka_random = {
+				name = "Random Seal",
+				text = {
+					"{C:attention}Each effect{} has a",
+					"{C:green}#1# in #2#{} chance",
+					"to be given",
+					"when played",
+				}
+			}
 		},
 		PTAOptions = {
 			option_balanced = {
