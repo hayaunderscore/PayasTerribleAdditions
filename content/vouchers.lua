@@ -198,6 +198,7 @@ SMODS.Voucher {
 	atlas = 'JOE_Vouchers',
 	pos = { x = 1, y = 1 },
 	cost = 10,
+	requires = { "v_payasaka_tmtrainer" },
 	redeem = function(self, voucher)
 		G.GAME.payasaka_tmtrainer_effects = true
 		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) / 10
