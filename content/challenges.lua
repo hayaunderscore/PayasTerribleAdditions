@@ -90,6 +90,6 @@ if AKYRS then
 				},
 			}
 		},
-		difficulty = 2,
+		difficulty = 8,
 	}
 end
