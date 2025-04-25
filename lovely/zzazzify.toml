@@ -1,0 +1,17 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = 'local desc_scale = G.LANG.font.DESCSCALE'
+position = 'before'
+payload = '''
+if G and G.GAME and G.GAME.payasaka_tmtrainer_effects then
+	assembled_string = PTASaka.ZZAZZ_string(assembled_string)
+end
+'''
+match_indent = true
+times = 1

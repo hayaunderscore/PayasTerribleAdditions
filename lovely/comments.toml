@@ -1,0 +1,54 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Render comment if available
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "if AUT.badges.card_type or AUT.badges.force_rarity then"
+position = 'before'
+payload = '''
+local comment_nodes, comment_main = {}, nil
+if card.config and card.config.center and PTASaka.Mod.config["Witty Comments"] then
+	local _key, _set, _vars = card.config.center.key, card.ability.set, {}
+	if card.config.center.loc_vars and type(card.config.center.loc_vars) == 'function' then
+		local res = card.config.center:loc_vars({}, card) or {}
+		_key = res.key or _key
+		_set = res.set or _set
+		_vars = res.vars or _vars
+	end
+	if pcall(function() return G.localization.descriptions[_set][_key].payasaka_comment end) and G.localization.descriptions[_set][_key].payasaka_comment then
+		localize { type = 'payasaka_comment', key = _key, set = _set, vars = _vars, nodes = comment_nodes }
+		comment_main = desc_from_rows(comment_nodes)
+	end
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "desc_from_rows(AUT.main),"
+position = 'after'
+payload = '''
+comment_main and {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.GREY, 0.15), r = 0.1}, nodes={
+      {n=G.UIT.R, config={align = "tm", minh = 0.36, padding = 0.03}, nodes={{n=G.UIT.T, config={text = "Paya's comment:", scale = 0.32, colour = G.C.UI.TEXT_LIGHT}}}},
+    }} or nil,
+comment_main,
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = 'if G.F_MOBILE_UI then desc_scale = desc_scale * 1.5 end'
+position = 'at'
+payload = '''
+if G.F_MOBILE_UI and args.set ~= "PTACredits" then desc_scale = desc_scale * 1.5 end
+'''
+match_indent = true
+times = 1

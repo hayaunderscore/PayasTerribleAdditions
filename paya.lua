@@ -136,6 +136,9 @@ if Cryptid and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
 
+-- Pyroxenes
+assert(SMODS.load_file("content/pyrox.lua"))()
+
 -- This is different from the info argument in the usual create_toggle
 local function create_toggle_with_description(toggle, desc)
 	local text_nodes = {}

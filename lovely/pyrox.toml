@@ -1,0 +1,90 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''{n=G.UIT.C, config={align = "cm", r = 0.1, minw = 1.28*2+spacing, minh = 1, colour = temp_col2}, nodes={'''
+position = 'at'
+payload = '''
+{
+	n = G.UIT.R,
+	config = { align = "cm", r = 0.1, minw = (1.28 * 2 + spacing), minh = 0.5, colour = temp_col2 },
+	nodes = {
+		{
+			n = G.UIT.O,
+			config = {
+				object = DynaText({
+					string = { { ref_table = G.GAME, ref_value = 'payasaka_pyroxenes', prefix = "JP¥" } },
+					scale_function = function()
+						return scale_number(G.GAME.payasaka_pyroxenes, 1.35 * scale, 99999, 1000000)
+					end,
+					maxw = 1.35,
+					colours = { G.C.BLUE },
+					font = G.LANGUAGES['en-us'].font,
+					shadow = true,
+					spacing = 2,
+					bump = true,
+					scale = 1.35 * scale
+				}),
+				id = 'pyrox_text_UI'
+			}
+		},
+	}
+},
+{n=G.UIT.R, config={align = "cm",minh=0.1},nodes={}},
+{n=G.UIT.R, config={align = "cm", r = 0.1, minw = (1.28*2+spacing), minh = 0.5, colour = temp_col2}, nodes={
+'''
+match_indent = true
+times = 1
+
+# vanilla
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'dollars', prefix = localize('$')}}, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 2.2*scale}), id = 'dollar_text_UI'}}'''
+position = 'at'
+payload = '''
+{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'dollars', prefix = localize('$')}}, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 1.35*scale}), id = 'dollar_text_UI'}}
+'''
+match_indent = true
+times = 1
+
+# SMODS(?)
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''return scale_number(G.GAME.dollars, 2.2 * scale, 99999, 1000000)'''
+position = 'at'
+payload = '''
+return scale_number(G.GAME.dollars, 1.35 * scale, 99999, 1000000)
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''end, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 2.2*scale}), id = 'dollar_text_UI'}}'''
+position = 'at'
+payload = '''
+end, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 1.35*scale}), id = 'dollar_text_UI'}}
+'''
+match_indent = true
+times = 1
+
+# Patch this shit
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''return {n=G.UIT.ROOT, config = {align = "cm", padding = 0.03, colour = G.C.UI.TRANSPARENT_DARK}, nodes={'''
+position = 'before'
+payload = '''
+contents.round[3].nodes[1].n = G.UIT.R
+contents.round[3].nodes[1].nodes[1].n = G.UIT.C
+
+'''
+match_indent = true
+times = 1
