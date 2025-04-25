@@ -209,6 +209,9 @@ SMODS.Voucher {
 		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) * 10
 		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) / 10
 	end,
+	draw = function(self, card, layer)
+		card.children.center:draw_shader('negative', nil, card.ARGS.send_to_shader)
+	end,
 	loc_vars = function(self, info_queue, card)
 		local TMTRAINER_STRINGS_ONE = {}
 		local TMTRAINER_STRINGS_TWO = {}
@@ -326,7 +329,6 @@ local basegamesounds = {
 	"tarot2",
 	"timpani",
 	"whoosh",
-	"whoosh_long",
 	"whoosh1",
 	"whoosh2",
 }
@@ -335,7 +337,7 @@ local cached_sound_list = basegamesounds
 
 local old_play_sound = play_sound
 function play_sound(sound, per, vol)
-	if cached_sound_list and not SMODS.Sound[sound] and G.GAME.payasaka_tmtrainer_effects and string.sub(sound, 1, 7) ~= "ambient" and string.sub(sound, 1, 3) ~= "mus" and string.sub(sound, 1, 3) ~= "win" and string.sub(sound, 1, 9) ~= "explosion" and string.sub(sound, 1, 5) ~= "voice" and string.sub(sound, 1, 5) ~= "intro" and string.sub(sound, 1, 6) ~= "splash" then
+	if cached_sound_list and not SMODS.Sounds[sound] and G.GAME.payasaka_tmtrainer_effects and string.sub(sound, 1, 7) ~= "ambient" and string.sub(sound, 1, 3) ~= "mus" and string.sub(sound, 1, 3) ~= "win" and string.sub(sound, 1, 9) ~= "explosion" and string.sub(sound, 1, 5) ~= "voice" and string.sub(sound, 1, 5) ~= "intro" and string.sub(sound, 1, 6) ~= "splash" then
 		sound = cached_sound_list[math.random(1, #cached_sound_list)]
 		return old_play_sound(sound, per, vol)
 	end
@@ -361,6 +363,14 @@ function localize(args, misc_cat)
 		return PTASaka.ZZAZZ_string(ret)
 	end
 	return ret
+end
+
+local old_juice_up = Moveable.juice_up
+function Moveable:juice_up(amt, rot)
+	old_juice_up(self, amt, rot)
+	self.juice.r_amt = self.juice.r_amt * pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1, G.GAME.payasaka_tmtrainer_high_rnd or 1)
+	self.juice.scale_amt = self.juice.scale_amt * pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1, G.GAME.payasaka_tmtrainer_high_rnd or 1)
+	self.VT.scale = self.VT.scale * pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1, G.GAME.payasaka_tmtrainer_high_rnd or 1)
 end
 
 --[[
