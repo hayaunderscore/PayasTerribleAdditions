@@ -275,7 +275,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult for each time either",
 					"the words {C:attention}\"joyousspring\"{} or {C:attention}\"joyous spring\"{}",
 					"have been said in the {C:attention}Balatro Discord{}",
-					"{C:inactive,s:0.8}(Currently {X:mult,C:white}X#2#{C:inactive,s:0.8} Mult)",
+					"{C:inactive,s:0.8}(Currently {X:mult,C:white,s:0.8}X#2#{C:inactive,s:0.8} Mult)",
 					"{C:blue,s:0.7}https://discord.gg/balatro{}",
 				},
 				payasaka_comment = {
@@ -305,7 +305,8 @@ return {
 					"in your {C:attention}hand",
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}For all those Flush bros out there....",
+					"{C:inactive,s:0.8}For all those Flush bros",
+					"{C:inactive,s:0.8}out there...."
 				}
 			},
 			j_payasaka_locomotive = {
@@ -317,7 +318,7 @@ return {
 					"to the right of the list",
 					"{X:chips,C:white}X#1#{} Chips for every",
 					"Joker replaced",
-					"{C:inactive,s:0.8}(Currently {X:chips,C:white}X#2#{C:inactive,s:0.8} Chips)",
+					"{C:inactive,s:0.8}(Currently {X:chips,C:white,s:0.8}X#2#{C:inactive,s:0.8} Chips)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}- shupo -",
@@ -330,7 +331,34 @@ return {
 				text = {
 					""
 				}
-			}
+			},
+			j_payasaka_world = {
+				name = "World is Spades",
+				text = {
+					"{C:green}#2# in #3#{} chance of",
+					"{C:attention}turning{} non-{C:spades}Spade{} suit",
+					"cards to {C:spades}Spades{}",
+					"{X:chips,C:white}X#1#{} for each",
+					"card {C:attention}changed",
+					"{C:inactive,s:0.8}(Currently {X:chips,C:white,s:0.8}X#4#{C:inactive,s:0.8} Chips)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}sekai de",
+				}
+			},
+			j_payasaka_arrowgraph = {
+				name = "Arrowgraph",
+				text = {
+					"Played {C:spades}Spade{} cards",
+                    "add {X:chips,C:white}X#1#{} Chips",
+                    "when {C:attention}scored",
+					"Scored card gives",
+					"{X:chips,C:white}X#2#{} Chips"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}look at this graph",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
