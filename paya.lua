@@ -40,6 +40,9 @@ SMODS.Atlas { key = "JOE_Decks", path = "backs.png", px = 71, py = 95 }
 -- Enhancement atlas
 SMODS.Atlas { key = "JOE_Enhancements", path = "enhancements.png", px = 71, py = 95 }
 
+-- Tags atlas
+SMODS.Atlas { key = "JOE_Tags", path = "tags.png", px = 34, py = 34 }
+
 -- Cross mod content
 SMODS.Atlas { key = "JOE_Rotarots", path = "mf/rotarots.png", px = 107, py = 107 }
 SMODS.Atlas { key = "JOE_Sleeves", path = "sleeves.png", px = 73, py = 95 }
@@ -79,6 +82,9 @@ PTASaka.RequireFolder("content/editions/")
 
 -- Challenges
 assert(SMODS.load_file("content/challenges.lua"))()
+
+-- Tags
+assert(SMODS.load_file("content/tags.lua"))()
 
 -- Load all jokers
 

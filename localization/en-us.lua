@@ -285,12 +285,12 @@ return {
 			},
 			j_payasaka_arrowstone = {
 				name = "Arrowstone",
-				text={
-                    "{C:green}#1# in #2#{} chance for",
-                    "played cards with",
-                    "{C:spades}Spade{} suit to give",
-                    "{X:chips,C:white} X#3# {} Chips when scored",
-                },
+				text = {
+					"{C:green}#1# in #2#{} chance for",
+					"played cards with",
+					"{C:spades}Spade{} suit to give",
+					"{X:chips,C:white} X#3# {} Chips when scored",
+				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}:drool:",
 				}
@@ -350,8 +350,8 @@ return {
 				name = "Arrowgraph",
 				text = {
 					"Played {C:spades}Spade{} cards",
-                    "add {X:chips,C:white}X#1#{} Chips",
-                    "when {C:attention}scored",
+					"add {X:chips,C:white}X#1#{} Chips",
+					"when {C:attention}scored",
 					"Scored card gives",
 					"{X:chips,C:white}X#2#{} Chips"
 				},
@@ -431,6 +431,29 @@ return {
 					"{C:inactive,s:0.8}stamping once.",
 				}
 			}
+		},
+		Tag = {
+			tag_payasaka_propertytag = {
+				name = "Property Tag",
+				text = {
+					"Gives a free",
+					"{C:property}Mega Property Pack",
+				},
+			},
+			tag_payasaka_nil = {
+				name = " Tag",
+				text = {
+					"Shop has a free",
+					"{C:red}nil",
+				},
+			},
+			tag_payasaka_ahead = {
+				name = " Tag",
+				text = {
+					"Shop has a free",
+					"{C:edition}Ahead Joker",
+				},
+			},
 		},
 		Spectral = {
 			c_payasaka_crack = {
