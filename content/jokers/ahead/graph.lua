@@ -10,7 +10,7 @@ SMODS.Joker {
 	perishable_compat = false,
 	pos = { x = 0, y = 4 },
 	atlas = "JOE_Jokers",
-	config = { extra = { x_chips = 0.25, f_x_chips = 1 } },
+	config = { extra = { x_chips = 0.2, f_x_chips = 1 } },
 	pixel_size = { w = 71, h = 80 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_chips, card.ability.extra.f_x_chips } }

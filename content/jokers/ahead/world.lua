@@ -10,7 +10,7 @@ SMODS.Joker {
 	perishable_compat = false,
 	pos = { x = 3, y = 3 },
 	atlas = "JOE_Jokers",
-	config = { extra = { x_chips = 0.1, odds = 4, f_x_chips = 1 } },
+	config = { extra = { x_chips = 0.25, odds = 3, f_x_chips = 1 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_chips, not card.ability.cry_rigged and (G.GAME.probabilities.normal or 1) or card.ability.extra.odds, card.ability.extra.odds, card.ability.extra.f_x_chips } }
 	end,
@@ -21,6 +21,9 @@ SMODS.Joker {
 				local prob = pseudorandom("payasaka_world") < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds
 				if (not _c:is_suit('Spades')) and prob then
 					card.ability.extra.f_x_chips = card.ability.extra.f_x_chips + card.ability.extra.x_chips
+					-- does not turn it to spades visually, but still make it count
+					_c.base.suit = 'Spades'
+					_c.base.suit_nominal = 0.04
 					G.E_MANAGER:add_event(Event{
 						func = function()
 							_c:change_suit('Spades')
@@ -31,7 +34,6 @@ SMODS.Joker {
 					})
 					delay(0.8125)
 				end
-				print("hi")
 			end
 		end
 		if context.joker_main then

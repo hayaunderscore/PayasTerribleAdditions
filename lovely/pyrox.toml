@@ -17,17 +17,17 @@ payload = '''
 			n = G.UIT.O,
 			config = {
 				object = DynaText({
-					string = { { ref_table = G.GAME, ref_value = 'payasaka_pyroxenes', prefix = "JP¥" } },
+					string = { { ref_table = G.GAME, ref_value = 'payasaka_pyroxenes', prefix = "¥" } },
 					scale_function = function()
-						return scale_number(G.GAME.payasaka_pyroxenes, 1.35 * scale, 99999, 1000000)
+						return scale_number(G.GAME.payasaka_pyroxenes, 1.3 * scale, 99999, 1000000)
 					end,
-					maxw = 1.35,
+					maxw = 1.3,
 					colours = { G.C.BLUE },
 					font = G.LANGUAGES['en-us'].font,
 					shadow = true,
 					spacing = 2,
 					bump = true,
-					scale = 1.35 * scale
+					scale = 1.3 * scale
 				}),
 				id = 'pyrox_text_UI'
 			}
@@ -44,10 +44,10 @@ times = 1
 [[patches]]
 [patches.pattern]
 target = 'functions/UI_definitions.lua'
-pattern = '''{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'dollars', prefix = localize('$')}}, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 2.2*scale}), id = 'dollar_text_UI'}}'''
+pattern = '''{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'dollars', prefix = localize('$')}}, maxw = 1.3, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 2.2*scale}), id = 'dollar_text_UI'}}'''
 position = 'at'
 payload = '''
-{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'dollars', prefix = localize('$')}}, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 1.35*scale}), id = 'dollar_text_UI'}}
+{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'dollars', prefix = localize('$')}}, maxw = 1.3, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 1.35*scale}), id = 'dollar_text_UI'}}
 '''
 match_indent = true
 times = 1
@@ -59,7 +59,7 @@ target = 'functions/UI_definitions.lua'
 pattern = '''return scale_number(G.GAME.dollars, 2.2 * scale, 99999, 1000000)'''
 position = 'at'
 payload = '''
-return scale_number(G.GAME.dollars, 1.35 * scale, 99999, 1000000)
+return scale_number(G.GAME.dollars, 1.3 * scale, 99999, 1000000)
 '''
 match_indent = true
 times = 1
@@ -67,10 +67,10 @@ times = 1
 [[patches]]
 [patches.pattern]
 target = 'functions/UI_definitions.lua'
-pattern = '''end, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 2.2*scale}), id = 'dollar_text_UI'}}'''
+pattern = '''end, maxw = 1.3, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 2.2*scale}), id = 'dollar_text_UI'}}'''
 position = 'at'
 payload = '''
-end, maxw = 1.35, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 1.35*scale}), id = 'dollar_text_UI'}}
+end, maxw = 1.3, colours = {G.C.MONEY}, font = G.LANGUAGES['en-us'].font, shadow = true,spacing = 2, bump = true, scale = 1.3*scale}), id = 'dollar_text_UI'}}
 '''
 match_indent = true
 times = 1
@@ -85,6 +85,18 @@ payload = '''
 contents.round[3].nodes[1].n = G.UIT.R
 contents.round[3].nodes[1].nodes[1].n = G.UIT.C
 
+'''
+match_indent = true
+times = 1
+
+# we having lua warnings with this one !!!
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''cover = dollar_UI.parent,'''
+position = 'after'
+payload = '''
+scale = 0.5,
 '''
 match_indent = true
 times = 1

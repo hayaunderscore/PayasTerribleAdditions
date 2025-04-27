@@ -22,7 +22,7 @@ function ease_pyrox(mod, instant)
         --Popup text next to the chips in UI showing number of chips gained/lost
         attention_text({
           text = text..tostring(math.abs(mod)),
-          scale = 0.8, 
+          scale = 0.5, 
           hold = 0.7,
           cover = dollar_UI.parent,
           cover_colour = col,
@@ -30,6 +30,7 @@ function ease_pyrox(mod, instant)
           })
         --Play a chip sound
         play_sound('coin1')
+        play_sound('foil1')
     end
     if instant then
         _mod(mod)
