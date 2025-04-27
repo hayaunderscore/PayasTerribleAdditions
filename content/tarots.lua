@@ -337,6 +337,8 @@ SMODS.Consumable {
 			end }))
 		end
 
+		delay(1.2 + (#highlighted*0.2))
+
 		-- Trigger the Joker collection menu
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -409,3 +411,17 @@ function Card:start_dissolve(c, s, t, j)
 	end
 	return old_start_dissolve(self, c, s, t, j)
 end
+
+SMODS.Sound({
+	key = "music_mechanic",
+	path = "music_mechanic.ogg",
+	select_music_track = function()
+		return (
+				(
+					PTASaka.Mod.config["Music"]
+					and PTASaka.mechanic_menu
+					and G.OVERLAY_MENU
+				)
+			)
+	end,
+})
