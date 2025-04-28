@@ -12,6 +12,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	config = { extra = { x_chips = 0.2, f_x_chips = 1 } },
 	pixel_size = { w = 71, h = 80 },
+	pools = {["Joker"] = true, ["Meme"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_chips, card.ability.extra.f_x_chips } }
 	end,

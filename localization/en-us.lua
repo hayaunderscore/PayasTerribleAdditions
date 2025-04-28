@@ -119,7 +119,7 @@ return {
 					"Amount is {C:attention}incremented{} every time",
 					"this Joker is {C:attention}triggered{}",
 					"as well as its {C:dark_edition}sign{}",
-					"{C:inactive,s:0.8}(Currently {C:red}#2#{C:inactive,s:0.8} Mult)",
+					"{C:inactive}(Currently {C:red}#2#{C:inactive} Mult)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Turn the lights off...",
@@ -196,11 +196,11 @@ return {
 					"one {C:hearts}Hearts{} or {C:diamonds}Diamonds{} suit",
 					"and one {C:spades}Spades{} or {C:clubs}Clubs{} suit",
 					"give {C:mult}+#1#{} Mult",
-					"{C:inactive,s:0.8}(Currently {C:mult,s:0.8}+#2#{C:inactive,s:0.8} Mult)",
-					"{C:inactive,s:0.8}(e.g. {C:hearts,s:0.8}H{C:inactive,s:0.8}+{C:spades,s:0.8}S{C:inactive,s:0.8}, \
-{C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
-{C:hearts,s:0.8}H+{C:clubs,s:0.8}C{C:inactive,s:0.8}, \
-{C:diamonds,s:0.8}D{C:inactive,s:0.8}+{C:spades,s:0.8}S{C:inactive,s:0.8})",
+					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					"{C:inactive}(e.g. {C:hearts}H{C:inactive}+{C:spades}S{C:inactive}, \
+{C:diamonds}D{C:inactive}+{C:clubs}C{C:inactive}, \
+{C:hearts}H+{C:clubs}C{C:inactive}, \
+{C:diamonds}D{C:inactive}+{C:spades}S{C:inactive})",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Not to be confused with the Joker",
@@ -249,7 +249,7 @@ return {
 					"for every card held in {C:attention}hand",
 					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
 					"at the {C:attention}end of a round",
-					"{C:inactive,s:0.8}(Currently {X:dark_edition,C:white}#1#{C:inactive,s:0.8} Mult)",
+					"{C:inactive}(Currently {X:dark_edition,C:white}#1#{C:inactive} Mult)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Dollar store kosmos",
@@ -262,7 +262,7 @@ return {
 					"for every card held in {C:attention}hand",
 					"{C:green}#3# in #4#{} chance to {C:dark_edition}Evolve{}",
 					"at the {C:attention}end of a round",
-					"{C:inactive,s:0.8}(Currently {X:dark_edition,C:white}#1#{C:inactive,s:0.8} Mult)",
+					"{C:inactive}(Currently {X:dark_edition,C:white}#1#{C:inactive} Mult)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}The cooler",
@@ -275,7 +275,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult for each time either",
 					"the words {C:attention}\"joyousspring\"{} or {C:attention}\"joyous spring\"{}",
 					"have been said in the {C:attention}Balatro Discord{}",
-					"{C:inactive,s:0.8}(Currently {X:mult,C:white,s:0.8}X#2#{C:inactive,s:0.8} Mult)",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 					"{C:blue,s:0.7}https://discord.gg/balatro{}",
 				},
 				payasaka_comment = {
@@ -318,7 +318,7 @@ return {
 					"to the right of the list",
 					"{X:chips,C:white}X#1#{} Chips for every",
 					"Joker replaced",
-					"{C:inactive,s:0.8}(Currently {X:chips,C:white,s:0.8}X#2#{C:inactive,s:0.8} Chips)",
+					"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}- shupo -",
@@ -340,7 +340,7 @@ return {
 					"cards to {C:spades}Spades{}",
 					"{X:chips,C:white}X#1#{} for each",
 					"card {C:attention}changed",
-					"{C:inactive,s:0.8}(Currently {X:chips,C:white,s:0.8}X#4#{C:inactive,s:0.8} Chips)",
+					"{C:inactive}(Currently {X:chips,C:white}X#4#{C:inactive} Chips)",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}sekai de",
@@ -357,6 +357,124 @@ return {
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}look at this graph",
+				}
+			},
+			j_payasaka_imerlogio = {
+				name = "Imerlogio",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for {C:attention}every{} modded",
+					"Joker in your {C:dark_edition}Collection",
+					"Additional {X:mult,C:white}X#2#{} Mult for {C:attention}every{}",
+					"other Joker you currently own",
+					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Nxkoo having a",
+					"{C:inactive,s:0.8}field day right now",
+				}
+			},
+			j_payasaka_btryacidspaghet = {
+				name = "Battery Acid Spaghetti",
+				text = {
+					"{X:mult,C:white}X#1#{} Blind Size",
+					"for {X:mult,C:white}X#2#{} Mult",
+					"Mult decreases by {X:mult,C:white}X#3#{}",
+					"at the {C:attention}end{} of round",
+					"{C:red}Self destructs",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}don't do this"
+				}
+			},
+			j_payasaka_monster = {
+				name = "Monster Energy",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"Decreases by {X:mult,C:white}X#2#{}",
+					"for every {C:diamonds}Diamond",
+					"or {C:hearts}Heart{} card played",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}My favorite energy drink"
+				}
+			},
+			j_payasaka_pyroxene = {
+				name = "Pyroxene Card",
+				text = {
+					"Additional {C:blue}¥#1#{}",
+					"every round",
+					"Increases by {C:blue}¥#2#",
+					"for every {C:clubs}Club",
+					"or {C:spades}Spade{} card played",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}RE-DO!"
+				}
+			},
+			j_payasaka_winton = {
+				name = "Winton",
+				text = {
+					"Copies the {C:attention}leftmost",
+					"scored card {C:attention}#1#{} time and",
+					"adds it to the {C:attention}scoring hand"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}winton"
+				}
+			},
+			j_payasaka_shotgun = {
+				name = "Shotgun",
+				text = {
+					"{C:attention}ALWAYS{} destroy the",
+					"Joker to its right",
+					"regardless of its stickers",
+					"{X:mult,C:white}X#1#{} for every Joker",
+					"destroyed this way",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}*pickup* SHOTGUN"
+				}
+			},
+			j_payasaka_raceasaring = {
+				name = "Ringing Joker",
+				text = {
+					"Add {X:mult,C:white}X#1#{} Mult for",
+					"{C:attention}buying{}, {C:attention}selling{} or {C:attention}using{}",
+					"cards, vouchers and Booster",
+					"Packs or selecting a {C:attention}blind{}",
+					"Skipping a {C:attention}blind{} or skipping",
+					"a {C:attention}Booster Pack{} decreases",
+					"current Mult by {X:mult,C:white}X#2#{}",
+					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Not sponsored by",
+					"{C:inactive,s:0.8}Kart Krew",
+				}
+			},
+			j_payasaka_regina = {
+				name = "Regina",
+				text = {
+					"Turns scored cards",
+					"to {C:dark_edition}Queens",
+					"{X:dark_edition,C:white}^#1#{} Mult for each",
+					"card changed",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}blahaj 2",
+				}
+			},
+			j_payasaka_monoprint = {
+				name = "Monopoly Printer",
+				text = {
+					"When Blind is selected,",
+					"print a {C:property}Property Card{}",
+					"{C:inactive,s:0.8}(Must have room)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}this is very monopoly"
 				}
 			},
 		},

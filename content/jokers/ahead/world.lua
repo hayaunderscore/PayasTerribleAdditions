@@ -11,6 +11,7 @@ SMODS.Joker {
 	pos = { x = 3, y = 3 },
 	atlas = "JOE_Jokers",
 	config = { extra = { x_chips = 0.25, odds = 3, f_x_chips = 1 } },
+	pools = {["Joker"] = true, ["Meme"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_chips, not card.ability.cry_rigged and (G.GAME.probabilities.normal or 1) or card.ability.extra.odds, card.ability.extra.odds, card.ability.extra.f_x_chips } }
 	end,

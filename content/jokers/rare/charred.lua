@@ -1,3 +1,4 @@
+--[[ Removed because THIS SUCKS
 -- Charred Joker
 SMODS.Joker {
 	name = "Charred Joker",
@@ -36,3 +37,4 @@ SMODS.Joker {
 		end
 	end
 }
+]]
