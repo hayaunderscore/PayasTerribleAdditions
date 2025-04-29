@@ -526,6 +526,85 @@ return {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
 			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } }
 		},
+		DOSCard = {
+			c_payasaka_dos_wild = {
+				name = "Wild",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_exclam = {
+				name = "Exclamation",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_wildtwo = {
+				name = "Wild 2",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_three = {
+				name = "3",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_four = {
+				name = "4",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_five = {
+				name = "5",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_six = {
+				name = "6",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_seven = {
+				name = "7",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_eight = {
+				name = "8",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_nine = {
+				name = "9",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+			c_payasaka_dos_ten = {
+				name = "10",
+				text = {
+					"{C:inactive}Does nothing",
+					"{C:inactive}currently"
+				}
+			},
+		},
 		Tarot = {
 			c_payasaka_greed = {
 				name = "The Greed",
@@ -934,6 +1013,8 @@ return {
 		dictionary = {
 			k_property = "Property",
 			b_property_cards = "Property Cards",
+			k_doscard = "DOS",
+			b_doscard_cards = "DOS Cards",
 			k_property_pack = "Property Pack",
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
@@ -953,6 +1034,7 @@ return {
 		},
 	},
 	labels = {
-		property = "Property"
+		property = "Property",
+		doscard = "DOS"
 	},
 }

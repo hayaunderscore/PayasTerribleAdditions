@@ -1,0 +1,16 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# context.payasaka_before
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "-- context.before calculations"
+position = 'before'
+payload = '''
+SMODS.calculate_context({full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, payasaka_before = true})
+'''
+match_indent = true
+times = 1

@@ -11,7 +11,7 @@ SMODS.Joker {
 	cost = 25,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.before and context.scoring_hand then
+		if context.payasaka_before and context.scoring_hand then
 			local copy = context.scoring_hand[1]
 			for i = 1, card.ability.extra.copy do
 				G.playing_card = (G.playing_card and G.playing_card + 1) or 1
@@ -19,14 +19,42 @@ SMODS.Joker {
 				copied_card:add_to_deck()
 				G.deck.config.card_limit = G.deck.config.card_limit + 1
 				table.insert(G.playing_cards, copied_card)
+				G.play.payasaka_disable_alignment = true
 				G.play:emplace(copied_card)
 				context.scoring_hand[#context.scoring_hand+1] = copied_card
 				copied_card.states.visible = nil
 				copied_card:highlight(true)
-				copied_card.VT.scale = card.VT.scale
+				copied_card.VT.scale = copy.VT.scale
+				copied_card.VT.w = copy.VT.w
+				copied_card.VT.h = copy.VT.h
+				copied_card.payasaka_winton_spawned_aligned = true
+				copied_card.payasaka_assigned_winton = card.ID
 				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.8125,
 					func = function()
 						copied_card:start_materialize()
+						G.play.payasaka_disable_alignment = nil
+						copied_card.payasaka_winton_spawned_aligned = nil
+						G.play:align_cards()
+						card:juice_up()
+						play_sound("payasaka_challenpoints", 1, 0.8)
+						card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('k_duplicated_ex'), instant = true })
+						--delay(0.8125)
+						return true
+					end
+				})
+			end
+		end
+		-- hi there
+		if context.individual and context.other_card then
+			if context.other_card.payasaka_assigned_winton == card.ID then
+				context.other_card.payasaka_assigned_winton = nil
+				local _c = context.other_card
+				G.E_MANAGER:add_event(Event{
+					func = function()
+						card:juice_up()
+						play_sound("payasaka_hithere")
 						return true
 					end
 				})
@@ -37,3 +65,23 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.copy } }
 	end
 }
+
+local ac = CardArea.align_cards
+function CardArea:align_cards()
+	if self.payasaka_disable_alignment then
+		if self.config.type == 'play' or self.config.type == 'shop' then
+			for k, card in ipairs(self.cards) do
+				if not card.states.drag.is then 
+					card.T.r = 0
+					local highlight_height = G.HIGHLIGHT_H
+					if not card.highlighted then highlight_height = 0 end
+					card.T.y = self.T.y + self.T.h/2 - card.T.h/2 - highlight_height
+					--card.T.x = card.T.x + card.shadow_parrallax.x/30
+				end
+			end
+			--table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 < b.T.x + b.T.w/2 end)
+		end 
+		return
+	end
+	ac(self)
+end

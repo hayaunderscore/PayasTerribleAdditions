@@ -1,0 +1,21 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# context.payasaka_before
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''
+elseif e.config.id ~= 'buy_and_use' then
+  if c1.ability.consumeable then'''
+position = 'at'
+payload = '''
+elseif e.config.id ~= 'buy_and_use' then
+  if c1.ability.set == "DOSCard" then
+	PTASaka.dos_cardarea:emplace(c1)
+  elseif c1.ability.consumeable then
+'''
+match_indent = true
+times = 1

@@ -154,7 +154,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.add, card.ability.extra.x_mult } }
 	end,
 	calculate = function(self, card, context)
-		if context.before then
+		if context.payasaka_before then
 			for i = 1, #context.scoring_hand do
 				local _c = context.scoring_hand[i]
 				if _c.base.id == 12 then goto continue end
@@ -163,6 +163,8 @@ SMODS.Joker {
 				_c.base.value = 'Queen'
 				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.add
 				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.8125,
 					func = function()
 						local suit_prefix = string.sub(_c.base.suit, 1, 1)..'_'
 						_c:set_base(G.P_CARDS[suit_prefix..'Q'])
@@ -171,7 +173,6 @@ SMODS.Joker {
 						return true
 					end
 				})
-				delay(0.8125)
 				::continue::
 			end
 			local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)

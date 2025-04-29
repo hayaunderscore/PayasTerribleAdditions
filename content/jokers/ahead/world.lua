@@ -26,6 +26,8 @@ SMODS.Joker {
 					_c.base.suit = 'Spades'
 					_c.base.suit_nominal = 0.04
 					G.E_MANAGER:add_event(Event{
+						trigger = 'after',
+						delay = 0.8125,
 						func = function()
 							_c:change_suit('Spades')
 							_c:juice_up()
@@ -33,7 +35,6 @@ SMODS.Joker {
 							return true
 						end
 					})
-					delay(0.8125)
 				end
 			end
 		end

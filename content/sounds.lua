@@ -18,3 +18,7 @@ create_sound("jpej")
 -- Shotgun
 create_sound("shotgun")
 create_sound("shotgun_added")
+
+-- Winton
+create_sound("challenpoints")
+create_sound("hithere")
