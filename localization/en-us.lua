@@ -530,22 +530,24 @@ return {
 			c_payasaka_dos_wild = {
 				name = "Wild",
 				text = {
-					"{C:inactive}Does nothing",
-					"{C:inactive}currently"
+					"Can be set as",
+					"{C:attention}any{} {C:dark_edition}DOS{} card",
 				}
 			},
 			c_payasaka_dos_exclam = {
 				name = "Exclamation",
 				text = {
-					"{C:inactive}Does nothing",
-					"{C:inactive}currently"
+					"Turn into a {C:attention}random{}",
+					"Joker for an {C:attention}entire{}",
+					"round when enabled",
 				}
 			},
 			c_payasaka_dos_wildtwo = {
 				name = "Wild 2",
 				text = {
-					"{C:inactive}Does nothing",
-					"{C:inactive}currently"
+					"Turn into the",
+					"{C:attention}rightmost{} scored",
+					"card when enabled"
 				}
 			},
 			c_payasaka_dos_three = {

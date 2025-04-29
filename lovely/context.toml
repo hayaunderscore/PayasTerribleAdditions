@@ -3,6 +3,46 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
+# context.payasaka_dos_before
+# Runs before payasaka_before
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "-- context.before calculations"
+position = 'before'
+payload = '''
+local should_return = PTASaka.dos_cardarea.disabled
+PTASaka.dos_cardarea.disabled = true
+SMODS.calculate_context({full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, payasaka_dos_before = true})
+'''
+match_indent = true
+times = 1
+
+# Return cardarea state & Wild Two revert
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "-- TARGET: effects after hand evaluation"
+position = 'after'
+payload = '''
+PTASaka.dos_cardarea.disabled = should_return
+G.E_MANAGER:add_event(Event({
+	func = function()
+		for k, card in ipairs(G.play.cards) do
+			if card.payasaka_wild_two then
+				card:flip()
+				--if card.children.front then
+				--	card.children.front = nil
+				--end
+			end
+		end
+		return true
+	end
+}))
+'''
+match_indent = true
+times = 1
+
 # context.payasaka_before
 [[patches]]
 [patches.pattern]
@@ -11,6 +51,18 @@ pattern = "-- context.before calculations"
 position = 'before'
 payload = '''
 SMODS.calculate_context({full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, payasaka_before = true})
+'''
+match_indent = true
+times = 1
+
+# Add fnnuy card area to calculate contexts
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = "-- TARGET: add your own CardAreas for joker evaluation"
+position = "after"
+payload = '''
+t[#t+1] = PTASaka.dos_cardarea
 '''
 match_indent = true
 times = 1
