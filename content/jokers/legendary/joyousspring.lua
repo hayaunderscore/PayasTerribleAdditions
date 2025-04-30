@@ -26,7 +26,7 @@ SMODS.Joker {
 	cost = 25,
 	blueprint_compat = true,
 	generate_ui = JoyousSpring and JoyousSpring.generate_info_ui or SMODS.Joker.generate_ui,
-	set_sprites = JoyousSpring and JoyousSpring.set_back_sprite or SMODS.Joker.set_sprites,
+	--set_sprites = JoyousSpring and JoyousSpring.set_back_sprite or SMODS.Joker.set_sprites,
 	calculate = function(self, card, context)
 		if not JoyousSpring then
 			if context.joker_main then
