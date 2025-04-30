@@ -86,23 +86,33 @@ PTASaka.DOSCard {
 			-- copy any and all card properties :]
 			local back = card.children.back
 			copy_card(copy, card)
+			card.children.front = nil
+			card.children.card = nil
+			--card:set_seal(nil)
 			card.payasaka_wild_two = true
-			context.scoring_hand[#context.scoring_hand+1] = card
+			context.scoring_hand[#context.scoring_hand + 1] = card
 			card:highlight(true)
 			if card.children.front then
 				card.children.front.states.visible = true
 			end
 			card:flip()
 			--card.old_children = PTASaka.deep_copy(card.children)
-			G.E_MANAGER:add_event(Event{
+			G.E_MANAGER:add_event(Event {
 				func = function()
+					--card:set_seal(copy.seal, true, true)
+					card:set_sprites(copy.config.center, copy.config.card)
 					card:flip()
 					return true
 				end
 			})
-			local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
+			local text, disp_text, poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
 			delay(0.8125)
-			update_hand_text({nopulse = nil, delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+			update_hand_text({ delay = 0, modded = true },
+				{ handname = disp_text, level = G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME
+				.hands[text].chips })
+			mult = mod_mult(G.GAME.hands[text].mult)
+			hand_chips = mod_chips(G.GAME.hands[text].chips)
+			delay(0.4)
 		end
 	end
 }
@@ -117,11 +127,15 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 	end
 	old_draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
 	if card and card.payasaka_wild_two and old_to == G.discard then
-		G.E_MANAGER:add_event(Event{
+		G.E_MANAGER:add_event(Event {
 			func = function()
 				card:set_ability(G.P_CENTERS["c_payasaka_dos_wildtwo"])
 				card:set_sprites(G.P_CENTERS["c_payasaka_dos_wildtwo"], nil)
 				card:flip()
+				card:set_base(nil)
+				card:set_seal(nil)
+				card.suit = nil
+				card.rank = nil
 				card.children.front = nil
 				card.children.card = nil
 				return true
@@ -295,6 +309,7 @@ function Game:start_run(args)
 
 	--G.payasaka_dos_cardarea_switch.role.major = nil
 
+	-- Set these to be derivative of G.deck
 	PTASaka.dos_cardarea.T.x = G.deck.T.x
 	PTASaka.dos_cardarea.T.y = G.deck.T.y + 20
 	PTASaka.dos_cardarea.T.w = G.deck.T.w
@@ -304,6 +319,8 @@ function Game:start_run(args)
 	PTASaka.dos_cardarea.role.xy_bond = 'Weak'
 	PTASaka.dos_cardarea.container = G.ROOM
 	PTASaka.dos_cardarea.disabled = false
+
+	PTASaka.dos_enabled_string = "Inactive!"
 end
 
 local ssp = set_screen_positions
@@ -342,18 +359,20 @@ function CardArea:update(dt)
 	if self ~= PTASaka.dos_cardarea then return end
 	--self.states.hover.can = self.states.collide.can
 	if self.disabled or (G.play and #G.play.cards > 0) or
-		(G.CONTROLLER.locked) or 
+		(G.CONTROLLER.locked) or
 		(G.GAME.STOP_USE and G.GAME.STOP_USE > 0) then
 		for k, card in ipairs(self.cards) do
 			card.states.drag.can = false
 			card.states.click.can = false
 		end
+		PTASaka.dos_enabled_string = 'Inactive!'
 		--print("hiii")
 	else
 		for k, card in ipairs(self.cards) do
 			card.states.drag.can = true
 			card.states.click.can = true
 		end
+		PTASaka.dos_enabled_string = 'Active!'
 		--print("noooo")
 	end
 end

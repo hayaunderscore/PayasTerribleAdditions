@@ -177,7 +177,10 @@ SMODS.Joker {
 			end
 			local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
 			delay(0.8125)
-			update_hand_text({nopulse = nil, delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+			update_hand_text({delay = 0, modded = true}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+			mult = mod_mult(G.GAME.hands[text].mult)
+			hand_chips = mod_chips(G.GAME.hands[text].chips)
+			delay(0.4)
 		end
 		if context.joker_main then
 			return {

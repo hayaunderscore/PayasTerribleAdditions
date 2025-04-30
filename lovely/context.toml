@@ -55,6 +55,18 @@ SMODS.calculate_context({full_hand = G.play.cards, scoring_hand = scoring_hand, 
 match_indent = true
 times = 1
 
+# Allow dynamic changing of hand chips and mult before scoring
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "-- TARGET: effects before scoring starts"
+position = 'before'
+payload = '''
+text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
+'''
+match_indent = true
+times = 1
+
 # Add fnnuy card area to calculate contexts
 [[patches]]
 [patches.pattern]
