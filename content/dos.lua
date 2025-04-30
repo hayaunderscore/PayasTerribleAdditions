@@ -101,7 +101,16 @@ PTASaka.DOSCard {
 				func = function()
 					--card:set_seal(copy.seal, true, true)
 					card:set_sprites(copy.config.center, copy.config.card)
+					play_sound("tarot2")
 					card:flip()
+					G.E_MANAGER:add_event(Event {
+						trigger = 'before',
+						delay = 0.6,
+						func = function()
+							card:juice_up()
+							return true
+						end
+					})
 					return true
 				end
 			})
@@ -203,7 +212,7 @@ G.FUNCS.payasaka_open_dos_cardarea = function(e)
 		func = function()
 			play_sound('other1')
 			--G.deck:set_role({ xy_bond = 'Weak' })
-			G.deck.T.y = G.deck.T.y + 20
+			G.deck.T.y = G.deck.T.y + 5
 			return true
 		end
 	}))
@@ -212,7 +221,7 @@ G.FUNCS.payasaka_open_dos_cardarea = function(e)
 		delay = 0.3,
 		func = (function()
 			--PTASaka.dos_cardarea:set_role({ xy_bond = 'Weak' })
-			PTASaka.dos_cardarea.T.y = PTASaka.dos_cardarea.T.y - 20
+			PTASaka.dos_cardarea.T.y = PTASaka.dos_cardarea.T.y - 5
 			G.payasaka_dos_cardarea_switch.role.major = PTASaka.dos_cardarea
 			G.deck.states.visible = false
 			G.CONTROLLER.dos_area_lock = false
@@ -231,16 +240,16 @@ G.FUNCS.payasaka_open_deck = function(e)
 		func = function()
 			play_sound('other1')
 			--PTASaka.dos_cardarea:set_role({ xy_bond = 'Weak' })
-			PTASaka.dos_cardarea.T.y = PTASaka.dos_cardarea.T.y + 20
+			PTASaka.dos_cardarea.T.y = PTASaka.dos_cardarea.T.y + 5
 			return true
 		end
 	}))
 	G.E_MANAGER:add_event(Event({
 		trigger = 'after',
-		delay = 0.3,
+		delay = 0.1,
 		func = (function()
 			--G.deck:set_role({ xy_bond = 'Weak' })
-			G.deck.T.y = G.deck.T.y - 20
+			G.deck.T.y = G.deck.T.y - 5
 			G.payasaka_dos_cardarea_switch.role.major = G.deck
 			G.deck.states.visible = true
 			G.CONTROLLER.dos_area_lock = false
@@ -258,6 +267,18 @@ G.FUNCS.payasaka_can_open_dos_cardarea = function(e)
 	else
 		e.states.button = "payasaka_open_dos_cardarea"
 	end
+end
+
+local cfbs = G.FUNCS.check_for_buy_space
+G.FUNCS.check_for_buy_space = function(card)
+	local ret = cfbs(card)
+	if card.ability.set == 'DOSCard' and not (#PTASaka.dos_cardarea.cards < PTASaka.dos_cardarea.config.card_limit + (card.edition and card.edition.card_limit or 0)) then
+		alert_no_space(card, PTASaka.dos_cardarea)
+		return false
+	elseif card.ability.set == 'DOSCard' then
+		return true
+	end
+	return ret
 end
 
 local old_start_run = Game.start_run
@@ -311,7 +332,7 @@ function Game:start_run(args)
 
 	-- Set these to be derivative of G.deck
 	PTASaka.dos_cardarea.T.x = G.deck.T.x
-	PTASaka.dos_cardarea.T.y = G.deck.T.y + 20
+	PTASaka.dos_cardarea.T.y = G.deck.T.y + 5
 	PTASaka.dos_cardarea.T.w = G.deck.T.w
 	PTASaka.dos_cardarea.T.h = G.deck.T.h
 	PTASaka.dos_cardarea.role.major = G.ROOM
