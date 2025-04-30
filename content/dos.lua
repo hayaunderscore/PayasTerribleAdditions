@@ -79,6 +79,12 @@ PTASaka.DOSCard {
 	atlas = "JOE_DOS",
 	pos = { x = 2, y = 0 },
 	config = { extra = { payasaka_dos = true, payasaka_type = 2, } },
+	update = function(self, card, layer)
+		if not card.payasaka_wild_two then
+			-- PLEASE just die already
+			card.children.front = nil
+		end
+	end,
 	calculate = function(self, card, context)
 		if card ~= PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards] then return end
 		if context.payasaka_dos_before then
@@ -156,6 +162,7 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 				card.rank = nil
 				card.children.front = nil
 				card.children.card = nil
+				card.payasaka_wild_two = nil
 				return true
 			end
 		})
@@ -358,7 +365,7 @@ function Game:start_run(args)
 	PTASaka.dos_cardarea.container = G.ROOM
 	PTASaka.dos_cardarea.disabled = false
 
-	PTASaka.dos_enabled_string = "Inactive!"
+	PTASaka.dos_enabled_string = "Active!"
 end
 
 local ssp = set_screen_positions
@@ -403,14 +410,14 @@ function CardArea:update(dt)
 			card.states.drag.can = false
 			card.states.click.can = false
 		end
-		PTASaka.dos_enabled_string = 'Inactive!'
+		PTASaka.dos_enabled_string = 'Active!'
 		--print("hiii")
 	else
 		for k, card in ipairs(self.cards) do
 			card.states.drag.can = true
 			card.states.click.can = true
 		end
-		PTASaka.dos_enabled_string = 'Active!'
+		PTASaka.dos_enabled_string = 'Inactive!'
 		--print("noooo")
 	end
 end
@@ -512,8 +519,8 @@ local cardhighlighthook = Card.highlight
 function Card:highlight(is_higlighted)
 	local ret = cardhighlighthook(self, is_higlighted)
 
-	if (self.area and (self.area == PTASaka.dos_cardarea or self.ability.extra.payasaka_dos)) then
-		if self.highlighted and self.area and self.area.config.type ~= 'shop' and self.ability.payasaka_dos_wild then
+	if (self.area and (self.area == PTASaka.dos_cardarea or (self.ability and self.ability.extra and self.ability.extra.payasaka_dos))) then
+		if self.highlighted and self.area and self.area.config.type ~= 'shop' and (self.area ~= G.play or self.area ~= G.discard) and self.ability.payasaka_dos_wild then
 			self.children.use_button = UIBox {
 				definition = PTASaka.dos_wild_card_ui(self),
 				config = { align =
