@@ -283,6 +283,25 @@ return {
 					"{C:inactive,s:0.8}Usually updated daily",
 				}
 			},
+			-- JoyousSpring cross mod
+			j_payasaka_joyousspring_alt = {
+				name = "Joyous Spring",
+				text = {
+					"Base {X:mult,C:white}X#1#{} Mult for each time either",
+					"the words {C:attention}\"joyousspring\"{} or {C:attention}\"joyous spring\"{}",
+					"have been said in the {C:attention}Balatro Discord{}",
+					"{C:green}#3# in #4#{} chance to not draw cards",
+					"after playing/discarding",
+					"Gains {X:mult,C:white}X#5#{} Mult each time",
+					"this effect is triggered",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:blue,s:0.7}https://discord.gg/balatro{}",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}You should play JoyousSpring",
+					"{C:inactive,s:0.8}Usually updated daily",
+				}
+			},
 			j_payasaka_arrowstone = {
 				name = "Arrowstone",
 				text = {

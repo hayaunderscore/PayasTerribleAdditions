@@ -1,0 +1,35 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 10
+
+# Make Joyous Spring imitate Ash Blossom & Joyous Spring
+# Only works IF JoyousSpring is present
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''if next(SMODS.find_card("j_joy_yokai_ash")) and'''
+position = 'at'
+payload = '''
+if next(SMODS.find_card("j_joy_yokai_ash")) or next(SMODS.find_card("j_payasaka_joyousspring")) and
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''for _, joker in ipairs(SMODS.find_card("j_joy_yokai_ash")) do'''
+position = 'at'
+payload = '''
+local jokers = {}
+for _, joker in ipairs(SMODS.find_card("j_joy_yokai_ash")) do
+	jokers[#jokers+1] = joker
+end
+for _, joker in ipairs(SMODS.find_card("j_payasaka_joyousspring")) do
+	jokers[#jokers+1] = joker
+end
+for _, joker in ipairs(jokers) do
+'''
+match_indent = true
+times = 1
