@@ -42,7 +42,8 @@ PTASaka.DOSCard = SMODS.Consumable:extend {
 PTASaka.DOSCard {
 	key = 'dos_wild',
 	atlas = "JOE_DOS",
-	pos = { x = 0, y = 0 }
+	pos = { x = 0, y = 0 },
+	config = { payasaka_dos_wild = true }
 }
 
 PTASaka.DOSCard {
@@ -117,8 +118,13 @@ PTASaka.DOSCard {
 			local text, disp_text, poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
 			delay(0.8125)
 			update_hand_text({ delay = 0, modded = true },
-				{ handname = disp_text, level = G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME
-				.hands[text].chips })
+				{
+					handname = disp_text,
+					level = G.GAME.hands[text].level,
+					mult = G.GAME.hands[text].mult,
+					chips = G.GAME
+						.hands[text].chips
+				})
 			mult = mod_mult(G.GAME.hands[text].mult)
 			hand_chips = mod_chips(G.GAME.hands[text].chips)
 			delay(0.4)
@@ -411,4 +417,103 @@ function Game:update_round_eval(dt)
 		end
 	end
 	G.payasaka_exclamation_point = {}
+end
+
+G.FUNCS.payasaka_dos_wild_card_set = function(e)
+	local card = e.config.ref_table
+
+	card:highlight(false)
+
+	-- Trigger the Joker collection menu
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			G.SETTINGS.paused = true
+			G.FUNCS.overlay_menu {
+				definition = SMODS.card_collection_UIBox(G.P_CENTER_POOLS.DOSCard, { 5, 6 }, {
+					no_materialize = true,
+				})
+			}
+			PTASaka.dos_menu = true
+			PTASaka.dos_got_selected = false
+			return true
+		end
+	}))
+
+	-- Exit out when selecting a card
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			if G.OVERLAY_MENU and not PTASaka.dos_selected_card then
+				return false
+			end
+			G.SETTINGS.paused = false
+			PTASaka.dos_menu = false
+			return true
+		end
+	}))
+
+	delay(0.2)
+
+	G.E_MANAGER:add_event(Event({
+		trigger = 'after',
+		delay = 0.1,
+		func = function()
+			if PTASaka.dos_selected_card then
+				card:remove_from_deck()
+				card:set_ability(G.P_CENTERS[PTASaka.dos_selected_card])
+				card.ability.payasaka_dos_wild = true
+				card:add_to_deck()
+				PTASaka.dos_selected_card = nil
+				play_sound('tarot2', 1, 0.6)
+				card:juice_up(0.3, 0.3)
+			end
+			return true
+		end
+	}))
+end
+
+local old_click = Card.click
+function Card:click()
+	old_click(self)
+	if self.area and PTASaka.dos_menu then
+		PTASaka.dos_selected_card = self.config.center.key
+		PTASaka.dos_got_selected = true
+		G.FUNCS.exit_overlay_menu()
+	end
+end
+
+function PTASaka.dos_wild_card_ui(card)
+	local colour = G.C.GREEN
+	local text_colour = G.C.UI.TEXT_LIGHT
+	local text = localize('b_payasaka_dos_switch')
+	if card.area and card.area == PTASaka.dos_cardarea then
+		return {
+			n = G.UIT.ROOT,
+			config = { ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = colour, shadow = true, r = 0.08, minh = 0.94, button = 'payasaka_dos_wild_card_set', hover = true },
+			nodes = {
+				{ n = G.UIT.T, config = { text = text, colour = text_colour, scale = 0.4 } }
+			}
+		}
+	end
+end
+
+-- Mostly taken from Aikoyori's Letter Wild Cards as a reference
+local cardhighlighthook = Card.highlight
+function Card:highlight(is_higlighted)
+	local ret = cardhighlighthook(self, is_higlighted)
+
+	if (self.area and self.area == PTASaka.dos_cardarea) then
+		if self.highlighted and self.area and self.area.config.type ~= 'shop' and self.ability.payasaka_dos_wild then
+			self.children.use_button = UIBox {
+				definition = PTASaka.dos_wild_card_ui(self),
+				config = { align =
+				"bm",
+					offset = { x = 0, y = -0.35 },
+					parent = self }
+			}
+		elseif self.children.use_button then
+			self.children.use_button:remove()
+			self.children.use_button = nil
+		end
+	end
+	return ret
 end

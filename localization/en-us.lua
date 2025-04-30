@@ -1040,7 +1040,8 @@ return {
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",
-			k_payasaka_pyroxene_bonus = "Pyroxene drop"
+			k_payasaka_pyroxene_bonus = "Pyroxene drop",
+			b_payasaka_dos_switch = "SWITCH",
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',

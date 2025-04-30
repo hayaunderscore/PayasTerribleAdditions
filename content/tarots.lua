@@ -421,7 +421,7 @@ SMODS.Sound({
 		return (
 				(
 					PTASaka.Mod.config["Music"]
-					and PTASaka.mechanic_menu
+					and (PTASaka.mechanic_menu or PTASaka.dos_menu)
 					and G.OVERLAY_MENU
 				)
 			)
