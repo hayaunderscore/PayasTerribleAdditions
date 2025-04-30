@@ -519,7 +519,7 @@ local cardhighlighthook = Card.highlight
 function Card:highlight(is_higlighted)
 	local ret = cardhighlighthook(self, is_higlighted)
 
-	if (self.area and (self.area == PTASaka.dos_cardarea or (self.ability and self.ability.extra and self.ability.extra.payasaka_dos))) then
+	if (self.area and (self.area == PTASaka.dos_cardarea or (self.ability and self.ability.extra and type(self.ability.extra) == 'table' and self.ability.extra.payasaka_dos))) then
 		if self.highlighted and self.area and self.area.config.type ~= 'shop' and (self.area ~= G.play or self.area ~= G.discard) and self.ability.payasaka_dos_wild then
 			self.children.use_button = UIBox {
 				definition = PTASaka.dos_wild_card_ui(self),

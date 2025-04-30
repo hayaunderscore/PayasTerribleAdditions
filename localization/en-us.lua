@@ -496,6 +496,14 @@ return {
 					"{C:inactive,s:0.8}this is very monopoly"
 				}
 			},
+			j_payasaka_paya = {
+				name = "Yonii Payasaka",
+				text = {
+					"{X:chips,C:white}Chips{}X{X:mult,C:white}Mult{} {C:attention}becomes",
+					"{X:chips,C:white}Chips{}^{X:mult,C:white}Mult{}",
+					"{C:inactive}Stacks with itself",
+				},
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -1040,6 +1048,7 @@ return {
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",
+			k_payasaka_daeha = "daehA",
 			k_payasaka_pyroxene_bonus = "Pyroxene drop",
 			b_payasaka_dos_switch = "SWITCH",
 		},
@@ -1047,6 +1056,7 @@ return {
 			payasaka_jpeg = 'YCbCr',
 			payasaka_random_seal = "Random Seal",
 			k_payasaka_ahead = "Ahead",
+			k_payasaka_daeha = "daehA",
 		},
 		challenge_names = {
 			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place"

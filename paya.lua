@@ -139,6 +139,9 @@ if Cryptid and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
 
+-- daehA
+PTASaka.RequireFolder("content/jokers/daeha/")
+
 -- Pyroxenes
 assert(SMODS.load_file("content/pyrox.lua"))()
 

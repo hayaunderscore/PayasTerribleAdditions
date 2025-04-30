@@ -1,0 +1,38 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Allow changing X to ^ via an ID
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
+position = 'at'
+payload = '''
+{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, id = 'chips_what_mult', shadow = true}},
+'''
+match_indent = true
+times = 1
+
+# Jesus christ.... okay
+# First, set final hand chips * mult to hand chips ^ mult if we need to
+# Do this... atleast 10 times. Cryptid exists.
+[[patches]]
+[patches.regex]
+target = 'functions/state_events.lua'
+pattern = '''math\.floor\(hand_chips\*mult\)'''
+position = 'at'
+payload = '''math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count,hand_chips,mult))'''
+match_indent = true
+times = 10
+
+# Flames should also be accounted for...
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = '''G.ARGS.score_intensity.earned_score = G.GAME.current_round.current_hand.chips*G.GAME.current_round.current_hand.mult'''
+position = 'at'
+payload = '''G.ARGS.score_intensity.earned_score = PTASaka.arrow(G.GAME.payasaka_exponential_count,G.GAME.current_round.current_hand.chips,G.GAME.current_round.current_hand.mult)'''
+match_indent = true
+times = 1
