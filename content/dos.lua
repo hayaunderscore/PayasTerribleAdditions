@@ -43,13 +43,14 @@ PTASaka.DOSCard {
 	key = 'dos_wild',
 	atlas = "JOE_DOS",
 	pos = { x = 0, y = 0 },
-	config = { payasaka_dos_wild = true }
+	config = { payasaka_dos = true, payasaka_dos_wild = true }
 }
 
 PTASaka.DOSCard {
 	key = 'dos_exclam',
 	atlas = "JOE_DOS",
 	pos = { x = 1, y = 0 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 1, } },
 	calculate = function(self, card, context)
 		if card ~= PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards] then return end
 		if context.setting_blind and not context.blueprint and not context.retrigger and not context.retrigger_joker then
@@ -77,6 +78,7 @@ PTASaka.DOSCard {
 	key = 'dos_wildtwo',
 	atlas = "JOE_DOS",
 	pos = { x = 2, y = 0 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 2, } },
 	calculate = function(self, card, context)
 		if card ~= PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards] then return end
 		if context.payasaka_dos_before then
@@ -87,6 +89,8 @@ PTASaka.DOSCard {
 			-- copy any and all card properties :]
 			local back = card.children.back
 			copy_card(copy, card)
+			card.ability.payasaka_dos = true
+			card.ability.payasaka_type = 2
 			card.children.front = nil
 			card.children.card = nil
 			--card:set_seal(nil)
@@ -102,7 +106,6 @@ PTASaka.DOSCard {
 				func = function()
 					--card:set_seal(copy.seal, true, true)
 					card:set_sprites(copy.config.center, copy.config.card)
-					play_sound("tarot2")
 					card:flip()
 					G.E_MANAGER:add_event(Event {
 						trigger = 'before',
@@ -162,49 +165,57 @@ end
 PTASaka.DOSCard {
 	key = 'dos_three',
 	atlas = "JOE_DOS",
-	pos = { x = 3, y = 0 }
+	pos = { x = 3, y = 0 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 3, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_four',
 	atlas = "JOE_DOS",
-	pos = { x = 0, y = 1 }
+	pos = { x = 0, y = 1 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 4, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_five',
 	atlas = "JOE_DOS",
-	pos = { x = 1, y = 1 }
+	pos = { x = 1, y = 1 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 5, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_six',
 	atlas = "JOE_DOS",
-	pos = { x = 2, y = 1 }
+	pos = { x = 2, y = 1 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 6, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_seven',
 	atlas = "JOE_DOS",
-	pos = { x = 3, y = 1 }
+	pos = { x = 3, y = 1 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 7, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_eight',
 	atlas = "JOE_DOS",
-	pos = { x = 0, y = 2 }
+	pos = { x = 0, y = 2 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 8, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_nine',
 	atlas = "JOE_DOS",
-	pos = { x = 1, y = 2 }
+	pos = { x = 1, y = 2 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 9, } },
 }
 
 PTASaka.DOSCard {
 	key = 'dos_ten',
 	atlas = "JOE_DOS",
-	pos = { x = 2, y = 2 }
+	pos = { x = 2, y = 2 },
+	config = { extra = { payasaka_dos = true, payasaka_type = 10, } },
 }
 
 G.FUNCS.payasaka_open_dos_cardarea = function(e)
@@ -501,7 +512,7 @@ local cardhighlighthook = Card.highlight
 function Card:highlight(is_higlighted)
 	local ret = cardhighlighthook(self, is_higlighted)
 
-	if (self.area and self.area == PTASaka.dos_cardarea) then
+	if (self.area and (self.area == PTASaka.dos_cardarea or self.ability.extra.payasaka_dos)) then
 		if self.highlighted and self.area and self.area.config.type ~= 'shop' and self.ability.payasaka_dos_wild then
 			self.children.use_button = UIBox {
 				definition = PTASaka.dos_wild_card_ui(self),
