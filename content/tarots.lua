@@ -3,6 +3,7 @@ if PTASaka.Mod.config["Property Cards"] then
 SMODS.Consumable {
 	set = 'Tarot',
 	key = 'greed',
+	name = 'Avarice',
 	atlas = 'JOE_Tarots',
 	pos = { x = 0, y = 0 },
 	config = { extra = { max_highlighted = 2 } },
@@ -78,7 +79,7 @@ SMODS.Consumable {
 if next(SMODS.find_mod("MoreFluff")) and PTASaka.Mod.config["Cross Mod Content"] then
 	SMODS.Consumable {
 		set = "Rotarot",
-		name = "rot_Greed",
+		name = "rot_Avarice",
 		key = "rot_greed",
 		pos = { x = 0, y = 0 },
 		atlas = 'JOE_Rotarots',
@@ -117,6 +118,7 @@ end
 SMODS.Consumable {
 	set = 'Tarot',
 	key = 'stamp',
+	name = 'The Inscribe',
 	atlas = 'JOE_Tarots',
 	pos = { x = 1, y = 0 },
 	config = { extra = { max_highlighted = 2 } },

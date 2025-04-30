@@ -628,7 +628,7 @@ return {
 		},
 		Tarot = {
 			c_payasaka_greed = {
-				name = "The Greed",
+				name = "Avarice",
 				text = {
 					"Adds a house to {C:attention}#1#",
 					"selected {C:property}Property{} cards",
@@ -637,7 +637,7 @@ return {
 				}
 			},
 			c_payasaka_stamp = {
-				name = "The Stamp",
+				name = "The Inscribe",
 				text = {
 					"Turns up to {C:attention}#1#",
 					"selected {C:red}nil{} cards",
@@ -703,7 +703,7 @@ return {
 		},
 		Rotarot = {
 			c_payasaka_rot_greed = {
-				name = "The Greed!",
+				name = "Avarice!",
 				text = {
 					"Creates up to {C:attention}#1#",
 					"{C:property}Property{} cards",
@@ -711,7 +711,7 @@ return {
 				}
 			},
 			c_payasaka_rot_stamp = {
-				name = "The Stamp!",
+				name = "The Inscribe!",
 				text = {
 					"Creates up to {C:attention}#1#",
 					"{C:red}nil{} cards",
