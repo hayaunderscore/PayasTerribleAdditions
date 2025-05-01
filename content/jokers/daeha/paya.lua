@@ -7,11 +7,54 @@ SMODS.Joker {
 	pos = { x = 0, y = 6 },
 	soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
 	cost = 25,
-	add_to_deck = function(self, card, from_debuff)
-		G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
+	no_doe = true, -- :]
+	config = { odds = 2, extra = { exponential_active = false } },
+	loc_vars = function(self, info_queue, card)
+		local str = localize('k_payasaka_' .. (card.ability.extra.exponential_active and "active" or "inactive"))
+		return {
+			vars = { card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds },
+			main_end = {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = { ref_table = self, align = "m", colour = card.ability.extra.exponential_active and G.C.GREEN or G.C.RED, r = 0.05, padding = 0.06 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = ' ' .. str .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.9 } },
+							}
+						}
+					}
+				}
+			}
+		}
 	end,
-	remove_from_deck = function(self, card, from_debuff)
-		G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count - 1
+	calculate = function(self, card, context)
+		if context.setting_blind and ((pseudorandom('paya_hell') < (G.GAME.probabilities.normal or 1) / card.ability.odds) or card.ability.cry_rigged) then
+			card.ability.extra.exponential_active = true
+			G.E_MANAGER:add_event(Event {
+				func = function()
+					G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
+					return true
+				end
+			})
+			return {
+				message = "Active!"
+			}
+		end
+		if context.end_of_round and card.ability.extra.exponential_active then
+			card.ability.extra.exponential_active = false
+			G.E_MANAGER:add_event(Event {
+				func = function()
+					G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count - 1
+					return true
+				end
+			})
+			return {
+				message = "Inactive!"
+			}
+		end
 	end
 }
 
@@ -37,12 +80,17 @@ function Game:update(dt)
 			local x_marks_the_spot = G.HUD:get_UIE_by_ID('chips_what_mult')
 			local text_size = 0
 			if x_marks_the_spot then
-				x_marks_the_spot.config.text = G.GAME.payasaka_exponential_count > 2 and
-				string.format("{%d}", G.GAME.payasaka_exponential_count) or
-				G.GAME.payasaka_exponential_count <= 0 and "X" or ("^"):rep(G.GAME.payasaka_exponential_count)
-				text_size = #x_marks_the_spot.config.text - 1
+				local str = G.GAME.payasaka_exponential_count > 2 and
+					string.format("{%d}", G.GAME.payasaka_exponential_count) or
+					G.GAME.payasaka_exponential_count <= 0 and "X" or ("^"):rep(G.GAME.payasaka_exponential_count)
+				text_size = #str - 1
 				PTASaka.payasaka_text_size = text_size
-				x_marks_the_spot.config.colour = G.GAME.payasaka_exponential_count <= 0 and G.C.MULT or G.C.DARK_EDITION
+				x_marks_the_spot.config.object.config.string = { str }
+				x_marks_the_spot.config.object:update_text(true)
+				x_marks_the_spot.config.object.colours = { G.GAME.payasaka_exponential_count <= 0 and G.C.MULT or
+				G.C.DARK_EDITION }
+				G.FUNCS.text_super_juice(x_marks_the_spot, 0.8)
+				play_sound('tarot2')
 			end
 			local chips_box = G.HUD:get_UIE_by_ID('hand_chip_area')
 			if chips_box then

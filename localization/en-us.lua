@@ -178,7 +178,8 @@ return {
 			j_payasaka_plana = {
 				name = "Plana",
 				text = {
-					"Creates a random {C:dark_edition}Negative",
+					"{C:green}#3# in #4#{} chance to",
+					"create a random {C:dark_edition}Negative",
 					"{C:spectral}Spectral{} card every round",
 					"Gives {X:red,C:white}X#1#{} Mult",
 					"if {C:green,E:2}Arona{} is around",
@@ -499,11 +500,22 @@ return {
 			j_payasaka_paya = {
 				name = "Yonii Payasaka",
 				text = {
-					"{X:chips,C:white}Chips{}X{X:mult,C:white}Mult{} {C:attention}becomes",
+					"Upon selecting a blind,",
+					"{C:green}#1# in #2#{} chance of",
+					"{X:chips,C:white}Chips{}X{X:mult,C:white}Mult{} {C:attention}becoming",
 					"{X:chips,C:white}Chips{}^{X:mult,C:white}Mult{}",
-					"{C:inactive}Stacks with itself",
+					"{C:dark_edition}Stacks with itself",
 				},
-			}
+			},
+			j_payasaka_ari = {
+				name = "Ari",
+				text = {
+					"{C:attention}Each{} consumable held",
+					"gives {X:mult,C:white}X#1#{} Mult",
+					"Selecting a blind creates",
+					"a {C:attention}random{} {C:dark_edition}Negative{} consumable",
+				},
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -1051,6 +1063,8 @@ return {
 			k_payasaka_daeha = "daehA",
 			k_payasaka_pyroxene_bonus = "Pyroxene drop",
 			b_payasaka_dos_switch = "SWITCH",
+			k_payasaka_active = "active",
+			k_payasaka_inactive = "inactive",
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',

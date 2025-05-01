@@ -39,11 +39,11 @@ SMODS.Joker {
 SMODS.Joker {
 	name = "Plana",
 	key = "plana",
-	config = { extra = { givemult = 1.0, incmult = 0.05 } },
+	config = { extra = { givemult = 1.0, incmult = 0.1 }, odds = 2 },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		return {
-			vars = { card.ability.extra.givemult, card.ability.extra.incmult }
+			vars = { card.ability.extra.givemult, card.ability.extra.incmult, card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds }
 		}
 	end,
 	rarity = 3,
@@ -63,7 +63,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers then
+		if context.end_of_round and context.cardarea == G.jokers and ((pseudorandom('plana_gift_card') < (G.GAME.probabilities.normal or 1)/card.ability.odds) or card.ability.cry_rigged) then
 			local _card = SMODS.add_card({ key = pseudorandom_element(G.P_CENTER_POOLS.Spectral,
 				pseudoseed("payasaka_plana")).key })
 			_card:set_edition('e_negative', true)

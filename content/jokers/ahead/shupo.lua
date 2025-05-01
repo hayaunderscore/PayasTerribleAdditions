@@ -87,7 +87,7 @@ SMODS.Joker {
 	no_collection = true,
 	pos = { x = 5, y = 3 },
 	atlas = "JOE_Jokers",
-	no_doe = false, -- There is no reason for this to be available in DOE/Balanced sleeve
+	no_doe = true, -- There is no reason for this to be available in DOE/Balanced sleeve
 	--[[
 	add_to_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit + 1

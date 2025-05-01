@@ -70,13 +70,14 @@ match_indent = true
 times = 1
 
 # Allow changing X to ^ via an ID
+# Also changes it into a DynaText for juice up shenanigans
 [[patches]]
 [patches.pattern]
 target = 'functions/UI_definitions.lua'
 pattern = '''{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
 position = 'at'
 payload = '''
-{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, id = 'chips_what_mult', shadow = true}},
+{n=G.UIT.O, config={object = DynaText{string = {"X"}, pop_in_rate = 9999999, silent = true, scale = scale*2, colours = {G.C.UI_MULT}, shadow = true}, id = 'chips_what_mult'}},
 '''
 match_indent = true
 times = 1
