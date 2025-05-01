@@ -35,10 +35,25 @@ function Game:update(dt)
 		if G.GAME.payasaka_exponential_count ~= nil and PTASaka.payasaka_exponential_count ~= G.GAME.payasaka_exponential_count then
 			PTASaka.payasaka_exponential_count = G.GAME.payasaka_exponential_count
 			local x_marks_the_spot = G.HUD:get_UIE_by_ID('chips_what_mult')
-			if not x_marks_the_spot then return end
-			x_marks_the_spot.config.text = G.GAME.payasaka_exponential_count > 2 and string.format("{%d}", G.GAME.payasaka_exponential_count) or G.GAME.payasaka_exponential_count <= 0 and "X" or ("^"):rep(G.GAME.payasaka_exponential_count)
-			x_marks_the_spot.config.colour = G.GAME.payasaka_exponential_count <= 0 and G.C.MULT or G.C.DARK_EDITION
-			x_marks_the_spot.config.scale = 0.8-(math.max(0, #x_marks_the_spot.config.text)*0.2)
+			local text_size = 0
+			if x_marks_the_spot then
+				x_marks_the_spot.config.text = G.GAME.payasaka_exponential_count > 2 and
+				string.format("{%d}", G.GAME.payasaka_exponential_count) or
+				G.GAME.payasaka_exponential_count <= 0 and "X" or ("^"):rep(G.GAME.payasaka_exponential_count)
+				text_size = #x_marks_the_spot.config.text - 1
+				PTASaka.payasaka_text_size = text_size
+				x_marks_the_spot.config.colour = G.GAME.payasaka_exponential_count <= 0 and G.C.MULT or G.C.DARK_EDITION
+			end
+			local chips_box = G.HUD:get_UIE_by_ID('hand_chip_area')
+			if chips_box then
+				chips_box.config.minw = 2 - (math.max(text_size, 0) * 0.14)
+			end
+			local mult_box = G.HUD:get_UIE_by_ID('hand_mult_area')
+			if mult_box then
+				mult_box.config.minw = 2 - (math.max(text_size, 0) * 0.14)
+			end
+			local chips_text, mult_text = G.HUD:get_UIE_by_ID('hand_chips'), G.HUD:get_UIE_by_ID('hand_mult')
+			--x_marks_the_spot.config.scale = 0.8-(math.max(0, #x_marks_the_spot.config.text)*0.2)
 			G.HUD:recalculate()
 		end
 	end
@@ -47,11 +62,11 @@ end
 function PTASaka.arrow(arrow, val1, val2)
 	local val = val1
 	if arrow == 1 then
-		val = val^val2
+		val = val ^ val2
 	elseif arrow == 0 then
-		val = val*val2
+		val = val * val2
 	else
-		val = val^PTASaka.arrow(arrow-1, val, val2)
+		val = val ^ PTASaka.arrow(arrow - 1, val, val2)
 	end
 	return val
 end
