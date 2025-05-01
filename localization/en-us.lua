@@ -506,6 +506,9 @@ return {
 					"{X:chips,C:white}Chips{}^{X:mult,C:white}Mult{}",
 					"{C:dark_edition}Stacks with itself",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Self insert joker"
+				}
 			},
 			j_payasaka_ari = {
 				name = "Ari",
@@ -515,6 +518,9 @@ return {
 					"Selecting a blind creates",
 					"a {C:attention}random{} {C:dark_edition}Negative{} consumable",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}it's just a slice of ham"
+				}
 			},
 		},
 		Blind = {
@@ -654,6 +660,9 @@ return {
 					"selected {C:property}Property{} cards",
 					"{C:inactive,s:0.8}Having more than 4 houses",
 					"{C:inactive,s:0.8}replaces it with a hotel",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}The Greed was taken",
 				}
 			},
 			c_payasaka_stamp = {
@@ -728,6 +737,10 @@ return {
 					"Creates up to {C:attention}#1#",
 					"{C:property}Property{} cards",
 					"{C:inactive,s:0.8}(Must have room)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}First ever cross mod",
+					"{C:inactive,s:0.8}rotarot????",
 				}
 			},
 			c_payasaka_rot_stamp = {
@@ -736,6 +749,9 @@ return {
 					"Creates up to {C:attention}#1#",
 					"{C:red}nil{} cards",
 					"{C:inactive,s:0.8}(Must have room)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Wow! Look, nothing",
 				}
 			}
 		},
