@@ -522,6 +522,14 @@ return {
 					"{C:inactive,s:0.8}it's just a slice of ham"
 				}
 			},
+			j_payasaka_enotsworra = {
+				name = "enotsworrA",
+				text = {
+					"       cards     ",
+					"           give",
+					"{B:1,V:2}#2##1#{} Chips            ",
+				},
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {

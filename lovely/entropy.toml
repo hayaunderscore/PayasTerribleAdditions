@@ -1,0 +1,30 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Why.
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS entr "lib/fixes.lua"]'''
+pattern = '''
+if (key == 'chips' or key == 'h_chips' or key == 'chip_mod') and amount then
+'''
+position = 'before'
+payload = '''
+if key == "pf_chips" or key == "pfchips" then
+    hand_chips = amount(hand_chips)
+    update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+    return true
+elseif key == "pf_mult" or key == "pfmult" then
+    mult = amount(mult)
+    update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+    return true
+elseif key == "pf_chips_mult" then
+    hand_chips, mult = amount(hand_chips, mult)
+    update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+    return true
+end
+'''
+match_indent = true
+times = 1
