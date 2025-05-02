@@ -203,11 +203,13 @@ SMODS.Voucher {
 		G.GAME.payasaka_tmtrainer_effects = true
 		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) / 10
 		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) * 10
+		G.HUD:recalculate()
 	end,
 	unredeem = function(self, voucher)
 		G.GAME.payasaka_tmtrainer_effects = false
 		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) * 10
 		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) / 10
+		G.HUD:recalculate()
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('negative', nil, card.ARGS.send_to_shader)

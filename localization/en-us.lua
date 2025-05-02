@@ -1082,6 +1082,9 @@ return {
 			k_payasaka_active = "active",
 			k_payasaka_inactive = "inactive",
 		},
+		v_dictionary = {
+			pta_art_credit = { "Art: #1#" }
+		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',
 			payasaka_random_seal = "Random Seal",

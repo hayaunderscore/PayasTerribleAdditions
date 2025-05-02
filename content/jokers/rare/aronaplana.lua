@@ -14,6 +14,8 @@ SMODS.Joker {
 	pos = { x = 3, y = 2 },
 	cost = 6,
 	blueprint_compat = true,
+	pta_credit = "Aikoyori",
+	pta_credit_color = HEX('65a49e'),
 	calculate = function(self, card, context)
 		if context.joker_main then
 			if next(SMODS.find_card("j_payasaka_plana")) == nil then
@@ -63,7 +65,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers and ((pseudorandom('plana_gift_card') < (G.GAME.probabilities.normal or 1)/card.ability.odds) or card.ability.cry_rigged) then
+		if context.end_of_round and context.cardarea == G.jokers and ((pseudorandom('plana_gift_card') < (G.GAME.probabilities.normal or 1)/card.ability.odds)) then
 			local _card = SMODS.add_card({ key = pseudorandom_element(G.P_CENTER_POOLS.Spectral,
 				pseudoseed("payasaka_plana")).key })
 			_card:set_edition('e_negative', true)

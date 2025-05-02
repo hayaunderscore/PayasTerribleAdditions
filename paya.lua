@@ -145,6 +145,112 @@ PTASaka.RequireFolder("content/jokers/daeha/")
 -- Pyroxenes
 assert(SMODS.load_file("content/pyrox.lua"))()
 
+-- Colours
+G.C.PAYA_PURPLE = HEX('4A3570')
+G.C.BADGE_TEMP_BG = SMODS.Gradient {
+	key = 'badge_temp_bg',
+	colours = { G.C.PAYA_PURPLE, G.C.PAYA_PURPLE },
+	cycle = 1,
+	created_time = 0,
+	update = function(self, dt)
+		if #self.colours < 2 then return end
+		local timer = (G.TIMERS.REAL-self.created_time)%self.cycle
+		local start_index = math.ceil(timer*#self.colours/self.cycle)
+		local end_index = start_index == #self.colours and 1 or start_index+1
+		local start_colour, end_colour = self.colours[start_index], self.colours[end_index]
+		local partial_timer = (timer%(self.cycle/#self.colours))*#self.colours/self.cycle
+		for i = 1, 4 do
+			if self.interpolation == 'linear' then
+
+				self[i] = start_colour[i] + partial_timer*(end_colour[i]-start_colour[i])
+			elseif self.interpolation == 'trig' then
+				self[i] = start_colour[i] + 0.5*(1-math.cos(partial_timer*math.pi))*(end_colour[i]-start_colour[i])
+			end
+		end
+	end,
+}
+
+local cmb = SMODS.create_mod_badges
+function SMODS.create_mod_badges(obj, badges)
+	cmb(obj, badges)
+	if SMODS.config.no_mod_badges then return end
+	local art_cred = obj and obj.pta_credit and obj.pta_credit or nil
+	local art_colour = obj and obj.pta_credit_color and obj.pta_credit_color or G.C.PAYA_PURPLE
+	if not art_cred then return end
+	-- Taken from Cryptid
+	local function calc_scale_fac(text)
+		local size = 0.9
+		local font = G.LANG.font
+		local max_text_width = 2 - 2 * 0.05 - 4 * 0.03 * size - 2 * 0.03
+		local calced_text_width = 0
+		-- Math reproduced from DynaText:update_text
+		for _, c in utf8.chars(text) do
+			local tx = font.FONT:getWidth(c) * (0.33 * size) * G.TILESCALE * font.FONTSCALE
+				+ 2.7 * 1 * G.TILESCALE * font.FONTSCALE
+			calced_text_width = calced_text_width + tx / (G.TILESIZE * G.TILESCALE)
+		end
+		local scale_fac = calced_text_width > max_text_width and max_text_width / calced_text_width or 1
+		return scale_fac
+	end
+	local scales = {}
+	local min_scale = 1
+	local strings = { "Paya Is Terrible" }
+	local dtxt = {}
+	strings[#strings+1] = localize{ type = 'variable', key = 'pta_art_credit', vars = { obj.pta_credit } }[1]
+	for i = 1, #strings do
+		scales[i] = calc_scale_fac(strings[i])
+		min_scale = math.min(min_scale, scales[i])
+		dtxt[i] = { string = strings[i] }
+	end
+	G.C.BADGE_TEMP_BG.colours[2] = art_colour
+	G.C.BADGE_TEMP_BG.created_time = G.TIMERS.REAL
+	local badge = {
+		n = G.UIT.R,
+		config = {align = "cm"},
+		nodes = {
+			{
+				n = G.UIT.R,
+				config = {
+					align = "cm",
+					colour = G.C.BADGE_TEMP_BG,
+					r = 0.1,
+					minw = 2,
+					minh = 0.36,
+					emboss = 0.05,
+					padding = 0.03 * 0.9,
+				},
+				nodes = {
+					{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+					{
+						n = G.UIT.O,
+						config = {
+							object = DynaText {
+								string = dtxt,
+								colours = { G.C.WHITE },
+								silent = true,
+								float = true,
+								shadow = true,
+								offset_y = -0.03,
+								spacing = 1,
+								scale = 0.33 * 0.9 * min_scale,
+							}
+						}
+					},
+					{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+				}
+			}
+		}
+	}
+	for i = 1, #badges do
+		if badges[i].nodes[1].nodes[2].config.object.string == 'Paya Is Terrible' then
+			badges[i].nodes[1].nodes[2].config.object:remove()
+			badges[i] = badge
+			G.C.BADGE_TEMP_BG.cycle = badges[i].nodes[1].nodes[2].config.object.pop_delay*3.5
+			break
+		end
+	end
+end
+
 -- This is different from the info argument in the usual create_toggle
 local function create_toggle_with_description(toggle, desc)
 	local text_nodes = {}
