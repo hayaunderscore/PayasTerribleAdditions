@@ -530,6 +530,53 @@ return {
 					"{B:1,V:2}#2##1#{} Chips            ",
 				},
 			},
+			j_payasaka_canichat = {
+				name = "A    head",
+				text = {
+					"       cards     ",
+					"           give",
+					"{C:chips}+#1#{} Chips            ",
+				}
+			},
+			j_payasaka_bahead = {
+				name = "Bahead",
+				text = {
+					"Each {C:attention}Queen{} of",
+					"{C:spades}Spades{} held in hand",
+					"gives {X:chips,C:white} X#1# {} Chips",
+				}
+			},
+			j_payasaka_envelope = {
+				name = "Shiny Envelope",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"creating a {C:attention}random",
+					"consumable at the {C:attention}end{}",
+					"of a round, {C:attention}increasing{}",
+					"current XChips by {X:chips,C:white}X#3#",
+					"{C:inactive}(Currently {X:chips,C:white}X#4#{C:inactive} Chips)"
+				}
+			},
+			j_payasaka_printhead = {
+				name = "Printhead",
+				text = {
+					"Copies ability of",
+                    "{C:attention}Joker(s){} to the right",
+					"Number of Jokers copied",
+					"is tied to {C:attention}currently owned{}",
+					"Ahead Joker count"
+				}
+			},
+			j_payasaka_aheadstorm = {
+				name = "Aheadstorm",
+				text = {
+					"Copies the ability",
+                    "of leftmost {C:attention}Joker",
+					"Number of times copied",
+					"is tied to {C:attention}currently owned{}",
+					"Ahead Joker count"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -1056,13 +1103,15 @@ return {
 			credit_ari = {
 				name = "ariyi",
 				text = {
-					"Some joker ideas"
+					"Some cool ideas",
+					"some art later",
 				}
 			},
 			credit_aikoyori = {
 				name = "Aikoyori",
 				text = {
-					"Emotional support :-)"
+					"Emotional support :-)",
+					"some art",
 				}
 			},
 			credit_airrice = {
@@ -1091,7 +1140,8 @@ return {
 			k_payasaka_inactive = "inactive",
 		},
 		v_dictionary = {
-			pta_art_credit = { "Art: #1#" }
+			pta_art_credit = { "Art: #1#" },
+			pta_idea_credit = { "Idea: #1#" }
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',

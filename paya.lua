@@ -174,12 +174,22 @@ local cmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
 	cmb(obj, badges)
 	if SMODS.config.no_mod_badges then return end
-	local art_cred = obj and obj.pta_credit and obj.pta_credit or nil
-	local art_colour = obj and obj.pta_credit_color and obj.pta_credit_color or G.C.PAYA_PURPLE
-	if not art_cred then return end
+	local cred = obj and obj.pta_credit or nil
+	if not cred then return end
+	local target_badge = 0
+	local base_scale = 0.9
+	for i = 1, #badges do
+		if badges[i].nodes[1].nodes[2].config.object.string == 'Paya Is Terrible' then
+			target_badge = i
+			base_scale = badges[i].nodes[1].nodes[2].config.object.scale * 3.03
+			--print("Badge found!")
+			G.C.BADGE_TEMP_BG.cycle = 1.5*3.5
+			break
+		end
+	end
 	-- Taken from Cryptid
 	local function calc_scale_fac(text)
-		local size = 0.9
+		local size = base_scale
 		local font = G.LANG.font
 		local max_text_width = 2 - 2 * 0.05 - 4 * 0.03 * size - 2 * 0.03
 		local calced_text_width = 0
@@ -196,13 +206,19 @@ function SMODS.create_mod_badges(obj, badges)
 	local min_scale = 1
 	local strings = { "Paya Is Terrible" }
 	local dtxt = {}
-	strings[#strings+1] = localize{ type = 'variable', key = 'pta_art_credit', vars = { obj.pta_credit } }[1]
+	local colours = { G.C.PAYA_PURPLE }
+	for k, v in pairs(cred) do
+		strings[#strings+1] = localize{ type = 'variable', key = 'pta_'..k..'_credit', vars = { v.credit } }[1]
+		colours[#colours+1] = v.colour or G.C.PAYA_PURPLE
+		--print("Localizing ... "..k)
+	end
 	for i = 1, #strings do
 		scales[i] = calc_scale_fac(strings[i])
 		min_scale = math.min(min_scale, scales[i])
 		dtxt[i] = { string = strings[i] }
+		--print("Calculating string length for string ... "..strings[i])
 	end
-	G.C.BADGE_TEMP_BG.colours[2] = art_colour
+	G.C.BADGE_TEMP_BG.colours = colours
 	G.C.BADGE_TEMP_BG.created_time = G.TIMERS.REAL
 	local badge = {
 		n = G.UIT.R,
@@ -217,7 +233,7 @@ function SMODS.create_mod_badges(obj, badges)
 					minw = 2,
 					minh = 0.36,
 					emboss = 0.05,
-					padding = 0.03 * 0.9,
+					padding = 0.03 * base_scale,
 				},
 				nodes = {
 					{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
@@ -232,7 +248,7 @@ function SMODS.create_mod_badges(obj, badges)
 								shadow = true,
 								offset_y = -0.03,
 								spacing = 1,
-								scale = 0.33 * 0.9 * min_scale,
+								scale = 0.33 * base_scale,
 							}
 						}
 					},
@@ -241,14 +257,8 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 		}
 	}
-	for i = 1, #badges do
-		if badges[i].nodes[1].nodes[2].config.object.string == 'Paya Is Terrible' then
-			badges[i].nodes[1].nodes[2].config.object:remove()
-			badges[i] = badge
-			G.C.BADGE_TEMP_BG.cycle = badges[i].nodes[1].nodes[2].config.object.pop_delay*3.5
-			break
-		end
-	end
+	badges[target_badge].nodes[1].nodes[2].config.object:remove()
+	badges[target_badge] = badge
 end
 
 -- This is different from the info argument in the usual create_toggle

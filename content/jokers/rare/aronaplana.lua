@@ -14,8 +14,12 @@ SMODS.Joker {
 	pos = { x = 3, y = 2 },
 	cost = 6,
 	blueprint_compat = true,
-	pta_credit = "Aikoyori",
-	pta_credit_color = HEX('65a49e'),
+	pta_credit = {
+		art = {
+			credit = "Aikoyori",
+			colour = HEX('65a49e')
+		}
+	},
 	calculate = function(self, card, context)
 		if context.joker_main then
 			if next(SMODS.find_card("j_payasaka_plana")) == nil then
