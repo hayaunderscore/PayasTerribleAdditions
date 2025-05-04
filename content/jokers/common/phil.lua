@@ -16,7 +16,7 @@ SMODS.Joker {
 			local oddmult = (G.GAME.probabilities.normal or 1)
 			if pseudorandom('payasaka_phil_fucked') < (card.ability.extra.odds * oddmult) / card.ability.extra.chance then
 				return {
-					f_mult = function(mult) return 0 end,
+					pf_mult = function(mult) return 0 end,
 					message = "Aww..."
 				}
 			end
