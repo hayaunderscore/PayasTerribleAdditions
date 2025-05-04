@@ -10,7 +10,7 @@ target = 'functions/button_callbacks.lua'
 pattern = '''e.config.object.scale = scale_number(G.GAME.current_round.current_hand.mult, 0.9, 1000)'''
 position = 'after'
 payload = '''
-local scale = 6 - (PTASaka.payasaka_text_size or 0)
+local scale = 5 - (PTASaka.payasaka_text_size or 0)
 if string.len(new_mult_text) > scale then
 	e.config.object.scale = 0.9 / (string.len(new_mult_text)/scale)
 end
@@ -24,7 +24,7 @@ target = 'functions/button_callbacks.lua'
 pattern = '''e.config.object.scale = scale_number(G.GAME.current_round.current_hand.chips, 0.9, 1000)'''
 position = 'after'
 payload = '''
-local scale = 6 - (PTASaka.payasaka_text_size or 0)
+local scale = 5 - (PTASaka.payasaka_text_size or 0)
 if string.len(new_chip_text) > scale then
 	e.config.object.scale = 0.9 / (string.len(new_chip_text)/scale)
 end
@@ -43,7 +43,7 @@ if string.len(new_mult_text) > 6 then
 '''
 position = 'at'
 payload = '''
-local scale = 6 - (PTASaka.payasaka_text_size or 0)
+local scale = 5 - (PTASaka.payasaka_text_size or 0)
 if string.len(new_mult_text) > scale then
 	e.config.object.scale = 0.9 / (string.len(new_mult_text)/scale)
 end
@@ -61,7 +61,7 @@ if string.len(new_chip_text) > 6 then
 '''
 position = 'at'
 payload = '''
-local scale = 6 - (PTASaka.payasaka_text_size or 0)
+local scale = 5 - (PTASaka.payasaka_text_size or 0)
 if string.len(new_chip_text) > scale then
 	e.config.object.scale = 0.9 / (string.len(new_chip_text)/scale)
 end

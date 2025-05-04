@@ -561,7 +561,7 @@ return {
 				name = "Printhead",
 				text = {
 					"Copies ability of",
-                    "{C:attention}Joker(s){} to the right",
+					"{C:attention}Joker(s){} to the right",
 					"Number of Jokers copied",
 					"is tied to {C:attention}currently owned{}",
 					"Ahead Joker count"
@@ -571,12 +571,21 @@ return {
 				name = "Aheadstorm",
 				text = {
 					"Copies the ability",
-                    "of leftmost {C:attention}Joker",
+					"of leftmost {C:attention}Joker",
 					"Number of times copied",
 					"is tied to {C:attention}currently owned{}",
 					"Ahead Joker count"
 				}
-			}
+			},
+			j_payasaka_triahead = {
+				name = "Triahead",
+				text = {
+					"Held and scored cards each",
+					"give {X:chips,C:white} X#1# {} Chips when scored",
+					"if played hand is a",
+					"{C:attention}Three of a Kind"
+				},
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {

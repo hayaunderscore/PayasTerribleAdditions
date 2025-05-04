@@ -183,7 +183,6 @@ function SMODS.create_mod_badges(obj, badges)
 			target_badge = i
 			base_scale = badges[i].nodes[1].nodes[2].config.object.scale * 3.03
 			--print("Badge found!")
-			G.C.BADGE_TEMP_BG.cycle = 1.5*3.5
 			break
 		end
 	end
@@ -210,6 +209,7 @@ function SMODS.create_mod_badges(obj, badges)
 	for k, v in pairs(cred) do
 		strings[#strings+1] = localize{ type = 'variable', key = 'pta_'..k..'_credit', vars = { v.credit } }[1]
 		colours[#colours+1] = v.colour or G.C.PAYA_PURPLE
+		G.C.BADGE_TEMP_BG.cycle = 1.5*(1.75*#strings)
 		--print("Localizing ... "..k)
 	end
 	for i = 1, #strings do
