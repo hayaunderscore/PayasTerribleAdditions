@@ -25,11 +25,12 @@ SMODS.Joker {
 	soul_pos = { x = 1, y = 0 },
 	cost = 25,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	generate_ui = JoyousSpring and JoyousSpring.generate_info_ui or SMODS.Joker.generate_ui,
 	--set_sprites = JoyousSpring and JoyousSpring.set_back_sprite or SMODS.Joker.set_sprites,
 	calculate = function(self, card, context)
 		if not JoyousSpring then
-			if context.joker_main then
+			if context.joker_main or context.forcetrigger then
 				return {
 					x_mult = card.ability.extra.joyous_amt * card.ability.extra.joyous_mult
 				}
@@ -42,7 +43,7 @@ SMODS.Joker {
                 }
             end
 
-            if context.joker_main then
+            if context.joker_main or context.forcetrigger then
                 return {
                     x_mult = card.ability.extra.joyous_amt * card.ability.extra.joyous_mult
                 }

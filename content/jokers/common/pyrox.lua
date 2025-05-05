@@ -10,6 +10,7 @@ SMODS.Joker {
 	pos = { x = 4, y = 4 },
 	cost = 3,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if context.other_card and context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs") then
@@ -20,7 +21,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.end_of_round and context.game_over == false and not context.repetition then
+		if (context.end_of_round and context.game_over == false and not context.repetition) or context.forcetrigger then
 			G.E_MANAGER:add_event(Event{
 				trigger = 'after',
 				delay = 0.2,

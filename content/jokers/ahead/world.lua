@@ -6,6 +6,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	pos = { x = 3, y = 3 },
@@ -38,7 +39,7 @@ SMODS.Joker {
 				end
 			end
 		end
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				xchips = card.ability.extra.f_x_chips
 			}

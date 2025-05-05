@@ -6,6 +6,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	pos = { x = 5, y = 7 },
@@ -13,7 +14,7 @@ SMODS.Joker {
 	pools = {["Joker"] = true, ["Meme"] = true},
 	config = {odds = 4, x_chips = 1, x_chips_add = 0.5},
 	calculate = function(self, card, context)
-		if context.end_of_round and context.cardarea == G.jokers and not (context.game_over and context.individual and context.repetition) then
+		if (context.end_of_round and context.cardarea == G.jokers and not (context.game_over and context.individual and context.repetition)) or context.forcetrigger then
 			if pseudorandom('payasaka_envelope') < (G.GAME.probabilities.normal or 1)/card.ability.odds then
 				G.E_MANAGER:add_event(Event{
 					func = function()

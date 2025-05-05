@@ -13,6 +13,7 @@ SMODS.Joker {
 	pos = { x = 3, y = 1 },
 	cost = 5,
 	blueprint_compat = true,
+	demicoloncompat = false,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			local lastsign = card.ability.extra.current_increment >= 0 and 1 or -1

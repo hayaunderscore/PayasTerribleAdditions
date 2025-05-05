@@ -6,6 +6,7 @@ SMODS.Joker {
 	rarity = 3,
 	cost = 6,
 	blueprint_compat = true,
+	demicoloncompat = false,
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.other_card.seal then

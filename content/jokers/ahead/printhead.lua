@@ -6,6 +6,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	pos = { x = 1, y = 7 },

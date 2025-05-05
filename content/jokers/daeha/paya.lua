@@ -8,6 +8,7 @@ SMODS.Joker {
 	soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
 	cost = 25,
 	no_doe = true, -- :]
+	demicoloncompat = false,
 	config = { odds = 2, extra = { exponential_active = false } },
 	loc_vars = function(self, info_queue, card)
 		local str = localize('k_payasaka_' .. (card.ability.extra.exponential_active and "active" or "inactive"))

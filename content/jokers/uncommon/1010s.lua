@@ -13,6 +13,7 @@ SMODS.Joker {
 	soul_pos = { x = 1, y = 2 },
 	cost = 8,
 	blueprint_compat = true,
+	demicoloncompat = false,
 	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			local chancemult = G.GAME.probabilities.normal or 1

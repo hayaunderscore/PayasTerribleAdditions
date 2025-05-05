@@ -10,6 +10,7 @@ SMODS.Joker {
 	soul_pos = { x = 4, y = 5 },
 	cost = 25,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.setting_blind or context.selling_card or context.buying_card or context.using_consumeable or context.open_booster or context.ending_booster then
 			card.ability.extra.current_mult = card.ability.extra.current_mult + card.ability.extra.add_amt
@@ -23,7 +24,7 @@ SMODS.Joker {
 				message = "Aww..."
 			}
 		end
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				x_mult = card.ability.extra.current_mult
 			}

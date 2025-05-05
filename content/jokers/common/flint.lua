@@ -12,6 +12,7 @@ SMODS.Joker {
 	pos = { x = 5, y = 2 },
 	cost = 3,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and next(context.poker_hands['Pair']) then
 			if context.other_card:is_suit('Spades') or context.other_card:is_suit('Clubs') then
@@ -21,7 +22,7 @@ SMODS.Joker {
 				card.ability.light_cards = card.ability.light_cards + 1
 			end
 		end
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				mult = math.min(card.ability.dark_cards, card.ability.light_cards) * card.ability.extra.mult
 			}

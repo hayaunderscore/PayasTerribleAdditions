@@ -6,6 +6,7 @@ SMODS.Joker {
 	pos = { x = 5, y = 1 },
 	cost = 6,
 	blueprint_compat = false,
+	demicoloncompat = false,
 	calculate = function(self, card, context)
 		if context.before then
 			for i = 1, #G.play.cards do

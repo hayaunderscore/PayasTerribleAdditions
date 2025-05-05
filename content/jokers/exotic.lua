@@ -20,6 +20,7 @@ SMODS.Joker {
 		key = "j_payasaka_doodlekosmos"..(card.ability.immutable.level > 2 and "_alt" or "") }
 	end,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	update = function(self, card, dt)
 		-- For those updating from the old one...
 		if card.ability.extra.evolved ~= nil then
@@ -39,9 +40,11 @@ SMODS.Joker {
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		if context.individual and context.cardarea == G.hand and not context.end_of_round then
+		if (context.individual and context.cardarea == G.hand and not context.end_of_round) or context.force_trigger then
 			card.ability.extra.ee_mult = card.ability.extra.ee_mult + card.ability.extra.ee_mult_add
-			context.other_card:juice_up()
+			if context.other_card then
+				context.other_card:juice_up()
+			end
 			return {
 				message = localize("k_upgrade_ex"),
 				colour = G.C.DARK_EDITION,
@@ -84,6 +87,7 @@ SMODS.Joker {
 	soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
 	cost = 50,
 	config = { extra = { x_mult = 1, add = 2, starting_x_mult = 1 } },
+	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		local count = PTASaka.discovered_modded_jokers or 0
 		if count == 0 then
@@ -99,7 +103,7 @@ SMODS.Joker {
 		card.ability.extra.x_mult = card.ability.extra.starting_x_mult + (card.ability.extra.add*(G.jokers and math.max(0, #G.jokers.cards-1) or 0))
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			local count = PTASaka.discovered_modded_jokers or 0
 			if count == 0 then
 				for k, v in ipairs(G.P_CENTERS) do
@@ -150,6 +154,7 @@ SMODS.Joker {
 	soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
 	cost = 50,
 	config = { extra = { x_mult = 1, add = 0.1 } },
+	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.add, card.ability.extra.x_mult } }
 	end,
@@ -182,7 +187,7 @@ SMODS.Joker {
 			hand_chips = mod_chips(G.GAME.hands[text].chips)
 			delay(0.4)
 		end
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				e_mult = card.ability.extra.x_mult,
 				colour = G.C.DARK_EDITION

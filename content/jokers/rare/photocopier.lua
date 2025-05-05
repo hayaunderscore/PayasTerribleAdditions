@@ -19,6 +19,7 @@ SMODS.Joker {
 	pos = { x = 4, y = 0 },
 	cost = 15,
 	blueprint_compat = false,
+	demicoloncompat = false,
 	update = function(self, card2, dt)
 		if G.STAGE == G.STAGES.RUN and card2.added_to_deck then
 			-- Get cards from left and right

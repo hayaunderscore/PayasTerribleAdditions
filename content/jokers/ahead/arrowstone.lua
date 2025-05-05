@@ -9,6 +9,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
+	demicoloncompat = false,
 	pos = { x = 0, y = 3 },
 	atlas = "JOE_Jokers",
 	config = { extra = { odds = 2, x_chips = 2 }, },

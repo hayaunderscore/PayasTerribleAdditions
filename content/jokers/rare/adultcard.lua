@@ -75,6 +75,7 @@ SMODS.Joker {
 		}
 	end,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	update = function(self, card, dt)
 		-- Sanity checks
 		if not G.STAGE == G.STAGES.RUN then return end

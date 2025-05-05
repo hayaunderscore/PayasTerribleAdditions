@@ -11,6 +11,7 @@ SMODS.Joker {
 	soul_pos = { x = 0, y = 1 },
 	cost = 25,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	pools = { ["Joker"] = true, ["Meme"] = true },
@@ -34,7 +35,7 @@ SMODS.Joker {
 	end,
 	calculate = function(self, card, context)
 		if context.scoring_name == 'Three of a Kind' then
-			if context.individual and (context.cardarea == G.play or context.cardarea == G.hand) and not context.end_of_round then
+			if (context.individual and (context.cardarea == G.play or context.cardarea == G.hand) and not context.end_of_round) or context.forcetrigger then
 				return {
 					x_chips = card.ability.extra.chips,
 				}

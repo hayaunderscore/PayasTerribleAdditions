@@ -10,6 +10,7 @@ SMODS.Joker {
 	soul_pos = { x = 2, y = 4 },
 	cost = 25,
 	blueprint_compat = true,
+	demicoloncompat = false,
 	calculate = function(self, card, context)
 		if context.payasaka_before and context.scoring_hand then
 			local copy = context.scoring_hand[1]

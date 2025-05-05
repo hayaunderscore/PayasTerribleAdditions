@@ -11,6 +11,7 @@ SMODS.Joker {
 	pos = { x = 2, y = 0 },
 	cost = 25,
 	blueprint_compat = true,
+	demicoloncompat = false,
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker then
 			return {

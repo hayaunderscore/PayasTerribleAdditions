@@ -10,6 +10,7 @@ SMODS.Joker {
 	pos = { x = 5, y = 4 },
 	cost = 3,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	pools = {["Joker"] = true, ["Food"] = true},
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent then
@@ -50,7 +51,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.joker_main and not card.payasaka_nonexistent then
+		if (context.joker_main or context.forcetrigger) and not card.payasaka_nonexistent then
 			return {
 				xmult = card.ability.extra.xmult
 			}

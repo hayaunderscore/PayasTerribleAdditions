@@ -10,12 +10,13 @@ SMODS.Joker {
 	pos = { x = 3, y = 4 },
 	cost = 6,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	pools = {["Joker"] = true, ["Meme"] = true, ["Food"] = true},
 	calculate = function(self, card, context)
 		if context.setting_blind then
 			G.GAME.blind.chips = G.GAME.blind.chips * card.ability.extra.xblind
 		end
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				xmult = card.ability.extra.xblind*2
 			}

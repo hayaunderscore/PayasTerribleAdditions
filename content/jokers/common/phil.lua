@@ -11,8 +11,9 @@ SMODS.Joker {
 	pos = { x = 2, y = 2 },
 	cost = 3,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			local oddmult = (G.GAME.probabilities.normal or 1)
 			if pseudorandom('payasaka_phil_fucked') < (card.ability.extra.odds * oddmult) / card.ability.extra.chance then
 				return {

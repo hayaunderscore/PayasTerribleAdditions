@@ -10,6 +10,7 @@ SMODS.Joker {
 	pos = { x = 2, y = 7 },
 	cost = 10,
 	blueprint_compat = true,
+	demicoloncompat = false,
 	eternal_compat = false,
 	perishable_compat = false,
 	pools = {["Joker"] = true, ["Meme"] = true},

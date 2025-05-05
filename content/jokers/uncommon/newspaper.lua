@@ -11,8 +11,9 @@ SMODS.Joker {
 	pos = { x = 0, y = 1 },
 	cost = 10,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and not card.getting_sliced and not (context.blueprint_card or card).getting_sliced then
+		if (context.setting_blind or context.forcetrigger) and not card.getting_sliced and not (context.blueprint_card or card).getting_sliced then
 			-- mangled from More Fluff
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',

@@ -14,6 +14,7 @@ SMODS.Joker {
 	pos = { x = 3, y = 2 },
 	cost = 6,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	pta_credit = {
 		art = {
 			credit = "Aikoyori",
@@ -21,7 +22,7 @@ SMODS.Joker {
 		}
 	},
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			if next(SMODS.find_card("j_payasaka_plana")) == nil then
 				return {
 					xchips = card.ability.extra.divchips,

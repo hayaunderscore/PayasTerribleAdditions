@@ -40,7 +40,8 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 4, y = 1 },
 	cost = 10,
-	blueprint_compat = true,
+	blueprint_compat = false,
+	demicoloncompat = false,
 	update = function(self, card, dt)
 		if card.ability.cry_rigged then G.GAME.markiplier_prob_rigged = true end
 	end,
