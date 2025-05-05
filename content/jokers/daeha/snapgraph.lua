@@ -36,7 +36,7 @@ SMODS.Joker {
 			card.ability.saved_ids = {}
 			for i = 1, #G.hand.cards do
 				local _c = G.hand.cards[i]
-				card.ability.saved_ids[#card.ability.saved_ids + 1] = _c.ID
+				card.ability.saved_ids[#card.ability.saved_ids + 1] = _c.sort_id
 			end
 			G.E_MANAGER:add_event(Event{
 				func = function()
@@ -65,7 +65,7 @@ SMODS.Joker {
 			for _, saved in ipairs(card.ability.saved_ids) do
 				for _, area in ipairs({ G.deck, G.discard, G.hand }) do
 					for k, _card in ipairs(area.cards) do
-						if _card.ID == saved then
+						if _card.sort_id == saved then
 							draw_card(area == G.hand and G.discard or area, G.hand, k * 100 / _saved, 'up', true, _card)
 						end
 					end
