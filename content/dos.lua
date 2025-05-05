@@ -169,6 +169,7 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 	end
 end
 
+--[[
 PTASaka.DOSCard {
 	key = 'dos_three',
 	atlas = "JOE_DOS",
@@ -224,6 +225,7 @@ PTASaka.DOSCard {
 	pos = { x = 2, y = 2 },
 	config = { extra = { payasaka_dos = true, payasaka_type = 10, } },
 }
+]]
 
 G.FUNCS.payasaka_open_dos_cardarea = function(e)
 	if not G.deck.states.visible then
