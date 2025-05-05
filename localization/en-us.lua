@@ -1156,6 +1156,20 @@ return {
 					"Balatro theme MIDI",
 					"used for Property Cards"
 				}
+			},
+			credit_canichat = {
+				name = "canichatandobserve",
+				text = {
+					"Original progenitor",
+					"of the 'Ahead' joke"
+				}
+			},
+			credit_notmario = {
+				name = "notmario",
+				text = {
+					"Art for Triahead",
+					":]"
+				}
 			}
 		}
 	},

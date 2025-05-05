@@ -451,6 +451,8 @@ local tabs = function() return
 									create_credit("credit_ari"),
 									create_credit("credit_aikoyori"),
 									create_credit("credit_airrice"),
+									create_credit("credit_canichat"),
+									create_credit("credit_notmario"),
 								}
 							},
 						}
