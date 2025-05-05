@@ -1,3 +1,4 @@
+--[[ Will probably come back as a daehA joker....
 -- Rei
 SMODS.Joker {
 	name = "Reistorm",
@@ -35,3 +36,4 @@ SMODS.Joker {
 		end
 	end
 }
+]]
