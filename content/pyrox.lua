@@ -56,16 +56,11 @@ end
 
 local old_can_buy_and_use = G.FUNCS.can_buy_and_use
 function G.FUNCS.can_buy_and_use(e)
-	old_can_buy_and_use(e)
 	if (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes and e.config.ref_table.config.center.pyroxenes > G.GAME.payasaka_pyroxenes) and (e.config.ref_table.config.center.pyroxenes > 0) then
 		e.UIBox.states.visible = false
 		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 		e.config.button = nil
 	else
-		if e.config.ref_table.highlighted then
-			e.UIBox.states.visible = true
-		end
-		e.config.colour = G.C.SECONDARY_SET.Voucher
-		e.config.button = 'buy_from_shop'
+		old_can_buy_and_use(e)
 	end
 end
