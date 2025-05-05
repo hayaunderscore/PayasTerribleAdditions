@@ -544,6 +544,9 @@ return {
 					"Each {C:attention}Queen{} of",
 					"{C:spades}Spades{} held in hand",
 					"gives {X:chips,C:white} X#1# {} Chips",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}baronness is back"
 				}
 			},
 			j_payasaka_envelope = {
@@ -555,6 +558,9 @@ return {
 					"of a round, {C:attention}increasing{}",
 					"current XChips by {X:chips,C:white}X#3#",
 					"{C:inactive}(Currently {X:chips,C:white}X#4#{C:inactive} Chips)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}There are no purple"
 				}
 			},
 			j_payasaka_printhead = {
@@ -565,6 +571,9 @@ return {
 					"Number of Jokers copied",
 					"is tied to {C:attention}currently owned{}",
 					"Ahead Joker count"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}wtf"
 				}
 			},
 			j_payasaka_aheadstorm = {
@@ -575,6 +584,9 @@ return {
 					"Number of times copied",
 					"is tied to {C:attention}currently owned{}",
 					"Ahead Joker count"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}wth"
 				}
 			},
 			j_payasaka_triahead = {
@@ -585,7 +597,22 @@ return {
 					"if played hand is a",
 					"{C:attention}Three of a Kind"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}MoreFluff cross mod!!!!"
+				}
 			},
+			j_payasaka_snapgraph = {
+				name = "Deviant Memory",
+				text = {
+					"When used, current {C:attention}held",
+					"hand is {C:attention}saved",
+					"{C:attention}Restores{} said {C:attention}held{} hand",
+					"when used a second time",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Say cheese!"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {

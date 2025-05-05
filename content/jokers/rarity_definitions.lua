@@ -2,7 +2,7 @@ SMODS.Rarity {
 	key = "ahead",
 	badge_colour = HEX('C4C1EA'),
 	pools = { ["Joker"] = true },
-	default_weight = 0.1, -- Just *slightly* more rarer than Uncommon
+	default_weight = 0.01, -- Now rarer than rare hopefully
 }
 
 -- Exotic but also not exotic but also exotic :grin:
