@@ -211,7 +211,7 @@ function Card:can_use_consumeable(any, skip)
 		return false
 	end
 	local ret = old_can_use(self, any, skip)
-	if self.ability.name == "Snapgraph" then
+	if self.config.center.pta_usable then
 		ret = self.config.center.can_use(self.config.center, self)
 	end
 	return ret
@@ -221,7 +221,7 @@ local old_highlight = Card.highlight
 function Card:highlight(ih)
 	local exists = self.children.use_button ~= nil
 	old_highlight(self, ih)
-	if self.ability.name == "Snapgraph" and self.area and self.area ~= G.pack_cards then
+	if self.config.center.pta_usable and self.area and self.area ~= G.pack_cards then
 		if self.highlighted and self.area and self.area.config.type ~= 'shop' and (self.area == G.jokers or self.area == G.consumeables) then
 			if self.children.use_button then
 				self.children.use_button:remove()
