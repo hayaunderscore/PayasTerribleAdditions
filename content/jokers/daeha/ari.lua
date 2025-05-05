@@ -1,3 +1,4 @@
+--[[ Ari will undergo a rework soon....
 -- Ari
 SMODS.Joker {
 	name = "Ari",
@@ -39,3 +40,4 @@ SMODS.Joker {
 		end
 	end
 }
+]]
