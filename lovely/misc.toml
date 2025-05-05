@@ -12,7 +12,6 @@ position = 'before'
 payload = '''
 elseif card.ability.name == 'Snapgraph' and card.from_area ~= G.shop and card.from_area ~= G.pack_cards then 
 	draw_card(G.hand, G.play, 1, 'up', true, card, nil, mute)
-	print("hi")
 	dont_dissolve = true
     delay(0.2)
     PTASaka.use_joker(card, area)

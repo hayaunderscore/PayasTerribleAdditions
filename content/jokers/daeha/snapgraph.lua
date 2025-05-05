@@ -41,6 +41,7 @@ SMODS.Joker {
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					card:juice_up(0.6, 0.1)
+					play_sound('tarot1')
 					attention_text({
 						text = "Saved!",
 						scale = 1,
@@ -74,6 +75,7 @@ SMODS.Joker {
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					card:juice_up(0.6, 0.1)
+					play_sound('tarot2')
 					attention_text({
 						text = "Loaded!",
 						scale = 1,
