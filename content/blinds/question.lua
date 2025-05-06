@@ -1,4 +1,4 @@
--- Fuse two boss blinds together. Jesus.
+-- Fuses two boss blinds together. Jesus.
 SMODS.Blind {
 	key = "question",
 	atlas = "JOE_Blinds",
@@ -19,9 +19,38 @@ SMODS.Blind {
 		local name2 = localize { type = 'name_text', key = current_boss, set = 'Blind' }
 		return {vars = {name1, name2}}
 	end,
+	show_fusions = true,
 	set_blind = function(self)
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			SMODS.merge_lists(self.boss, (G.P_BLINDS[v].boss and type(G.P_BLINDS[v].boss) == "table") and G.P_BLINDS[v].boss or {})
+			-- todo support multiple debuffs
+			G.GAME.blind.debuff = G.P_BLINDS[v].debuff or {}
+			SMODS.merge_lists(G.GAME.blind.debuff, (G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table") and G.P_BLINDS[v].debuff or {})
+			-- blindexpander stuffs
+			if G.P_BLINDS[v].passives then
+				-- passives support
+				G.GAME.blind.passives = G.GAME.blind.passives or {}
+				SMODS.merge_lists(G.GAME.blind.passives, (G.P_BLINDS[v].passives and type(G.P_BLINDS[v].passives) == "table") and G.P_BLINDS[v].passives or {})
+				if self.passives then
+					self.children.alert = UIBox{
+						definition = create_UIBox_card_alert(), 
+						config = {
+							align = "tri",
+							offset = {
+								x = 0.1, y = 0
+							},
+							parent = self
+						}
+					}
+				else
+					self.children.alert = nil
+				end
+			end
+			-- summons
+			if (G.P_BLINDS[v].summon) then
+				G.GAME.blind.summon = G.GAME.blind.summon or {}
+				SMODS.merge_lists(G.GAME.blind.summon, (G.P_BLINDS[v].summon and type(G.P_BLINDS[v].summon) == "table") and G.P_BLINDS[v].summon or {})
+			end
 			if G.P_BLINDS[v].set_blind then
 				--print("set blind")
 				G.P_BLINDS[v].set_blind(G.P_BLINDS[v])
@@ -376,5 +405,148 @@ SMODS.Blind {
 			end
 			return ret
 		end
-	end
+	end,
+	cry_after_play = function(self)
+		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].cry_after_play then
+				--print("modified !!!")
+				G.P_BLINDS[v].cry_after_play(G.P_BLINDS[v])
+			end
+		end
+	end,
+	cry_before_play = function(self)
+		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].cry_before_play then
+				--print("modified !!!")
+				G.P_BLINDS[v].cry_before_play(G.P_BLINDS[v])
+			end
+		end
+	end,
+	cry_calc_ante_gain = function(self)
+		local ret = 1
+		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].cry_calc_ante_gain then
+				--print("modified !!!")
+				ret = ret * G.P_BLINDS[v].cry_calc_ante_gain(G.P_BLINDS[v])
+			end
+		end
+		return ret
+	end,
+	cry_cap_score = function(self)
+		local ret = math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count,hand_chips or 1e300,mult or 1e300))
+		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].cry_cap_score then
+				--print("modified !!!")
+				ret = G.P_BLINDS[v].cry_cap_score(G.P_BLINDS[v])
+			end
+		end
+		return ret
+	end,
+	cry_round_base_mod = function(self, dt)
+		local ret = 1
+		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].cry_round_base_mod then
+				--print("modified !!!")
+				ret = ret * G.P_BLINDS[v].cry_round_base_mod(G.P_BLINDS[v], dt)
+			end
+		end
+		return ret
+	end,
 }
+
+-- Info to show the boss blinds fused
+-- Taken from blindexpander and mangled
+
+local set_blindref = Blind.set_blind
+function Blind.set_blind(self, blind, reset, silent)
+    if not reset then
+        self.show_fusions = blind and blind.show_fusions or false
+        if self.show_fusions then
+            self.children.alert = UIBox{
+                definition = create_UIBox_card_alert(), 
+                config = {
+                    align = "tri",
+                    offset = {
+                        x = 0.1, y = 0
+                    },
+                    parent = self
+                }
+            }
+        else
+            self.children.alert = nil
+        end
+    end
+    set_blindref(self, blind, reset, silent)
+end
+
+function info_from_fused(fused)
+    local width = 6
+    for _, v in ipairs(SMODS.Mods) do
+        if v.fused_ui_size and type(v.fused_ui_size) == "function" then
+            width = math.max(width, v.fused_ui_size())
+        end
+    end
+    local desc_nodes = {}
+    localize{type = 'descriptions', key = fused, set = "fused", nodes = desc_nodes, vars = {}}
+    local desc = {}
+    for _, v in ipairs(desc_nodes) do
+        desc[#desc+1] = {n=G.UIT.R, config={align = "cl"}, nodes=v}
+    end
+    return 
+    {n=G.UIT.R, config={align = "cl", colour = lighten(G.C.GREY, 0.4), r = 0.1, padding = 0.05}, nodes={
+        {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1}, nodes = localize{type = 'name', key = fused, set = "Blind", name_nodes = {}, vars = {}}},
+        {n=G.UIT.R, config={align = "cl", minw = width, minh = 0.4, r = 0.1, padding = 0.05, colour = desc_nodes.background_colour or G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=desc}}}
+    }}
+end
+
+function create_UIBox_blind_fused(blind)
+    local fused_lines = {}
+    for _, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+        fused_lines[#fused_lines+1] = info_from_fused(v)
+    end
+    return
+    {n=G.UIT.ROOT, config = {align = 'cm', colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05, padding = 0.05}, nodes={
+        {n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.05, colour = G.C.GREY}, nodes={
+            {n=G.UIT.C, config = {align = "lm", padding = 0.1}, nodes = fused_lines}
+        }}
+    }}
+end
+
+local blind_hoverref = Blind.hover
+function Blind.hover(self)
+    if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then 
+        if not self.hovering and self.states.visible and self.children.animatedSprite.states.visible then
+            if G.GAME.round_resets.last_cast_boss and self.show_fusions then
+                G.blind_fused = UIBox{
+                    definition = create_UIBox_blind_fused(self),
+                    config = {
+                        major = self,
+                        parent = nil,
+                        offset = {
+                            x = 0.15,
+                            y = 0.2 + 0.38*#G.GAME.payasaka_merged_boss_keys,
+                        },  
+                        type = "cr",
+                    }
+                }
+                G.blind_fused.attention_text = true
+                G.blind_fused.states.collide.can = false
+                G.blind_fused.states.drag.can = false
+                if self.children.alert then
+                    self.children.alert:remove()
+                    self.children.alert = nil
+                end
+            end
+        end
+    end
+    blind_hoverref(self)
+end
+
+local blind_stop_hoverref = Blind.stop_hover
+function Blind.stop_hover(self)
+    if G.blind_fused then
+        G.blind_fused:remove()
+        G.blind_fused = nil
+    end
+    blind_stop_hoverref(self)
+end

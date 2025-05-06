@@ -31,6 +31,25 @@ PTASaka.Risk = SMODS.Consumable:extend {
 	use = function(self, card, area, copier)
 		G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks + 1] = { key = self.key, ability = PTASaka.deep_copy(card
 		.ability.extra) }
+		G.E_MANAGER:add_event(Event{
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				card:juice_up(0.3, 0.5)
+				play_sound('card1')
+				card_eval_status_text(card, 'extra', nil, nil, 'up', {message = "Risk applied!", colour = G.C.MULT, instant = true})
+				return true
+			end
+		})
+		G.E_MANAGER:add_event(Event{
+			trigger = 'after',
+			delay = 2.3+0.4,
+			func = function()
+				card:start_dissolve()
+				delay(1)
+				return true
+			end
+		})
 	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.BLIND_SELECT
@@ -61,8 +80,15 @@ PTASaka.Risk {
 		return { vars = { card.ability.extra.money } }
 	end,
 	apply_risk = function(self, ability)
-		G.GAME.blind.chips = G.GAME.blind.chips * 2
-		G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
+		G.E_MANAGER.add_event(Event{
+			func = function()
+				G.GAME.blind.chips = G.GAME.blind.chips * 2
+				G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
+				G.GAME.blind:wiggle()
+				return true
+			end
+		})
+		delay(0.6)
 	end,
 	apply_reward = function(self, ability)
 	end,
@@ -74,7 +100,15 @@ function Game:start_run(args)
 	local merged = G.P_BLINDS['bl_payasaka_question']
 	merged.boss.merged_keys = G.GAME.payasaka_merged_boss_keys or {}
 	merged.debuff = G.GAME.payasaka_merged_props and G.GAME.payasaka_merged_props[1] or {}
-	merged.mult = G.GAME.payasaka_merged_props and G.GAME.payasaka_merged_props[2] or 2
+	merged.mult = G.GAME.payasaka_merged_props and math.max(G.GAME.payasaka_merged_props[2], G.GAME.payasaka_merged_props[3]) or 2
+	-- cryptid being a piece of shit
+	merged.mult_ante = G.GAME.round_resets.ante
+end
+
+local reroll = G.FUNCS.reroll_boss
+function G.FUNCS.reroll_boss(e)
+	if G.GAME.payasaka_cannot_reroll then return end
+	reroll(e)
 end
 
 PTASaka.Risk {
@@ -83,9 +117,8 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 0 },
 	use = function(self, card, area, copier)
-		G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks + 1] = { key = self.key, ability = PTASaka.deep_copy(card
-		.ability.extra) }
 		G.GAME.round_resets.last_cast_boss = G.GAME.round_resets.blind_choices.Boss
+		G.GAME.payasaka_cannot_reroll = true
 		G.E_MANAGER:add_event(Event {
 			func = function()
 				local par = G.blind_select_opts.boss.parent
@@ -117,27 +150,19 @@ PTASaka.Risk {
 		local merged = G.P_BLINDS['bl_payasaka_question']
 		merged.boss.merged_keys = {boss, current_boss}
 		G.GAME.payasaka_merged_boss_keys = {boss, current_boss}
-		G.GAME.payasaka_merged_props = { PTASaka.FH.merge(G.P_BLINDS[boss].debuff or {}, G.P_BLINDS[current_boss].debuff or {}), G.P_BLINDS[boss].mult * G.P_BLINDS[current_boss].mult }
-		merged.debuff = G.GAME.payasaka_merged_props[1]
-		merged.mult = G.GAME.payasaka_merged_props[2]
-	end,
-	apply_risk = function(self, ability)
-		local boss, current_boss = unpack(G.GAME.payasaka_merged_boss_keys)
-		G.GAME.blind:set_blind(G.P_BLINDS['bl_payasaka_question'])
-		local name1 = localize { type = 'name_text', key = boss, set = 'Blind' }
-		local name2 = localize { type = 'name_text', key = current_boss, set = 'Blind' }
-		local loc_target = localize { type = 'raw_descriptions', key = 'bl_payasaka_question', set = 'Blind', vars = { name1, name2 } }
-		if loc_target then
-			G.GAME.blind.loc_debuff_text = ''
-			EMPTY(G.GAME.blind.loc_debuff_lines)
-			for k, v in ipairs(loc_target) do
-				G.GAME.blind.loc_debuff_text = G.GAME.blind.loc_debuff_text .. v .. (k <= #loc_target and ' ' or '')
-				G.GAME.blind.loc_debuff_lines[k] = v
-			end
-		end
-		G.HUD_blind:recalculate(false)
+		G.GAME.payasaka_merged_props = { PTASaka.FH.merge(G.P_BLINDS[boss].debuff or {}, G.P_BLINDS[current_boss].debuff or {}), G.P_BLINDS[boss].mult > 2 and G.P_BLINDS[boss].mult or 2, G.P_BLINDS[current_boss].mult > 2 and G.P_BLINDS[current_boss].mult or 2 }
+		G.P_BLINDS['bl_payasaka_question'].debuff = G.GAME.payasaka_merged_props[1]
+		G.P_BLINDS['bl_payasaka_question'].mult = math.max(G.P_BLINDS[boss].mult > 2 and G.P_BLINDS[boss].mult or 2, G.P_BLINDS[current_boss].mult > 2 and G.P_BLINDS[current_boss].mult or 2)
+		-- cryptid being a piece of shit
+		G.P_BLINDS['bl_payasaka_question'].mult_ante = G.GAME.round_resets.ante
+		PTASaka.Risk.use(self, card, area, copier)
 	end,
 	apply_reward = function(self, ability)
+		G.GAME.payasaka_cannot_reroll = nil
+		G.GAME.round_resets.last_cast_boss = nil
+		add_tag(Tag('tag_charm'))
+		add_tag(Tag('tag_meteor'))
+		add_tag(Tag('tag_ethereal'))
 	end,
 }
 
@@ -199,7 +224,12 @@ PTASaka.Risk {
 		G.E_MANAGER:add_event(Event {
 			func = function()
 				local par = G.blind_select_opts.boss.parent
-				_, G.GAME.round_resets.blind_choices.Boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
+				if G.GAME.round_resets.last_cast_boss then
+					_, G.GAME.round_resets.last_cast_boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
+					G.GAME.payasaka_merged_boss_keys[2] = G.GAME.round_resets.last_cast_boss
+				else
+					_, G.GAME.round_resets.blind_choices.Boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
+				end
 
 				G.blind_select_opts.boss:remove()
 				G.blind_select_opts.boss = UIBox {
