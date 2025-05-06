@@ -630,6 +630,10 @@ return {
 					"are destroyed",
 				}
 			},
+			bl_payasaka_question = {
+				name = 'The Cast', text = { "Fusion of the blinds", "#1# and #2#" }
+			},
+			bl_payasaka_question_alt = { name = 'The Cast', text = { "You shouldn't spoil", "yourself, now..." } },
 		},
 		Edition = {
 			e_payasaka_jpeg = {
@@ -668,7 +672,7 @@ return {
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
-			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } }
+			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } },
 		},
 		DOSCard = {
 			c_payasaka_dos_wild = {
@@ -827,76 +831,73 @@ return {
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Fluffy...",
 				}
-			}
+			},
+			c_payasaka_showdown = {
+				name = "Showdown",
+				text = {
+					"{C:attention}Transforms{} the boss",
+					"blind to a {C:attention}showdown",
+					"boss blind for a",
+					"{C:dark_edition}Negative{} {C:spectral}The Soul"
+				}
+			},
 		},
 		Risk = {
 			c_payasaka_doubledown = {
 				name = "Double Down",
 				text = {
-					"When used, {C:attention}doubles{} the",
-					"boss blind's requirement",
-					"Get {C:money}X#1#{} money reward",
-					"upon defeating the boss blind"
-				}
-			},
-			c_payasaka_showdown = {
-				name = "Showdown",
-				text = {
-					"When used, {C:attention}transforms{} the",
-					"boss blind to a {C:attention}showdown",
-					"boss blind",
-					"Grants a {C:dark_edition}Negative{} {C:spectral}The Soul",
-					"card upon defeating the boss"
+					"{C:attention}Doubles{} the boss",
+					"blind's {C:attention}requirement",
+					"for {C:money}X#1#{} money reward"
 				}
 			},
 			c_payasaka_cast = {
 				name = "Cast",
 				text = {
-					"When used, {C:attention}applies{} a",
-					"{C:attention}random{} boss blind's ability",
+					"{C:attention}Applies{} a {C:attention}random{}",
+					"boss blind's {C:attention}ability",
 					"to current boss blind",
-					"Grants a {C:tarot}Arcana{}, {C:planet}Celestial{}, and",
-					"{C:spectral}Spectral{} Pack Tag",
-					"upon defeating the boss blind"
+					"Grants a {C:tarot}Charm{}, {C:planet}Meteor{}",
+					"and {C:spectral}Ethereal{} Tag upon",
+					"{C:attention}defeating{} the boss blind"
 				}
 			},
 			c_payasaka_crime = {
 				name = "Crime",
 				text = {
-					"When used, get {C:red}-#1#{} hand",
-					"upon entering a boss blind",
-					"to get a permanent {C:red}+#1#{} discard",
-					"in return",
+					"{C:red}-#1#{} hand when the",
+					"boss blind is {C:attention}selected{} for a",
+					"{C:attention}permanent{} {C:red}+#1#{} discard",
+					"upon {C:attention}defeating{} the boss blind"
 				}
 			},
 			c_payasaka_hinder = {
 				name = "Hinder",
 				text = {
-					"When used, debuff {C:attention}#1#{} random",
-					"cards in your deck",
-					"upon entering a boss blind",
+					"{C:attention}Debuff{} {C:attention}#1#{} random",
+					"cards in your deck upon",
+					"{C:attention}entering{} the boss blind",
 					"Give {C:attention}debuffed{} cards a {C:attention}random{}",
 					"{C:attention}edition{}, {C:attention}enhancement{} or {C:attention}seal{}",
-					"upon defeating the boss blind"
+					"upon {C:attention}defeating{} the boss blind"
 				}
 			},
 			c_payasaka_elysium = {
 				name = "Elysium",
 				text = {
-					"When used, debuff the {C:attention}rightmost",
-					"Joker during a boss blind",
+					"{C:attention}Debuff{} the {C:attention}rightmost",
+					"Joker during the boss blind",
 					"Give a {C:attention}random{} Joker an",
-					"{C:attention}edition{} upon defeating the boss",
+					"{C:attention}edition{} upon {C:attention}defeating{} the boss",
 				}
 			},
 			c_payasaka_deface = {
 				name = "Deface",
 				text = {
-					"When used, {C:attention}debuffs{} face",
-					"cards during a boss blind",
-					"Give a {C:attention}random{} Joker an",
+					"{C:attention}Debuffs{} face cards",
+					"during a boss blind",
 					"Grants a {C:dark_edition}Negative{} {C:spectral}Familiar",
-					"card upon defeating the boss"
+					"card upon {C:attention}defeating{} the boss"
 				}
 			},
 		},
