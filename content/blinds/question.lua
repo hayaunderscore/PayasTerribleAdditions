@@ -452,6 +452,16 @@ SMODS.Blind {
 		end
 		return ret
 	end,
+	calculate = function(self, blind, context)
+		local rets = {}
+		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].calculate then
+				--print("modified !!!")
+				rets[#rets+1] = G.P_BLINDS[v].calculate(G.P_BLINDS[v], G.GAME.blind, context)
+			end
+		end
+		return PTASaka.recursive_extra(rets)
+	end
 }
 
 -- Info to show the boss blinds fused
