@@ -829,6 +829,77 @@ return {
 				}
 			}
 		},
+		Risk = {
+			c_payasaka_doubledown = {
+				name = "Double Down",
+				text = {
+					"When used, {C:attention}doubles{} the",
+					"boss blind's requirement",
+					"Get {C:money}X#1#{} money reward",
+					"upon defeating the boss blind"
+				}
+			},
+			c_payasaka_showdown = {
+				name = "Showdown",
+				text = {
+					"When used, {C:attention}transforms{} the",
+					"boss blind to a {C:attention}showdown",
+					"boss blind",
+					"Grants a {C:dark_edition}Negative{} {C:spectral}The Soul",
+					"card upon defeating the boss"
+				}
+			},
+			c_payasaka_cast = {
+				name = "Cast",
+				text = {
+					"When used, {C:attention}applies{} a",
+					"{C:attention}random{} boss blind's ability",
+					"to current boss blind",
+					"Grants a {C:tarot}Arcana{}, {C:planet}Celestial{}, and",
+					"{C:spectral}Spectral{} Pack Tag",
+					"upon defeating the boss blind"
+				}
+			},
+			c_payasaka_crime = {
+				name = "Crime",
+				text = {
+					"When used, get {C:red}-#1#{} hand",
+					"upon entering a boss blind",
+					"to get a permanent {C:red}+#1#{} discard",
+					"in return",
+				}
+			},
+			c_payasaka_hinder = {
+				name = "Hinder",
+				text = {
+					"When used, debuff {C:attention}#1#{} random",
+					"cards in your deck",
+					"upon entering a boss blind",
+					"Give {C:attention}debuffed{} cards a {C:attention}random{}",
+					"{C:attention}edition{}, {C:attention}enhancement{} or {C:attention}seal{}",
+					"upon defeating the boss blind"
+				}
+			},
+			c_payasaka_elysium = {
+				name = "Elysium",
+				text = {
+					"When used, debuff the {C:attention}rightmost",
+					"Joker during a boss blind",
+					"Give a {C:attention}random{} Joker an",
+					"{C:attention}edition{} upon defeating the boss",
+				}
+			},
+			c_payasaka_deface = {
+				name = "Deface",
+				text = {
+					"When used, {C:attention}debuffs{} face",
+					"cards during a boss blind",
+					"Give a {C:attention}random{} Joker an",
+					"Grants a {C:dark_edition}Negative{} {C:spectral}Familiar",
+					"card upon defeating the boss"
+				}
+			},
+		},
 		Rotarot = {
 			c_payasaka_rot_greed = {
 				name = "Avarice!",
@@ -1187,6 +1258,8 @@ return {
 			b_property_cards = "Property Cards",
 			k_doscard = "DOS",
 			b_doscard_cards = "DOS Cards",
+			k_risk = "Risk",
+			b_risk_cards = "Risk Cards",
 			k_property_pack = "Property Pack",
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
@@ -1216,6 +1289,7 @@ return {
 	},
 	labels = {
 		property = "Property",
-		doscard = "DOS"
+		doscard = "DOS",
+		risk = "Risk",
 	},
 }

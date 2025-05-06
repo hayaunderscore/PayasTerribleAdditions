@@ -30,7 +30,8 @@ SMODS.Atlas { key = "JOE_Tarots", path = "tarots.png", px = 71, py = 95 }
 -- Property atlas(es)
 SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
 SMODS.Atlas { key = "JOE_Properties_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
-SMODS.Atlas { key = "JOE_DOS", path = "dos.png", px = 71, py = 95 } 
+SMODS.Atlas { key = "JOE_DOS", path = "dos.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Risk", path = "risk.png", px = 71, py = 95 }
 
 -- Voucher atlas
 SMODS.Atlas { key = "JOE_Vouchers", path = "vouchers.png", px = 71, py = 95 }
@@ -111,6 +112,7 @@ if conf["Property Cards"] then
 end
 
 assert(SMODS.load_file("content/dos.lua"))()
+assert(SMODS.load_file("content/risk.lua"))()
 
 -- Vouchers
 assert(SMODS.load_file("content/vouchers.lua"))()

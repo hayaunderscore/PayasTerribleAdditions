@@ -19,3 +19,45 @@ elseif card.config.center.pta_usable and card.from_area ~= G.shop and card.from_
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''(G.GAME.used_vouchers["v_directors_cut"] and not G.GAME.round_resets.boss_rerolled)) then'''
+position = 'at'
+payload = '''
+(G.GAME.used_vouchers["v_directors_cut"] and not G.GAME.round_resets.boss_rerolled)) and not G.GAME.payasaka_cannot_reroll then
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: setting_blind effects'''
+position = 'before'
+payload = '''
+if G.GAME.risk_cards_risks and G.GAME.blind.boss then
+	for _, v in ipairs(G.GAME.risk_cards_risks) do
+		G.P_CENTERS[v.key].apply_risk(G.P_CENTERS[v.key], v.ability)
+	end
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: main end_of_round evaluation'''
+position = 'before'
+payload = '''
+if G.GAME.risk_cards_risks and G.GAME.blind.boss and not game_over then
+	for _, v in ipairs(G.GAME.risk_cards_risks) do
+        print("jesus christ PLEASE give me the funny")
+		G.P_CENTERS[v.key].apply_reward(G.P_CENTERS[v.key], v.ability)
+	end
+end
+'''
+match_indent = true
+times = 1
