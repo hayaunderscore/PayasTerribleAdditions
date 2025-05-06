@@ -461,7 +461,7 @@ SMODS.Blind {
 				rets[#rets+1] = calc
 			end
 		end
-		return PTASaka.recursive_extra(rets)
+		return PTASaka.recursive_extra(rets, 1)
 	end
 }
 
