@@ -153,7 +153,8 @@ PTASaka.FH.is_better_hand       = function(hand1, hand2)
 	if hand1.hand_type ~= hand2.hand_type then
 		local h1 = PTASaka.FH.filter(hand_list, function(v) return v[1] == hand1.hand_type end)[1]
 		local h2 = PTASaka.FH.filter(hand_list, function(v) return v[1] == hand2.hand_type end)[1]
-		return h1[5] > h2[5]
+		-- will make it prefer 3oak polychrome over flush for example
+		return h1[5] > h2[5] and PTASaka.FH.hand_importance(hand1.hand) > PTASaka.FH.hand_importance(hand2.hand)
 	end
 	return PTASaka.FH.hand_importance(hand1.hand) > PTASaka.FH.hand_importance(hand2.hand)
 end
@@ -389,9 +390,8 @@ PTASaka.FH.best_ofakinds        = function(cards)
 			table.insert(trips, v)
 		elseif #v == 2 then
 			table.insert(twos, v)
-		elseif #v == 1 then
-			table.insert(ones, v)
 		end
+		table.insert(ones, v)
 	end
 	local union = {}
 	local full_houses = {}
