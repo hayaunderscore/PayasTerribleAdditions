@@ -457,7 +457,8 @@ SMODS.Blind {
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].calculate then
 				--print("modified !!!")
-				rets[#rets+1] = G.P_BLINDS[v].calculate(G.P_BLINDS[v], G.GAME.blind, context)
+				local calc = G.P_BLINDS[v].calculate(G.P_BLINDS[v], G.GAME.blind, context) or {}
+				rets[#rets+1] = calc
 			end
 		end
 		return PTASaka.recursive_extra(rets)
