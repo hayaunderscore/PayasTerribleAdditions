@@ -15,6 +15,9 @@ SMODS.UndiscoveredSprite {
 	px = 71, py = 95,
 }
 
+G.C.SET.Risk = HEX('c42430')
+G.C.SECONDARY_SET.Risk = HEX('891e2b')
+
 PTASaka.Risk = SMODS.Consumable:extend {
 	set = 'Risk',
 	config = { extra = {} },
@@ -52,7 +55,7 @@ PTASaka.Risk = SMODS.Consumable:extend {
 		})
 	end,
 	can_use = function(self, card)
-		return G.STATE == G.STATES.BLIND_SELECT
+		return G.STATE == G.STATES.BLIND_SELECT or booster_obj
 	end,
 	apply_risk = function(self, ability)
 	end,
@@ -80,7 +83,7 @@ PTASaka.Risk {
 		return { vars = { card.ability.extra.money } }
 	end,
 	apply_risk = function(self, ability)
-		G.E_MANAGER.add_event(Event{
+		G.E_MANAGER:add_event(Event{
 			func = function()
 				G.GAME.blind.chips = G.GAME.blind.chips * 2
 				G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
@@ -121,26 +124,28 @@ PTASaka.Risk {
 		G.GAME.payasaka_cannot_reroll = true
 		G.E_MANAGER:add_event(Event {
 			func = function()
-				local par = G.blind_select_opts.boss.parent
 				G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_question'
+				if G.blind_select_opts and G.blind_select_opts.Boss then
+					local par = G.blind_select_opts.boss.parent
 
-				G.blind_select_opts.boss:remove()
-				G.blind_select_opts.boss = UIBox {
-					T = { par.T.x, 0, 0, 0, },
-					definition =
-					{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
-						UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
-					} },
-					config = { align = "bmi",
-						offset = { x = 0, y = G.ROOM.T.y + 9 },
-						major = par,
-						xy_bond = 'Weak'
+					G.blind_select_opts.boss:remove()
+					G.blind_select_opts.boss = UIBox {
+						T = { par.T.x, 0, 0, 0, },
+						definition =
+						{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
+							UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
+						} },
+						config = { align = "bmi",
+							offset = { x = 0, y = G.ROOM.T.y + 9 },
+							major = par,
+							xy_bond = 'Weak'
+						}
 					}
-				}
-				par.config.object = G.blind_select_opts.boss
-				par.config.object:recalculate()
-				G.blind_select_opts.boss.parent = par
-				G.blind_select_opts.boss.alignment.offset.y = 0
+					par.config.object = G.blind_select_opts.boss
+					par.config.object:recalculate()
+					G.blind_select_opts.boss.parent = par
+					G.blind_select_opts.boss.alignment.offset.y = 0
+				end
 				return true
 			end
 		})
@@ -269,7 +274,6 @@ PTASaka.Risk {
 		end
 		G.E_MANAGER:add_event(Event {
 			func = function()
-				local par = G.blind_select_opts.boss.parent
 				if G.GAME.round_resets.last_cast_boss then
 					_, G.GAME.round_resets.last_cast_boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 					G.GAME.payasaka_merged_boss_keys[2] = G.GAME.round_resets.last_cast_boss
@@ -277,23 +281,27 @@ PTASaka.Risk {
 					_, G.GAME.round_resets.blind_choices.Boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 				end
 
-				G.blind_select_opts.boss:remove()
-				G.blind_select_opts.boss = UIBox {
-					T = { par.T.x, 0, 0, 0, },
-					definition =
-					{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
-						UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
-					} },
-					config = { align = "bmi",
-						offset = { x = 0, y = G.ROOM.T.y + 9 },
-						major = par,
-						xy_bond = 'Weak'
+				if G.blind_select_opts and G.blind_select_opts.Boss then
+					local par = G.blind_select_opts.boss.parent
+
+					G.blind_select_opts.boss:remove()
+					G.blind_select_opts.boss = UIBox {
+						T = { par.T.x, 0, 0, 0, },
+						definition =
+						{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
+							UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
+						} },
+						config = { align = "bmi",
+							offset = { x = 0, y = G.ROOM.T.y + 9 },
+							major = par,
+							xy_bond = 'Weak'
+						}
 					}
-				}
-				par.config.object = G.blind_select_opts.boss
-				par.config.object:recalculate()
-				G.blind_select_opts.boss.parent = par
-				G.blind_select_opts.boss.alignment.offset.y = 0
+					par.config.object = G.blind_select_opts.boss
+					par.config.object:recalculate()
+					G.blind_select_opts.boss.parent = par
+					G.blind_select_opts.boss.alignment.offset.y = 0
+				end
 				return true
 			end
 		})
@@ -301,7 +309,7 @@ PTASaka.Risk {
 		PTASaka.Risk.use(self, card, area, copier)
 	end,
 	can_use = function(self, card)
-		return (G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATE.SMODS_BOOSTER_OPENED) and
+		return (G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and
 			not (G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].boss and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].boss.showdown)
 	end,
 	apply_risk = function(self, ability)
@@ -314,3 +322,67 @@ PTASaka.Risk {
 		G.GAME.payasaka_cannot_reroll = nil
 	end
 }
+
+-- edit of StrangeLib.make_boosters to use pyrox instead
+function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, common_values, pack_size)
+    pack_size = pack_size or 3
+    for index, pos in ipairs(normal_poses) do
+        local t = copy_table(common_values)
+        t.key = base_key .. "_normal_" .. index
+        t.pos = pos
+        t.config = { extra = pack_size, choose = 1 }
+		--t.cost = 4
+        t.pyroxenes = 4
+        SMODS.Booster(t)
+    end
+    for index, pos in ipairs(jumbo_poses) do
+        local t = copy_table(common_values)
+        t.key = base_key .. "_jumbo_" .. index
+        t.pos = pos
+        t.config = { extra = pack_size + 1, choose = 1 }
+		--t.cost = 6
+        t.pyroxenes = 6
+        SMODS.Booster(t)
+    end
+    for index, pos in ipairs(mega_poses) do
+        local t = copy_table(common_values)
+        t.key = base_key .. "_mega_" .. index
+        t.pos = pos
+        t.config = { extra = pack_size + 1, choose = 2 }
+		--t.cost = 8
+        t.pyroxenes = 8
+        SMODS.Booster(t)
+    end
+end
+
+-- Booster packs....
+PTASaka.make_boosters('moji',
+	{
+		{ x = 0, y = 3 },
+		{ x = 1, y = 3 },
+	},
+	{
+		{ x = 0, y = 4 },
+	},
+	{
+		{ x = 1, y = 4 },
+	},
+	{
+		atlas = 'JOE_Boosters',
+		kind = 'Risk',
+		weight = 0.4,
+		cost = 0,
+		allow_duplicates = true,
+		create_card = function(self, card, i)
+			return create_card("Risk", G.pack_cards, nil, nil, true, true, nil)
+		end,
+		in_pool = function(self, args)
+			return true, { allow_duplicates = true }
+		end,
+		group_key = 'k_moji_pack',
+		ease_background_colour = function(self)
+			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Risk)
+			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Risk, special_colour = G.C.SET.Risk, contrast = 4 })
+		end,
+	}, 2
+)

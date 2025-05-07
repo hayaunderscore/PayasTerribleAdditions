@@ -1114,6 +1114,38 @@ return {
 					"add to your consumeables"
 				}
 			},
+			p_payasaka_moji_normal_1 = {
+				name = "Moji Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_moji_normal_2 = {
+				name = "Moji Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_moji_mega_1 = {
+				name = "Mega Moji Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"add to your consumeables"
+				}
+			},
+			p_payasaka_moji_jumbo_1 = {
+				name = "Jumbo Moji Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"add to your consumeables"
+				}
+			},
 			payasaka_random_seal = {
 				name = "Random Seal",
 				text = {
@@ -1271,6 +1303,7 @@ return {
 			k_risk = "Risk",
 			b_risk_cards = "Risk Cards",
 			k_property_pack = "Property Pack",
+			k_moji_pack = "Moji Pack",
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",

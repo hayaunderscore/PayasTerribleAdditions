@@ -423,7 +423,7 @@ StrangeLib.make_boosters('property',
 		{ x = 1, y = 1 },
 	},
 	{
-		atlas = 'JOE_Properties_Boosters',
+		atlas = 'JOE_Boosters',
 		kind = 'Property',
 		weight = 0.7,
 		select_card = 'consumeables',

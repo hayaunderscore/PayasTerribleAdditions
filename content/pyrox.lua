@@ -64,3 +64,12 @@ function G.FUNCS.can_buy_and_use(e)
 		old_can_buy_and_use(e)
 	end
 end
+
+local can_open = G.FUNCS.can_open
+G.FUNCS.can_open = function(e)
+	can_open(e)
+	if (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes and e.config.ref_table.config.center.pyroxenes > G.GAME.payasaka_pyroxenes) and (e.config.ref_table.config.center.pyroxenes > 0) then
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+	end
+end
