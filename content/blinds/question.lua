@@ -432,12 +432,12 @@ SMODS.Blind {
 		end
 		return ret
 	end,
-	cry_cap_score = function(self)
+	cry_cap_score = function(self, score)
 		local ret = math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count,hand_chips or 1e300,mult or 1e300))
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_cap_score then
 				--print("modified !!!")
-				ret = G.P_BLINDS[v].cry_cap_score(G.P_BLINDS[v])
+				ret = G.P_BLINDS[v].cry_cap_score(G.P_BLINDS[v], score)
 			end
 		end
 		return ret
@@ -498,7 +498,9 @@ function info_from_fused(fused)
         end
     end
     local desc_nodes = {}
-    localize{type = 'descriptions', key = fused, set = "fused", nodes = desc_nodes, vars = {}}
+	local loc_vars = G.P_BLINDS[fused].vars
+	if G.P_BLINDS[fused].loc_vars then loc_vars = G.P_BLINDS[fused].loc_vars(G.P_BLINDS[fused]) end
+    localize{type = 'descriptions', key = fused, set = "Blind", nodes = desc_nodes, vars = loc_vars}
     local desc = {}
     for _, v in ipairs(desc_nodes) do
         desc[#desc+1] = {n=G.UIT.R, config={align = "cl"}, nodes=v}
