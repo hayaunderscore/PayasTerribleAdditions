@@ -56,8 +56,8 @@ times = 1
 
 [[patches]]
 [patches.pattern]
-target = 'functions/card.lua'
-pattern = '''if self.cost > 0 then'''
+target = 'card.lua'
+pattern = '''if self.cost > 0 then '''
 position = 'at'
 payload = '''
 if self.config and self.config.center and self.config.center.pyroxenes then
