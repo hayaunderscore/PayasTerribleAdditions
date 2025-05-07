@@ -841,6 +841,15 @@ return {
 					"{C:dark_edition}Negative{} {C:spectral}The Soul"
 				}
 			},
+			c_payasaka_center = {
+				name = "Center",
+				text = {
+					"Turns {C:attention}#1#{} Joker into",
+					"a {C:dark_edition}daehA{} Joker",
+					"turn {C:attention}all{} other Jokers into",
+					"ones of the same {C:attention}rarity{}"
+				}
+			}
 		},
 		Risk = {
 			c_payasaka_doubledown = {
