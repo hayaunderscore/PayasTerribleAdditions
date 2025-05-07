@@ -171,7 +171,7 @@ PTASaka.Risk {
 	key = 'crime',
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 0 },
-	discovered = false, unlocked = false,
+	config = {extra = {hand_neg = 1}},
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -182,6 +182,16 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
+	apply_risk = function(self, ability)
+		G.hand:change_size(-ability.hand_neg)
+	end,
+	apply_reward = function(self, ability)
+		G.hand:change_size(ability.hand_neg)
+		G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.hand_neg } }
+	end
 }
 
 PTASaka.Risk {
@@ -189,7 +199,43 @@ PTASaka.Risk {
 	key = 'hinder',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 1 },
-	discovered = false, unlocked = false,
+	config = {extra = {debuff = 10}},
+	apply_risk = function(self, ability)
+		for i = 1, math.min(ability.debuff, #G.deck.cards) do
+			local c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]
+			while c.ability.debuffed_by_risk do c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)] end
+			c.debuff = true
+			c.ability.debuffed_by_risk = true
+		end
+	end,
+	apply_reward = function(self, ability)
+		for _, area in ipairs({G.hand, G.discard, G.deck}) do
+			for _, card in ipairs(area.cards) do
+				if card.ability.debuffed_by_risk then
+					local rnd = pseudorandom('fuck')
+					if rnd < 1/3 then
+						card_eval_status_text(card, 'extra', 1, nil, nil, {message = localize('k_upgrade_ex'), extrafunc = function()
+							card:set_ability(G.P_CENTERS[SMODS.poll_enhancement{type_key = 'fuck_final', mod = 1, guaranteed = true}])
+						end})
+					elseif rnd < 2/3 then
+						card_eval_status_text(card, 'extra', 1, nil, nil, {message = localize('k_upgrade_ex'), extrafunc = function()
+							local edition = poll_edition('fuck_final', 1, Cryptid == nil, true)
+							card:set_edition(edition)
+						end})
+					else
+						card_eval_status_text(card, 'extra', 1, nil, nil, {message = localize('k_upgrade_ex'), extrafunc = function()
+							card:set_seal(SMODS.poll_seal{type_key = 'fuck_final', mod = 1, guaranteed = true})
+						end})
+					end
+					card.ability.debuffed_by_risk = nil
+					card.debuff = false
+				end
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.debuff } }
+	end
 }
 
 PTASaka.Risk {

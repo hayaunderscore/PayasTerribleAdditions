@@ -865,7 +865,7 @@ return {
 			c_payasaka_crime = {
 				name = "Crime",
 				text = {
-					"{C:red}-#1#{} hand when the",
+					"{C:red}-#1#{} hand size when the",
 					"boss blind is {C:attention}selected{} for a",
 					"{C:attention}permanent{} {C:red}+#1#{} discard",
 					"upon {C:attention}defeating{} the boss blind"
