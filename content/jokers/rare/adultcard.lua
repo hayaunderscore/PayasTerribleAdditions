@@ -38,23 +38,6 @@ function SMODS.find_card(key, count_debuffed)
 	return ret
 end
 
--- Recursively create an extra table for each returned effect table
-function PTASaka.recursive_extra(table_return_table, index)
-	local ret = table_return_table[index]
-	if index <= #table_return_table then
-		local function getDeepest(tbl)
-			while tbl.extra do
-				tbl = tbl.extra
-			end
-			return tbl
-		end
-		local prev = getDeepest(ret)
-		prev.extra = PTASaka.recursive_extra(table_return_table, index + 1)
-	end
-	--if ret ~= nil and index == 1 then print(ret) end
-	return ret
-end
-
 -- Adult Card
 SMODS.Joker {
 	name = "Adult Card",

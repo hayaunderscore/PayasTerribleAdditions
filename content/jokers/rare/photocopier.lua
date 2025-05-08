@@ -1,15 +1,26 @@
 if not Card.no then
 	function Card:no(m, no_no)
+		if self.config and self.config.center and self.config.center[m] and self.config.center[m] == no_no then
+			return true
+		end
 		return false
 	end
+end
+
+local function find_joker_by_sort_id(id)
+	for i = 1, #G.jokers.cards do
+		if G.jokers.cards[i].sort_id == id then
+			return G.jokers.cards[i]
+		end
+	end
+	return nil
 end
 
 -- Photocopier
 SMODS.Joker {
 	name = "Photocopier",
 	key = "photocopier",
-	-- Note: old_jkrs isn't saved
-	config = { extra = { coolmult = 2, old_jkrs = { nil, nil } } },
+	config = { extra = { coolmult = 2 }, immutable = { old_ids = {}, payasaka_photocopied = {}, old_mult = 2 } },
 	loc_vars = function(self, info_queue, card)
 		local mult = card.ability.extra.coolmult >= 1e300 and "a lot" or card.ability.extra.coolmult
 		return { vars = { mult } }
@@ -37,8 +48,14 @@ SMODS.Joker {
 			card2.ability.extra.coolmult = math.min(card2.ability.extra.coolmult, 1e300)
 
 			-- erm...
-			if cards[1] then cards[1].ability.payasaka_photocopied = cards[1].ability.payasaka_photocopied or {} end
-			if cards[2] then cards[2].ability.payasaka_photocopied = cards[2].ability.payasaka_photocopied or {} end
+			if cards[1] and cards[1].ability then 
+				cards[1].ability.immutable = cards[1].ability.immutable or {}
+				cards[1].ability.immutable.payasaka_photocopied = cards[1].ability.immutable.payasaka_photocopied or {}
+			end
+			if cards[2] and cards[2].ability then 
+				cards[2].ability.immutable = cards[2].ability.immutable or {}
+				cards[2].ability.immutable.payasaka_photocopied = cards[2].ability.immutable.payasaka_photocopied or {}
+			end
 
 			-- Do not affect other Photocopiers....
 			if cards[1] and cards[1].config.center.key == card2.config.center.key then cards[1] = nil end
@@ -46,28 +63,31 @@ SMODS.Joker {
 
 			local mult = card2.ability.extra.coolmult
 			-- Switched jokers, halve the old one
-			if card2.ability.extra.old_jkrs[1] and card2.ability.extra.old_jkrs[1] ~= cards[1] then
-				local jkr = card2.ability.extra.old_jkrs[1]
-				if jkr.config and not Card.no(jkr, "immutable", true) then
-					PTASaka.Photocopy(jkr, mult, true, card2.ID)
+			if cards[1] and (card2.ability.immutable.old_ids[1] and card2.ability.immutable.old_ids[1] ~= cards[1].sort_id) then
+				local jkr = find_joker_by_sort_id(card2.ability.immutable.old_ids[1])
+				if jkr and jkr.config and not Card.no(jkr, "immutable", true) then
+					PTASaka.Photocopy(jkr, mult, true, card2.sort_id)
 				end
 			end
-			if card2.ability.extra.old_jkrs[2] and card2.ability.extra.old_jkrs[2] ~= cards[2] then
-				local jkr = card2.ability.extra.old_jkrs[2]
-				if jkr.config and not Card.no(jkr, "immutable", true) then
-					PTASaka.Photocopy(jkr, mult, true, card2.ID)
+			if cards[2] and card2.ability.immutable.old_ids[2] and card2.ability.immutable.old_ids[2] ~= cards[2].sort_id then
+				local jkr = find_joker_by_sort_id(card2.ability.immutable.old_ids[2])
+				if jkr and jkr.config and not Card.no(jkr, "immutable", true) then
+					PTASaka.Photocopy(jkr, mult, true, card2.sort_id)
 				end
 			end
 
 			-- Switched jokers, double the new one
-			if cards[1] and not cards[1].ability.payasaka_photocopied[card2.ID] and not Card.no(cards[1], "immutable", true) then
-				PTASaka.Photocopy(cards[1], mult, false, card2.ID)
+			if cards[1] and not cards[1].ability.immutable.payasaka_photocopied[card2.sort_id] and not Card.no(cards[1], "immutable", true) then
+				PTASaka.Photocopy(cards[1], mult, false, card2.sort_id)
 			end
-			if cards[2] and not cards[2].ability.payasaka_photocopied[card2.ID] and not Card.no(cards[2], "immutable", true) then
-				PTASaka.Photocopy(cards[2], mult, false, card2.ID)
+			if cards[2] and not cards[2].ability.immutable.payasaka_photocopied[card2.sort_id] and not Card.no(cards[2], "immutable", true) then
+				PTASaka.Photocopy(cards[2], mult, false, card2.sort_id)
 			end
 
-			card2.ability.extra.old_jkrs = cards
+			card2.ability.immutable.old_ids = {
+				cards[1] and cards[1].sort_id or -1,
+				cards[2] and cards[2].sort_id or -1
+			}
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
@@ -84,8 +104,14 @@ SMODS.Joker {
 		end
 
 		-- erm...
-		if cards[1] then cards[1].ability.payasaka_photocopied = cards[1].ability.payasaka_photocopied or {} end
-		if cards[2] then cards[2].ability.payasaka_photocopied = cards[2].ability.payasaka_photocopied or {} end
+		if cards[1] and cards[1].ability then 
+			cards[1].ability.immutable = cards[1].ability.immutable or {}
+			cards[1].ability.immutable.payasaka_photocopied = cards[1].ability.immutable.payasaka_photocopied or {}
+		end
+		if cards[2] and cards[2].ability then 
+			cards[2].ability.immutable = cards[2].ability.immutable or {}
+			cards[2].ability.immutable.payasaka_photocopied = cards[2].ability.immutable.payasaka_photocopied or {}
+		end
 
 		-- Do not affect other Photocopiers....
 		if cards[1] and cards[1].config.center.key == card.config.center.key then cards[1] = nil end
@@ -95,13 +121,13 @@ SMODS.Joker {
 		if cards[1] then
 			local jkr = cards[1]
 			if jkr.config and not Card.no(jkr, "immutable", true) then
-				PTASaka.Photocopy(jkr, mult, true, card.ID)
+				PTASaka.Photocopy(jkr, mult, true, card.sort_id)
 			end
 		end
 		if cards[2] then
 			local jkr = cards[2]
 			if jkr.config and not Card.no(jkr, "immutable", true) then
-				PTASaka.Photocopy(jkr, mult, true, card.ID)
+				PTASaka.Photocopy(jkr, mult, true, card.sort_id)
 			end
 		end
 	end

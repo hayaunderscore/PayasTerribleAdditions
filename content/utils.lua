@@ -19,6 +19,10 @@ PTASaka.MisprintizeForbidden = {
 	["face_nominal"] = true,
 	["qty"] = true,
 	["selected_d6_face"] = true,
+	["h_x_chips"] = true,
+	["d_size"] = true,
+	["h_size"] = true,
+	["immutable"] = true,
 	--["x_mult"] = true,
 }
 
@@ -87,6 +91,28 @@ function PTASaka.MisprintizeTable(key, tbl, baseval, mult)
 	return cpy
 end
 
+-- Loosely based on https://github.com/balt-dev/Inkbleed/blob/trunk/modules/misprintize.lua
+-- Specifically for non random values
+function PTASaka.MMisprintize(val, amt, reference, key)
+	reference = reference or {}
+	key = key or "1"
+	amt = amt or 1
+	-- Forbidden, skip it
+	if PTASaka.MisprintizeForbidden[key] then return val end
+	local t = type(val)
+	if is_number(val) then
+		reference[key] = val
+		return val * amt
+	elseif t == "table" then
+		local k, v = next(val, nil)
+		while k ~= nil do
+			val[k] = PTASaka.MMisprintize(v, amt, reference[key], k)
+			k, v = next(val, k)
+		end
+	end
+	return val
+end
+
 -- Taken from Cryptid...
 function PTASaka.with_deck_effects(card, func)
 	if not card.added_to_deck then
@@ -102,28 +128,43 @@ end
 function PTASaka.Photocopy(jkr, mult, unphotocopy, id)
 	local mul = mult
 	if unphotocopy == true then mul = 1 / mult end
-	-- Cryptid is on, just use misprintize
-	if Cryptid then
-		Cryptid.with_deck_effects(jkr, function(card)
-			Cryptid.misprintize(card, { min = mul, max = mul }, nil, true)
-			card.ability.payasaka_photocopied[id] = not unphotocopy
-		end)
-		return
-	end
 	-- Otherwise, use ours
 	PTASaka.with_deck_effects(jkr, function(jkr)
 		local key = jkr.config.center_key
-		jkr.ability = PTASaka.MisprintizeTable(key, jkr.ability, nil, mul)
-		PTASaka.BaseValues[key]["ability"] = {}
-		for k, v in pairs(jkr.ability) do
-			if type(jkr.ability[k]) == "table" and not is_number(jkr.ability[k]) then
-				jkr.ability[k] = PTASaka.MisprintizeTable(jkr.config.center_key, jkr.ability[k],
-					PTASaka.BaseValues[key]["ability"], mul)
-			end
-		end
+		PTASaka.BaseValues[key] = PTASaka.BaseValues[key] or {}
+		jkr.ability = PTASaka.MMisprintize(jkr.ability, mul, PTASaka.BaseValues, key)
 		--jkr.ability.extra = PTASaka.MisprintizeTable(jkr.config.center_key, jkr.ability.extra, nil, mul, true)
-		jkr.ability.payasaka_photocopied[id] = not unphotocopy
+		jkr.ability.immutable.payasaka_photocopied[id] = not unphotocopy
 	end)
+end
+
+-- Load all files in a folder
+function PTASaka.RequireFolder(path)
+	local files = NFS.getDirectoryItemsInfo(PTASaka.Mod.path .. "/" .. path)
+	for i = 1, #files do
+		local file_name = files[i].name
+		if file_name:sub(-4) == ".lua" then
+			assert(SMODS.load_file(path .. file_name))()
+		end
+	end
+end
+
+-- Recursively create an extra table for each returned effect table
+function PTASaka.recursive_extra(table_return_table, index)
+	index = index or 1
+	local ret = table_return_table[index]
+	if index <= #table_return_table then
+		local function getDeepest(tbl)
+			while tbl.extra do
+				tbl = tbl.extra
+			end
+			return tbl
+		end
+		local prev = getDeepest(ret)
+		prev.extra = PTASaka.recursive_extra(table_return_table, index + 1)
+	end
+	--if ret ~= nil and index == 1 then print(ret) end
+	return ret
 end
 
 -- ui stuff Taken from Aikoyori thanks aikoyori

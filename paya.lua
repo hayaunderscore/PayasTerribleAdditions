@@ -65,17 +65,6 @@ assert(SMODS.load_file("content/desc.lua"))()
 -- Sounds
 assert(SMODS.load_file("content/sounds.lua"))()
 
--- Load all files in a folder
-function PTASaka.RequireFolder(path)
-	local files = NFS.getDirectoryItemsInfo(PTASaka.Mod.path .. "/" .. path)
-	for i = 1, #files do
-		local file_name = files[i].name
-		if file_name:sub(-4) == ".lua" then
-			assert(SMODS.load_file(path .. file_name))()
-		end
-	end
-end
-
 -- Blinds
 PTASaka.RequireFolder("content/blinds/")
 
