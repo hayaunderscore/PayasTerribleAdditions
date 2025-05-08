@@ -14,10 +14,17 @@ SMODS.Blind {
 		return {key = "bl_payasaka_question_alt"}
 	end,
 	loc_vars = function(self)
-		local boss, current_boss = unpack(G.GAME.payasaka_merged_boss_keys)
-		local name1 = localize { type = 'name_text', key = boss, set = 'Blind' }
-		local name2 = localize { type = 'name_text', key = current_boss, set = 'Blind' }
-		return {vars = {name1, name2}}
+		if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) then
+			local localized = {}
+			for i = 1, #G.GAME.payasaka_merged_boss_keys do
+				localized[#localized+1] = localize { type = 'name_text', key = G.GAME.payasaka_merged_boss_keys[i], set = 'Blind' }
+			end
+			local conc = table.concat(localized, ", ", 1, #localized-1)
+			conc = conc.." and "..localized[#localized]
+			return {vars = {conc}}
+		else
+			return {vars = {""}}
+		end
 	end,
 	show_fusions = true,
 	set_blind = function(self)

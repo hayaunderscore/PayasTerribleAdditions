@@ -101,9 +101,13 @@ local sr = Game.start_run
 function Game:start_run(args)
 	sr(self, args)
 	local merged = G.P_BLINDS['bl_payasaka_question']
-	merged.boss.merged_keys = G.GAME.payasaka_merged_boss_keys or {}
-	merged.debuff = G.GAME.payasaka_merged_props and G.GAME.payasaka_merged_props[1] or {}
-	merged.mult = G.GAME.payasaka_merged_props and math.max(G.GAME.payasaka_merged_props[2], G.GAME.payasaka_merged_props[3]) or 2
+	if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) then
+		-- get biggest chips multiplier
+		for i = 1, #G.GAME.payasaka_merged_boss_keys do
+			local blind = G.P_BLINDS[G.GAME.payasaka_merged_boss_keys[i]]
+			merged.mult = math.max(merged.mult, blind.mult)
+		end
+	end
 	-- cryptid being a piece of shit
 	merged.mult_ante = G.GAME.round_resets.ante
 end
@@ -120,12 +124,32 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 0 },
 	use = function(self, card, area, copier)
-		G.GAME.round_resets.last_cast_boss = G.GAME.round_resets.blind_choices.Boss
+		-- no need to save it if the damn thing is already the question
+		-- im the motherfucking question bitch
+		if G.GAME.round_resets.blind_choices.Boss ~= "bl_payasaka_question" then
+			G.GAME.round_resets.last_cast_boss = G.GAME.round_resets.blind_choices.Boss
+			G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_question'
+		end
 		G.GAME.payasaka_cannot_reroll = true
+		local current_boss = G.GAME.round_resets.last_cast_boss
+		G.GAME.payasaka_merged_boss_keys = G.GAME.payasaka_merged_boss_keys or {}
+		if next(G.GAME.payasaka_merged_boss_keys) == nil then
+			-- first entry is the current boss
+			G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys+1] = current_boss
+		end
+		-- Get a random boss blind to append to the current one
+		G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys+1] = get_new_boss()
+
+		-- get biggest chips multiplier
+		for i = 1, #G.GAME.payasaka_merged_boss_keys do
+			local blind = G.P_BLINDS[G.GAME.payasaka_merged_boss_keys[i]]
+			G.P_BLINDS['bl_payasaka_question'].mult = math.max(G.P_BLINDS['bl_payasaka_question'].mult, blind.mult)
+		end
+		-- cryptid being a piece of shit
+		G.P_BLINDS['bl_payasaka_question'].mult_ante = G.GAME.round_resets.ante
 		G.E_MANAGER:add_event(Event {
 			func = function()
-				G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_question'
-				if G.blind_select_opts and G.blind_select_opts.Boss then
+				if G.blind_select_opts and G.blind_select_opts.boss then
 					local par = G.blind_select_opts.boss.parent
 
 					G.blind_select_opts.boss:remove()
@@ -149,22 +173,12 @@ PTASaka.Risk {
 				return true
 			end
 		})
-		-- Get a random boss blind to append to the current one
-		local boss = get_new_boss()
-		local current_boss = G.GAME.round_resets.last_cast_boss
-		local merged = G.P_BLINDS['bl_payasaka_question']
-		merged.boss.merged_keys = {boss, current_boss}
-		G.GAME.payasaka_merged_boss_keys = {boss, current_boss}
-		G.GAME.payasaka_merged_props = { PTASaka.FH.merge(G.P_BLINDS[boss].debuff or {}, G.P_BLINDS[current_boss].debuff or {}), G.P_BLINDS[boss].mult > 2 and G.P_BLINDS[boss].mult or 2, G.P_BLINDS[current_boss].mult > 2 and G.P_BLINDS[current_boss].mult or 2 }
-		G.P_BLINDS['bl_payasaka_question'].debuff = G.GAME.payasaka_merged_props[1]
-		G.P_BLINDS['bl_payasaka_question'].mult = math.max(G.P_BLINDS[boss].mult > 2 and G.P_BLINDS[boss].mult or 2, G.P_BLINDS[current_boss].mult > 2 and G.P_BLINDS[current_boss].mult or 2)
-		-- cryptid being a piece of shit
-		G.P_BLINDS['bl_payasaka_question'].mult_ante = G.GAME.round_resets.ante
 		PTASaka.Risk.use(self, card, area, copier)
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_cannot_reroll = nil
 		G.GAME.round_resets.last_cast_boss = nil
+		G.GAME.payasaka_merged_boss_keys = {}
 		add_tag(Tag('tag_charm'))
 		add_tag(Tag('tag_meteor'))
 		add_tag(Tag('tag_ethereal'))
@@ -281,7 +295,7 @@ PTASaka.Risk {
 					_, G.GAME.round_resets.blind_choices.Boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 				end
 
-				if G.blind_select_opts and G.blind_select_opts.Boss then
+				if G.blind_select_opts and G.blind_select_opts.boss then
 					local par = G.blind_select_opts.boss.parent
 
 					G.blind_select_opts.boss:remove()
