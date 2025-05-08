@@ -40,7 +40,7 @@ SMODS.Joker {
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		if (context.individual and context.cardarea == G.hand and not context.end_of_round) or context.force_trigger then
+		if (context.individual and context.cardarea == G.hand and not context.end_of_round) or context.forcetrigger then
 			card.ability.extra.ee_mult = card.ability.extra.ee_mult + card.ability.extra.ee_mult_add
 			if context.other_card then
 				context.other_card:juice_up()
