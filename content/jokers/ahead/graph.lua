@@ -6,7 +6,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = true,
-	demicoloncompat = false,
+	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	pos = { x = 0, y = 4 },
@@ -28,6 +28,15 @@ SMODS.Joker {
 					}
 				}
 			end
+		end
+		if context.forcetrigger then
+			card.ability.extra.f_x_chips = card.ability.extra.x_chips + card.ability.extra.f_x_chips
+			return {
+				message = localize("k_upgrade_ex"),
+				extra = {
+					xchips = card.ability.extra.f_x_chips
+				}
+			}
 		end
 	end
 }

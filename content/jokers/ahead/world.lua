@@ -17,7 +17,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.x_chips, not card.ability.cry_rigged and (G.GAME.probabilities.normal or 1) or card.ability.extra.odds, card.ability.extra.odds, card.ability.extra.f_x_chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.before then
+		if context.before or context.forcetrigger then
 			for i = 1, #context.scoring_hand do
 				local _c = context.scoring_hand[i]
 				local prob = pseudorandom("payasaka_world") < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds
@@ -32,7 +32,7 @@ SMODS.Joker {
 						func = function()
 							_c:change_suit('Spades')
 							_c:juice_up()
-							card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize("k_upgrade_ex"), instant = true })
+							card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, { message = localize("k_upgrade_ex"), instant = true })
 							return true
 						end
 					})

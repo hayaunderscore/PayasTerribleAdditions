@@ -34,7 +34,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.scoring_name == 'Three of a Kind' then
+		if context.scoring_name == 'Three of a Kind' or context.forcetrigger then
 			if (context.individual and (context.cardarea == G.play or context.cardarea == G.hand) and not context.end_of_round) or context.forcetrigger then
 				return {
 					x_chips = card.ability.extra.chips,
