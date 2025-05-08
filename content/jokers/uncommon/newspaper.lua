@@ -9,6 +9,16 @@ SMODS.Joker {
 	rarity = 2,
 	atlas = "JOE_Jokers",
 	pos = { x = 0, y = 1 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	cost = 10,
 	blueprint_compat = true,
 	demicoloncompat = true,
