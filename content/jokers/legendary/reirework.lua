@@ -17,8 +17,8 @@ SMODS.Joker {
 		hands = PTASaka.FH.merge(hands, PTASaka.FH.possible_flushes(cards))
 		hands = PTASaka.FH.merge(hands, PTASaka.FH.best_ofakinds(cards))
 		table.sort(hands, PTASaka.FH.is_better_hand)
-		G.E_MANAGER:add_event(Event{
-			func = function ()
+		G.E_MANAGER:add_event(Event {
+			func = function()
 				PTASaka.FH.select_hand(PTASaka.FH.next_best_hand(hands, G.hand.cards, PTASaka.FH.ranksuit))
 				return true
 			end
@@ -30,6 +30,9 @@ SMODS.Joker {
 		return G.STATE == G.STATES.SELECTING_HAND
 	end
 }
+
+-- Spectrum hands will only be valid if these mods exist
+local spectrums_enabled = next(SMODS.find_mod('SixSuits')) or BUNCOMOD or SPECF
 
 -- Mostly taken and mangled from FlushHotkeys
 -- https://github.com/Agoraaa/FlushHotkeys/blob/main/FlushHotkeys.lua
@@ -44,13 +47,13 @@ PTASaka.FH.get_priority_hands   = function()
 			local chips = to_big(hand.chips)
 			local mult = to_big(hand.mult)
 			local value = chips * mult
-			ranked_hands[#ranked_hands+1] = { v.key, value, chips, mult, order }
+			ranked_hands[#ranked_hands + 1] = { v.key, value, chips, mult, order }
 		end
 	end
 
 	table.sort(ranked_hands, function(a, b) return to_big(a[2]) > to_big(b[2]) end)
 	for i = 1, #ranked_hands do
-		ranked_hands[i][5] = (#ranked_hands+1)-i
+		ranked_hands[i][5] = (#ranked_hands + 1) - i
 		ranked_hands[i][6] = i
 	end
 
@@ -155,7 +158,9 @@ PTASaka.FH.is_better_hand       = function(hand1, hand2)
 	if hand1.hand_type ~= hand2.hand_type then
 		local h1 = PTASaka.FH.filter(hand_list, function(v) return v[1] == hand1.hand_type end)[1]
 		local h2 = PTASaka.FH.filter(hand_list, function(v) return v[1] == hand2.hand_type end)[1]
-		return h1[5] > h2[5] and PTASaka.FH.hand_importance(hand1.hand, h1[6], hand_list) > PTASaka.FH.hand_importance(hand2.hand, h2[6], hand_list)
+		return h1[5] > h2[5] and
+		PTASaka.FH.hand_importance(hand1.hand, h1[6], hand_list) >
+		PTASaka.FH.hand_importance(hand2.hand, h2[6], hand_list)
 	end
 	return PTASaka.FH.hand_importance(hand1.hand) > PTASaka.FH.hand_importance(hand2.hand)
 end
@@ -271,15 +276,27 @@ PTASaka.FH.possible_straights   = function(cards)
 	end
 	local str = "Straight"
 	local straight_flushes = {}
+	local straight_spectrums = {}
 	local tbl = next(SMODS.find_card('j_four_fingers')) and fours or fives
 	if next(tbl) then
 		for _, set in ipairs(tbl) do
 			local suit = set[1].base.suit
+			local different = true
+			local all_suits = {}
 			local flush = true
 			for _, c in ipairs(set) do
-				if not c:is_suit(suit) then flush = false break end
+				if not c:is_suit(suit) then
+					flush = false
+				end
+				local spec_suit = SMODS.has_any_suit(c) and "wild" or c.base.suit
+				if not all_suits[spec_suit] then
+					all_suits[spec_suit] = true
+				else
+					different = false
+				end
 			end
-			if flush then straight_flushes[#straight_flushes+1] = set end
+			if different then straight_spectrums[#straight_spectrums+1] = set end
+			if flush then straight_flushes[#straight_flushes + 1] = set end
 		end
 	end
 	local res = {}
@@ -290,6 +307,7 @@ PTASaka.FH.possible_straights   = function(cards)
 		res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(fives, str))
 	end
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(straight_flushes, "Straight Flush"))
+	res = spectrums_enabled and PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(straight_spectrums, "Straight Spectrum")) or res
 	return res
 end
 
@@ -424,21 +442,60 @@ PTASaka.FH.best_ofakinds        = function(cards)
 		end
 	end
 	local flush_houses = {}
+	local spectrum_houses = {}
+	local flush_fives = {}
+	local spectrum_fives = {}
 	if next(full_houses) then
 		for _, set in ipairs(full_houses) do
 			local suit = set[1].base.suit
+			local different = true
+			local all_suits = {}
 			local flush = true
 			for _, c in ipairs(set) do
-				if not c:is_suit(suit) then flush = false break end
+				if not c:is_suit(suit) then
+					flush = false
+				end
+				local spec_suit = SMODS.has_any_suit(c) and "wild" or c.base.suit
+				if not all_suits[spec_suit] then
+					all_suits[spec_suit] = true
+				else
+					different = false
+				end
 			end
-			if flush then flush_houses[#flush_houses+1] = set end
+			if flush then flush_houses[#flush_houses + 1] = set end
+			if different then spectrum_houses[#spectrum_houses+1] = set; print("found spectrum haus") end
+		end
+	end
+	-- Handle Flush Five v. Five of a Kind v. Spectrum Five
+	if next(fives) then
+		for _, set in ipairs(fives) do
+			local suit = set[1].base.suit
+			local different = true
+			local all_suits = {}
+			local flush = true
+			for _, c in ipairs(set) do
+				if not c:is_suit(suit) then
+					flush = false
+				end
+				local spec_suit = SMODS.has_any_suit(c) and "wild" or c.base.suit
+				if not all_suits[spec_suit] then
+					all_suits[spec_suit] = true
+				else
+					different = false
+				end
+			end
+			if flush then flush_fives[#flush_fives + 1] = set end
+			if different then spectrum_fives[#spectrum_fives+1] = set; print("found spectrum fives") end
 		end
 	end
 	local res = {}
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(fives, "Five of a Kind"))
+	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(flush_fives, "Flush Five"))
+	res = spectrums_enabled and PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(spectrum_fives, "Spectrum Five")) or res
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(fours, "Four of a Kind"))
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(full_houses, "Full House"))
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(flush_houses, "Flush House"))
+	res = spectrums_enabled and PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(spectrum_houses, "Spectrum House")) or res
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(trips, "Three of a Kind"))
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(two_pairs, "Two Pair"))
 	res = PTASaka.FH.merge(res, PTASaka.FH.hands_to_named(twos, "Pair"))
@@ -465,8 +522,15 @@ PTASaka.FH.select_hand          = function(cards)
 		end
 		G.hand:add_to_highlighted(c, true)
 	end
-	local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-	update_hand_text({sound = nil, volume = 0.4, immediate = true, nopulse = nil,
-                delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+	local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+	update_hand_text({
+		sound = nil,
+		volume = 0.4,
+		immediate = true,
+		nopulse = nil,
+		delay = 0
+	},
+		{ handname = disp_text, level = G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands
+		[text].chips })
 	play_sound("cardSlide1")
 end
