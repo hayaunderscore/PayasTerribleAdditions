@@ -845,8 +845,8 @@ return {
 			c_payasaka_center = {
 				name = "Center",
 				text = {
-					"Turns {C:attention}#1#{} Joker into",
-					"a {C:dark_edition}daehA{} Joker",
+					"Turns {C:attention}#1#{} selected Joker into",
+					"a {C:prismatic}Prismatic{} Joker and",
 					"turn {C:attention}all{} other Jokers into",
 					"ones of the same {C:attention}rarity{}"
 				}
@@ -1308,7 +1308,7 @@ return {
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",
-			k_payasaka_daeha = "daehA",
+			k_payasaka_daeha = "Prismatic",
 			k_payasaka_pyroxene_bonus = "Pyroxene drop",
 			b_payasaka_dos_switch = "SWITCH",
 			k_payasaka_active = "active",
@@ -1322,7 +1322,7 @@ return {
 			payasaka_jpeg = 'YCbCr',
 			payasaka_random_seal = "Random Seal",
 			k_payasaka_ahead = "Ahead",
-			k_payasaka_daeha = "daehA",
+			k_payasaka_daeha = "Prismatic",
 		},
 		challenge_names = {
 			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place"

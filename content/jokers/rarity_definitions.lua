@@ -5,12 +5,19 @@ SMODS.Rarity {
 	default_weight = 0.01, -- Now rarer than rare hopefully
 }
 
+G.ARGS.LOC_COLOURS.prismatic = SMODS.Gradient {
+	key = "prismatic_gradient",
+	colours = { G.C.RED, G.C.JOKER_GREY, G.C.PALE_GREEN, G.C.PURPLE },
+	cycle = 10,
+	interpolation = 'linear'
+}
+
 -- Exotic but also not exotic but also exotic :grin:
 SMODS.Rarity {
 	key = "daeha",
-	badge_colour = G.C.DARK_EDITION,
+	badge_colour = SMODS.Gradients["payasaka_prismatic_gradient"],
 	pools = { ["Joker"] = true },
-	default_weight = 0.0001, -- Quite rare normally
+	default_weight = 0, -- Legendary status
 }
 
 -- Make Ahead cards ALWAYS foil
