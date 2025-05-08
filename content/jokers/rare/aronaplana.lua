@@ -4,7 +4,8 @@ SMODS.Joker {
 	key = "arona",
 	config = { extra = { divchips = 0.5, givechips = 1.0, incchips = 0.1 } },
 	loc_vars = function(self, info_queue, card)
-		--info_queue[#info_queue+1] = G.P_CENTERS.j_payasaka_plana
+		local plana = G.P_CENTERS.j_payasaka_plana.config
+		info_queue[#info_queue+1] = { key = "j_payasaka_plana", set = "Joker", specific_vars = { plana.extra.givemult, plana.extra.incmult, (G.GAME.probabilities.normal or 1), plana.odds } }
 		return {
 			vars = { card.ability.extra.divchips, card.ability.extra.givechips, card.ability.extra.incchips }
 		}
@@ -48,6 +49,8 @@ SMODS.Joker {
 	key = "plana",
 	config = { extra = { givemult = 1.0, incmult = 0.1 }, odds = 2 },
 	loc_vars = function(self, info_queue, card)
+		local arona = G.P_CENTERS.j_payasaka_arona.config
+		info_queue[#info_queue+1] = { key = "j_payasaka_arona", set = "Joker", specific_vars = { arona.extra.divchips, arona.extra.givechips, arona.extra.incchips } }
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		return {
 			vars = { card.ability.extra.givemult, card.ability.extra.incmult, card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds }
