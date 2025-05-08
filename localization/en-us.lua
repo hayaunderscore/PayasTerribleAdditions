@@ -28,6 +28,7 @@ return {
 					"a {C:attention,T:v_payasaka_meritocracy}Meritocracy{}",
 					"and {C:attention}#1#{} random {C:property}Property{} cards",
 					"No {C:attention}numbered{} cards in the deck",
+					"{C:attention}X2{} deck size",
 					"{C:attention}+#2#{} consumable slots",
 				}
 			}
