@@ -261,7 +261,7 @@ position = 'at'
 payload = '''
 local pyroxenes = 0
 
-if G.GAME.blind and G.GAME.blind:get_type() == 'Boss' then
+if G.GAME.blind and G.GAME.blind.boss then
 	add_round_eval_row({name = 'boss_pyrox_bonus', bonus = true, pyroxenes = 5, pitch = pitch})
 	pyroxenes = pyroxenes + 5
 	pitch = pitch + 0.06
