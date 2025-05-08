@@ -154,6 +154,7 @@ SMODS.Voucher {
 									random_element = true,
 									pop_delay = 0.2,
 									scale = 0.32,
+									font = AKYRS and AKYRS.Fonts["payasaka_pokemon"] or G.LANG.font,
 									min_cycle_time = 0,
 								}
 							}
@@ -177,6 +178,7 @@ SMODS.Voucher {
 									random_element = true,
 									pop_delay = 0.2,
 									scale = 0.32,
+									font = AKYRS and AKYRS.Fonts["payasaka_pokemon"] or G.LANG.font,
 									min_cycle_time = 0,
 								}
 							}
@@ -244,6 +246,7 @@ SMODS.Voucher {
 									random_element = true,
 									pop_delay = 0.2,
 									scale = 0.32,
+									font = AKYRS and AKYRS.Fonts["payasaka_pokemon"] or G.LANG.font,
 									min_cycle_time = 0,
 								}
 							}
@@ -267,6 +270,7 @@ SMODS.Voucher {
 									random_element = true,
 									pop_delay = 0.2,
 									scale = 0.32,
+									font = AKYRS and AKYRS.Fonts["payasaka_pokemon"] or G.LANG.font,
 									min_cycle_time = 0,
 								}
 							}

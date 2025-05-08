@@ -54,6 +54,21 @@ SMODS.Atlas { key = "JOE_Exotic", path = "cryptid/exotics.png", px = 71, py = 95
 -- Icon lmao
 SMODS.Atlas { key = "modicon", path = "icon.png", px = 34, py = 34 }
 
+-- Fonts
+-- TODO move this to SMODS.Font when that pr gets merged
+if AKYRS then
+	AKYRS.Font{
+		key = "pokemon",
+		path = "pokemon-font.ttf",
+		render_scale = 12,
+		TEXT_HEIGHT_SCALE = 0.9, 
+		TEXT_OFFSET = {x=12,y=-24}, 
+		FONTSCALE = 0.05,
+		squish = 1, 
+		DESCSCALE = 1.25
+	}
+end
+
 -- MAIN CODE --
 
 -- Utilities

@@ -952,13 +952,13 @@ return {
 				}
 			},
 			v_payasaka_tmtrainer = {
-				name = "TMTRAINER",
+				name = "{font:payasaka_pokemon}TMTRAINER",
 				text = {
 					"",
 				}
 			},
 			v_payasaka_cooltrainer = {
-				name = "CoolTrainer(F)",
+				name = "{font:payasaka_pokemon}CoolTrainer♀",
 				text = {
 					"",
 				}
