@@ -51,6 +51,7 @@ PTASaka.FH.get_priority_hands   = function()
 	table.sort(ranked_hands, function(a, b) return to_big(a[2]) > to_big(b[2]) end)
 	for i = 1, #ranked_hands do
 		ranked_hands[i][5] = (#ranked_hands+1)-i
+		ranked_hands[i][6] = i
 	end
 
 	return ranked_hands
@@ -60,7 +61,7 @@ PTASaka.FH.ranksuit             = function(card)
 	return card.base.id .. card.base.suit
 end
 
-PTASaka.FH.calculate_importance = function(card, play)
+PTASaka.FH.calculate_importance = function(card, play, type, hand_list)
 	play = play or true
 	-- im putting this table for fine tuning. change the numbers if you want
 	local importances = {
@@ -111,8 +112,8 @@ PTASaka.FH.calculate_importance = function(card, play)
 			}
 		}
 	}
-	-- we can maybe implement the joker interactions
-	local res = 0
+	-- add base hand type value if applicable
+	local res = (hand_list and hand_list[type]) and hand_list[type][2] or 0
 	if card.debuff then return -5 end
 	if play then
 		if card.seal then
@@ -122,7 +123,7 @@ PTASaka.FH.calculate_importance = function(card, play)
 			res = res + (importances.play.edition[card.edition.key] or 0)
 		end
 		if card.config and card.config.center then
-			res = res + (importances.play.ability[card.config.center.key] or 0)
+			res = res + (importances.play.ability[card.config.center_key] or 0)
 		end
 	else
 		if card.seal then
@@ -132,17 +133,18 @@ PTASaka.FH.calculate_importance = function(card, play)
 			res = res + (importances.discard.edition[card.edition.key] or 0)
 		end
 		if card.config and card.config.center then
-			res = res + (importances.discard.ability[card.config.center.key] or 0)
+			res = res + (importances.discard.ability[card.config.center_key] or 0)
 		end
 	end
 	res = res + card.base.id
 	return res
 end
 
-PTASaka.FH.hand_importance      = function(hand)
+PTASaka.FH.hand_importance      = function(hand, type, hand_list)
+	type = type or nil
 	local res = 0
 	for k, v in pairs(hand) do
-		res = res + PTASaka.FH.calculate_importance(v)
+		res = res + PTASaka.FH.calculate_importance(v, true, type, hand_list)
 	end
 	return res
 end
@@ -153,8 +155,7 @@ PTASaka.FH.is_better_hand       = function(hand1, hand2)
 	if hand1.hand_type ~= hand2.hand_type then
 		local h1 = PTASaka.FH.filter(hand_list, function(v) return v[1] == hand1.hand_type end)[1]
 		local h2 = PTASaka.FH.filter(hand_list, function(v) return v[1] == hand2.hand_type end)[1]
-		-- will make it prefer 3oak polychrome over flush for example
-		return h1[5] > h2[5] and PTASaka.FH.hand_importance(hand1.hand) > PTASaka.FH.hand_importance(hand2.hand)
+		return h1[5] > h2[5] and PTASaka.FH.hand_importance(hand1.hand, h1[6], hand_list) > PTASaka.FH.hand_importance(hand2.hand, h2[6], hand_list)
 	end
 	return PTASaka.FH.hand_importance(hand1.hand) > PTASaka.FH.hand_importance(hand2.hand)
 end
