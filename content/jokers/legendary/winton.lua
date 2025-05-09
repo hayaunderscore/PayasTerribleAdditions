@@ -15,44 +15,55 @@ SMODS.Joker {
 		if context.payasaka_before and context.scoring_hand then
 			local copy = context.scoring_hand[1]
 			for i = 1, card.ability.extra.copy do
+				-- create the playing card
 				G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-				local copied_card = copy_card(copy, nil)
+				local copied_card = copy_card(copy, nil, nil, G.playing_card)
 				copied_card:add_to_deck()
 				G.deck.config.card_limit = G.deck.config.card_limit + 1
 				table.insert(G.playing_cards, copied_card)
-				G.play.payasaka_disable_alignment = true
-				copied_card.states.visible = nil
-				copied_card.payasaka_winton_spawned_aligned = true
-				copied_card.payasaka_assigned_winton = card.ID
 				G.play:emplace(copied_card)
 				copied_card:highlight(true)
 				context.scoring_hand[#context.scoring_hand + 1] = copied_card
-				G.E_MANAGER:add_event(Event {
-					trigger = 'after',
-					delay = 0.8125,
-					func = function()
+
+				-- alignment and visibility tricks
+				G.play.payasaka_disable_alignment = true
+				copied_card.states.visible = nil
+				copied_card.payasaka_winton_spawned_aligned = true
+				-- for the 'hi there!' later
+				copied_card.payasaka_assigned_winton = card.ID
+				
+				-- materialize the copy when winton would be called visually
+				card_eval_status_text(card, 'extra', nil, nil, nil,
+				{
+					message = localize('k_duplicated_ex'),
+					extrafunc = function()
 						copied_card:start_materialize()
 						copied_card.VT.scale = copy.VT.scale
 						copied_card.VT.w = copy.VT.w
 						copied_card.VT.h = copy.VT.h
-						G.play.payasaka_disable_alignment = nil
 						copied_card.payasaka_winton_spawned_aligned = nil
+						play_sound("payasaka_challenpoints")
 						G.play:align_cards()
-						card:juice_up()
-						play_sound("payasaka_challenpoints", 1, 0.8)
-						card_eval_status_text(card, 'extra', nil, nil, nil,
-							{ message = localize('k_duplicated_ex'), instant = true })
-						--delay(0.8125)
-						return true
 					end
 				})
 			end
-			local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
-			delay(0.8125)
+
+			-- update hand text
+			local text,disp_text = G.FUNCS.get_poker_hand_info(context.scoring_hand)
 			update_hand_text({delay = 0, modded = true}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
 			mult = mod_mult(G.GAME.hands[text].mult)
 			hand_chips = mod_chips(G.GAME.hands[text].chips)
-			delay(0.4)
+		end
+		if context.before then
+			G.E_MANAGER:add_event(Event{
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+					-- restore normal alignment rules
+					G.play.payasaka_disable_alignment = nil
+					return true
+				end
+			})
 		end
 		-- hi there
 		if context.individual and context.other_card then
@@ -91,7 +102,7 @@ function CardArea:align_cards()
 				if not card.states.drag.is then
 					card.T.r = 0
 					-- stupid hack
-					local max_cards = math.max(cnt, self.config.temp_limit)
+					local max_cards = 5
 					if cnt >= 5 then
 						max_cards = cnt
 					end

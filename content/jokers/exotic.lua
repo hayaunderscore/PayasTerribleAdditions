@@ -167,25 +167,22 @@ SMODS.Joker {
 				_c.base.nominal = 12
 				_c.base.value = 'Queen'
 				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.add
-				G.E_MANAGER:add_event(Event{
-					trigger = 'after',
-					delay = 0.8125,
-					func = function()
+				card_eval_status_text(card, 'extra', nil, nil, nil,
+				{
+					message = localize('k_upgrade_ex'),
+					extrafunc = function()
 						local suit_prefix = string.sub(_c.base.suit, 1, 1)..'_'
 						_c:set_base(G.P_CARDS[suit_prefix..'Q'])
 						_c:juice_up()
-						card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize("k_upgrade_ex"), instant = true })
-						return true
 					end
 				})
 				::continue::
 			end
-			local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
-			delay(0.8125)
+			-- update the hand name to be 2oak, 3oak, 4oak, 5oak, fish or whatever
+			local text,disp_text = G.FUNCS.get_poker_hand_info(context.scoring_hand)
 			update_hand_text({delay = 0, modded = true}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
 			mult = mod_mult(G.GAME.hands[text].mult)
 			hand_chips = mod_chips(G.GAME.hands[text].chips)
-			delay(0.4)
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
