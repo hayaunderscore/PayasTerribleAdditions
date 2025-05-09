@@ -621,6 +621,14 @@ return {
 					"hand type to play when {C:attention}used",
 					"{C:inactive,s:0.8}Does not support modded poker hands"
 				}
+			},
+			j_payasaka_niveusterras = {
+				name = "Niveus Terras",
+				text = {
+					"Scored cards give {X:dark_edition,C:white}^#1#{} Chips",
+					"Additional {X:dark_edition,C:white}^#2#{} Chips when",
+					"played hand is a {C:attention}Flush{}",
+				}
 			}
 		},
 		Blind = {
@@ -647,6 +655,12 @@ return {
 					"random {C:green}edition{}",
 					"or {C:dark_edition}enhancement{}",
 					"{C:inactive,s:0.8,E:2}What the fuck?"
+				}
+			},
+			e_payasaka_checkered = {
+				name = "Checkered",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips?",
 				}
 			}
 		},
@@ -1320,6 +1334,7 @@ return {
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',
+			payasaka_checkered = 'Checkered',
 			payasaka_random_seal = "Random Seal",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",

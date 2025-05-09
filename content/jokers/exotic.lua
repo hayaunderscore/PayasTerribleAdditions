@@ -192,3 +192,40 @@ SMODS.Joker {
 		end
 	end
 }
+
+-- Niveus Terras (WIP)
+SMODS.Joker {
+	name = 'Niveus Terras',
+	key = 'niveusterras',
+	rarity = "cry_exotic",
+	atlas = "JOE_Exotic",
+	pos = { x = 0, y = 3 },
+	soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
+	cost = 50,
+	config = { extra = { e_chips = 1.2, e_chips_add = 0.8 } },
+	calculate = function(self, card, context)
+		if context.poker_hands and next(context.poker_hands["Flush"]) and context.before then
+			card.ability.extra.e_chips = card.ability.extra.e_chips + card.ability.extra.e_chips_add
+			return {
+				colour = G.C.DARK_EDITION,
+				message = localize("k_upgrade_ex")
+			}
+		end
+		if context.individual and context.other_card and not context.other_card.debuff and context.cardarea == G.play and not context.end_of_round then
+			context.other_card:juice_up()
+			return {
+				e_chips = card.ability.extra.e_chips,
+				colour = G.C.DARK_EDITION,
+				echip_message = {message = ("^%s Chips"):format(number_format(card.ability.extra.e_chips)), colour = G.C.DARK_EDITION, sound = "talisman_echip"},
+			}
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.e_chips,
+				card.ability.extra.e_chips_add
+			}
+		}
+	end
+}
