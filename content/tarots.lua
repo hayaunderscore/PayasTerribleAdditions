@@ -558,10 +558,16 @@ SMODS.Consumable {
 			delay = 0.1,
 			func = function()
 				for i = 1, #highlighted do
-					highlighted[i]:remove_from_deck()
+					for k, v in pairs(highlighted[i].children) do
+						if k == 'center' or k == 'back' then goto continue end
+						highlighted[i].children[k]:remove()
+						highlighted[i].children[k] = nil
+						::continue::
+					end
+					highlighted[i]:remove_from_deck(true)
 					highlighted[i].debuff = false
 					highlighted[i]:set_ability(pseudorandom_element(valid_daeha, pseudoseed('center_shit')))
-					highlighted[i]:add_to_deck()
+					highlighted[i]:add_to_deck(true)
 				end
 				return true
 			end
@@ -592,7 +598,15 @@ SMODS.Consumable {
 							rarity = type(joker.config.center.rarity) == "number" and rarities[joker.config.center.rarity] or joker.config.center.rarity,
 							legendary = joker.config.center.rarity == 4
 						}
+						for k, v in pairs(joker.children) do
+							if k == 'center' or k == 'back' then goto continue end
+							joker.children[k]:remove()
+							joker.children[k] = nil
+							::continue::
+						end
+						joker:remove_from_deck(true)
 						joker:set_ability(G.P_CENTERS[fake.config.center.key])
+						joker:add_to_deck(true)
 						fake:remove()
 						joker:juice_up()
 						play_sound('timpani')
