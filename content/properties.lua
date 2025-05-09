@@ -449,10 +449,9 @@ SMODS.Sound({
 		return (
 				(
 					PTASaka.Mod.config["Music"]
-					and G.pack_cards
-					and G.pack_cards.cards
-					and G.pack_cards.cards[1]
-					and G.pack_cards.cards[1].ability.set == "Property"
+					and booster_obj
+					and booster_obj.group_key
+					and booster_obj.group_key == 'k_property_pack'
 				)
 			)
 	end,
