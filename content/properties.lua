@@ -409,7 +409,7 @@ IncantationAddons.Stacking[#IncantationAddons.Stacking + 1] = 'Property'
 IncantationAddons.Dividing[#IncantationAddons.Stacking + 1] = 'Property'
 
 -- Booster packs....
-StrangeLib.make_boosters('property',
+PTASaka.make_boosters('property',
 	{
 		{ x = 0, y = 0 },
 		{ x = 1, y = 0 },
