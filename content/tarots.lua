@@ -420,9 +420,11 @@ SMODS.Consumable {
 			delay = 0.1,
 			func = function()
 				for i = 1, #highlighted do
-					highlighted[i]:remove_from_deck()
-					highlighted[i]:set_ability(G.P_CENTERS[PTASaka.mechanic_selected_card])
-					highlighted[i]:add_to_deck()
+					if PTASaka.mechanic_got_selected then
+						highlighted[i]:remove_from_deck()
+						highlighted[i]:set_ability(G.P_CENTERS[PTASaka.mechanic_selected_card])
+						highlighted[i]:add_to_deck()
+					end
 				end
 				PTASaka.mechanic_selected_card = nil
 				return true
