@@ -32,43 +32,6 @@ end
 match_indent = true
 times = 1
 
-# Once again, Entropy completely overrides this, so also fix that
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS entr "lib/fixes.lua"]'''
-pattern = '''
-if string.len(new_mult_text) > 6 then
-    e.config.object.scale = 0.9 / (string.len(new_mult_text)/6)
-  end
-'''
-position = 'at'
-payload = '''
-local scale = 5 - (PTASaka.payasaka_text_size or 0)
-if string.len(new_mult_text) > scale then
-	e.config.object.scale = 0.9 / (string.len(new_mult_text)/scale)
-end
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS entr "lib/fixes.lua"]'''
-pattern = '''
-if string.len(new_chip_text) > 6 then
-    e.config.object.scale = 0.9 / (string.len(new_chip_text)/6)
-  end
-'''
-position = 'at'
-payload = '''
-local scale = 5 - (PTASaka.payasaka_text_size or 0)
-if string.len(new_chip_text) > scale then
-	e.config.object.scale = 0.9 / (string.len(new_chip_text)/scale)
-end
-'''
-match_indent = true
-times = 1
-
 # Allow changing X to ^ via an ID
 # Also changes it into a DynaText for juice up shenanigans
 [[patches]]
