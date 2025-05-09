@@ -448,12 +448,12 @@ G.FUNCS.payasaka_dos_wild_card_set = function(e)
 	G.E_MANAGER:add_event(Event({
 		func = function()
 			G.SETTINGS.paused = true
+			PTASaka.dos_menu = true
 			G.FUNCS.overlay_menu {
 				definition = SMODS.card_collection_UIBox(G.P_CENTER_POOLS.DOSCard, { 5, 6 }, {
 					no_materialize = true,
 				})
 			}
-			PTASaka.dos_menu = true
 			PTASaka.dos_got_selected = false
 			return true
 		end

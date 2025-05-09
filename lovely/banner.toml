@@ -1,0 +1,28 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Remove banner tab from appearing if the mechanic menu or dos wild card menu is brought up
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS banner "src/ui.lua"]'''
+pattern = 'local compatibile, incompatible_list = mod.check_compatibility()'
+position = "after"
+payload = '''
+if PTASaka.mechanic_menu or PTASaka.dos_menu then return {} end
+'''
+match_indent = true
+times = 1
+
+# Remove pesky border
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS banner "src/ui.lua"]'''
+pattern = 'if t and t.nodes and mod.view_type ~= "" then'
+position = "before"
+payload = '''
+if PTASaka.mechanic_menu or PTASaka.dos_menu then return t end
+'''
+match_indent = true
+times = 1

@@ -393,9 +393,9 @@ SMODS.Consumable {
 		-- Trigger the Joker collection menu
 		G.E_MANAGER:add_event(Event({
 			func = function()
+				PTASaka.mechanic_menu = true
 				G.FUNCS.your_collection_jokers(nil)
 				G.SETTINGS.paused = true
-				PTASaka.mechanic_menu = true
 				PTASaka.mechanic_got_selected = false
 				return true
 			end
@@ -467,6 +467,15 @@ function Card:start_dissolve(c, s, t, j)
 		return
 	end
 	return old_start_dissolve(self, c, s, t, j)
+end
+
+-- Mechanic and Wild DOS cards shouldn't make the Banner side bar popup if Banner exists
+if BANNERMOD then
+	local old_collection_click = BANNERMOD.handle_collection_click_card
+	function BANNERMOD.handle_collection_click_card(card)
+		if PTASaka.mechanic_menu or PTASaka.dos_menu then return false end
+		return old_collection_click(card)
+	end
 end
 
 SMODS.Sound({
