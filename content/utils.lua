@@ -149,6 +149,39 @@ function PTASaka.RequireFolder(path)
 	end
 end
 
+-- Additional property for cards to be considered as 'Ahead'
+function Card:is_ahead()
+	if next(SMODS.find_card("j_payasaka_niveusterras")) then return true end
+	if self.ability.name == "Arrowhead" then return true end
+	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self.config.center.rarity == "payasaka_ahead" then return true end
+	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self.config.center.rarity == "payasaka_daeha" then return true end
+	return false
+end
+
+-- Whitelisted card areas for ahead checking
+PTASaka.WhitelistedAheadAreas = {
+	'jokers', 'consumeables', 'hand', 'discard', 'play'
+}
+PTASaka.ahead_count = 0
+
+-- Get ahead count after updating
+local old_update = Game.update
+function Game:update(dt)
+	old_update(self, dt)
+	PTASaka.ahead_count = 0
+	local niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
+	for _, s in ipairs(PTASaka.WhitelistedAheadAreas) do
+		local area = G[s]
+		if not (area and area.cards) then goto continue end
+		for _, card in ipairs(area.cards) do
+			if card and card.is_ahead and (niveus_terras or card:is_ahead()) then
+				PTASaka.ahead_count = PTASaka.ahead_count + 1
+			end
+		end
+		::continue::
+	end
+end
+
 -- Recursively create an extra table for each returned effect table
 function PTASaka.recursive_extra(table_return_table, index)
 	index = index or 1

@@ -61,3 +61,29 @@ end
 '''
 match_indent = true
 times = 1
+
+# Add ahead info_queue if applicable
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''desc_nodes.background_colour = res.background_colour'''
+position = 'before'
+payload = '''
+if card and card.is_ahead and card:is_ahead() then
+	info_queue[#info_queue+1] = { key = "dd_payasaka_ahead", set = "DescriptionDummy" }
+end
+'''
+match_indent = true
+
+# Add ahead info_queue if applicable
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''if first_pass and not (_c.set == 'Edition') and badges then'''
+position = 'before'
+payload = '''
+if card and card.config and card.config.center and (not card.config.center.mod) and card.is_ahead and card:is_ahead() and _c.set ~= "Booster" then
+	info_queue[#info_queue+1] = { key = "dd_payasaka_ahead", set = "DescriptionDummy" }
+end
+'''
+match_indent = true

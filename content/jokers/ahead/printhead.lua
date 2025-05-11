@@ -13,11 +13,11 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pools = {["Joker"] = true, ["Meme"] = true},
 	calculate = function(self, card, context)
-		local ahead_amt = 0
+		local ahead_amt = PTASaka.ahead_count or 0
 		local my_pos = 0
 		for i = 1, #G.jokers.cards do
 			local _c = G.jokers.cards[i]
-			if _c.config.center.rarity == "payasaka_ahead" then ahead_amt = ahead_amt+1 end
+			--if _c:is_ahead() then ahead_amt = ahead_amt+1 end
 			if _c == card then my_pos = i end
 		end
 		local times = ahead_amt
