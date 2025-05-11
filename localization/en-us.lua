@@ -31,7 +31,16 @@ return {
 					"{C:attention}X2{} deck size",
 					"{C:attention}+#2#{} consumable slots",
 				}
-			}
+			},
+			b_payasaka_purgatory = {
+				name = "Purgatory Deck",
+				text = {
+					"Only {C:red}Risk{} cards,",
+					"vouchers and Booster Packs",
+					"can {C:attention}appear{} in the shop",
+					"{C:inactive}(Heavy WIP!)"
+				}
+			},
 		},
 		Joker = {
 			j_payasaka_buruakacard = {
@@ -874,7 +883,6 @@ return {
 				text = {
 					"{C:attention}Doubles{} the boss",
 					"blind's {C:attention}requirement",
-					"for {C:money}X#1#{} money reward"
 				}
 			},
 			c_payasaka_cast = {
@@ -883,18 +891,30 @@ return {
 					"{C:attention}Applies{} a {C:attention}random{}",
 					"boss blind's {C:attention}ability",
 					"to current boss blind",
-					"Grants a {C:tarot}Charm{}, {C:planet}Meteor{}",
-					"and {C:spectral}Ethereal{} Tag upon",
-					"{C:attention}defeating{} the boss blind"
+				}
+			},
+			c_payasaka_decay = {
+				name = "Decay",
+				text = {
+					"Poker hands act {C:attention}#1#{} level",
+					"during the boss blind",
+					"{C:inactive}Doesn't work yet!",
+				}
+			},
+			c_payasaka_stunted = {
+				name = "Stunted",
+				text = {
+					"{C:attention}Enhanced cards have a {C:green}#1# in #2#",
+					"chance of not {C:attention}activating",
+					"during the {C:attention}next{} boss blind",
+					"{C:inactive}Doesn't work yet!",
 				}
 			},
 			c_payasaka_crime = {
 				name = "Crime",
 				text = {
 					"{C:red}-#1#{} hand size when the",
-					"boss blind is {C:attention}selected{} for a",
-					"{C:attention}permanent{} {C:red}+#1#{} discard",
-					"upon {C:attention}defeating{} the boss blind"
+					"boss blind is {C:attention}selected{}",
 				}
 			},
 			c_payasaka_hinder = {
@@ -902,10 +922,21 @@ return {
 				text = {
 					"{C:attention}Debuff{} {C:attention}#1#{} random",
 					"cards in your deck upon",
-					"{C:attention}entering{} the boss blind",
-					"Give {C:attention}debuffed{} cards a {C:attention}random{}",
-					"{C:attention}edition{}, {C:attention}enhancement{} or {C:attention}seal{}",
-					"upon {C:attention}defeating{} the boss blind"
+					"{C:attention}entering{} the boss blind"
+				}
+			},
+			c_payasaka_hollow = {
+				name = "Hollow",
+				text = {
+					"{C:attention}Debuffs{} all consumables",
+					"during the {C:attention}next{} boss blind",
+				}
+			},
+			c_payasaka_leak = {
+				name = "Leak",
+				text = {
+					"Lose {C:yellow}$#1#{} per {C:attention}scored{} card",
+					"during the {C:attention}next{} boss blind",
 				}
 			},
 			c_payasaka_elysium = {
@@ -913,17 +944,23 @@ return {
 				text = {
 					"{C:attention}Debuff{} the {C:attention}rightmost",
 					"Joker during the boss blind",
-					"Give a {C:attention}random{} Joker an",
-					"{C:attention}edition{} upon {C:attention}defeating{} the boss",
+					"{C:inactive}Doesn't work yet!",
 				}
 			},
-			c_payasaka_deface = {
-				name = "Deface",
+			c_payasaka_elusive = {
+				name = "Elusive",
 				text = {
-					"{C:attention}Debuffs{} face cards",
-					"during a boss blind",
-					"Grants a {C:dark_edition}Negative{} {C:spectral}Familiar",
-					"card upon {C:attention}defeating{} the boss"
+					"{C:attention}First{} drawn card is faced",
+					"down during the boss blind",
+					"{C:inactive}Doesn't work yet!",
+				}
+			},
+			c_payasaka_prelude = {
+				name = "Prelude",
+				text = {
+					"{C:attention}Encounter{} a {C:attention}Big Blind",
+					"before the boss blind",
+					"{C:inactive}Doesn't work yet!",
 				}
 			},
 		},

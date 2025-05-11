@@ -1,6 +1,6 @@
 SMODS.ConsumableType {
 	key = 'Risk',
-	collection_rows = { 4, 4 },
+	collection_rows = { 4, 4, 3 },
 	primary_colour = HEX('c42430'),
 	secondary_colour = HEX('891e2b'),
 	shop_rate = 0,
@@ -63,7 +63,10 @@ PTASaka.Risk = SMODS.Consumable:extend {
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
-	end
+	end,
+	in_pool = function(self, args)
+		return true, { allow_duplicates = true }
+	end,
 }
 
 local igo = Game.init_game_object
@@ -75,18 +78,131 @@ function Game:init_game_object()
 end
 
 PTASaka.Risk {
+	set = 'Risk',
+	key = 'hinder',
+	atlas = "JOE_Risk",
+	pos = { x = 0, y = 1 },
+	config = {extra = {debuff = 10}},
+	apply_risk = function(self, ability)
+		for i = 1, math.min(ability.debuff, #G.deck.cards) do
+			local c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]
+			while c.ability.debuffed_by_risk do c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)] end
+			c.debuff = true
+			c.ability.debuffed_by_risk = true
+		end
+	end,
+	apply_reward = function(self, ability)
+		for _, area in ipairs({G.hand, G.discard, G.deck}) do
+			for _, card in ipairs(area.cards) do
+				if card.ability.debuffed_by_risk then
+					card.ability.debuffed_by_risk = nil
+					card.debuff = false
+				end
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.debuff } }
+	end
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'crime',
+	atlas = "JOE_Risk",
+	pos = { x = 3, y = 0 },
+	config = {extra = {hand_neg = 1}},
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi and Aikoyori',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.hand:change_size(-ability.hand_neg)
+	end,
+	apply_reward = function(self, ability)
+		G.hand:change_size(ability.hand_neg)
+		--G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.hand_neg } }
+	end
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'hollow',
+	atlas = "JOE_Risk",
+	pos = { x = 2, y = 1 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		for i = 1, #G.consumeables.cards do
+			local c = G.consumeables.cards[i]
+			c.debuff = true
+			c.ability.debuffed_by_risk = true
+		end
+	end,
+	apply_reward = function(self, ability)
+		for i = 1, #G.consumeables.cards do
+			local c = G.consumeables.cards[i]
+			if c.ability.debuffed_by_risk then
+				c.ability.debuffed_by_risk = nil
+				c.debuff = false
+			end
+		end
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'leak',
+	atlas = "JOE_Risk",
+	pos = { x = 3, y = 2 },
+	config = { extra = { money = 1 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_leak_active = (G.GAME.payasaka_leak_active or 0) + ability.money
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_leak_active = nil
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.money } }
+	end
+}
+
+PTASaka.Risk {
 	key = 'doubledown',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 0 },
-	config = { extra = { money = 2, } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.money } }
-	end,
 	apply_risk = function(self, ability)
 		G.E_MANAGER:add_event(Event{
 			func = function()
 				G.GAME.blind.chips = G.GAME.blind.chips * 2
-				G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
+				--G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
 				G.GAME.blind:wiggle()
 				return true
 			end
@@ -187,74 +303,58 @@ PTASaka.Risk {
 
 PTASaka.Risk {
 	set = 'Risk',
-	key = 'crime',
+	key = 'decay',
 	atlas = "JOE_Risk",
-	pos = { x = 3, y = 0 },
-	config = {extra = {hand_neg = 1}},
+	pos = { x = 0, y = 2 },
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
 			colour = HEX('09d707')
 		},
 		idea = {
-			credit = 'ariyi and Aikoyori',
+			credit = 'ariyi',
 			colour = HEX('09d707')
 		},
 	},
 	apply_risk = function(self, ability)
-		G.hand:change_size(-ability.hand_neg)
+		G.GAME.payasaka_decay_active = true
 	end,
 	apply_reward = function(self, ability)
-		G.hand:change_size(ability.hand_neg)
-		G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
+		G.GAME.payasaka_decay_active = false
 	end,
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.hand_neg } }
-	end
+	in_pool = function(self, args)
+		return false
+	end,
 }
 
 PTASaka.Risk {
 	set = 'Risk',
-	key = 'hinder',
+	key = 'stunted',
 	atlas = "JOE_Risk",
-	pos = { x = 0, y = 1 },
-	config = {extra = {debuff = 10}},
+	pos = { x = 4, y = 1 },
+	config = { extra = { chance = 2 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	apply_risk = function(self, ability)
-		for i = 1, math.min(ability.debuff, #G.deck.cards) do
-			local c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]
-			while c.ability.debuffed_by_risk do c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)] end
-			c.debuff = true
-			c.ability.debuffed_by_risk = true
-		end
+		G.GAME.payasaka_stunted_active = true
 	end,
 	apply_reward = function(self, ability)
-		for _, area in ipairs({G.hand, G.discard, G.deck}) do
-			for _, card in ipairs(area.cards) do
-				if card.ability.debuffed_by_risk then
-					local rnd = pseudorandom('fuck')
-					if rnd < 1/3 then
-						card_eval_status_text(card, 'extra', 1, nil, nil, {message = localize('k_upgrade_ex'), extrafunc = function()
-							card:set_ability(G.P_CENTERS[SMODS.poll_enhancement{type_key = 'fuck_final', mod = 1, guaranteed = true}])
-						end})
-					elseif rnd < 2/3 then
-						card_eval_status_text(card, 'extra', 1, nil, nil, {message = localize('k_upgrade_ex'), extrafunc = function()
-							local edition = poll_edition('fuck_final', 1, Cryptid == nil, true)
-							card:set_edition(edition)
-						end})
-					else
-						card_eval_status_text(card, 'extra', 1, nil, nil, {message = localize('k_upgrade_ex'), extrafunc = function()
-							card:set_seal(SMODS.poll_seal{type_key = 'fuck_final', mod = 1, guaranteed = true})
-						end})
-					end
-					card.ability.debuffed_by_risk = nil
-					card.debuff = false
-				end
-			end
-		end
+		G.GAME.payasaka_stunted_active = false
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.debuff } }
-	end
+		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
+	end,
+	in_pool = function(self, args)
+		return false
+	end,
 }
 
 PTASaka.Risk {
@@ -262,15 +362,59 @@ PTASaka.Risk {
 	key = 'elysium',
 	atlas = "JOE_Risk",
 	pos = { x = 1, y = 1 },
-	discovered = false, unlocked = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	in_pool = function(self, args)
+		return false
+	end,
 }
 
 PTASaka.Risk {
 	set = 'Risk',
-	key = 'deface',
+	key = 'elusive',
 	atlas = "JOE_Risk",
-	pos = { x = 2, y = 1 },
-	discovered = false, unlocked = false,
+	pos = { x = 1, y = 2 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	in_pool = function(self, args)
+		return false
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'prelude',
+	atlas = "JOE_Risk",
+	pos = { x = 2, y = 2 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	in_pool = function(self, args)
+		return false
+	end,
 }
 
 PTASaka.Risk {
@@ -329,10 +473,12 @@ PTASaka.Risk {
 	apply_risk = function(self, ability)
 	end,
 	apply_reward = function(self, ability)
+		--[[
 		SMODS.add_card {
 			key = 'c_soul',
 			edition = 'e_negative'
 		}
+		]]
 		G.GAME.payasaka_cannot_reroll = nil
 	end
 }

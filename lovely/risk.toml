@@ -1,0 +1,23 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Leak
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: effects before scoring starts'''
+position = 'before'
+payload = '''
+if G.GAME.payasaka_leak_active then
+	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+		for i = 1, #scoring_hand do
+			G.E_MANAGER:add_event(Event({func = function() scoring_hand[i]:juice_up(); return true end })) 
+			ease_dollars(-G.GAME.payasaka_leak_active)
+			delay(0.23)
+		end
+	return true end })) 
+end
+'''
+match_indent = true

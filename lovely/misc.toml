@@ -87,3 +87,18 @@ if card and card.config and card.config.center and (not card.config.center.mod) 
 end
 '''
 match_indent = true
+
+# Risk card spawning (unaffected by showman)
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''G.GAME.spectral_rate = G.GAME.spectral_rate or 0'''
+position = 'before'
+payload = '''
+if G.GAME.payasaka_only_risk and area == G.shop_jokers then
+	local risk_card = SMODS.create_card { set = "Risk", area = area }
+	create_shop_card_ui(risk_card, 'Risk', area)
+	return risk_card
+end
+'''
+match_indent = true

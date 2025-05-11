@@ -42,6 +42,12 @@ SMODS.Joker {
 	cost = 10,
 	blueprint_compat = false,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	update = function(self, card, dt)
 		if card.ability.cry_rigged then G.GAME.markiplier_prob_rigged = true end
 	end,
