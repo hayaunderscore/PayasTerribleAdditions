@@ -11,13 +11,118 @@ pattern = '''-- TARGET: effects before scoring starts'''
 position = 'before'
 payload = '''
 if G.GAME.payasaka_leak_active then
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+	G.E_MANAGER:add_event(Event({func = function()
 		for i = 1, #scoring_hand do
 			G.E_MANAGER:add_event(Event({func = function() scoring_hand[i]:juice_up(); return true end })) 
 			ease_dollars(-G.GAME.payasaka_leak_active)
 			delay(0.23)
 		end
 	return true end })) 
+end
+'''
+match_indent = true
+
+# Decay
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: effects before scoring starts'''
+position = 'before'
+payload = '''
+local mto_big = to_big or function(a) return a end
+if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 and mto_big(G.GAME.hands[text].level) > mto_big(1) then
+	G.GAME.payasaka_last_hand_name = text
+	level_up_hand(nil, text, nil, -G.GAME.payasaka_decay_active)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- context.after calculations'''
+position = 'before'
+payload = '''
+if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 then
+	G.E_MANAGER:add_event(Event{
+		func = function()
+			level_up_hand(nil, G.GAME.payasaka_last_hand_name, true, G.GAME.payasaka_decay_active)
+			return true
+		end
+	})
+end
+'''
+match_indent = true
+
+# Elusive
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''draw_card(G.deck,G.hand, i*100/hand_space,'up', true)'''
+position = 'at'
+payload = '''
+draw_card(G.deck,G.hand, i*100/hand_space,'up', true, nil, nil, nil, i <= (G.GAME.payasaka_elusive_cards or 0))
+'''
+match_indent = true
+
+# This is a very stupid patch.
+# I shouldn't need to do this but doing this some other way requires me to tinker more and ionlikedat
+# Thunk pls fix
+[[patches]]
+[patches.pattern]
+target = 'cardarea.lua'
+pattern = '''local stay_flipped = G.GAME and G.GAME.blind and G.GAME.blind:stay_flipped(self, card, area)'''
+position = 'at'
+payload = '''
+stay_flipped = stay_flipped or (G.GAME and G.GAME.blind and G.GAME.blind:stay_flipped(self, card, area))
+'''
+match_indent = true
+
+# Stunted
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: effects before scoring starts'''
+position = 'after'
+payload = '''
+if G.GAME.payasaka_stunted_active then
+	for i = 1, #G.play.cards do
+		local card = G.play.cards[i]
+		if pseudorandom('ham_slice') < (G.GAME.probabilities.normal or 1)/G.GAME.payasaka_stunted_chance and card.ability.set == 'Enhanced' then
+			card.ability.set = 'Default'
+			card.ability.payasaka_old_effect = card.ability.effect
+			card.ability.payasaka_old_ee = card.ability.extra_enhancement
+			card.ability.effect = nil
+			card.ability.extra_enhancement = false
+			card.ability.payasaka_stunted = true
+			card_eval_status_text(card, 'extra', nil, nil, nil,
+						{ message = "Stunted!" })
+		end
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- context.after calculations'''
+position = 'after'
+payload = '''
+if G.GAME.payasaka_stunted_active then
+	for i = 1, #G.play.cards do
+		local card = G.play.cards[i]
+		if card.ability.payasaka_stunted then
+			card.ability.set = 'Enhanced'
+			card.ability.effect = card.ability.effect
+			card.ability.extra_enhancement = card.ability.payasaka_old_ee
+			card.ability.payasaka_stunted = nil
+			card.ability.payasaka_old_effect = nil
+			card.ability.payasaka_old_ee = nil
+			card_eval_status_text(card, 'extra', nil, nil, nil,
+						{ message = "Reverted!" })
+		end
+	end
 end
 '''
 match_indent = true

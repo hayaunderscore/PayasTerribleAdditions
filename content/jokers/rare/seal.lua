@@ -7,6 +7,16 @@ SMODS.Joker {
 	cost = 6,
 	blueprint_compat = true,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.other_card.seal then

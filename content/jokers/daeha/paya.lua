@@ -10,6 +10,12 @@ SMODS.Joker {
 	no_doe = true, -- :]
 	demicoloncompat = false,
 	config = { odds = 2, extra = { exponential_active = false } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	loc_vars = function(self, info_queue, card)
 		local str = localize('k_payasaka_' .. (card.ability.extra.exponential_active and "active" or "inactive"))
 		return {

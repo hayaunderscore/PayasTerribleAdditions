@@ -510,11 +510,10 @@ return {
 			j_payasaka_paya = {
 				name = "Yonii Payasaka",
 				text = {
-					"Upon selecting a blind,",
+					"Upon {C:attention}selecting a blind,",
 					"{C:green}#1# in #2#{} chance of",
-					"{X:chips,C:white}Chips{}X{X:mult,C:white}Mult{} {C:attention}becoming",
+					"{X:chips,C:white}Chips{}X{X:mult,C:white}Mult{} becoming",
 					"{X:chips,C:white}Chips{}^{X:mult,C:white}Mult{}",
-					"{C:dark_edition}Stacks with itself",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Self insert joker"
@@ -897,17 +896,15 @@ return {
 				name = "Decay",
 				text = {
 					"Poker hands act {C:attention}#1#{} level",
-					"during the boss blind",
-					"{C:inactive}Doesn't work yet!",
+					"below during the boss blind",
 				}
 			},
 			c_payasaka_stunted = {
 				name = "Stunted",
 				text = {
-					"{C:attention}Enhanced cards have a {C:green}#1# in #2#",
-					"chance of not {C:attention}activating",
+					"Played {C:attention}Enhanced{} cards have a",
+					"{C:green}#1# in #2#{} chance of not {C:attention}activating",
 					"during the {C:attention}next{} boss blind",
-					"{C:inactive}Doesn't work yet!",
 				}
 			},
 			c_payasaka_crime = {
@@ -935,7 +932,7 @@ return {
 			c_payasaka_leak = {
 				name = "Leak",
 				text = {
-					"Lose {C:yellow}$#1#{} per {C:attention}scored{} card",
+					"Lose {C:money}$#1#{} per {C:attention}scored{} card",
 					"during the {C:attention}next{} boss blind",
 				}
 			},
@@ -944,7 +941,6 @@ return {
 				text = {
 					"{C:attention}Debuff{} the {C:attention}rightmost",
 					"Joker during the boss blind",
-					"{C:inactive}Doesn't work yet!",
 				}
 			},
 			c_payasaka_elusive = {
@@ -952,7 +948,6 @@ return {
 				text = {
 					"{C:attention}First{} drawn card is faced",
 					"down during the boss blind",
-					"{C:inactive}Doesn't work yet!",
 				}
 			},
 			c_payasaka_prelude = {
@@ -1315,7 +1310,7 @@ return {
 				name = "ariyi",
 				text = {
 					"Some cool ideas",
-					"some art later",
+					"Most other art",
 				}
 			},
 			credit_aikoyori = {

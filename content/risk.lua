@@ -11,7 +11,7 @@ SMODS.UndiscoveredSprite {
 	key = 'Risk',
 	atlas = 'JOE_Risk',
 	path = 'risk.png',
-	pos = { x = 3, y = 1 },
+	pos = { x = 3, y = 2 },
 	px = 71, py = 95,
 }
 
@@ -55,7 +55,7 @@ PTASaka.Risk = SMODS.Consumable:extend {
 		})
 	end,
 	can_use = function(self, card)
-		return G.STATE == G.STATES.BLIND_SELECT or booster_obj
+		return G.STATE == G.STATES.BLIND_SELECT or booster_obj or G.STATE == G.STATES.SHOP
 	end,
 	apply_risk = function(self, ability)
 	end,
@@ -171,7 +171,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'leak',
 	atlas = "JOE_Risk",
-	pos = { x = 3, y = 2 },
+	pos = { x = 3, y = 1 },
 	config = { extra = { money = 1 } },
 	pta_credit = {
 		art = {
@@ -295,9 +295,11 @@ PTASaka.Risk {
 		G.GAME.payasaka_cannot_reroll = nil
 		G.GAME.round_resets.last_cast_boss = nil
 		G.GAME.payasaka_merged_boss_keys = {}
+		--[[
 		add_tag(Tag('tag_charm'))
 		add_tag(Tag('tag_meteor'))
 		add_tag(Tag('tag_ethereal'))
+		]]
 	end,
 }
 
@@ -316,14 +318,15 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
+	config = { extra = { level = 1 } },
 	apply_risk = function(self, ability)
-		G.GAME.payasaka_decay_active = true
+		G.GAME.payasaka_decay_active = (G.GAME.payasaka_decay_active or 0) + ability.level
 	end,
 	apply_reward = function(self, ability)
-		G.GAME.payasaka_decay_active = false
+		G.GAME.payasaka_decay_active = nil
 	end,
-	in_pool = function(self, args)
-		return false
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.level } }
 	end,
 }
 
@@ -345,17 +348,77 @@ PTASaka.Risk {
 	},
 	apply_risk = function(self, ability)
 		G.GAME.payasaka_stunted_active = true
+		G.GAME.payasaka_stunted_chance = ability.chance
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_stunted_active = false
+		G.GAME.payasaka_stunted_chance = nil
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
 	end,
-	in_pool = function(self, args)
-		return false
-	end,
 }
+
+-- Nuh uh
+local oldce = Card.calculate_enhancement
+function Card:calculate_enhancement(context)
+	if self.ability.payasaka_stunted then return nil end
+	return oldce(self, context)
+end
+
+local oldcb = Card.get_chip_bonus
+function Card:get_chip_bonus()
+	if self.ability.payasaka_stunted then return self.base.nominal + (self.ability.perma_bonus or 0) end
+	return oldcb(self)
+end
+
+local oldcm = Card.get_chip_mult
+function Card:get_chip_mult()
+	if self.ability.payasaka_stunted then return (self.ability.perma_mult or 0) end
+	return oldcm(self)
+end
+
+local oldcxm = Card.get_chip_x_mult
+function Card:get_chip_x_mult(context)
+	if self.ability.payasaka_stunted then return (self.ability.perma_x_mult or 0) end
+	return oldcxm(self, context)
+end
+
+local oldchm = Card.get_chip_h_mult
+function Card:get_chip_h_mult()
+	if self.ability.payasaka_stunted then return (self.ability.perma_h_mult or 0) end
+	return oldchm(self)
+end
+
+local oldchxm = Card.get_chip_h_x_mult
+function Card:get_chip_h_x_mult()
+	if self.ability.payasaka_stunted then return (self.ability.perma_h_x_mult or 0) end
+	return oldchxm(self)
+end
+
+local oldcxb = Card.get_chip_x_bonus
+function Card:get_chip_x_bonus(context)
+	if self.ability.payasaka_stunted then return (self.ability.perma_x_chips or 0) end
+	return oldcxb(self, context)
+end
+
+local oldchb = Card.get_chip_h_bonus
+function Card:get_chip_h_bonus()
+	if self.ability.payasaka_stunted then return (self.ability.perma_h_chips or 0) end
+	return oldchb(self)
+end
+
+local oldchxb = Card.get_chip_h_x_bonus
+function Card:get_chip_h_x_bonus()
+	if self.ability.payasaka_stunted then return (self.ability.perma_h_x_chips or 0) end
+	return oldchxb(self)
+end
+
+local oldhd = Card.get_h_dollars
+function Card:get_h_dollars()
+	if self.ability.payasaka_stunted then return (self.ability.perma_h_dollars or 0) end
+	return oldhd(self)
+end
 
 PTASaka.Risk {
 	set = 'Risk',
@@ -372,8 +435,18 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
-	in_pool = function(self, args)
-		return false
+	apply_risk = function(self, ability)
+		G.jokers.cards[#G.jokers.cards].debuff = true
+		G.jokers.cards[#G.jokers.cards].ability.debuffed_by_risk = true
+	end,
+	apply_reward = function(self, ability)
+		for i = 1, #G.jokers.cards do
+			local joker = G.jokers.cards[i]
+			if joker.ability.debuffed_by_risk then
+				joker.debuff = false
+				joker.ability.debuffed_by_risk = nil
+			end
+		end
 	end,
 }
 
@@ -392,8 +465,11 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
-	in_pool = function(self, args)
-		return false
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_elusive_cards = (G.GAME.payasaka_elusive_cards or 0) + 1
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_elusive_cards = nil
 	end,
 }
 
@@ -467,7 +543,7 @@ PTASaka.Risk {
 		PTASaka.Risk.use(self, card, area, copier)
 	end,
 	can_use = function(self, card)
-		return (G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and
+		return (G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SMODS_BOOSTER_OPENED or G.STATE == G.STATES.SHOP) and
 			not (G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].boss and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].boss.showdown)
 	end,
 	apply_risk = function(self, ability)
