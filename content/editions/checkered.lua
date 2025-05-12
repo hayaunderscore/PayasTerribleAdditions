@@ -16,9 +16,10 @@ SMODS.Edition {
 		
 	end,
 	loc_vars = function(self, info_queue, card)
+		local conf = card and card.edition and card.edition or self.config or { extra = {} }
 		return {
 			vars = {
-				card.edition and card.edition.extra.x_chips or nil
+				conf.extra.x_chips
 			}
 		}
 	end

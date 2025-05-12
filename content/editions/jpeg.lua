@@ -49,10 +49,10 @@ SMODS.Edition {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		if not card.edition then return { vars = { } } end
+		local conf = card and card.edition and card.edition or self.config or { extra = {} }
 		return {
 			vars = {
-				card.edition.extra.x_chips, card.edition.extra.x_mult, G.GAME.probabilities.normal or 1, card.edition.extra.odds
+				conf.extra.x_chips, conf.extra.x_mult, G.GAME.probabilities.normal or 1, conf.extra.odds
 			}
 		}
 	end
