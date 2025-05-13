@@ -92,6 +92,8 @@ SMODS.Joker {
 		if context.payasaka_level_up_after and context.other_card and context.other_card.ability and context.other_card.ability.consumeable then
 			context.poker_hand.l_chips = im.old_l_chips
 			context.poker_hand.l_mult = im.old_l_mult
+			im.old_l_chips = 0
+			im.old_l_mult = 0
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
