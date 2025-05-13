@@ -1369,6 +1369,8 @@ return {
 			b_payasaka_dos_switch = "SWITCH",
 			k_payasaka_active = "active",
 			k_payasaka_inactive = "inactive",
+			ph_bought_risks = "Risk cards bought this ante",
+			ph_no_risk = "No risk cards bought this ante"
 		},
 		v_dictionary = {
 			pta_art_credit = { "Art: #1#" },

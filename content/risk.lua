@@ -32,21 +32,25 @@ PTASaka.Risk = SMODS.Consumable:extend {
 		},
 	},
 	use = function(self, card, area, copier)
-		G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks + 1] = { key = self.key, ability = PTASaka.deep_copy(card
-		.ability.extra) }
-		G.E_MANAGER:add_event(Event{
+		G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks + 1] = {
+			key = self.key,
+			ability = PTASaka.deep_copy(card
+				.ability.extra)
+		}
+		G.E_MANAGER:add_event(Event {
 			trigger = 'after',
 			delay = 0.4,
 			func = function()
 				card:juice_up(0.3, 0.5)
 				play_sound('card1')
-				card_eval_status_text(card, 'extra', nil, nil, 'up', {message = "Risk applied!", colour = G.C.MULT, instant = true})
+				card_eval_status_text(card, 'extra', nil, nil, 'up',
+					{ message = "Risk applied!", colour = G.C.MULT, instant = true })
 				return true
 			end
 		})
-		G.E_MANAGER:add_event(Event{
+		G.E_MANAGER:add_event(Event {
 			trigger = 'after',
-			delay = 2.3+0.4,
+			delay = 2.3 + 0.4,
 			func = function()
 				card:start_dissolve()
 				delay(1)
@@ -82,7 +86,7 @@ PTASaka.Risk {
 	key = 'hinder',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 1 },
-	config = {extra = {debuff = 10}},
+	config = { extra = { debuff = 10 } },
 	apply_risk = function(self, ability)
 		for i = 1, math.min(ability.debuff, #G.deck.cards) do
 			local c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]
@@ -92,7 +96,7 @@ PTASaka.Risk {
 		end
 	end,
 	apply_reward = function(self, ability)
-		for _, area in ipairs({G.hand, G.discard, G.deck}) do
+		for _, area in ipairs({ G.hand, G.discard, G.deck }) do
 			for _, card in ipairs(area.cards) do
 				if card.ability.debuffed_by_risk then
 					card.ability.debuffed_by_risk = nil
@@ -111,7 +115,7 @@ PTASaka.Risk {
 	key = 'crime',
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 0 },
-	config = {extra = {hand_neg = 1}},
+	config = { extra = { hand_neg = 1 } },
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -199,7 +203,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 0 },
 	apply_risk = function(self, ability)
-		G.E_MANAGER:add_event(Event{
+		G.E_MANAGER:add_event(Event {
 			func = function()
 				G.GAME.blind.chips = G.GAME.blind.chips * 2
 				--G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
@@ -251,10 +255,10 @@ PTASaka.Risk {
 		G.GAME.payasaka_merged_boss_keys = G.GAME.payasaka_merged_boss_keys or {}
 		if next(G.GAME.payasaka_merged_boss_keys) == nil then
 			-- first entry is the current boss
-			G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys+1] = current_boss
+			G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys + 1] = current_boss
 		end
 		-- Get a random boss blind to append to the current one
-		G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys+1] = get_new_boss()
+		G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys + 1] = get_new_boss()
 
 		-- get biggest chips multiplier
 		for i = 1, #G.GAME.payasaka_merged_boss_keys do
@@ -561,34 +565,34 @@ PTASaka.Risk {
 
 -- edit of StrangeLib.make_boosters to use pyrox instead
 function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, common_values, pack_size)
-    pack_size = pack_size or 3
-    for index, pos in ipairs(normal_poses) do
-        local t = copy_table(common_values)
-        t.key = base_key .. "_normal_" .. index
-        t.pos = pos
-        t.config = { extra = pack_size, choose = 1 }
+	pack_size = pack_size or 3
+	for index, pos in ipairs(normal_poses) do
+		local t = copy_table(common_values)
+		t.key = base_key .. "_normal_" .. index
+		t.pos = pos
+		t.config = { extra = pack_size, choose = 1 }
 		--t.cost = 4
-        t.pyroxenes = 4
-        SMODS.Booster(t)
-    end
-    for index, pos in ipairs(jumbo_poses) do
-        local t = copy_table(common_values)
-        t.key = base_key .. "_jumbo_" .. index
-        t.pos = pos
-        t.config = { extra = pack_size + 1, choose = 1 }
+		t.pyroxenes = 4
+		SMODS.Booster(t)
+	end
+	for index, pos in ipairs(jumbo_poses) do
+		local t = copy_table(common_values)
+		t.key = base_key .. "_jumbo_" .. index
+		t.pos = pos
+		t.config = { extra = pack_size + 1, choose = 1 }
 		--t.cost = 6
-        t.pyroxenes = 6
-        SMODS.Booster(t)
-    end
-    for index, pos in ipairs(mega_poses) do
-        local t = copy_table(common_values)
-        t.key = base_key .. "_mega_" .. index
-        t.pos = pos
-        t.config = { extra = pack_size + 1, choose = 2 }
+		t.pyroxenes = 6
+		SMODS.Booster(t)
+	end
+	for index, pos in ipairs(mega_poses) do
+		local t = copy_table(common_values)
+		t.key = base_key .. "_mega_" .. index
+		t.pos = pos
+		t.config = { extra = pack_size + 1, choose = 2 }
 		--t.cost = 8
-        t.pyroxenes = 8
-        SMODS.Booster(t)
-    end
+		t.pyroxenes = 8
+		SMODS.Booster(t)
+	end
 end
 
 -- Booster packs....
@@ -622,3 +626,93 @@ PTASaka.make_boosters('moji',
 		end,
 	}, 2
 )
+
+function G.UIDEF.current_risks()
+	local silent = false
+	local keys_used = {}
+	local area_count = 0
+	local voucher_areas = {}
+	local voucher_tables = {}
+	local voucher_table_rows = {}
+	for k, v in ipairs(G.GAME.risk_cards_risks or {}) do
+		keys_used[#keys_used+1] = G.P_CENTERS[v.key]
+	end
+	for k, v in ipairs(keys_used) do
+		if next(v) then
+			area_count = area_count + 1
+		end
+	end
+	for k, v in ipairs(keys_used) do
+		if next(v) then
+			if #voucher_areas == 5 or #voucher_areas == 10 then
+				table.insert(voucher_table_rows,
+					{ n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = voucher_tables }
+				)
+				voucher_tables = {}
+			end
+
+			voucher_areas[#voucher_areas + 1] = CardArea(
+				G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
+				(#v == 1 and 1 or 1.33) * G.CARD_W,
+				(area_count >= 10 and 0.75 or 1.07) * G.CARD_H,
+				{ card_limit = 2, type = 'voucher', highlight_limit = 0 })
+			
+			local center = v
+			local card = Card(voucher_areas[#voucher_areas].T.x + voucher_areas[#voucher_areas].T.w / 2,
+				voucher_areas[#voucher_areas].T.y, G.CARD_W, G.CARD_H, nil, center,
+				{ bypass_discovery_center = true, bypass_discovery_ui = true, bypass_lock = true })
+			card.ability.order = v.order
+			card:start_materialize(nil, silent)
+			silent = true
+			voucher_areas[#voucher_areas]:emplace(card)
+			table.insert(voucher_tables,
+				{
+					n = G.UIT.C,
+					config = { align = "cm", padding = 0, no_fill = true },
+					nodes = {
+						{ n = G.UIT.O, config = { object = voucher_areas[#voucher_areas] } }
+					}
+				}
+			)
+		end
+	end
+	table.insert(voucher_table_rows,
+		{ n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = voucher_tables }
+	)
+
+
+	local t = silent and {
+			n = G.UIT.ROOT,
+			config = { align = "cm", colour = G.C.CLEAR },
+			nodes = {
+				{
+					n = G.UIT.R,
+					config = { align = "cm" },
+					nodes = {
+						{ n = G.UIT.O, config = { object = DynaText({ string = { localize('ph_bought_risks') }, colours = { G.C.UI.TEXT_LIGHT }, bump = true, scale = 0.6 }) } }
+					}
+				},
+				{
+					n = G.UIT.R,
+					config = { align = "cm", minh = 0.5 },
+					nodes = {
+					}
+				},
+				{
+					n = G.UIT.R,
+					config = { align = "cm", colour = G.C.BLACK, r = 1, padding = 0.15, emboss = 0.05 },
+					nodes = {
+						{ n = G.UIT.R, config = { align = "cm" }, nodes = voucher_table_rows },
+					}
+				}
+			}
+		} or
+		{
+			n = G.UIT.ROOT,
+			config = { align = "cm", colour = G.C.CLEAR },
+			nodes = {
+				{ n = G.UIT.O, config = { object = DynaText({ string = { localize('ph_no_risk') }, colours = { G.C.UI.TEXT_LIGHT }, bump = true, scale = 0.6 }) } }
+			}
+		}
+	return t
+end

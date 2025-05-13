@@ -130,3 +130,15 @@ if G.GAME.payasaka_stunted_active then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "          G.GAME.stake > 1 and {"
+position = "before"
+payload = '''
+{
+	label = G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks > 0 and localize('b_risk_cards') or nil, 
+	tab_definition_function = G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks > 0 and G.UIDEF.current_risks or nil,
+},'''
+match_indent = true
