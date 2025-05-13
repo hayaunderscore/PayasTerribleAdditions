@@ -5,7 +5,7 @@ SMODS.Rarity {
 	default_weight = 0.01, -- Now rarer than rare hopefully
 }
 
-G.ARGS.LOC_COLOURS.prismatic = SMODS.Gradient {
+SMODS.Gradient {
 	key = "prismatic_gradient",
 	colours = { G.C.RED, G.C.JOKER_GREY, G.C.PALE_GREEN, G.C.PURPLE },
 	cycle = 10,
