@@ -21,19 +21,19 @@ SMODS.Joker {
 		return {
 			vars = { card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds },
 			main_end = {
-				{
+				(G.GAME and self.area and (self.area == G.jokers)) and {
 					n = G.UIT.C,
 					config = { align = "bm", minh = 0.4 },
 					nodes = {
 						{
 							n = G.UIT.C,
-							config = { ref_table = self, align = "m", colour = card.ability.extra.exponential_active and G.C.GREEN or G.C.RED, r = 0.05, padding = 0.06 },
+							config = { ref_table = self, align = "m", colour = card.ability.extra.exponential_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE, r = 0.05, padding = 0.06 },
 							nodes = {
 								{ n = G.UIT.T, config = { text = ' ' .. str .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.9 } },
 							}
 						}
 					}
-				}
+				} or nil
 			}
 		}
 	end,

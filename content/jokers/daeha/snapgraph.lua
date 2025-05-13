@@ -16,7 +16,7 @@ SMODS.Joker {
 		local str = card.ability.extra.photographed and "ready" or "inactive"
 		return {
 			main_end = {
-				{
+				(G.GAME and self.area and (self.area == G.jokers)) and {
 					n = G.UIT.C,
 					config = { align = "bm", minh = 0.4 },
 					nodes = {
@@ -28,7 +28,7 @@ SMODS.Joker {
 							}
 						}
 					}
-				}
+				} or nil
 			}
 		}
 	end,
