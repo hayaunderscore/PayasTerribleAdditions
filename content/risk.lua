@@ -318,7 +318,7 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
-	config = { extra = { level = 1 } },
+	config = { extra = { level = 2 } },
 	apply_risk = function(self, ability)
 		G.GAME.payasaka_decay_active = (G.GAME.payasaka_decay_active or 0) + ability.level
 	end,

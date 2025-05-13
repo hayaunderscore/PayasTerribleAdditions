@@ -893,10 +893,10 @@ return {
 				}
 			},
 			c_payasaka_decay = {
-				name = "Decay",
+				name = "Eclipse",
 				text = {
-					"Poker hands act {C:attention}#1#{} level",
-					"below during the boss blind",
+					"{X:attention,C:white}÷#1#{} poker hand levels",
+					"during the boss blind",
 				}
 			},
 			c_payasaka_stunted = {

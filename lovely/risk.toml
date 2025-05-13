@@ -22,7 +22,7 @@ end
 '''
 match_indent = true
 
-# Decay
+# Eclipse
 [[patches]]
 [patches.pattern]
 target = 'functions/state_events.lua'
@@ -32,7 +32,8 @@ payload = '''
 local mto_big = to_big or function(a) return a end
 if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 and mto_big(G.GAME.hands[text].level) > mto_big(1) then
 	G.GAME.payasaka_last_hand_name = text
-	level_up_hand(nil, text, nil, -G.GAME.payasaka_decay_active)
+	G.GAME.payasaka_last_hand_level = G.GAME.hands[text].level
+	level_up_hand(nil, text, nil, -math.max(1, G.GAME.hands[text].level - (G.GAME.hands[text].level/G.GAME.payasaka_decay_active)))
 end
 '''
 match_indent = true
@@ -46,7 +47,10 @@ payload = '''
 if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 then
 	G.E_MANAGER:add_event(Event{
 		func = function()
-			level_up_hand(nil, G.GAME.payasaka_last_hand_name, true, G.GAME.payasaka_decay_active)
+			local hand = G.GAME.hands[G.GAME.payasaka_last_hand_name]
+			hand.level = G.GAME.payasaka_last_hand_level
+    		hand.mult = math.max(hand.s_mult + hand.l_mult*(hand.level - 1), 1)
+    		hand.chips = math.max(hand.s_chips + hand.l_chips*(hand.level - 1), 0)
 			return true
 		end
 	})
