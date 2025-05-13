@@ -69,8 +69,10 @@ SMODS.Joker {
 		end
 		-- Make sure its a Planet card or Planet-like
 		if context.payasaka_level_up_before and context.other_card and context.other_card.ability and context.other_card.ability.consumeable then
-			im.old_l_chips = context.poker_hand.l_chips
-			im.old_l_mult = context.poker_hand.l_mult
+			if to_big(im.old_l_chips) <= to_big(0) then
+				im.old_l_chips = context.poker_hand.l_chips
+				im.old_l_mult = context.poker_hand.l_mult
+			end
 			if card.ability.extra.planet_multiplier > 1 then
 				-- Prevent Black Hole and such from constantly having reactions from Cyan
 				if not context.instant then
@@ -78,7 +80,8 @@ SMODS.Joker {
 						message = 'Upgraded!',
 						colour = G.C.DARK_EDITION,
 						extrafunc = function()
-							(context.blueprint_card or card):juice_up()
+							local c = context.blueprint and context.blueprint_card or card
+							c:juice_up()
 						end
 					})
 				end
