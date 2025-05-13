@@ -16,13 +16,13 @@ SMODS.Joker {
 		local str = card.ability.extra.photographed and "ready" or "inactive"
 		return {
 			main_end = {
-				(G.GAME and self.area and (self.area == G.jokers)) and {
+				(G.GAME and card.area and (card.area == G.jokers)) and {
 					n = G.UIT.C,
 					config = { align = "bm", minh = 0.4 },
 					nodes = {
 						{
 							n = G.UIT.C,
-							config = { ref_table = self, align = "m", colour = card.ability.extra.photographed and G.C.GREEN or G.C.JOKER_GREY, r = 0.05, padding = 0.06 },
+							config = { ref_table = card, align = "m", colour = card.ability.extra.photographed and G.C.GREEN or G.C.JOKER_GREY, r = 0.05, padding = 0.06 },
 							nodes = {
 								{ n = G.UIT.T, config = { text = ' ' .. str .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.9 } },
 							}

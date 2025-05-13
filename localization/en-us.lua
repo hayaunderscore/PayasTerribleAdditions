@@ -642,7 +642,7 @@ return {
 				name = "Cyan",
 				text = {
 					"{X:chips,C:white}X#1#{} Chips and",
-					"{X:attention,C:white}X#1#{} Planet multiplier",
+					"{X:attention,C:white}X#1#{} {C:planet}Planet{} multiplier",
 					"Gains {X:chips,C:white}X#2#{} Chips per",
 					"{C:attention}scored{} {C:spades}Spades{} or {C:clubs}Clubs{}",
 				}

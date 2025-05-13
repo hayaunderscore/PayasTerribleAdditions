@@ -14,7 +14,7 @@ SMODS.Joker {
 	key = "cyan",
 	config = {
 		extra = { planet_multiplier = 1.0, chip_gain = 0.1 },
-		immutable = { speed = 0.7, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
+		immutable = { speed = 0.9, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -57,7 +57,7 @@ SMODS.Joker {
 				card.ability.extra.planet_multiplier = card.ability.extra.planet_multiplier + card.ability.extra.chip_gain
 				return {
 					message = localize('k_upgrade_ex'),
-					card = context.blueprint_card or card
+					message_card = context.blueprint_card or card,
 				}
 			end
 		end
@@ -89,18 +89,20 @@ function level_up_hand(card, hand, instant, amount, ...)
 	if card and card.ability and card.ability.consumeable then
 		---@type Card
 		for _, cyan in ipairs(cyans) do
-			-- Prevent Black Hole and such from constantly having reactions from Cyan
-			if not instant then
-				card_eval_status_text(card, 'extra', nil, nil, nil, {
-					message = 'Upgraded!',
-					colour = G.C.DARK_EDITION,
-					extrafunc = function()
-						cyan:juice_up()
-					end
-				})
+			if cyan.ability.extra.planet_multiplier > 1 then
+				-- Prevent Black Hole and such from constantly having reactions from Cyan
+				if not instant then
+					card_eval_status_text(card, 'extra', nil, nil, nil, {
+						message = 'Upgraded!',
+						colour = G.C.DARK_EDITION,
+						extrafunc = function()
+							cyan:juice_up()
+						end
+					})
+				end
+				G.GAME.hands[hand].l_chips = G.GAME.hands[hand].l_chips * cyan.ability.extra.planet_multiplier
+				G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult * cyan.ability.extra.planet_multiplier
 			end
-			G.GAME.hands[hand].l_chips = G.GAME.hands[hand].l_chips * cyan.ability.extra.planet_multiplier
-			G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult * cyan.ability.extra.planet_multiplier
 		end
 	end
 	oldluh(card, hand, instant, amount, ...)
