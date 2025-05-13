@@ -13,8 +13,8 @@ end
 SMODS.Joker {
 	key = "cyan",
 	config = {
-		extra = { add_amt = 0.2, dec_amt = 0.2, current_mult = 1 },
-		immutable = { speed = 0.35, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
+		extra = { planet_multiplier = 1.0, chip_gain = 0.1 },
+		immutable = { speed = 0.7, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -34,22 +34,76 @@ SMODS.Joker {
 		soul:draw_shader('dissolve', nil, nil, nil, card.children.center, nil, nil, (im.x/71), (im.y/95))
 	end },
 	update = function(self, card, dt)
+		local delta = G.real_dt or dt
 		-- update gfx position of card
 		local im = card.ability.immutable
-		im.x = im.x + im.dir.x*im.speed*(dt*60)
-		im.y = im.y + im.dir.y*im.speed*(dt*60)
+		im.x = im.x + im.dir.x*im.speed*(delta*60)
+		im.y = im.y + im.dir.y*im.speed*(delta*60)
 		local nextx = im.x
 		local nexty = im.y
 		-- bounce off borders
 		-- extremely arbritary numbers over here lmao
-		while ((nextx < 0 or (nextx+im.size) > 71*1.3) or (nexty < 0 or (nexty+im.size) > 95*1.9)) do
+		while ((nextx < 0 or (nextx+im.size) > 71*1.3) or (nexty < 0 or (nexty+im.size) > 95*2)) do
 			im.dir = rand_dir()
-			nextx = im.x + im.dir.x*im.speed*(dt*60)
-			nexty = im.y + im.dir.y*im.speed*(dt*60)
+			nextx = im.x + im.dir.x*im.speed*(delta*60)
+			nexty = im.y + im.dir.y*im.speed*(delta*60)
 			im.atlas_dir = math.floor((im.dir.ang + 22.5) / 45) % 8
 		end
+	end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play and not context.game_over then
+			local other_card = context.other_card
+			if other_card and (other_card:is_suit('Spades') or other_card:is_suit('Clubs')) then
+				card.ability.extra.planet_multiplier = card.ability.extra.planet_multiplier + card.ability.extra.chip_gain
+				return {
+					message = localize('k_upgrade_ex'),
+					card = context.blueprint_card or card
+				}
+			end
+		end
+		if context.joker_main or context.forcetrigger then
+			return {
+				x_chips = card.ability.extra.planet_multiplier
+			}
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.planet_multiplier, card.ability.extra.chip_gain } }
 	end,
 	cost = 25,
 	blueprint_compat = true,
 	demicoloncompat = true,
 }
+
+-- Handle Cyan planet card effects
+local oldluh = level_up_hand
+---@param card Card|nil
+---@param hand string
+---@param instant boolean|nil
+---@param amount number
+function level_up_hand(card, hand, instant, amount, ...)
+	local cyans = SMODS.find_card('j_payasaka_cyan')
+	local old_l_chips = G.GAME.hands[hand].l_chips
+	local old_l_mult = G.GAME.hands[hand].l_mult
+	-- Make sure its a Planet card or Planet-like
+	if card and card.ability and card.ability.consumeable then
+		---@type Card
+		for _, cyan in ipairs(cyans) do
+			-- Prevent Black Hole and such from constantly having reactions from Cyan
+			if not instant then
+				card_eval_status_text(card, 'extra', nil, nil, nil, {
+					message = 'Upgraded!',
+					colour = G.C.DARK_EDITION,
+					extrafunc = function()
+						cyan:juice_up()
+					end
+				})
+			end
+			G.GAME.hands[hand].l_chips = G.GAME.hands[hand].l_chips * cyan.ability.extra.planet_multiplier
+			G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult * cyan.ability.extra.planet_multiplier
+		end
+	end
+	oldluh(card, hand, instant, amount, ...)
+	G.GAME.hands[hand].l_chips = old_l_chips
+	G.GAME.hands[hand].l_mult = old_l_mult
+end

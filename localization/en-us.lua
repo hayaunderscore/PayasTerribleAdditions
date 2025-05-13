@@ -124,12 +124,9 @@ return {
 			j_payasaka_goodnevil = {
 				name = "Good 'n Evil",
 				text = {
-					"For every scored card {C:attention}triggered{}",
-					"Add {C:red}#1#{} Mult to current Mult",
-					"Amount is {C:attention}incremented{} every time",
-					"this Joker is {C:attention}triggered{}",
-					"as well as its {C:dark_edition}sign{}",
-					"{C:inactive}(Currently {C:red}#2#{C:inactive} Mult)",
+					"{C:red}#2#{} Mult per {C:attention}scored{} card",
+					"Gains {C:red}#1#{} and {C:attention}multiplies",
+					"current Mult by {X:dark_edition,C:white}X-1{}"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Turn the lights off...",
@@ -637,6 +634,15 @@ return {
 					"Scored cards give {X:dark_edition,C:white}^#1#{} Chips",
 					"Additional {X:dark_edition,C:white}^#2#{} Chips when",
 					"played hand is a {C:attention}Flush{}",
+				}
+			},
+			j_payasaka_cyan = {
+				name = "Cyan",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips and",
+					"{X:attention,C:white}X#1#{} Planet multiplier",
+					"Gains {X:chips,C:white}X#2#{} Chips per",
+					"{C:attention}scored{} {C:spades}Spades{} or {C:clubs}Clubs{}",
 				}
 			}
 		},
