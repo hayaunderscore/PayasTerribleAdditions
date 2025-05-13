@@ -14,7 +14,7 @@ SMODS.Joker {
 	key = "cyan",
 	config = {
 		extra = { planet_multiplier = 1.0, chip_gain = 0.1 },
-		immutable = { speed = 0.9, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
+		immutable = { speed = 0.9, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0, old_l_chips = 0, old_l_mult = 0 },
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -51,6 +51,7 @@ SMODS.Joker {
 		end
 	end,
 	calculate = function(self, card, context)
+		local im = card.ability.immutable
 		if context.individual and context.cardarea == G.play and not context.game_over then
 			local other_card = context.other_card
 			if other_card and (other_card:is_suit('Spades') or other_card:is_suit('Clubs')) then
@@ -65,6 +66,29 @@ SMODS.Joker {
 			return {
 				x_chips = card.ability.extra.planet_multiplier
 			}
+		end
+		-- Make sure its a Planet card or Planet-like
+		if context.payasaka_level_up_before and context.other_card and context.other_card.ability and context.other_card.ability.consumeable then
+			im.old_l_chips = context.poker_hand.l_chips
+			im.old_l_mult = context.poker_hand.l_mult
+			if card.ability.extra.planet_multiplier > 1 then
+				-- Prevent Black Hole and such from constantly having reactions from Cyan
+				if not context.instant then
+					card_eval_status_text(context.other_card, 'extra', nil, nil, nil, {
+						message = 'Upgraded!',
+						colour = G.C.DARK_EDITION,
+						extrafunc = function()
+							(context.blueprint_card or card):juice_up()
+						end
+					})
+				end
+				context.poker_hand.l_chips = context.poker_hand.l_chips * card.ability.extra.planet_multiplier
+				context.poker_hand.l_mult = context.poker_hand.l_mult * card.ability.extra.planet_multiplier
+			end
+		end
+		if context.payasaka_level_up_after and context.other_card and context.other_card.ability and context.other_card.ability.consumeable then
+			context.poker_hand.l_chips = im.old_l_chips
+			context.poker_hand.l_mult = im.old_l_mult
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -82,30 +106,7 @@ local oldluh = level_up_hand
 ---@param instant boolean|nil
 ---@param amount number
 function level_up_hand(card, hand, instant, amount, ...)
-	local cyans = SMODS.find_card('j_payasaka_cyan')
-	local old_l_chips = G.GAME.hands[hand].l_chips
-	local old_l_mult = G.GAME.hands[hand].l_mult
-	-- Make sure its a Planet card or Planet-like
-	if card and card.ability and card.ability.consumeable then
-		---@type Card
-		for _, cyan in ipairs(cyans) do
-			if cyan.ability.extra.planet_multiplier > 1 then
-				-- Prevent Black Hole and such from constantly having reactions from Cyan
-				if not instant then
-					card_eval_status_text(card, 'extra', nil, nil, nil, {
-						message = 'Upgraded!',
-						colour = G.C.DARK_EDITION,
-						extrafunc = function()
-							cyan:juice_up()
-						end
-					})
-				end
-				G.GAME.hands[hand].l_chips = G.GAME.hands[hand].l_chips * cyan.ability.extra.planet_multiplier
-				G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult * cyan.ability.extra.planet_multiplier
-			end
-		end
-	end
+	SMODS.calculate_context({payasaka_level_up_before = true, other_card = card, scoring_name = hand, poker_hand = G.GAME.hands[hand], instant = instant})
 	oldluh(card, hand, instant, amount, ...)
-	G.GAME.hands[hand].l_chips = old_l_chips
-	G.GAME.hands[hand].l_mult = old_l_mult
+	SMODS.calculate_context({payasaka_level_up_after = true, other_card = card, scoring_name = hand, poker_hand = G.GAME.hands[hand], instant = instant})
 end
