@@ -6,7 +6,7 @@ SMODS.Atlas {
 
 -- 95/71
 local vscale = 1.3380281690140845070422535211268
-local card_scale = G.TILESCALE/2.5
+local card_scale = G.TILESCALE/2.4
 local center_x = card_scale/2
 local center_y = (card_scale*vscale)/2
 local sprite_scale = card_scale*(0.45070422535211267605633802816901/2)
