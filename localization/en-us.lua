@@ -840,10 +840,31 @@ return {
 				},
 			},
 			tag_payasaka_ahead = {
-				name = " Tag",
+				name = "Ahead Tag",
 				text = {
 					"Shop has a free",
 					"{C:edition}Ahead Joker",
+				},
+			},
+			tag_payasaka_tier1reward = {
+				name = "Reward Tag",
+				text = {
+					"Gives a free",
+					"{C:reward}Reward Pack",
+				},
+			},
+			tag_payasaka_tier2reward = {
+				name = "Reward Tag (II)",
+				text = {
+					"Gives a free",
+					"{C:reward}Jumbo Reward Pack",
+				},
+			},
+			tag_payasaka_tier3reward = {
+				name = "Reward Tag (III)",
+				text = {
+					"Gives a free",
+					"{C:reward}Mega Reward Pack",
 				},
 			},
 		},
@@ -1011,7 +1032,7 @@ return {
 				name = "Shine",
 				text = {
 					"Give up to {C:attention}#1#{} cards a {C:attention}random{}",
-					"{C:attention}edition{}, {C:attention}enhancement{} or {C:attention}seal{}",
+					"edition, enhancement or seal",
 				}
 			},
 			c_payasaka_parlay = {

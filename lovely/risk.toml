@@ -30,6 +30,7 @@ pattern = '''-- TARGET: effects before scoring starts'''
 position = 'before'
 payload = '''
 local mto_big = to_big or function(a) return a end
+G.GAME.payasaka_last_hand_name = nil
 if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 and mto_big(G.GAME.hands[text].level) > mto_big(1) then
 	G.GAME.payasaka_last_hand_name = text
 	G.GAME.payasaka_last_hand_level = G.GAME.hands[text].level
@@ -44,7 +45,7 @@ target = 'functions/state_events.lua'
 pattern = '''-- context.after calculations'''
 position = 'before'
 payload = '''
-if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 then
+if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 and G.GAME.payasaka_last_hand_name then
 	G.E_MANAGER:add_event(Event{
 		func = function()
 			local hand = G.GAME.hands[G.GAME.payasaka_last_hand_name]
@@ -153,8 +154,20 @@ if card.ability.set == 'Booster' then
 '''
 position = "at"
 payload = '''
-if card.ability.set == 'Booster' or card.config.center.fake_booster then
+if card.ability.set == 'Booster' or (card.config.center.fake_booster and not select_to) then
       G.CONTROLLER.locks.use = false
       G.TAROT_INTERRUPT = nil
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+local select_to = card.area == G.pack_cards and booster_obj and booster_obj.select_card and card:selectable_from_pack(booster_obj)
+'''
+position = "after"
+payload = '''
+if card.config.center.pta_selectable and card.area == G.pack_cards then select_to = "consumeables" end
 '''
 match_indent = true
