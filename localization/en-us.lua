@@ -647,6 +647,14 @@ return {
 					"Gains {X:chips,C:white}X#2#{} Chips per",
 					"{C:attention}scored{} {C:spades}Spades{} or {C:clubs}Clubs{}",
 				}
+			},
+			j_payasaka_s16 = {
+				name = "{s:4}Joker{}",
+				text = {
+					"{C:mult,s:16}+#1#{s:16} Mult",
+					"{s:4}This huge text is very important",
+					"{s:2}trust me"
+				}
 			}
 		},
 		Blind = {
@@ -1201,7 +1209,39 @@ return {
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:risk} Risk{} cards to",
-					"add to your consumeables"
+					"be used immediately",
+				}
+			},
+			p_payasaka_risk_normal_1 = {
+				name = "Risk Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"be used immediately",
+				}
+			},
+			p_payasaka_risk_normal_2 = {
+				name = "Risk Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"be used immediately",
+				}
+			},
+			p_payasaka_risk_mega_1 = {
+				name = "Mega Risk Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"be used immediately",
+				}
+			},
+			p_payasaka_risk_jumbo_1 = {
+				name = "Jumbo Risk Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"be used immediately",
 				}
 			},
 			payasaka_random_seal = {
@@ -1362,6 +1402,7 @@ return {
 			b_risk_cards = "Risk Cards",
 			k_property_pack = "Property Pack",
 			k_moji_pack = "Moji Pack",
+			k_risk_pack = "Risk Pack",
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",

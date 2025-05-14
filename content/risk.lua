@@ -5,6 +5,7 @@ SMODS.ConsumableType {
 	secondary_colour = HEX('891e2b'),
 	shop_rate = 0,
 	loc_txt = {},
+	default = 'c_payasaka_crime'
 }
 
 SMODS.UndiscoveredSprite {
@@ -69,7 +70,7 @@ PTASaka.Risk = SMODS.Consumable:extend {
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
 	end,
 	in_pool = function(self, args)
-		return true, { allow_duplicates = true }
+		return true, { allow_duplicates = G.GAME.payasaka_only_risk or false }
 	end,
 }
 
@@ -564,7 +565,7 @@ PTASaka.Risk {
 }
 
 -- edit of StrangeLib.make_boosters to use pyrox instead
-function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, common_values, pack_size)
+function PTASaka.make_pyrox_boosters(base_key, normal_poses, jumbo_poses, mega_poses, common_values, pack_size)
 	pack_size = pack_size or 3
 	for index, pos in ipairs(normal_poses) do
 		local t = copy_table(common_values)
@@ -596,7 +597,8 @@ function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, 
 end
 
 -- Booster packs....
-PTASaka.make_boosters('moji',
+--[[
+PTASaka.make_pyrox_boosters('moji',
 	{
 		{ x = 0, y = 3 },
 		{ x = 1, y = 3 },
@@ -625,6 +627,36 @@ PTASaka.make_boosters('moji',
 			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Risk, special_colour = G.C.SET.Risk, contrast = 4 })
 		end,
 	}, 2
+)
+]]
+local rpox = 5
+PTASaka.make_boosters('risk',
+	{
+		{ x = rpox, y = 0 },
+		{ x = rpox+1, y = 0 },
+	},
+	{
+		{ x = rpox+2, y = 0 },
+	},
+	{
+		{ x = rpox+3, y = 0 },
+	},
+	{
+		atlas = 'JOE_Risk',
+		kind = 'Risk',
+		weight = 0.6,
+		create_card = function(self, card, i)
+			return create_card("Risk", G.pack_cards, nil, nil, true, true, nil)
+		end,
+		in_pool = function(self, args)
+			return true, { allow_duplicates = true }
+		end,
+		group_key = 'k_risk_pack',
+		ease_background_colour = function(self)
+			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Risk)
+			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Risk, special_colour = G.C.SET.Risk, contrast = 4 })
+		end,
+	}
 )
 
 function G.UIDEF.current_risks()
