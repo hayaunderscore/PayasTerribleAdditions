@@ -117,6 +117,7 @@ end
 
 assert(SMODS.load_file("content/dos.lua"))()
 assert(SMODS.load_file("content/risk.lua"))()
+assert(SMODS.load_file("content/rewards.lua"))()
 
 -- Vouchers
 assert(SMODS.load_file("content/vouchers.lua"))()

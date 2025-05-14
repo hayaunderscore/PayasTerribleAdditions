@@ -132,6 +132,7 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.hand:change_size(ability.hand_neg)
+		add_tag(Tag('tag_payasaka_tier1reward'))
 		--G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -169,6 +170,7 @@ PTASaka.Risk {
 				c.debuff = false
 			end
 		end
+		add_tag(Tag('tag_payasaka_tier1reward'))
 	end,
 }
 
@@ -193,6 +195,7 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_leak_active = nil
+		add_tag(Tag('tag_payasaka_tier1reward'))
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.money } }
@@ -215,6 +218,7 @@ PTASaka.Risk {
 		delay(0.6)
 	end,
 	apply_reward = function(self, ability)
+		add_tag(Tag('tag_payasaka_tier2reward'))
 	end,
 }
 
@@ -305,6 +309,7 @@ PTASaka.Risk {
 		add_tag(Tag('tag_meteor'))
 		add_tag(Tag('tag_ethereal'))
 		]]
+		add_tag(Tag('tag_payasaka_tier2reward'))
 	end,
 }
 
@@ -329,6 +334,7 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_decay_active = nil
+		add_tag(Tag('tag_payasaka_tier2reward'))
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.level } }
@@ -358,6 +364,7 @@ PTASaka.Risk {
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_stunted_active = false
 		G.GAME.payasaka_stunted_chance = nil
+		add_tag(Tag('tag_payasaka_tier2reward'))
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
@@ -452,6 +459,7 @@ PTASaka.Risk {
 				joker.ability.debuffed_by_risk = nil
 			end
 		end
+		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -475,6 +483,7 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_elusive_cards = nil
+		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -560,6 +569,10 @@ PTASaka.Risk {
 			edition = 'e_negative'
 		}
 		]]
+		SMODS.add_card {
+			key = 'c_payasaka_mind',
+			edition = 'e_negative'
+		}
 		G.GAME.payasaka_cannot_reroll = nil
 	end
 }

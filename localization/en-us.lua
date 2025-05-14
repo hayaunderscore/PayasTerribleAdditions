@@ -880,7 +880,7 @@ return {
 					"{C:attention}Transforms{} the boss",
 					"blind to a {C:attention}showdown",
 					"boss blind for a",
-					"{C:dark_edition}Negative{} {C:spectral}The Soul"
+					"{C:dark_edition}Negative{} {C:reward}Mind"
 				}
 			},
 			c_payasaka_center = {
@@ -974,6 +974,88 @@ return {
 					"before the boss blind",
 					"{C:inactive}Doesn't work yet!",
 				}
+			},
+		},
+		Reward = {
+			c_payasaka_conform = {
+				name = "Conform",
+				text = {
+					"Convert up to {C:attention}#1#{} selected",
+					"cards into the {C:attention}rightmost",
+					"card's {C:attention}suit",
+				}
+			},
+			c_payasaka_chance = {
+				name = "Chance",
+				text = {
+					"Get {C:attention}X#1#{} the sell value",
+					"of a {C:attention}random{} Joker",
+				}
+			},
+			c_payasaka_hone = {
+				name = "Hone",
+				text = {
+					"Levels up the {C:purple,E:1}most played",
+					"poker hand by {C:attention}#1#",
+				}
+			},
+			c_payasaka_metalicize = {
+				name = "Metalicize",
+				text = {
+					"Add {C:dark_edition}Foil{}, {C:dark_edition}Holographic{}",
+					"or {C:dark_edition}Polychrome{} edition",
+					"to a random {C:attention}Joker",
+				}
+			},
+			c_payasaka_shine = {
+				name = "Shine",
+				text = {
+					"Give up to {C:attention}#1#{} cards a {C:attention}random{}",
+					"{C:attention}edition{}, {C:attention}enhancement{} or {C:attention}seal{}",
+				}
+			},
+			c_payasaka_parlay = {
+				name = "Parlay",
+				text = {
+					"Creates up to {C:attention}#1#",
+					"random {C:risk}Risk{} cards",
+					"{C:inactive}(Must have room)",
+				}
+			},
+			c_payasaka_remember = {
+				name = "Remember",
+				text = {
+					"{C:purple,E:1}Upgrades{} a",
+					"{C:attention}random{} voucher",
+				}
+			},
+			c_payasaka_dream = {
+				name = "Dream",
+				text = {
+					"Creates a {C:dark_edition}Negative",
+					"{C:chips}Common{} Joker",
+				}
+			},
+			c_payasaka_sprint = {
+				name = "Sprint",
+				text = {
+					"Creates a {C:attention}random",
+					"skip tag",
+				}
+			},
+			c_payasaka_sulfur = {
+				name = "Sulfur",
+				text = {
+					"Destroys up to",
+					"{C:attention}#1#{} selected cards",
+				},
+			},
+			c_payasaka_mind = {
+				name = "Mind",
+				text = {
+					"Creates a {C:dark_edition,E:1}Legendary",
+					"Buffoon Pack",
+				},
 			},
 		},
 		Rotarot = {
@@ -1181,34 +1263,34 @@ return {
 				}
 			},
 			p_payasaka_moji_normal_1 = {
-				name = "Moji Pack",
+				name = "Reward Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:risk} Risk{} cards to",
-					"add to your consumeables"
+					"{C:attention}#2#{C:reward} Reward{} cards to",
+					"be used immediately",
 				}
 			},
 			p_payasaka_moji_normal_2 = {
-				name = "Moji Pack",
+				name = "Reward Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:risk} Risk{} cards to",
-					"add to your consumeables"
+					"{C:attention}#2#{C:reward} Reward{} cards to",
+					"be used immediately",
 				}
 			},
 			p_payasaka_moji_mega_1 = {
-				name = "Mega Moji Pack",
+				name = "Mega Reward Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:risk} Risk{} cards to",
-					"add to your consumeables"
+					"{C:attention}#2#{C:reward} Reward{} cards to",
+					"be used immediately",
 				}
 			},
 			p_payasaka_moji_jumbo_1 = {
-				name = "Jumbo Moji Pack",
+				name = "Jumbo Reward Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:risk} Risk{} cards to",
+					"{C:attention}#2#{C:reward} Reward{} cards to",
 					"be used immediately",
 				}
 			},
@@ -1242,6 +1324,13 @@ return {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:risk} Risk{} cards to",
 					"be used immediately",
+				}
+			},
+			p_payasaka_legendary_normal_1 = {
+				name = "Legendary Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} {C:purple,E:1}Legendary{} {C:joker}Jokers{}",
 				}
 			},
 			payasaka_random_seal = {
@@ -1400,9 +1489,12 @@ return {
 			b_doscard_cards = "DOS Cards",
 			k_risk = "Risk",
 			b_risk_cards = "Risk Cards",
+			k_reward = "Reward",
+			b_reward_cards = "Reward Cards",
 			k_property_pack = "Property Pack",
-			k_moji_pack = "Moji Pack",
+			k_moji_pack = "Reward Pack",
 			k_risk_pack = "Risk Pack",
+			k_legendary_pack = "Legendary Pack",
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",
