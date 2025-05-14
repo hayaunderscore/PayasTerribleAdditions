@@ -37,7 +37,7 @@ SMODS.Joker {
 					-- Ok then.
 					if not valid[1] then valid = SMODS.Suits end
 					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil,
-						{ message = "Reading...", instant = true })
+						{ message = localize('k_payasaka_reading_ex'), instant = true })
 					local suit = pseudorandom_element(valid, pseudoseed('payasaka_newspaper')).card_key
 					local rank = pseudorandom_element(SMODS.Ranks, pseudoseed('payasaka_newspaper')).card_key
 					local edition = poll_edition('payasaka_newspaper', nil, Cryptid == nil, true)

@@ -125,8 +125,9 @@ return {
 				name = "Good 'n Evil",
 				text = {
 					"{C:red}#2#{} Mult per {C:attention}scored{} card",
-					"Gains {C:red}#1#{} and {C:attention}multiplies",
-					"current Mult by {X:dark_edition,C:white}X-1{}"
+					"Gains {X:dark_edition,C:white}abs(#1#)*1(n){} Mult per",
+					"scored card",
+					"{X:dark_edition,C:white}n{} is multiplied by {X:dark_edition,C:white}X-1{}"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Turn the lights off...",
@@ -1368,13 +1369,29 @@ return {
 			k_payasaka_pyroxene_bonus = "Pyroxene drop",
 			b_payasaka_dos_switch = "SWITCH",
 			k_payasaka_active = "active",
+			k_payasaka_ready = "ready",
 			k_payasaka_inactive = "inactive",
 			ph_bought_risks = "Risk cards bought this ante",
-			ph_no_risk = "No risk cards bought this ante"
+			ph_no_risk = "No risk cards bought this ante",
+			-- #region Jokers
+			k_payasaka_monster_sip = "Sip...",
+			k_payasaka_phil_fail = "Aww...",
+			k_payasaka_lucky_ex = "Lucky!",
+			k_payasaka_bas_degrade = "Augh...",
+			k_payasaka_bas_eaten = "Don't do this.",
+			k_payasaka_reading_ex = "Reading...",
+			k_payasaka_added_ex = "Added!",
+			k_payasaka_teehee_ex = "Teehee!",
+			k_payasaka_nil_ex = "nil",
+			k_payasaka_enotsworra_change = "???",
+			k_payasaka_inactive_ex = "Inactive!",
+			-- #endregion
 		},
 		v_dictionary = {
 			pta_art_credit = { "Art: #1#" },
-			pta_idea_credit = { "Idea: #1#" }
+			pta_idea_credit = { "Idea: #1#" },
+			a_tallymult = "&#1# Mult",
+			a_whatchips = "#1# Chips",
 		},
 		labels = {
 			payasaka_jpeg = 'YCbCr',

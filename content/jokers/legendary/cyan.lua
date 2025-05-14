@@ -74,7 +74,7 @@ SMODS.Joker {
 				-- Prevent Black Hole and such from constantly having reactions from Cyan
 				if not context.instant then
 					card_eval_status_text(context.other_card, 'extra', nil, nil, nil, {
-						message = 'Upgraded!',
+						message = localize('k_upgrade_ex'),
 						colour = G.C.DARK_EDITION,
 						extrafunc = function()
 							c:juice_up()

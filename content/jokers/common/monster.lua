@@ -41,12 +41,12 @@ SMODS.Joker {
 						end
 					}))
 					return {
-						message = "Drunk!",
+						message = localize('k_drank_ex'),
 						card = card
 					}
 				end
 				return {
-					message = "Sip...",
+					message = localize('k_payasaka_monster_sip'),
 					card = card
 				}
 			end

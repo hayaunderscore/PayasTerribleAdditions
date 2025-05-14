@@ -29,7 +29,7 @@ SMODS.Joker {
 					xchips = card.ability.extra.divchips,
 					colour = G.C.NEGATIVE_EDITION,
 					remove_default_message = true,
-					message = "Teehee!"
+					message = localize('k_payasaka_teehee_ex')
 				}
 			end
 			card.ability.extra.givechips = card.ability.extra.givechips + card.ability.extra.incchips

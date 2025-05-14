@@ -21,7 +21,7 @@ SMODS.Joker {
 		if context.skip_blind or context.skipping_booster then
 			card.ability.extra.current_mult = card.ability.extra.current_mult - card.ability.extra.dec_amt
 			return {
-				message = "Aww..."
+				message = localize('k_payasaka_phil_fail')
 			}
 		end
 		if context.joker_main or context.forcetrigger then

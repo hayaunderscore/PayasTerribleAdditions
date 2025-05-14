@@ -38,7 +38,7 @@ SMODS.Joker {
 					end
 					card.ability.extra.x_chips = card.ability.extra.x_chips + card.ability.extra.give_x_chip
 					--card.states.drag.is = false
-					card_eval_status_text(G.jokers.cards[j], 'extra', nil, nil, nil, { message = "nil", instant = true })
+					card_eval_status_text(G.jokers.cards[j], 'extra', nil, nil, nil, { message = localize('k_payasaka_nil_ex'), instant = true })
 				end
 				if G.jokers.cards[j] == (card.area == PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.pta_owner or card) then
 					start_here = true

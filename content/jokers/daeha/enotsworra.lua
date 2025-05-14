@@ -62,15 +62,16 @@ SMODS.Joker {
 			end
 			card.ability.current_sign = new_sign
 			return {
-				message = "???"
+				message = localize('k_payasaka_enotsworra_change')
 			}
 		end
 		if context.individual and (context.cardarea == G.play or context.cardarea == G.hand) and not context.end_of_round then
 			local sign = card.ability.current_sign
 			local val = card.ability.extra.chips
 			return {
-				message = enotsworrA_signs[card.ability.current_sign].sign..tostring(val).." Chips",
+				message = localize { type = 'variable', key = 'a_whatchips', vars = { enotsworrA_signs[card.ability.current_sign].sign..tostring(val) } },
 				colour = G.C.CHIPS,
+				sound = 'xchips',
 				pf_chips = function(hand_chips)
 					if sign == "plus" then
 						hand_chips = hand_chips + val

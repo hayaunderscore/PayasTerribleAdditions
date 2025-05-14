@@ -4,9 +4,9 @@ local signed = function(a) return a >= 0 and "+" .. tostring(a) or tostring(a) e
 SMODS.Joker {
 	name = "Good 'n Evil",
 	key = "goodnevil",
-	config = { extra = { current_increment = -2, mult = -1 } },
+	config = { extra = { current_increment = 0, mult = 0 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { signed(card.ability.extra.current_increment), signed(card.ability.extra.mult) } }
+		return { vars = { math.abs(card.ability.extra.current_increment)+1, signed(card.ability.extra.mult) } }
 	end,
 	rarity = 1,
 	atlas = "JOE_Jokers",
@@ -21,7 +21,7 @@ SMODS.Joker {
 			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.current_increment
 			return {
 				mult_mod = card.ability.extra.mult,
-				message = "& " .. signed(card.ability.extra.mult),
+				message = localize { type = 'variable', key = 'a_tallymult', vars = { card.ability.extra.mult } },
 				message_card = context.blueprint_card or card
 			}
 		end

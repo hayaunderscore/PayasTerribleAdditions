@@ -9,7 +9,7 @@ SMODS.Joker {
 	cost = 25,
 	no_doe = true, -- :]
 	demicoloncompat = false,
-	config = { odds = 2, extra = { exponential_active = false } },
+	config = { odds = 2, extra = { exponential_cnt = 0 } },
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -39,7 +39,7 @@ SMODS.Joker {
 	end,
 	calculate = function(self, card, context)
 		if context.setting_blind and ((pseudorandom('paya_hell') < (G.GAME.probabilities.normal or 1) / card.ability.odds) or card.ability.cry_rigged) then
-			card.ability.extra.exponential_active = true
+			card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt + 1
 			G.E_MANAGER:add_event(Event {
 				func = function()
 					G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
@@ -47,7 +47,8 @@ SMODS.Joker {
 				end
 			})
 			return {
-				message = "Active!"
+				message = localize('k_active_ex'),
+				card = context.blueprint_card or card
 			}
 		end
 		if context.end_of_round and card.ability.extra.exponential_active then
@@ -59,7 +60,7 @@ SMODS.Joker {
 				end
 			})
 			return {
-				message = "Inactive!"
+				message = localize('k_payasaka_inactive_ex')
 			}
 		end
 	end

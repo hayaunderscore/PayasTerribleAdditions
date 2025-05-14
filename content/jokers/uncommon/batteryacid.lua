@@ -47,11 +47,11 @@ SMODS.Joker {
 					end
 				}))
 				return {
-					message = "Don't do this."
+					message = localize('k_payasaka_bas_eaten')
 				}
 			end
 			return {
-				message = "Augh..."
+				message = localize('k_payasaka_bas_degrade')
 			}
 		end
 	end

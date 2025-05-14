@@ -13,7 +13,7 @@ SMODS.Joker {
 	config = { saved_ids = {}, extra = { photographed = false } },
 	pta_usable = true,
 	loc_vars = function(self, info_queue, card)
-		local str = card.ability.extra.photographed and "ready" or "inactive"
+		local str = localize('k_payasaka_' .. (card.ability.extra.photographed and "ready" or "inactive"))
 		return {
 			main_end = {
 				(G.GAME and card.area and (card.area == G.jokers)) and {

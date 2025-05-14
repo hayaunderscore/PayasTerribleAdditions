@@ -22,7 +22,7 @@ SMODS.Joker {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil,
-								{ message = "Lucky!", colour = G.C.GREEN, instant = true })
+								{ message = localize('k_payasaka_lucky_ex'), colour = G.C.GREEN, instant = true })
 							play_sound("payasaka_lucky", 1.0, 0.7)
 							return true
 						end
