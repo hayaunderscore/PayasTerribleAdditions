@@ -1425,7 +1425,10 @@ return {
 			k_payasaka_teehee_ex = "Teehee!",
 			k_payasaka_nil_ex = "nil",
 			k_payasaka_enotsworra_change = "???",
+			k_payasaka_hyperactive_ex = "Hyperactive!",
 			k_payasaka_inactive_ex = "Inactive!",
+			k_payasaka_saved_ex = "Saved!",
+			k_payasaka_loaded_ex = "Loaded!",
 			-- #endregion
 		},
 		v_dictionary = {

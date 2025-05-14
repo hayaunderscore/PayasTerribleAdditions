@@ -17,7 +17,7 @@ SMODS.Joker {
 		},
 	},
 	loc_vars = function(self, info_queue, card)
-		local str = localize('k_payasaka_' .. (card.ability.extra.exponential_active and "active" or "inactive"))
+		local str = localize('k_payasaka_' .. (card.ability.extra.exponential_cnt > 0 and "active" or "inactive"))
 		return {
 			vars = { card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds },
 			main_end = {
@@ -47,21 +47,20 @@ SMODS.Joker {
 				end
 			})
 			return {
-				message = localize('k_active_ex'),
+				message = card.ability.extra.exponential_cnt == 1 and localize('k_active_ex') or localize('k_payasaka_hyperactive_ex'),
+				colour = card.ability.extra.exponential_cnt == 1 and G.C.GOLD or G.C.DARK_EDITION,
 				card = context.blueprint_card or card
 			}
 		end
-		if context.end_of_round and card.ability.extra.exponential_active then
-			card.ability.extra.exponential_active = false
+		while context.end_of_round and card.ability.extra.exponential_cnt > 0 and not context.individual do
+			card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt - 1
 			G.E_MANAGER:add_event(Event {
 				func = function()
 					G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count - 1
 					return true
 				end
 			})
-			return {
-				message = localize('k_payasaka_inactive_ex')
-			}
+			card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('k_payasaka_inactive_ex') })
 		end
 	end
 }
