@@ -4,6 +4,13 @@ SMODS.Atlas {
 	px = 32, py = 32
 }
 
+-- 95/71
+local vscale = 1.3380281690140845070422535211268
+local card_scale = G.TILESCALE/2.5
+local center_x = card_scale/2
+local center_y = (card_scale*vscale)/2
+local sprite_scale = card_scale*(0.45070422535211267605633802816901/2)
+
 -- get a random dir
 local function rand_dir()
 	local dir = 2*math.pi*(G and G.GAME and pseudorandom('cyan_gfx') or math.random())
@@ -14,7 +21,7 @@ SMODS.Joker {
 	key = "cyan",
 	config = {
 		extra = { planet_multiplier = 1.0, chip_gain = 0.1 },
-		immutable = { speed = 1.1, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
+		immutable = { speed = 0.04, dir = { x = 1, y = 0, ang = 0 }, x = center_x-(sprite_scale/2), y = center_y-(sprite_scale/2), size = sprite_scale, atlas_dir = 0 },
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -30,8 +37,8 @@ SMODS.Joker {
 			soul.atlas = G.ASSET_ATLAS["payasaka_cyan"]
 		end
 		soul:set_sprite_pos({x = im.atlas_dir, y = 0})
-		soul:draw_shader('dissolve', 0, nil, nil, card.children.center, nil, nil, (im.x/71), (im.y/95) + (0.1+0.03*math.sin(1.8*G.TIMERS.REAL)), nil, 0.6)
-		soul:draw_shader('dissolve', nil, nil, nil, card.children.center, nil, nil, (im.x/71), (im.y/95))
+		soul:draw_shader('dissolve', 0, nil, nil, card.children.center, nil, nil, im.x, im.y + (0.1+0.03*math.sin(1.8*G.TIMERS.REAL)), nil, 0.6)
+		soul:draw_shader('dissolve', nil, nil, nil, card.children.center, nil, nil, im.x, im.y)
 	end },
 	update = function(self, card, dt)
 		local delta = G.real_dt or dt
@@ -42,8 +49,7 @@ SMODS.Joker {
 		local nextx = im.x
 		local nexty = im.y
 		-- bounce off borders
-		-- extremely arbritary numbers over here lmao
-		while ((nextx < 0 or (nextx+im.size) > 71*1.3) or (nexty < 0 or (nexty+im.size) > 95*2)) do
+		while ((nextx < 0 or (nextx+im.size) > card_scale) or (nexty < 0 or (nexty+im.size) > card_scale*vscale)) do
 			im.dir = rand_dir()
 			nextx = im.x + im.dir.x*im.speed*(delta*60)
 			nexty = im.y + im.dir.y*im.speed*(delta*60)
