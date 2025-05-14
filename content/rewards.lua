@@ -403,9 +403,6 @@ PTASaka.Reward {
 	kind = 'Joker',
 	create_UIBox = SMODS.Booster.create_UIBox,
 	fake_booster = true,
-	keep_on_use = function(self, card)
-		return true
-	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Reward)
 		ease_background_colour({ new_colour = G.C.SECONDARY_SET.Reward, special_colour = G.C.SET.Reward, contrast = 4 })
@@ -413,14 +410,14 @@ PTASaka.Reward {
 	in_pool = function() -- This will never be in pool
 		return false
 	end,
+	create_card = function(self, card, i)
+		return create_card("Joker", G.pack_cards, true, nil, true, true, nil, 'buf')
+	end,
 	use = function(self, card, area, copier)
-		draw_card(G.hand, G.play, 1, 'up', true, card, nil, nil)
+		delay(0.2)
 
-		if not ((G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or
-				G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.STANDARD_PACK or
-				G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED)) then
-			G.GAME.PACK_INTERRUPT = G.STATE
-		end
+		-- yeah
+		G.GAME.PACK_INTERRUPT = G.TAROT_INTERRUPT
 		G.STATE_COMPLETE = false
 		card.opening = true
 
@@ -474,10 +471,6 @@ PTASaka.Reward {
 						end
 					end
 				}))
-
-				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i]:calculate_joker({ open_booster = true, card = card })
-				end
 
 				if G.GAME.modifiers.inflation then
 					G.GAME.inflation = G.GAME.inflation + 1
