@@ -142,3 +142,19 @@ payload = '''
 	tab_definition_function = G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks > 0 and G.UIDEF.current_risks or nil,
 },'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+if card.ability.set == 'Booster' then
+      G.CONTROLLER.locks.use = false
+      G.TAROT_INTERRUPT = nil
+'''
+position = "at"
+payload = '''
+if card.ability.set == 'Booster' or card.config.center.fake_booster then
+      G.CONTROLLER.locks.use = false
+      G.TAROT_INTERRUPT = nil
+'''
+match_indent = true

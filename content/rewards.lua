@@ -397,15 +397,112 @@ PTASaka.Reward {
 	pos = { x = 0, y = 2 },
 	hidden = true,
 	soul_set = 'Reward',
-	use = function(self, card, area, copier)
-		-- Quite silly.
-		local booster = SMODS.add_card { key = 'p_payasaka_legendary_normal_1', area = G.consumeables, edition = "e_negative" }
-		booster.cost = 0
-		delay(0.5)
-	end,
-	can_use = function(self, card)
+	config = { extra = 3, choose = 1 },
+	group_key = 'k_legendary_pack',
+	update_pack = SMODS.Booster.update_pack,
+	kind = 'Joker',
+	create_UIBox = SMODS.Booster.create_UIBox,
+	fake_booster = true,
+	keep_on_use = function(self, card)
 		return true
 	end,
+	ease_background_colour = function(self)
+		ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Reward)
+		ease_background_colour({ new_colour = G.C.SECONDARY_SET.Reward, special_colour = G.C.SET.Reward, contrast = 4 })
+	end,
+	in_pool = function() -- This will never be in pool
+		return false
+	end,
+	use = function(self, card, area, copier)
+		draw_card(G.hand, G.play, 1, 'up', true, card, nil, nil)
+
+		if not ((G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or
+				G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.STANDARD_PACK or
+				G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED)) then
+			G.GAME.PACK_INTERRUPT = G.STATE
+		end
+		G.STATE_COMPLETE = false
+		card.opening = true
+
+		booster_obj = card.config.center
+		if booster_obj and SMODS.Centers[booster_obj.key] then
+			G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+			SMODS.OPENED_BOOSTER = card
+		end
+		G.GAME.pack_size = card.ability.extra
+		G.GAME.pack_choices = card.ability.choose
+
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				card:explode()
+				local pack_cards = {}
+
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 1.3 * math.sqrt(G.SETTINGS.GAMESPEED),
+					blockable = false,
+					blocking = false,
+					func = function()
+						local _size = G.GAME.pack_size
+
+						for i = 1, _size do
+							local _c = create_card("Joker", G.pack_cards, true, nil, true, true, nil, 'buf')
+							_c.T.x = card.T.x
+							_c.T.y = card.T.y
+							_c:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.5 * G.SETTINGS.GAMESPEED)
+							pack_cards[i] = _c
+						end
+						return true
+					end
+				}))
+
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 1.3 * math.sqrt(G.SETTINGS.GAMESPEED),
+					blockable = false,
+					blocking = false,
+					func = function()
+						if G.pack_cards then
+							if G.pack_cards and G.pack_cards.VT.y < G.ROOM.T.h then
+								for k, v in ipairs(pack_cards) do
+									G.pack_cards:emplace(v)
+								end
+								return true
+							end
+						end
+					end
+				}))
+
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({ open_booster = true, card = card })
+				end
+
+				if G.GAME.modifiers.inflation then
+					G.GAME.inflation = G.GAME.inflation + 1
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							for k, v in pairs(G.I.CARD) do
+								if v.set_cost then v:set_cost() end
+							end
+							return true
+						end
+					}))
+				end
+
+				return true
+			end
+		}))
+	end,
+	can_use = function(self, card)
+		return G.STATE == G.STATES.SHOP or G.STATE == G.STATES.BLIND_SELECT
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.choose, card.ability.extra }
+		}
+	end
 }
 
 PTASaka.make_boosters('moji',
@@ -429,37 +526,13 @@ PTASaka.make_boosters('moji',
 		create_card = function(self, card, i)
 			return create_card("Reward", G.pack_cards, nil, nil, true, true, nil)
 		end,
-		in_pool = function ()
+		in_pool = function()
 			return false
 		end,
 		group_key = 'k_moji_pack',
 		ease_background_colour = function(self)
 			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Reward)
 			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Reward, special_colour = G.C.SET.Reward, contrast = 4 })
-		end,
-	}, 2
-)
-
-PTASaka.make_pyrox_boosters('legendary',
-	{
-		{ x = 9, y = 0 },
-	}, {}, {},
-	{
-		atlas = 'JOE_Risk',
-		kind = 'Joker',
-		weight = 0,
-		no_doe = true,
-		cost = 0,
-		create_card = function(self, card, i)
-			return create_card("Joker", G.pack_cards, true, nil, true, true, nil)
-		end,
-		in_pool = function ()
-			return false
-		end,
-		group_key = 'k_legendary_pack',
-		ease_background_colour = function(self)
-			ease_colour(G.C.DYN_UI.MAIN, G.C.DARK_EDITION)
-			ease_background_colour({ new_colour = G.C.DARK_EDITION, special_colour = darken(G.C.DARK_EDITION, 0.3), contrast = 4 })
 		end,
 	}, 2
 )

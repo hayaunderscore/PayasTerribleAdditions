@@ -1053,8 +1053,8 @@ return {
 			c_payasaka_mind = {
 				name = "Mind",
 				text = {
-					"Creates a {C:dark_edition,E:1}Legendary",
-					"Buffoon Pack",
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} {C:purple,E:1}Legendary{} {C:joker}Jokers{}",
 				},
 			},
 		},
