@@ -14,7 +14,7 @@ SMODS.Joker {
 	key = "cyan",
 	config = {
 		extra = { planet_multiplier = 1.0, chip_gain = 0.1 },
-		immutable = { speed = 0.9, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0, old_l_chips = 0, old_l_mult = 0 },
+		immutable = { speed = 1.1, dir = rand_dir(), x = 0, y = 0, size = 16, atlas_dir = 0 },
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -69,18 +69,14 @@ SMODS.Joker {
 		end
 		-- Make sure its a Planet card or Planet-like
 		if context.payasaka_level_up_before and context.other_card and context.other_card.ability and context.other_card.ability.consumeable then
-			if to_big(im.old_l_chips) <= to_big(0) then
-				im.old_l_chips = context.poker_hand.l_chips
-				im.old_l_mult = context.poker_hand.l_mult
-			end
 			if card.ability.extra.planet_multiplier > 1 then
+				local c = context.blueprint_card or card
 				-- Prevent Black Hole and such from constantly having reactions from Cyan
 				if not context.instant then
 					card_eval_status_text(context.other_card, 'extra', nil, nil, nil, {
 						message = 'Upgraded!',
 						colour = G.C.DARK_EDITION,
 						extrafunc = function()
-							local c = context.blueprint and context.blueprint_card or card
 							c:juice_up()
 						end
 					})
@@ -90,10 +86,8 @@ SMODS.Joker {
 			end
 		end
 		if context.payasaka_level_up_after and context.other_card and context.other_card.ability and context.other_card.ability.consumeable then
-			context.poker_hand.l_chips = im.old_l_chips
-			context.poker_hand.l_mult = im.old_l_mult
-			im.old_l_chips = 0
-			im.old_l_mult = 0
+			context.poker_hand.l_chips = context.poker_hand.l_chips / card.ability.extra.planet_multiplier
+			context.poker_hand.l_mult = context.poker_hand.l_mult / card.ability.extra.planet_multiplier
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
