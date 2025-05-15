@@ -75,8 +75,16 @@ SMODS.Joker {
 			end
 		end
 		if context.joker_main or context.forcetrigger then
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					if not Talisman or not Talisman.config_file.disable_anims then
+						play_sound("payasaka_horse")
+					end
+					return true
+				end
+			})
 			return {
-				x_chips = card.ability.extra.planet_multiplier
+				x_chips = card.ability.extra.planet_multiplier,
 			}
 		end
 		-- Make sure its a Planet card or Planet-like

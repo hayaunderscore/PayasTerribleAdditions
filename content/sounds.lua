@@ -24,4 +24,5 @@ create_sound("challenpoints")
 create_sound("hithere")
 
 -- Cyan
+create_sound("horse")
 create_sound("horsebounce")
