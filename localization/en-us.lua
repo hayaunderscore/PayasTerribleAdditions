@@ -628,6 +628,9 @@ return {
 					"Selects the {C:attention}best{} possible",
 					"hand type to play when {C:attention}used",
 					"{C:inactive,s:0.8}Does not support modded poker hands"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}blue archive refereeeence"
 				}
 			},
 			j_payasaka_niveusterras = {
@@ -637,6 +640,9 @@ return {
 					"Scored cards give {X:dark_edition,C:white}^#1#{} Chips",
 					"Additional {X:dark_edition,C:white}^#2#{} Chips when",
 					"played hand is a {C:attention}Flush{}",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}The clouds are coming"
 				}
 			},
 			j_payasaka_cyan = {
@@ -646,6 +652,9 @@ return {
 					"{X:attention,C:white}X#1#{} {C:planet}Planet{} multiplier",
 					"Gains {X:chips,C:white}X#2#{} Chips per",
 					"{C:attention}scored{} {C:spades}Spades{} or {C:clubs}Clubs{}",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}:("
 				}
 			},
 			j_payasaka_s16 = {
@@ -654,6 +663,9 @@ return {
 					"{C:mult,s:16}+#1#{s:16} Mult",
 					"{s:4}This huge text is very important",
 					"{s:2}trust me"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}how can you still see this"
 				}
 			},
 			j_payasaka_idk = {
@@ -661,6 +673,9 @@ return {
 				text = {
 					"Main Joker effects trigger",
 					"{C:attention}first{} before scored cards"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Speed Demon."
 				}
 			},
 			j_payasaka_maxheadroom = {
@@ -670,6 +685,9 @@ return {
 					"more than {C:attention}#2#{} card",
 					"{C:money}-$#2#{} for each",
 					"consumable used"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}FUUUTURE !!"
 				}
 			},
 			j_payasaka_dango = {
@@ -677,6 +695,10 @@ return {
 				text = {
 					"{C:attention}Food{} Jokers",
 					"each give {X:mult,C:white}X#1#{} Mult",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Just let her have it",
+					"{C:inactive,s:0.8}dammit"
 				}
 			},
 		},
