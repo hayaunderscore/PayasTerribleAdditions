@@ -20,8 +20,8 @@ end
 SMODS.Joker {
 	key = "cyan",
 	config = {
-		extra = { planet_multiplier = 1.0, chip_gain = 0.1 },
-		immutable = { speed = 0.04, dir = { x = 1, y = 0, ang = 0 }, x = center_x-(sprite_scale/2), y = center_y-(sprite_scale/2), size = sprite_scale, atlas_dir = 0 },
+		extra = { planet_multiplier = 1.0, chip_gain = 0.1, speed = 0.04 },
+		immutable = { dir = { x = 1, y = 0, ang = 0 }, x = center_x-(sprite_scale/2), y = center_y-(sprite_scale/2), size = sprite_scale, atlas_dir = 0 },
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -44,8 +44,10 @@ SMODS.Joker {
 		local delta = G.real_dt or dt
 		-- update gfx position of card
 		local im = card.ability.immutable
-		im.x = im.x + im.dir.x*im.speed*(delta*60)
-		im.y = im.y + im.dir.y*im.speed*(delta*60)
+		local extra = card.ability.extra
+		if not extra.speed then extra.speed = im.speed end
+		im.x = im.x + im.dir.x*extra.speed*(delta*60)
+		im.y = im.y + im.dir.y*extra.speed*(delta*60)
 		local nextx = im.x
 		local nexty = im.y
 		-- bounce off borders
@@ -54,8 +56,8 @@ SMODS.Joker {
 			if count > 50 then break end
 			if count == 0 then play_sound("payasaka_horsebounce", (math.random()+math.random(9,10))/10, 0.2) end
 			im.dir = rand_dir()
-			nextx = im.x + im.dir.x*im.speed*(delta*60)
-			nexty = im.y + im.dir.y*im.speed*(delta*60)
+			nextx = im.x + im.dir.x*extra.speed*(delta*60)
+			nexty = im.y + im.dir.y*extra.speed*(delta*60)
 			im.atlas_dir = math.floor((im.dir.ang + 22.5) / 45) % 8
 			count = count+1
 		end
