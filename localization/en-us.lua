@@ -672,6 +672,13 @@ return {
 					"consumable used"
 				}
 			},
+			j_payasaka_dango = {
+				name = "Dango",
+				text = {
+					"{C:attention}Food{} Jokers",
+					"each give {X:mult,C:white}X#1#{} Mult",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
