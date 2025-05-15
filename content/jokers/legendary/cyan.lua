@@ -6,7 +6,7 @@ SMODS.Atlas {
 
 -- 95/71
 local vscale = 1.3380281690140845070422535211268
-local card_scale = G.TILESCALE/2.4
+local card_scale = G.TILESCALE/2.3
 local center_x = card_scale/2
 local center_y = (card_scale*vscale)/2
 local sprite_scale = card_scale*(0.45070422535211267605633802816901/2)
@@ -29,16 +29,16 @@ SMODS.Joker {
 	soul_pos = { x = 1, y = 9, draw = function(card, scale_mod, rotate_mod)
 		---@type Sprite
 		local soul = card.children.floating_sprite
-		soul.scale.x = 32
-		soul.scale.y = 32
+		soul.scale.x = 32*card.T.scale
+		soul.scale.y = 32*card.T.scale
 		soul.scale_mag = {0.5, 0.5}
 		local im = card.ability.immutable
 		if soul.atlas ~= G.ASSET_ATLAS["payasaka_cyan"] then
 			soul.atlas = G.ASSET_ATLAS["payasaka_cyan"]
 		end
 		soul:set_sprite_pos({x = im.atlas_dir, y = 0})
-		soul:draw_shader('dissolve', 0, nil, nil, card.children.center, nil, nil, im.x, im.y + (0.1+0.03*math.sin(1.8*G.TIMERS.REAL)), nil, 0.6)
-		soul:draw_shader('dissolve', nil, nil, nil, card.children.center, nil, nil, im.x, im.y)
+		soul:draw_shader('dissolve', 0, nil, nil, card.children.center, nil, nil, im.x*card.T.scale, im.y*card.T.scale + (0.1+0.03*math.sin(1.8*G.TIMERS.REAL)), nil, 0.6)
+		soul:draw_shader('dissolve', nil, nil, nil, card.children.center, nil, nil, im.x*card.T.scale, im.y*card.T.scale)
 	end },
 	update = function(self, card, dt)
 		local delta = G.real_dt or dt
@@ -49,11 +49,15 @@ SMODS.Joker {
 		local nextx = im.x
 		local nexty = im.y
 		-- bounce off borders
+		local count = 0
 		while ((nextx < 0 or (nextx+im.size) > card_scale) or (nexty < 0 or (nexty+im.size) > card_scale*vscale)) do
+			if count > 50 then break end
+			if count == 0 then play_sound("payasaka_horsebounce", (math.random()+math.random(9,10))/10, 0.2) end
 			im.dir = rand_dir()
 			nextx = im.x + im.dir.x*im.speed*(delta*60)
 			nexty = im.y + im.dir.y*im.speed*(delta*60)
 			im.atlas_dir = math.floor((im.dir.ang + 22.5) / 45) % 8
+			count = count+1
 		end
 	end,
 	calculate = function(self, card, context)

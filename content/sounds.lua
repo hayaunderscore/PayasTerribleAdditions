@@ -22,3 +22,6 @@ create_sound("shotgun_added")
 -- Winton
 create_sound("challenpoints")
 create_sound("hithere")
+
+-- Cyan
+create_sound("horsebounce")
