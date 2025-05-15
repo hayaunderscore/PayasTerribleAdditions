@@ -78,3 +78,30 @@ t[#t+1] = PTASaka.dos_cardarea
 '''
 match_indent = true
 times = 1
+
+# Change order of playing cards v. jokers when idk is present
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "for _, v in ipairs(SMODS.get_card_areas('playing_cards')) do"
+position = "at"
+payload = '''
+local idk_present = next(SMODS.find_card('j_payasaka_idk'))
+for _, v in ipairs(idk_present and {} or SMODS.get_card_areas('playing_cards')) do
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "-- context.final_scoring_step calculations"
+position = "before"
+payload = '''
+for _, v in ipairs(idk_present and SMODS.get_card_areas('playing_cards') or {}) do
+	SMODS.calculate_main_scoring({cardarea = v, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands}, v == G.play and scoring_hand or nil)
+    delay(0.3)
+end
+'''
+match_indent = true
+times = 1

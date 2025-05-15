@@ -655,7 +655,14 @@ return {
 					"{s:4}This huge text is very important",
 					"{s:2}trust me"
 				}
-			}
+			},
+			j_payasaka_idk = {
+				name = "Speed Fiend",
+				text = {
+					"Main Joker effects trigger",
+					"{C:attention}first{} before scored cards"
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
