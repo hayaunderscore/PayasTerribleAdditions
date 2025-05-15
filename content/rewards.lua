@@ -402,7 +402,7 @@ PTASaka.Reward {
 	pos = { x = 0, y = 2 },
 	hidden = true,
 	soul_set = 'Reward',
-	config = { extra = 3, choose = 1 },
+	config = { extra = 2, choose = 1 },
 	group_key = 'k_legendary_pack',
 	update_pack = SMODS.Booster.update_pack,
 	kind = 'Joker',

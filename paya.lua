@@ -92,6 +92,11 @@ assert(SMODS.load_file("content/challenges.lua"))()
 -- Tags
 assert(SMODS.load_file("content/tags.lua"))()
 
+-- Property cards
+if conf["Property Cards"] then
+	assert(SMODS.load_file("content/properties.lua"))()
+end
+
 -- Load all jokers
 
 -- Rarity definitions
@@ -109,11 +114,6 @@ PTASaka.RequireFolder("content/jokers/ahead/")
 
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/tarots.lua"))()
-
--- Property cards
-if conf["Property Cards"] then
-	assert(SMODS.load_file("content/properties.lua"))()
-end
 
 assert(SMODS.load_file("content/dos.lua"))()
 assert(SMODS.load_file("content/risk.lua"))()
