@@ -663,6 +663,15 @@ return {
 					"{C:attention}first{} before scored cards"
 				}
 			},
+			j_payasaka_maxheadroom = {
+				name = "Max Headroom",
+				text = {
+					"Consumables can target",
+					"more than {C:attention}#2#{} card",
+					"{C:money}-$#2#{} for each",
+					"consumable used"
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -1549,6 +1558,7 @@ return {
 			k_payasaka_inactive_ex = "Inactive!",
 			k_payasaka_saved_ex = "Saved!",
 			k_payasaka_loaded_ex = "Loaded!",
+			k_payasaka_hehe_ex = "Future!",
 			-- #endregion
 		},
 		v_dictionary = {

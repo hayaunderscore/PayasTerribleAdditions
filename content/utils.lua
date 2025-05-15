@@ -61,53 +61,29 @@ function PTASaka.shallow_copy(t)
 	return t2
 end
 
---- Handles changing joker values via a multiplier.
---- @param key string center key of the joker to reference
---- @param tbl table table value to modify
---- @param baseval table|nil base table for recursion purposes
---- @param mult number multiplier
-function PTASaka.MisprintizeTable(key, tbl, baseval, mult)
-	if not key then return end
-	if not tbl then return end
-	-- Add a key if not added already
-	PTASaka.BaseValues[key] = PTASaka.sanitycheck(PTASaka.BaseValues[key], {})
-	baseval = PTASaka.sanitycheck(baseval, PTASaka.BaseValues[key])
-
-	local cpy = PTASaka.deep_copy(tbl)
-
-	for k, v in pairs(cpy) do
-		local typ = type(v)
-		-- Number?
-		if is_number(v) and not PTASaka.MisprintizeForbidden[k] then
-			baseval[k] = PTASaka.sanitycheck(baseval[k], cpy[k])
-			if baseval[k] > 0 then
-				cpy[k] = cpy[k] * mult
-				--sendInfoMessage("Misprintized value named "..k.. " with value "..baseval[k], "PTASaka")
-				--sendInfoMessage("Value should now be "..cpy[k].." from "..baseval[k], "PTASaka")
-			end
-		end
-	end
-
-	return cpy
-end
-
 -- Loosely based on https://github.com/balt-dev/Inkbleed/blob/trunk/modules/misprintize.lua
 -- Specifically for non random values
-function PTASaka.MMisprintize(val, amt, reference, key)
+function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist)
 	reference = reference or {}
 	key = key or "1"
 	amt = amt or 1
+	func = func or function(v, a)
+		return v * a
+	end
+	blacklist = blacklist or PTASaka.MisprintizeForbidden
 	-- Forbidden, skip it
-	if PTASaka.MisprintizeForbidden[key] then return val end
-	local t = type(val)
-	if is_number(val) then
-		reference[key] = val
-		return val * amt
-	elseif t == "table" then
-		local k, v = next(val, nil)
-		while k ~= nil do
-			val[k] = PTASaka.MMisprintize(v, amt, reference[key], k)
-			k, v = next(val, k)
+	if blacklist[key] then return val end
+	if (whitelist and whitelist[key]) or not whitelist then
+		local t = type(val)
+		if is_number(val) then
+			reference[key] = val
+			return func(val, amt)
+		elseif t == "table" then
+			local k, v = next(val, nil)
+			while k ~= nil do
+				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist)
+				k, v = next(val, k)
+			end
 		end
 	end
 	return val
