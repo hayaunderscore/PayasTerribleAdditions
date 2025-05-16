@@ -105,3 +105,15 @@ end
 '''
 match_indent = true
 times = 1
+
+# Don't show debuff shader until its time
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = "self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader)"
+position = "at"
+payload = '''
+if not self.pta_no_show_debuff then self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader) end
+'''
+match_indent = true
+times = 1

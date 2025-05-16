@@ -701,6 +701,21 @@ return {
 					"{C:inactive,s:0.8}dammit"
 				}
 			},
+			j_payasaka_silenced = {
+				name = 'Silenced',
+				text = {
+					"{C:attention}Debuffed{} cards and Jokers",
+					"each give {X:mult,C:white}X#1#{} Mult"
+				},
+			},
+			j_payasaka_cartridge = {
+				name = 'Cartridge Joker',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult with a",
+					"{C:green}#2# in #3#{} chance of {C:attention}debuffing",
+					"itself for an entire round"
+				},
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -1590,6 +1605,8 @@ return {
 			k_payasaka_saved_ex = "Saved!",
 			k_payasaka_loaded_ex = "Loaded!",
 			k_payasaka_hehe_ex = "Future!",
+			k_payasaka_dusty_ex = "Dusty!",
+			k_payasaka_blown_ex = "Blown!",
 			-- #endregion
 		},
 		v_dictionary = {
