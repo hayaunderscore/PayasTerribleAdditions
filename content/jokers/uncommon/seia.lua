@@ -6,6 +6,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 6, y = 0 },
 	cost = 8,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		local extra = card.ability.extra
@@ -28,7 +29,14 @@ SMODS.Joker {
 				if context.other_consumeable then
 					if not context.other_consumeable.debuff then return nil, true end
 					if Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
+						local c = context.blueprint_card or card
 						for i = 1, context.other_consumeable.ability.qty do
+							G.E_MANAGER:add_event(Event{
+								func = function()
+									c:juice_up()
+									return true
+								end
+							})
 							SMODS.calculate_individual_effect(ret, context.other_consumeable, 'x_mult', ret.x_mult,
 								false)
 						end
