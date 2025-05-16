@@ -111,6 +111,8 @@ PTASaka.RequireFolder("content/jokers/rare/")
 PTASaka.RequireFolder("content/jokers/legendary/")
 -- Ahead
 PTASaka.RequireFolder("content/jokers/ahead/")
+-- daehA
+PTASaka.RequireFolder("content/jokers/daeha/")
 
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/tarots.lua"))()
@@ -145,9 +147,6 @@ end
 if Cryptid and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
-
--- daehA
-PTASaka.RequireFolder("content/jokers/daeha/")
 
 -- Pyroxenes
 assert(SMODS.load_file("content/pyrox.lua"))()
