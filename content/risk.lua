@@ -251,9 +251,16 @@ PTASaka.Risk {
 	use = function(self, card, area, copier)
 		-- no need to save it if the damn thing is already the question
 		-- im the motherfucking question bitch
-		if G.GAME.round_resets.blind_choices.Boss ~= "bl_payasaka_question" then
-			G.GAME.round_resets.last_cast_boss = G.GAME.round_resets.blind_choices.Boss
-			G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_question'
+		if G.GAME.payasaka_prelude_next_blind == nil then
+			if G.GAME.round_resets.blind_choices.Boss ~= "bl_payasaka_question" then
+				G.GAME.round_resets.last_cast_boss = G.GAME.round_resets.blind_choices.Boss
+				G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_question'
+			end
+		else
+			if G.GAME.payasaka_prelude_next_blind ~= "bl_payasaka_question" then
+				G.GAME.round_resets.last_cast_boss = G.GAME.payasaka_prelude_next_blind
+				G.GAME.payasaka_prelude_next_blind = 'bl_payasaka_question'
+			end
 		end
 		G.GAME.payasaka_cannot_reroll = true
 		local current_boss = G.GAME.round_resets.last_cast_boss
@@ -502,8 +509,42 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
-	in_pool = function(self, args)
-		return false
+	use = function(self, card, area, copier)
+		G.GAME.payasaka_prelude_next_blind = G.GAME.round_resets.blind_choices.Boss
+		G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_prelude'
+		G.E_MANAGER:add_event(Event {
+			func = function()
+				if G.blind_select_opts and G.blind_select_opts.boss then
+					local par = G.blind_select_opts.boss.parent
+
+					G.blind_select_opts.boss:remove()
+					G.blind_select_opts.boss = UIBox {
+						T = { par.T.x, 0, 0, 0, },
+						definition =
+						{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
+							UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
+						} },
+						config = { align = "bmi",
+							offset = { x = 0, y = G.ROOM.T.y + 9 },
+							major = par,
+							xy_bond = 'Weak'
+						}
+					}
+					par.config.object = G.blind_select_opts.boss
+					par.config.object:recalculate()
+					G.blind_select_opts.boss.parent = par
+					G.blind_select_opts.boss.alignment.offset.y = 0
+				end
+				return true
+			end
+		})
+		G.GAME.payasaka_cannot_reroll = true
+		PTASaka.Risk.use(self, card, area, copier)
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_prelude_next_blind = nil
+		G.GAME.payasaka_cannot_reroll = nil
+		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -525,6 +566,8 @@ PTASaka.Risk {
 				if G.GAME.round_resets.last_cast_boss then
 					_, G.GAME.round_resets.last_cast_boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 					G.GAME.payasaka_merged_boss_keys[2] = G.GAME.round_resets.last_cast_boss
+				elseif G.GAME.payasaka_prelude_next_blind then
+					_, G.GAME.payasaka_prelude_next_blind = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 				else
 					_, G.GAME.round_resets.blind_choices.Boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 				end

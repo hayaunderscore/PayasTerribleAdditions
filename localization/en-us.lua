@@ -714,6 +714,9 @@ return {
 				name = 'The Cast', text = { "Fusion of the blinds", "#1#" }
 			},
 			bl_payasaka_question_alt = { name = 'The Cast', text = { "You shouldn't spoil", "yourself, now..." } },
+			bl_payasaka_prelude = {
+				name = 'Prelude Blind'
+			},
 		},
 		Edition = {
 			e_payasaka_jpeg = {
@@ -1036,9 +1039,8 @@ return {
 			c_payasaka_prelude = {
 				name = "Prelude",
 				text = {
-					"{C:attention}Encounter{} a {C:attention}Big Blind",
+					"{C:attention}Encounter{} a {C:attention}Prelude Blind",
 					"before the boss blind",
-					"{C:inactive}Doesn't work yet!",
 				}
 			},
 		},
