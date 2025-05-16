@@ -719,11 +719,10 @@ return {
 			j_payasaka_no_retrigger = {
 				name = 'Aww! No Retriggers',
 				text = {
-					"{C:attention}Replaces{} retriggers with",
-					"XMult, XChips, or money",
-					"{C:attention}corresponding{} to its",
-					"repetition {C:attention}value{} and",
-					"{C:purple,E:1}nullifies{} Joker retriggers"
+					"{C:dark_edition,E:1}Nullifies{} retriggers and",
+					"replaces them with XMult,",
+					"XChips, or money {C:attention}corresponding{}",
+					"to its repetition {C:attention}value{}",
 				}
 			}
 		},
