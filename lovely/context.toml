@@ -117,3 +117,56 @@ if not self.pta_no_show_debuff then self.children.center:draw_shader('debuff', n
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = "self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader)"
+position = "at"
+payload = '''
+if not self.pta_no_show_debuff then self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader) end
+'''
+match_indent = true
+times = 1
+
+# Remove retriggers if Aww! No Retriggers is present
+# ALL of them
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = "if _type == 'joker_retrigger' then"
+position = "before"
+payload = '''
+if PTASaka.stop_you_are_violating_the_law then 
+	effect = { fake_repetitions = eval.repetitions or 1 }
+	if _type == 'joker_retrigger' then
+            effect.retrigger_card = effect_card
+            effect.message_card = effect.message_card or effect_card
+            effect.retrigger_flag = true
+        elseif _type == 'individual_retrigger' then
+            effect.retrigger_card = effect_card.object
+            effect.message_card = effect.message_card or effect_card.scored_card
+        elseif not _type then
+            effect.card = effect.card or effect_card
+        end
+	eval.repetitions = 0
+	table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect });
+	return 
+end
+'''
+match_indent = true
+times = 1
+
+# Hijack
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = "if eval.retriggers then"
+position = "at"
+payload = '''
+if PTASaka.stop_you_are_violating_the_law and eval.retriggers then 
+	SMODS.calculate_effect(eval.retriggers, eval.retriggers.retrigger_card or eval.retriggers.card)
+	eval.retriggers = nil
+elseif eval.retriggers then
+'''
+match_indent = true

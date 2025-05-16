@@ -19,6 +19,7 @@ PTASaka.MisprintizeForbidden = {
 	["face_nominal"] = true,
 	["qty"] = true,
 	["selected_d6_face"] = true,
+	["h_x_mult"] = true,
 	["h_x_chips"] = true,
 	["d_size"] = true,
 	["h_size"] = true,
@@ -145,6 +146,8 @@ local old_update = Game.update
 function Game:update(dt)
 	old_update(self, dt)
 	PTASaka.ahead_count = 0
+	local violating = SMODS.find_card('j_payasaka_no_retrigger')
+	PTASaka.stop_you_are_violating_the_law = next(violating) and violating[1]
 	local niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
 	for _, s in ipairs(PTASaka.WhitelistedAheadAreas) do
 		local area = G[s]

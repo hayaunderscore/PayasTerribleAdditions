@@ -715,6 +715,16 @@ return {
 					"{C:green}#2# in #3#{} chance of {C:attention}debuffing",
 					"itself for an entire round"
 				},
+			},
+			j_payasaka_no_retrigger = {
+				name = 'Aww! No Retriggers',
+				text = {
+					"{C:attention}Replaces{} retriggers with",
+					"XMult, XChips, or money",
+					"{C:attention}corresponding{} to its",
+					"repetition {C:attention}value{} and",
+					"{C:purple,E:1}nullifies{} Joker retriggers"
+				}
 			}
 		},
 		Blind = {
