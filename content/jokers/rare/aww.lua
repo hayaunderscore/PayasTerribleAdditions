@@ -23,17 +23,17 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			end
 		})
 		local rand = pseudorandom('aww_random_effect', 1, 3)
-		if rand == 1 then
+		if rand == 1 and amount then
 			if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
 			mult = mod_mult(mult * amount)
 			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'x_mult', amount, percent)
-		elseif rand == 2 then
+		elseif rand == 2 and amount then
 			if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
 			hand_chips = mod_chips(hand_chips * amount)
 			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'x_chips', amount, percent)
-		elseif rand == 3 then
+		elseif rand == 3 and amount then
 			if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
 			ease_dollars(amount)
 			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'dollars', amount, percent)

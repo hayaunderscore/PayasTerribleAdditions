@@ -150,23 +150,11 @@ if PTASaka.stop_you_are_violating_the_law then
             effect.card = effect.card or effect_card
         end
 	eval.repetitions = 0
-	table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect });
+	SMODS.calculate_effect(effect, effect.retrigger_card or effect.card)
 	return 
 end
 '''
 match_indent = true
 times = 1
 
-# Hijack
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS _ "src/utils.lua"]'''
-pattern = "if eval.retriggers then"
-position = "at"
-payload = '''
-if PTASaka.stop_you_are_violating_the_law and eval.retriggers then 
-	SMODS.calculate_effect(eval.retriggers, eval.retriggers.retrigger_card or eval.retriggers.card)
-	eval.retriggers = nil
-elseif eval.retriggers then
-'''
-match_indent = true
+
