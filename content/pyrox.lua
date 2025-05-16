@@ -12,7 +12,7 @@ function ease_pyrox(mod, instant)
 		mod = mod or 0
 		local text = '+' .. localize('$')
 		local col = G.C.BLUE
-		if mod < 0 then
+		if to_big(mod) < to_big(0) then
 			text = '-' .. localize('$')
 			col = G.C.RED
 		end
