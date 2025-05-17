@@ -23,19 +23,48 @@ SMODS.Joker {
 		}
 	},
 	calculate = function(self, card, context)
-		if context.joker_main or context.forcetrigger then
-			if next(SMODS.find_card("j_payasaka_plana")) == nil then
+		if next(SMODS.find_card("j_payasaka_plana")) and context.individual and context.cardarea == G.play and not context.end_of_round then
+			-- light suits
+			local other = context.other_card
+			if other and (not other.debuff) and (other:is_suit('Diamonds') or other:is_suit('Hearts')) then
+				card.ability.extra.givechips = card.ability.extra.givechips + card.ability.extra.incchips
 				return {
-					xchips = card.ability.extra.divchips,
-					colour = G.C.NEGATIVE_EDITION,
-					remove_default_message = true,
-					message = localize('k_payasaka_teehee_ex')
+					message = localize("k_upgrade_ex")
+				}
+			elseif other and other.debuff then
+				return {
+					message = localize('k_debuffed')
 				}
 			end
-			card.ability.extra.givechips = card.ability.extra.givechips + card.ability.extra.incchips
-			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {
-				message = localize("k_upgrade_ex")
-			})
+		end
+		if context.joker_main then
+			local should_return = not (not next(SMODS.find_card("j_payasaka_plana")))
+			local my_pos = 0
+			for i = 1, #G.jokers.cards do
+				---@type Card
+				local joker = G.jokers.cards[i]
+				if joker == card or joker == PTASaka.adultcard_cardarea.pta_owner then
+					my_pos = i
+					break
+				end
+			end
+			-- held at gunpoint
+			if G.jokers.cards[my_pos-1] and G.jokers.cards[my_pos-1].config.center.key == "j_cry_demicolon" then
+				return nil, true
+			end
+			if not should_return then
+				return {
+					xchips = card.ability.extra.divchips,
+					message = localize('k_payasaka_teehee_ex')
+				}
+			elseif should_return then
+				return {
+					xchips = card.ability.extra.givechips
+				}
+			end
+		end
+		-- no need to waste anything if we are forcetriggered
+		if context.forcetrigger then
 			return {
 				xchips = card.ability.extra.givechips
 			}
@@ -47,7 +76,7 @@ SMODS.Joker {
 SMODS.Joker {
 	name = "Plana",
 	key = "plana",
-	config = { extra = { givemult = 1.0, incmult = 0.1 }, odds = 2 },
+	config = { extra = { givemult = 1.0, incmult = 0.1 }, odds = 5 },
 	loc_vars = function(self, info_queue, card)
 		local arona = G.P_CENTERS.j_payasaka_arona.config
 		info_queue[#info_queue+1] = { key = "j_payasaka_arona", set = "Joker", specific_vars = { arona.extra.divchips, arona.extra.givechips, arona.extra.incchips } }
@@ -61,13 +90,36 @@ SMODS.Joker {
 	pos = { x = 4, y = 2 },
 	cost = 6,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.joker_main then
-			if next(SMODS.find_card("j_payasaka_arona")) ~= nil then
+		if context.individual and context.cardarea == G.play and not context.end_of_round then
+			-- dark suits
+			local other = context.other_card
+			if other and (not other.debuff) and (other:is_suit('Spades') or other:is_suit('Clubs')) then
 				card.ability.extra.givemult = card.ability.extra.givemult + card.ability.extra.incmult
-				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {
+				return {
 					message = localize("k_upgrade_ex")
+				}
+			elseif other and other.debuff then
+				return {
+					message = localize('k_debuffed')
+				}
+			end
+		end
+		if context.joker_main or context.forcetrigger then
+			-- forcibly create a spectral when forcetriggered
+			if context.forcetrigger then
+				G.E_MANAGER:add_event(Event{
+					func = function()
+						local _card = SMODS.add_card({ key = pseudorandom_element(G.P_CENTER_POOLS.Spectral,
+							pseudoseed("payasaka_plana")).key })
+						_card:set_edition('e_negative', true)
+						card:juice_up()
+						return true
+					end
 				})
+			end
+			if next(SMODS.find_card("j_payasaka_arona")) ~= nil or context.forcetrigger then
 				return {
 					xmult = card.ability.extra.givemult
 				}

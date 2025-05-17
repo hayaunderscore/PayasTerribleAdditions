@@ -176,8 +176,8 @@ return {
 					"{X:chips,C:white}X#1#{} Chips {C:inactive,s:0.8}:<{}",
 					"unless {C:dark_edition,E:2}Plana{} is around",
 					"gives {X:chips,C:white}X#2#{} Chips instead",
-					"Gains {X:chips,C:white}X#3#{} every time",
-					"this Joker is triggered",
+					"Gains {X:chips,C:white}X#3#{} for every",
+					"{C:diamonds}Diamonds{} or {C:diamonds}Hearts{} scored",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}stop stealing my fucking chips",
@@ -191,8 +191,8 @@ return {
 					"{C:spectral}Spectral{} card every round",
 					"Gives {X:red,C:white}X#1#{} Mult",
 					"if {C:green,E:2}Arona{} is around",
-					"Gains {X:mult,C:white}X#2#{} every time",
-					"this Joker is triggered",
+					"Gains {X:chips,C:white}X#2#{} for every",
+					"{C:spades}Spades{} or {C:clubs}Clubs{} scored",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}now THIS this is a good one",
