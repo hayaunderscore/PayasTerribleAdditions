@@ -102,3 +102,33 @@ if G.GAME.payasaka_only_risk and area == G.shop_jokers then
 end
 '''
 match_indent = true
+
+# Oh fuck
+[[patches]]
+[patches.pattern]
+target = 'main.lua'
+pattern = '''if (love.system.getOS() == 'OS X' ) and (jit.arch == 'arm64' or jit.arch == 'arm') then jit.off() end'''
+position = 'before'
+payload = '''
+-- I am injecting at the very start baybee
+pta_amount_of_lua_files_loaded_please_dont_override = 0
+local old_require = require
+function require(f, ...)
+	-- we dont need to load it again, capisce?
+	if not package.loaded[f] then
+		pta_amount_of_lua_files_loaded_please_dont_override = pta_amount_of_lua_files_loaded_please_dont_override + 1
+	end
+	return old_require(f, ...)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/loader.lua"]'''
+pattern = '''if not chunk then return nil, "Error processing file '" .. path .. "' for mod with ID '" .. mod.id .. "': " .. err end'''
+position = 'after'
+payload = '''
+pta_amount_of_lua_files_loaded_please_dont_override = pta_amount_of_lua_files_loaded_please_dont_override + 1
+'''
+match_indent = true

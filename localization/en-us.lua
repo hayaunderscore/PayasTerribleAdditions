@@ -724,6 +724,14 @@ return {
 					"XChips, or money {C:attention}corresponding{}",
 					"to its repetition {C:attention}value{}",
 				}
+			},
+			j_payasaka_joker_lua = {
+				name = "joker.lua",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for every",
+					"lua file {C:attention}required/loaded",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				}
 			}
 		},
 		Blind = {
