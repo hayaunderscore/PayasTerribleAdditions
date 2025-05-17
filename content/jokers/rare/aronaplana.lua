@@ -49,7 +49,7 @@ SMODS.Joker {
 				end
 			end
 			-- held at gunpoint
-			if G.jokers.cards[my_pos-1] and G.jokers.cards[my_pos-1].config.center.key == "j_cry_demicolon" then
+			if G.jokers.cards[my_pos-1] and G.jokers.cards[my_pos-1].config.center.key == "j_cry_demicolon" and not should_return then
 				return nil, true
 			end
 			if not should_return then
