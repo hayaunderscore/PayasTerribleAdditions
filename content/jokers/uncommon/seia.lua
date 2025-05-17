@@ -6,6 +6,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 6, y = 0 },
 	soul_pos = { x = 6, y = 1 },
+	pta_front_pos = { x = 10, y = 2 },
 	cost = 8,
 	blueprint_compat = true,
 	demicoloncompat = true,

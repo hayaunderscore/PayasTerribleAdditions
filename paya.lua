@@ -73,6 +73,7 @@ end
 
 -- Utilities
 assert(SMODS.load_file("content/utils.lua"))()
+assert(SMODS.load_file("content/drawstep.lua"))()
 
 -- Descriptions
 assert(SMODS.load_file("content/desc.lua"))()
