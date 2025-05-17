@@ -5,6 +5,7 @@ SMODS.Joker {
 	rarity = 2,
 	atlas = "JOE_Jokers",
 	pos = { x = 6, y = 0 },
+	soul_pos = { x = 6, y = 1 },
 	cost = 8,
 	blueprint_compat = true,
 	demicoloncompat = true,
