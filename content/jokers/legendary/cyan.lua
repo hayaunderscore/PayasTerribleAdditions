@@ -26,6 +26,7 @@ SMODS.Joker {
 	rarity = 4,
 	atlas = "JOE_Jokers",
 	pos = { x = 0, y = 9 },
+	cost = 25,
 	soul_pos = { x = 1, y = 9, draw = function(card, scale_mod, rotate_mod)
 		---@type Sprite
 		local soul = card.children.floating_sprite

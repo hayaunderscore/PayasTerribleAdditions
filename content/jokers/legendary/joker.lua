@@ -5,6 +5,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 7, y = 1 },
 	config = { extra = 0.1 },
+	cost = 25,
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {

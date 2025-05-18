@@ -522,10 +522,8 @@ return {
 			j_payasaka_ari = {
 				name = "Ari",
 				text = {
-					"{C:attention}Each{} consumable held",
-					"gives {X:mult,C:white}X#1#{} Mult",
-					"Selecting a blind creates",
-					"a {C:attention}random{} {C:dark_edition}Negative{} consumable",
+					"Scored {C:attention}Aces{}, {C:attention}2s",
+					"and {C:attention}3s{} give {X:mult,C:white}X#1#{} Mult"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}it's just a slice of ham"
