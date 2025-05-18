@@ -12,6 +12,9 @@ SMODS.Joker {
 	pos = { x = 1, y = 7 },
 	atlas = "JOE_Jokers",
 	pools = {["Joker"] = true, ["Meme"] = true},
+	loc_vars = function(self, info_queue, card)
+        return {vars = {PTASaka.ahead_count or 0}}
+    end,
 	calculate = function(self, card, context)
 		local ahead_amt = PTASaka.ahead_count or 0
 		local my_pos = 0

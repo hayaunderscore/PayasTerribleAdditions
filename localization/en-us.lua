@@ -579,7 +579,7 @@ return {
 					"{C:attention}Joker(s){} to the right",
 					"Number of Jokers copied",
 					"is tied to {C:attention}currently owned{}",
-					"Ahead Joker count"
+					"Ahead Joker count {C:inactive}[#1#]"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}wtf"
@@ -592,7 +592,7 @@ return {
 					"of leftmost {C:attention}Joker",
 					"Number of times copied",
 					"is tied to {C:attention}currently owned{}",
-					"Ahead Joker count"
+					"Ahead Joker count {C:inactive}[#1#]"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}wth"
