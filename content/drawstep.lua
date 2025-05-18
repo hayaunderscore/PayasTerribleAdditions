@@ -15,6 +15,9 @@ SMODS.DrawStep {
 					end
 				end
 			end
+			if (self.edition and self.edition.negative) then
+				self.children.pta_front:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil, self.children.center)
+			end
 		end
 	end,
 	conditions = { vortex = false, facing = 'front' },

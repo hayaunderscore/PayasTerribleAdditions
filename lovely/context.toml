@@ -109,7 +109,7 @@ times = 1
 # Don't show debuff shader until its time
 [[patches]]
 [patches.pattern]
-target = 'card.lua'
+target = '''=[SMODS _ "src/card_draw.lua"]'''
 pattern = "self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader)"
 position = "at"
 payload = '''
@@ -120,7 +120,7 @@ times = 1
 
 [[patches]]
 [patches.pattern]
-target = 'card.lua'
+target = '''=[SMODS _ "src/card_draw.lua"]'''
 pattern = "self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader)"
 position = "at"
 payload = '''
