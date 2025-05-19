@@ -5,7 +5,9 @@ SMODS.DrawStep {
 	order = 61,
 	func = function(self)
 		if self.config.center.pta_front_pos and (self.config.center.discovered or self.bypass_discovery_center) then
-			self.children.pta_front:draw_shader('dissolve', nil, nil, nil, self.children.center)
+			if self:should_draw_base_shader() then
+				self.children.pta_front:draw_shader('dissolve', nil, nil, nil, self.children.center)
+			end
 			if self.edition then
 				for k, v in pairs(G.P_CENTER_POOLS.Edition) do
 					if v.shader then
