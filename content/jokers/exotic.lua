@@ -320,7 +320,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			local e = joker.ability.extra
 			if joker ~= scored_card then
 				e[whitelisted_keys[key]] = e[whitelisted_keys[key]]+amount
-				card_eval_status_text(joker, 'extra', nil, nil, nil, { message = localize('k_upgrade_ex') })
+				card_eval_status_text(joker, 'extra', nil, percent, nil, { message = localize('k_upgrade_ex') })
 			end
 		end
 	end
