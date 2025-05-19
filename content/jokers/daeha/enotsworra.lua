@@ -16,31 +16,6 @@ local enotsworrA_validsigns = {
 
 to_number = to_number or function(a) return a end
 
-table.insert(SMODS.calculation_keys, 1,"pf_chips")
-table.insert(SMODS.calculation_keys, 1,"pfchips")
-table.insert(SMODS.calculation_keys, 1,"pf_mult")
-table.insert(SMODS.calculation_keys, 1,"pfmult")
-table.insert(SMODS.calculation_keys, 1,"pf_chips_mult")
-
-local calculate_individual_effect_hook = SMODS.calculate_individual_effect
-function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
-    if key == "pf_chips" or key == "pfchips" then
-        hand_chips = amount(hand_chips)
-        update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
-		print("PLEASE")
-        return true
-    elseif key == "pf_mult" or key == "pfmult" then
-        mult = amount(mult)
-        update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
-        return true
-    elseif key == "pf_chips_mult" then
-        hand_chips, mult = amount(hand_chips, mult)
-        update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
-        return true
-    end
-    return calculate_individual_effect_hook(effect, scored_card, key, amount, from_edition)
-end
-
 -- enotsworrA
 SMODS.Joker {
 	name = "enotsworrA",

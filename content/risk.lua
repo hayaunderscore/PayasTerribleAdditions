@@ -74,14 +74,6 @@ PTASaka.Risk = SMODS.Consumable:extend {
 	end,
 }
 
-local igo = Game.init_game_object
-function Game:init_game_object()
-	local ret = igo(self)
-	ret.risk_cards_risks = {}
-	ret.risk_cards_rewards = {}
-	return ret
-end
-
 PTASaka.Risk {
 	set = 'Risk',
 	key = 'hinder',
@@ -222,27 +214,6 @@ PTASaka.Risk {
 	end,
 }
 
-local sr = Game.start_run
-function Game:start_run(args)
-	sr(self, args)
-	local merged = G.P_BLINDS['bl_payasaka_question']
-	if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) then
-		-- get biggest chips multiplier
-		for i = 1, #G.GAME.payasaka_merged_boss_keys do
-			local blind = G.P_BLINDS[G.GAME.payasaka_merged_boss_keys[i]]
-			merged.mult = math.max(merged.mult, blind.mult)
-		end
-	end
-	-- cryptid being a piece of shit
-	merged.mult_ante = G.GAME.round_resets.ante
-end
-
-local reroll = G.FUNCS.reroll_boss
-function G.FUNCS.reroll_boss(e)
-	if G.GAME.payasaka_cannot_reroll then return end
-	reroll(e)
-end
-
 PTASaka.Risk {
 	set = 'Risk',
 	key = 'cast',
@@ -377,67 +348,6 @@ PTASaka.Risk {
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
 	end,
 }
-
--- Nuh uh
-local oldce = Card.calculate_enhancement
-function Card:calculate_enhancement(context)
-	if self.ability.payasaka_stunted then return nil end
-	return oldce(self, context)
-end
-
-local oldcb = Card.get_chip_bonus
-function Card:get_chip_bonus()
-	if self.ability.payasaka_stunted then return self.base.nominal + (self.ability.perma_bonus or 0) end
-	return oldcb(self)
-end
-
-local oldcm = Card.get_chip_mult
-function Card:get_chip_mult()
-	if self.ability.payasaka_stunted then return (self.ability.perma_mult or 0) end
-	return oldcm(self)
-end
-
-local oldcxm = Card.get_chip_x_mult
-function Card:get_chip_x_mult(context)
-	if self.ability.payasaka_stunted then return (self.ability.perma_x_mult or 0) end
-	return oldcxm(self, context)
-end
-
-local oldchm = Card.get_chip_h_mult
-function Card:get_chip_h_mult()
-	if self.ability.payasaka_stunted then return (self.ability.perma_h_mult or 0) end
-	return oldchm(self)
-end
-
-local oldchxm = Card.get_chip_h_x_mult
-function Card:get_chip_h_x_mult()
-	if self.ability.payasaka_stunted then return (self.ability.perma_h_x_mult or 0) end
-	return oldchxm(self)
-end
-
-local oldcxb = Card.get_chip_x_bonus
-function Card:get_chip_x_bonus(context)
-	if self.ability.payasaka_stunted then return (self.ability.perma_x_chips or 0) end
-	return oldcxb(self, context)
-end
-
-local oldchb = Card.get_chip_h_bonus
-function Card:get_chip_h_bonus()
-	if self.ability.payasaka_stunted then return (self.ability.perma_h_chips or 0) end
-	return oldchb(self)
-end
-
-local oldchxb = Card.get_chip_h_x_bonus
-function Card:get_chip_h_x_bonus()
-	if self.ability.payasaka_stunted then return (self.ability.perma_h_x_chips or 0) end
-	return oldchxb(self)
-end
-
-local oldhd = Card.get_h_dollars
-function Card:get_h_dollars()
-	if self.ability.payasaka_stunted then return (self.ability.perma_h_dollars or 0) end
-	return oldhd(self)
-end
 
 PTASaka.Risk {
 	set = 'Risk',

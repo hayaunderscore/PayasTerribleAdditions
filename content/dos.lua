@@ -295,150 +295,6 @@ G.FUNCS.payasaka_can_open_dos_cardarea = function(e)
 	end
 end
 
-local cfbs = G.FUNCS.check_for_buy_space
-G.FUNCS.check_for_buy_space = function(card)
-	local ret = cfbs(card)
-	if card.ability.set == 'DOSCard' and not (#PTASaka.dos_cardarea.cards < PTASaka.dos_cardarea.config.card_limit + (card.edition and card.edition.card_limit or 0)) then
-		alert_no_space(card, PTASaka.dos_cardarea)
-		return false
-	elseif card.ability.set == 'DOSCard' then
-		return true
-	end
-	return ret
-end
-
-local old_start_run = Game.start_run
-function Game:start_run(args)
-	self.payasaka_dos_cardarea = CardArea(0, 0, self.CARD_W * 5, self.CARD_H,
-		{ card_limit = 1, type = 'joker', highlight_limit = 1 })
-	PTASaka.dos_cardarea = self.payasaka_dos_cardarea
-	--PTASaka.dos_cardarea.alignment.offset.y = 20
-	old_start_run(self, args)
-	-- create switch butan
-	G.payasaka_dos_cardarea_switch = UIBox {
-		definition = { n = G.UIT.ROOT, config = { align = 'cm', colour = G.C.CLEAR, minw = G.deck.T.w, minh = 0.5 }, nodes = {
-			{ n = G.UIT.R, nodes = {
-				{
-					n = G.UIT.C,
-					config = {
-						align = "tm",
-						minw = 2,
-						padding = 0.1,
-						r = 0.1,
-						hover = true,
-						colour = G.C.UI.BACKGROUND_DARK,
-						shadow = true,
-						button = "payasaka_open_dos_cardarea",
-						func = "payasaka_can_open_dos_cardarea",
-					},
-					nodes = {
-						{
-							n = G.UIT.R,
-							config = { align = "bcm", padding = 0 },
-							nodes = {
-								{
-									n = G.UIT.T,
-									config = {
-										text = "DOS Cards",
-										scale = 0.35,
-										colour = G.C.UI.TEXT_LIGHT,
-										id = "payasaka_dos_text"
-									}
-								}
-							}
-						},
-					}
-				}
-			} }
-		} },
-		config = { major = G.deck, align = 'tm', offset = { x = 0, y = -0.35 }, bond = 'Weak' }
-	}
-
-	--G.payasaka_dos_cardarea_switch.role.major = nil
-
-	-- Set these to be derivative of G.deck
-	PTASaka.dos_cardarea.T.x = G.deck.T.x
-	PTASaka.dos_cardarea.T.y = G.deck.T.y + 5
-	PTASaka.dos_cardarea.T.w = G.deck.T.w
-	PTASaka.dos_cardarea.T.h = G.deck.T.h
-	PTASaka.dos_cardarea.role.major = G.ROOM
-	PTASaka.dos_cardarea.role.r_bond = 'Weak'
-	PTASaka.dos_cardarea.role.xy_bond = 'Weak'
-	PTASaka.dos_cardarea.container = G.ROOM
-	PTASaka.dos_cardarea.disabled = false
-
-	PTASaka.dos_enabled_string = "Active!"
-end
-
-local ssp = set_screen_positions
-function set_screen_positions()
-	ssp()
-	if PTASaka.dos_cardarea then
-		if G.STAGE == G.STAGES.RUN then
-			--PTASaka.dos_cardarea:hard_set_VT()
-			--PTASaka.dos_cardarea.states.visible = not G.deck.states.visible
-			PTASaka.dos_cardarea.states.visible = true
-		end
-		if G.STAGE == G.STAGES.MAIN_MENU then
-			PTASaka.dos_cardarea.states.visible = false
-		end
-	end
-end
-
-local u = CardArea.align_cards
-function CardArea:align_cards()
-	if self ~= PTASaka.dos_cardarea then return u(self) end
-	u(self)
-	for k, card in ipairs(self.cards) do
-		if not card.states.drag.can then goto continue end
-		if card.facing == 'front' and not card.states.drag.is and k ~= #self.cards then
-			card:flip()
-		elseif card.facing == 'back' and k == #self.cards then
-			card:flip()
-		end
-		::continue::
-	end
-end
-
-local up = CardArea.update
-function CardArea:update(dt)
-	up(self, dt)
-	if self ~= PTASaka.dos_cardarea then return end
-	--self.states.hover.can = self.states.collide.can
-	if self.disabled or (G.play and #G.play.cards > 0) or
-		(G.CONTROLLER.locked) or
-		(G.GAME.STOP_USE and G.GAME.STOP_USE > 0) then
-		for k, card in ipairs(self.cards) do
-			card.states.drag.can = false
-			card.states.click.can = false
-		end
-		PTASaka.dos_enabled_string = 'Active!'
-		--print("hiii")
-	else
-		for k, card in ipairs(self.cards) do
-			card.states.drag.can = true
-			card.states.click.can = true
-		end
-		PTASaka.dos_enabled_string = 'Inactive!'
-		--print("noooo")
-	end
-end
-
-local update_round_evalref = Game.update_round_eval
-function Game:update_round_eval(dt)
-	update_round_evalref(self, dt)
-
-	for k, card in ipairs(PTASaka.dos_cardarea.cards) do
-		if card.ability.payasaka_exclamation_point then
-			card:set_ability(G.P_CENTERS["c_payasaka_dos_exclam"])
-			card:juice_up()
-			card.ability.payasaka_exclamation_point = false
-			PTASaka.dos_cardarea.disabled = false
-		end
-	end
-	G.payasaka_exclamation_point = {}
-end
-
 G.FUNCS.payasaka_dos_wild_card_set = function(e)
 	local card = e.config.ref_table
 
@@ -491,14 +347,47 @@ G.FUNCS.payasaka_dos_wild_card_set = function(e)
 	}))
 end
 
-local old_click = Card.click
-function Card:click()
-	old_click(self)
-	if self.area and PTASaka.dos_menu then
-		PTASaka.dos_selected_card = self.config.center.key
-		PTASaka.dos_got_selected = true
-		G.FUNCS.exit_overlay_menu()
+SMODS.draw_ignore_keys.wild_use_button = true
+
+function PTASaka.dos_card_hover_ui(card)
+	local sell = {
+		n = G.UIT.ROOT,
+		config = { align = "cr" },
+		nodes = {
+			{
+				n = G.UIT.C,
+				config = { ref_table = card, align = "cr", padding = 0.1, r = 0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card' },
+				nodes = {
+					{ n = G.UIT.B, config = { w = 0.1, h = 0.6 } },
+					{
+						n = G.UIT.C,
+						config = { align = "tm" },
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "cm", maxw = 1.25 },
+								nodes = {
+									{ n = G.UIT.T, config = { text = localize('b_sell'), colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true } }
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm" },
+								nodes = {
+									{ n = G.UIT.T, config = { text = localize('$'), colour = G.C.WHITE, scale = 0.4, shadow = true } },
+									{ n = G.UIT.T, config = { ref_table = card, ref_value = 'sell_cost_label', colour = G.C.WHITE, scale = 0.55, shadow = true } }
+								}
+							}
+						}
+					}
+				}
+			},
+		}
+	}
+	if card.area and card.area == PTASaka.dos_cardarea then
+		return sell
 	end
+	return {}
 end
 
 function PTASaka.dos_wild_card_ui(card)
@@ -514,26 +403,5 @@ function PTASaka.dos_wild_card_ui(card)
 			}
 		}
 	end
-end
-
--- Mostly taken from Aikoyori's Letter Wild Cards as a reference
-local cardhighlighthook = Card.highlight
-function Card:highlight(is_higlighted)
-	local ret = cardhighlighthook(self, is_higlighted)
-
-	if (self.area and (self.area == PTASaka.dos_cardarea or (self.ability and self.ability.extra and type(self.ability.extra) == 'table' and self.ability.extra.payasaka_dos))) then
-		if self.highlighted and self.area and self.area.config.type ~= 'shop' and (self.area ~= G.play or self.area ~= G.discard) and self.ability.payasaka_dos_wild then
-			self.children.use_button = UIBox {
-				definition = PTASaka.dos_wild_card_ui(self),
-				config = { align =
-				"bm",
-					offset = { x = 0, y = -0.35 },
-					parent = self }
-			}
-		elseif self.children.use_button then
-			self.children.use_button:remove()
-			self.children.use_button = nil
-		end
-	end
-	return ret
+	return {}
 end

@@ -450,36 +450,6 @@ SMODS.Consumable {
 	end
 }
 
--- Hook onto Card:click for mechanic menu
-local old_click = Card.click
-function Card:click()
-	old_click(self)
-	if self.area and PTASaka.mechanic_menu then
-		PTASaka.mechanic_selected_card = self.config.center.key
-		PTASaka.mechanic_got_selected = true
-		G.FUNCS.exit_overlay_menu()
-	end
-end
-
--- Mechanic doesn't disintegrate when used without selecting a joker
-local old_start_dissolve = Card.start_dissolve
-function Card:start_dissolve(c, s, t, j)
-	if not PTASaka.mechanic_got_selected and self.config.center.key == "c_payasaka_mechanic" then
-		draw_card(G.play, G.consumeables, 1, 'up', true, self, nil, true)
-		return
-	end
-	return old_start_dissolve(self, c, s, t, j)
-end
-
--- Mechanic and Wild DOS cards shouldn't make the Banner side bar popup if Banner exists
-if BANNERMOD then
-	local old_collection_click = BANNERMOD.handle_collection_click_card
-	function BANNERMOD.handle_collection_click_card(card)
-		if PTASaka.mechanic_menu or PTASaka.dos_menu then return false end
-		return old_collection_click(card)
-	end
-end
-
 SMODS.Sound({
 	key = "music_mechanic",
 	path = "music_mechanic.ogg",

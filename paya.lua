@@ -152,6 +152,9 @@ end
 -- Pyroxenes
 assert(SMODS.load_file("content/pyrox.lua"))()
 
+-- Any and all hooks
+assert(SMODS.load_file("content/hooks.lua"))()
+
 -- Colours
 G.C.PAYA_PURPLE = HEX('4A3570')
 G.C.BADGE_TEMP_BG = SMODS.Gradient {

@@ -518,28 +518,6 @@ G.FUNCS.pta_can_select_consumable = function(e)
 	end
 end
 
--- Handle select button since I don't want to haggle with it
-local oldusb = G.UIDEF.use_and_sell_buttons
-function G.UIDEF.use_and_sell_buttons(card)
-	local ret = oldusb(card)
-	if card and card.area == G.pack_cards and card.ability.consumeable and card.config.center.pta_selectable then
-		return {
-			n = G.UIT.ROOT,
-			config = { padding = 0, colour = G.C.CLEAR },
-			nodes = {
-				{
-					n = G.UIT.R,
-					config = { ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5 * card.T.w - 0.15, maxw = 0.9 * card.T.w - 0.15, minh = 0.3 * card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'use_card', func = 'pta_can_select_consumable' },
-					nodes = {
-						{ n = G.UIT.T, config = { text = localize('b_select'), colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true } }
-					}
-				},
-			}
-		}
-	end
-	return ret
-end
-
 PTASaka.make_boosters('moji',
 	{
 		{ x = 0, y = 3 },

@@ -1,4 +1,4 @@
-local headroom_whitelist = { ["max_highlighted"] = true, ["amount"] = true, ["count"] = true, ["1"] = true,
+PTASaka.headroom_whitelist = { ["max_highlighted"] = true, ["amount"] = true, ["count"] = true, ["1"] = true,
 	["consumeable"] = true, ["choose"] = true, ["extra"] = true }
 
 -- Max Headroom
@@ -46,7 +46,7 @@ SMODS.Joker {
 			consumable.ability = PTASaka.MMisprintize(consumable.ability, card.ability.extra.amt, nil, nil,
 				function(v, a)
 					return v + a
-				end, headroom_whitelist)
+				end, PTASaka.headroom_whitelist)
 			::continue::
 		end
 	end,
@@ -60,7 +60,7 @@ SMODS.Joker {
 			consumable.ability = PTASaka.MMisprintize(consumable.ability, card.ability.extra.amt, nil, nil,
 				function(v, a)
 					return v - a
-				end, headroom_whitelist)
+				end, PTASaka.headroom_whitelist)
 			::continue::
 		end
 	end,
@@ -70,20 +70,3 @@ SMODS.Joker {
 		}
 	end
 }
-
-local old_set_ability = Card.set_ability
-function Card:set_ability(center, ...)
-	old_set_ability(self, center, ...)
-	local headrooms = SMODS.find_card("j_payasaka_maxheadroom")
-	if center.consumeable and next(headrooms) then
-		-- Prevent the original from being misprinted TWICE
-		if type(self.ability.consumeable) == "table" then
-			self.ability.consumeable = copy_table(center.config)
-		end
-		for _, headroom in ipairs(headrooms) do
-			self.ability = PTASaka.MMisprintize(self.ability, headroom.ability.extra.amt, nil, nil, function(v, a)
-				return v + a
-			end, headroom_whitelist)
-		end
-	end
-end

@@ -1,5 +1,6 @@
 -- Custom draw step routines
 
+-- Front sprite, for Arona, Plana and Silenced
 SMODS.DrawStep {
 	key = 'pta_front',
 	order = 61,
@@ -27,21 +28,14 @@ SMODS.DrawStep {
 
 SMODS.draw_ignore_keys.pta_front = true
 
--- Doing this the hook way since using smods' native set_sprites BREAKS soul sprites for some reason
-local set_spritesref = Card.set_sprites
-function Card:set_sprites(center, front)
-	set_spritesref(self, center, front)
-	if center and center.pta_front_pos then
-		self.children.pta_front = Sprite(
-			self.T.x,
-			self.T.y,
-			self.T.w,
-			self.T.h,
-			G.ASSET_ATLAS[center.atlas or center.set],
-			center.pta_front_pos
-		)
-		self.children.pta_front.role.draw_major = self
-		self.children.pta_front.states.hover.can = false
-		self.children.pta_front.states.click.can = false
-	end
-end
+-- Draw wild card use butan
+SMODS.DrawStep {
+	key = 'wild_use_button',
+	order = -11,
+	func = function(self)
+		if self.children.wild_use_button and self.highlighted then
+			self.children.wild_use_button:draw()
+		end
+	end,
+	conditions = { vortex = false },
+}

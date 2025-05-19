@@ -51,13 +51,3 @@ SMODS.Joker {
 	end
 }
 
--- I should really conglomerate these hooks into one
-local old_start_run = Game.start_run
-function Game:start_run(args)
-	old_start_run(self, args)
-	PTASaka.food_jokers = {}
-	-- Index based list -> Key-Value based list
-	for k, v in ipairs(G.P_CENTER_POOLS["Food"]) do
-		PTASaka.food_jokers[v.key] = v
-	end
-end

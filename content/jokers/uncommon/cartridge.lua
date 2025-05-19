@@ -33,25 +33,3 @@ SMODS.Joker {
 		}
 	end
 }
-
-local er = end_round
-function end_round()
-	er()
-	local cartridges = SMODS.find_card("j_payasaka_cartridge", true)
-	if not next(cartridges) then return end
-	G.E_MANAGER:add_event(Event{
-		func = function()
-			for _, cartridge in ipairs(cartridges) do
-				if cartridge.debuff then
-					card_eval_status_text(cartridge, 'extra', nil, nil, nil, {
-						message = "Blown!",
-						extrafunc = function()
-							cartridge:set_debuff(false)
-						end
-					})
-				end
-			end
-			return true
-		end
-	})
-end

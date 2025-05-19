@@ -120,32 +120,6 @@ SMODS.Joker {
 	end
 }
 
-local sr = Game.start_run
-function Game:start_run(args)
-	sr(self, args)
-	PTASaka.discovered_modded_jokers = 0
-	for k, v in pairs(G.P_CENTERS) do
-		if v.set and v.set == "Joker" and v.mod and v.discovered then
-			PTASaka.discovered_modded_jokers = PTASaka.discovered_modded_jokers + 1
-		end
-	end
-	--print(PTASaka.discovered_modded_jokers)
-end
-
-local dc = discover_card
-function discover_card(card)
-	card = card or {}
-	local old_discovered = card.discovered
-	dc(card)
-	if old_discovered then return end
-	PTASaka.discovered_modded_jokers = 0
-	for k, v in pairs(G.P_CENTERS) do
-		if v.set and v.set == "Joker" and v.mod and v.discovered then
-			PTASaka.discovered_modded_jokers = PTASaka.discovered_modded_jokers + 1
-		end
-	end
-end
-
 SMODS.Joker {
 	name = 'Regina',
 	key = 'regina',
@@ -272,57 +246,3 @@ SMODS.Joker {
 		return {}
 	end
 }
-
-local whitelisted_keys = {
-	["chips"] = 'chips',
-	["h_chips"] = 'chips',
-	["chip_mod"] = 'chips',
-	["mult"] = 'mult',
-	["h_mult"] = 'mult',
-	["mult_mod"] = 'mult',
-	["dollars"] = 'dollars',
-	["h_dollars"] = 'dollars',
-	["p_dollars"] = 'dollars',
-	["xchips"] = 'xchips',
-	["x_chips"] = 'xchips',
-	["Xchip_mod"] = 'xchips',
-	["xmult"] = 'xmult',
-	["x_mult"] = 'xmult',
-	["Xmult_mod"] = 'xmult',
-	["x_mult_mod"] = 'xmult',
-	["Xmult"] = 'xmult',
-	["echips"] = 'echips',
-	["e_chips"] = 'echips',
-	["Echip_mod"] = 'echips',
-	["emult"] = 'emult',
-	["e_mult"] = 'emult',
-	["Emult_mod"] = 'emult',
-	["eechips"] = 'eechips',
-	["ee_chips"] = 'eechips',
-	["EEchip_mod"] = 'eechips',
-	["eemult"] = 'eemult',
-	["ee_mult"] = 'eemult',
-	["EEmult_mod"] = 'eemult',
-	["eeechips"] = 'eeechips',
-	["eee_chips"] = 'eeechips',
-	["EEEchip_mod"] = 'eeechips',
-	["eeemult"] = 'eeemult',
-	["eee_mult"] = 'eeemult',
-	["EEEmult_mod"] = 'eeemult',
-}
-
--- hook onto any call to this
-local calculate_individual_effect_hook = SMODS.calculate_individual_effect
-function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
-	local ret = calculate_individual_effect_hook(effect, scored_card, key, amount, from_edition)
-	if amount and to_big(amount) > to_big(0) and PTASaka.recuperares and next(PTASaka.recuperares) and whitelisted_keys[key] and ret then
-		for k, joker in ipairs(PTASaka.recuperares) do
-			local e = joker.ability.extra
-			if joker ~= scored_card then
-				e[whitelisted_keys[key]] = e[whitelisted_keys[key]]+amount
-				card_eval_status_text(joker, 'extra', nil, percent, nil, { message = localize('k_upgrade_ex') })
-			end
-		end
-	end
-	return ret
-end

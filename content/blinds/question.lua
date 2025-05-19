@@ -474,6 +474,7 @@ SMODS.Blind {
 
 -- Info to show the boss blinds fused
 -- Taken from blindexpander and mangled
+-- Left here as well for now...
 
 local set_blindref = Blind.set_blind
 function Blind.set_blind(self, blind, reset, silent)

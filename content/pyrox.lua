@@ -1,10 +1,3 @@
-local old_igo = Game.init_game_object
-function Game:init_game_object()
-	local ret = old_igo(self)
-	ret.payasaka_pyroxenes = 0
-	return ret
-end
-
 function ease_pyrox(mod, instant)
 	if mod == 0 then return end
 	local function _mod(mod)
@@ -42,34 +35,5 @@ function ease_pyrox(mod, instant)
 				return true
 			end
 		}))
-	end
-end
-
-local old_can_buy = G.FUNCS.can_buy
-function G.FUNCS.can_buy(e)
-	old_can_buy(e)
-	if (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes and e.config.ref_table.config.center.pyroxenes > G.GAME.payasaka_pyroxenes) and (e.config.ref_table.config.center.pyroxenes > 0) then
-		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-		e.config.button = nil
-	end
-end
-
-local old_can_buy_and_use = G.FUNCS.can_buy_and_use
-function G.FUNCS.can_buy_and_use(e)
-	if (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes and e.config.ref_table.config.center.pyroxenes > G.GAME.payasaka_pyroxenes) and (e.config.ref_table.config.center.pyroxenes > 0) then
-		e.UIBox.states.visible = false
-		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-		e.config.button = nil
-	else
-		old_can_buy_and_use(e)
-	end
-end
-
-local can_open = G.FUNCS.can_open
-G.FUNCS.can_open = function(e)
-	can_open(e)
-	if (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes and e.config.ref_table.config.center.pyroxenes > G.GAME.payasaka_pyroxenes) and (e.config.ref_table.config.center.pyroxenes > 0) then
-		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-		e.config.button = nil
 	end
 end

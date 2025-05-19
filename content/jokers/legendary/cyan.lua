@@ -118,15 +118,3 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 }
-
--- Handle Cyan planet card effects
-local oldluh = level_up_hand
----@param card Card|nil
----@param hand string
----@param instant boolean|nil
----@param amount number
-function level_up_hand(card, hand, instant, amount, ...)
-	SMODS.calculate_context({payasaka_level_up_before = true, other_card = card, scoring_name = hand, poker_hand = G.GAME.hands[hand], instant = instant})
-	oldluh(card, hand, instant, amount, ...)
-	SMODS.calculate_context({payasaka_level_up_after = true, other_card = card, scoring_name = hand, poker_hand = G.GAME.hands[hand], instant = instant})
-end

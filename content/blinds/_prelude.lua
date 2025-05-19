@@ -9,6 +9,7 @@ SMODS.Blind {
 
 -- Mostly taken from blindexpander by mysthaps
 -- https://github.com/Mysthaps/blindexpander/blob/master/blindexpander.lua
+-- Left here over hooks.lua for now...
 local update_new_roundref = Game.update_new_round
 function Game.update_new_round(self, dt)
 	if self.buttons then
