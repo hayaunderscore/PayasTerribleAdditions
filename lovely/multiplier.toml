@@ -17,6 +17,7 @@ if G and G.GAME then
 		local m = marketpliers[i]
 		if (pseudorandom("payasaka_multiplier_xmult") < prob/m.ability.extra.xmult_odds) or m.ability.cry_rigged then
 			mult = mod_mult(mult * amount)
+			key = 'xmult'
 			update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
 			local fc = from_edition and scored_card or effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus
 			card_eval_status_text(m, 'extra', nil, percent, nil,
@@ -55,6 +56,7 @@ if G and G.GAME then
 		local m = marketpliers[i]
 		if (pseudorandom("payasaka_multiplier_xchips") < prob/m.ability.extra.xchips_odds) or m.ability.cry_rigged then
 			hand_chips = mod_chips(hand_chips * amount)
+			key = 'xchips'
 			update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
 			local fc = from_edition and scored_card or effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus
 			card_eval_status_text(m, 'extra', nil, percent, nil,

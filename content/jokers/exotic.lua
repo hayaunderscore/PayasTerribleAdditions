@@ -243,23 +243,18 @@ SMODS.Joker {
 	config = { extra = { chips = 1, mult = 1, xchips = 1, xmult = 1, echips = 1, emult = 1, eechips = 1, eemult = 1, eeechips = 1, eeemult = 1, dollars = 0 } },
 	calculate = function(self, card, context)
 		local e = card.ability.extra
-		if context.individual and context.cardarea == G.play and not context.end_of_round then
-			local other = context.other_card
-			e.mult = e.mult+(other:get_chip_mult()+other:get_chip_h_mult())
-			e.chips = e.chips+(other:get_chip_bonus()+other:get_chip_h_bonus())
-			e.xmult = e.xmult+(other:get_chip_x_mult()+other:get_chip_h_x_mult())
-			e.xchips = e.xchips+(other:get_chip_x_bonus()+other:get_chip_h_x_bonus())
-			e.dollars = e.dollars+(other:get_p_dollars()+other:get_h_dollars())
-			return {
-				message = localize('k_upgrade_ex')
-			}
-		end
 		if context.joker_main then
 			return {
 				xmult = math.max(1, e.mult),
 				xchips = math.max(1, e.chips),
 				emult = e.xmult,
 				echips = e.xchips,
+				eemult = e.emult,
+				eeemult = e.eemult,
+				hypermult = e.eeemult > 1 and {4, e.eeemult} or nil,
+				eechips = e.echips,
+				eeechips = e.eechips,
+				hyperchips = e.eeechips > 1 and {4, e.eeechips} or nil,
 				dollars = e.dollars
 			}
 		end
@@ -277,3 +272,57 @@ SMODS.Joker {
 		return {}
 	end
 }
+
+local whitelisted_keys = {
+	["chips"] = 'chips',
+	["h_chips"] = 'chips',
+	["chip_mod"] = 'chips',
+	["mult"] = 'mult',
+	["h_mult"] = 'mult',
+	["mult_mod"] = 'mult',
+	["dollars"] = 'dollars',
+	["h_dollars"] = 'dollars',
+	["p_dollars"] = 'dollars',
+	["xchips"] = 'xchips',
+	["x_chips"] = 'xchips',
+	["Xchip_mod"] = 'xchips',
+	["xmult"] = 'xmult',
+	["x_mult"] = 'xmult',
+	["Xmult_mod"] = 'xmult',
+	["x_mult_mod"] = 'xmult',
+	["Xmult"] = 'xmult',
+	["echips"] = 'echips',
+	["e_chips"] = 'echips',
+	["Echip_mod"] = 'echips',
+	["emult"] = 'emult',
+	["e_mult"] = 'emult',
+	["Emult_mod"] = 'emult',
+	["eechips"] = 'eechips',
+	["ee_chips"] = 'eechips',
+	["EEchip_mod"] = 'eechips',
+	["eemult"] = 'eemult',
+	["ee_mult"] = 'eemult',
+	["EEmult_mod"] = 'eemult',
+	["eeechips"] = 'eeechips',
+	["eee_chips"] = 'eeechips',
+	["EEEchip_mod"] = 'eeechips',
+	["eeemult"] = 'eeemult',
+	["eee_mult"] = 'eeemult',
+	["EEEmult_mod"] = 'eeemult',
+}
+
+-- hook onto any call to this
+local calculate_individual_effect_hook = SMODS.calculate_individual_effect
+function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+	local ret = calculate_individual_effect_hook(effect, scored_card, key, amount, from_edition)
+	if amount and to_big(amount) > to_big(0) and PTASaka.recuperares and next(PTASaka.recuperares) and whitelisted_keys[key] and ret then
+		for k, joker in ipairs(PTASaka.recuperares) do
+			local e = joker.ability.extra
+			if joker ~= scored_card then
+				e[whitelisted_keys[key]] = e[whitelisted_keys[key]]+amount
+				card_eval_status_text(joker, 'extra', nil, nil, nil, { message = localize('k_upgrade_ex') })
+			end
+		end
+	end
+	return ret
+end

@@ -734,7 +734,7 @@ return {
 			j_payasaka_recuperare = {
 				name = "Recuperare",
 				text = {
-					"{C:attention}Saves{} values of scored",
+					"{C:attention}Saves{} values of triggered",
 					"cards to this Joker",
 					"then {C:attention}returns{} saved values",
 					"one {C:attention}level{} higher",
@@ -810,14 +810,12 @@ return {
 					"{X:chips,C:white}X#2#{} Chips",
 					"{X:dark_edition,C:white}^#3#{} Mult",
 					"{X:dark_edition,C:white}^#4#{} Chips",
-					--[[
-					"{X:dark_edition,C:white}^#5#{} Mult",
-					"{X:dark_edition,C:white}^#6#{} Chips",
-					"{X:dark_edition,C:white}^^#7#{} Mult",
-					"{X:dark_edition,C:white}^^#8#{} Chips",
-					"{X:dark_edition,C:white}^^^#9#{} Mult",
-					"{X:dark_edition,C:white}^^^#10#{} Chips",
-					]]
+					"{X:dark_edition,C:white}^^#5#{} Mult",
+					"{X:dark_edition,C:white}^^#6#{} Chips",
+					"{X:dark_edition,C:white}^^^#7#{} Mult",
+					"{X:dark_edition,C:white}^^^#8#{} Chips",
+					"{X:dark_edition,C:white}^^^^#9#{} Mult",
+					"{X:dark_edition,C:white}^^^^#10#{} Chips",
 					"{C:money}$#11#{}",
 				}
 			}

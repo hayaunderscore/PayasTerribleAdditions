@@ -148,6 +148,8 @@ function Game:update(dt)
 	PTASaka.ahead_count = 0
 	local violating = SMODS.find_card('j_payasaka_no_retrigger')
 	PTASaka.stop_you_are_violating_the_law = next(violating) and violating[1]
+	local recuperares = SMODS.find_card('j_payasaka_recuperare')
+	PTASaka.recuperares = next(recuperares) and recuperares
 	local niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
 	for _, s in ipairs(PTASaka.WhitelistedAheadAreas) do
 		local area = G[s]
