@@ -252,7 +252,7 @@ return {
 				}
 			},
 			j_payasaka_doodlekosmos = {
-				name = "Doodle Kosmos",
+				name = "Interitus",
 				text = {
 					"This Joker gains {X:dark_edition,C:white}#2#{} Mult",
 					"for every card held in {C:attention}hand",
@@ -265,7 +265,7 @@ return {
 				}
 			},
 			j_payasaka_doodlekosmos_alt = {
-				name = "Doodle Kosmos",
+				name = "Interitus",
 				text = {
 					"This Joker gains {X:dark_edition,C:white}#2#{} Mult",
 					"for every card held in {C:attention}hand",
@@ -388,7 +388,7 @@ return {
 				}
 			},
 			j_payasaka_imerlogio = {
-				name = "Imerlogio",
+				name = "Bibliotheca",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for {C:attention}every{} modded",
 					"Joker in your {C:dark_edition}Collection",
@@ -632,7 +632,7 @@ return {
 				}
 			},
 			j_payasaka_niveusterras = {
-				name = "Niveus Terras",
+				name = "Album Agros",
 				text = {
 					"All cards are {X:payasaka_prismatic_gradient,C:white}Ahead",
 					"Scored cards give {X:dark_edition,C:white}^#1#{} Chips",
