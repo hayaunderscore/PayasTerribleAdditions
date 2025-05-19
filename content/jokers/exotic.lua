@@ -87,6 +87,7 @@ SMODS.Joker {
 	soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
 	cost = 50,
 	config = { extra = { x_mult = 1, add = 2, starting_x_mult = 1 } },
+	pixel_size = { w = 71, h = 80 },
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		local count = PTASaka.discovered_modded_jokers or 0
@@ -227,5 +228,52 @@ SMODS.Joker {
 				card.ability.extra.e_chips_add
 			}
 		}
+	end
+}
+
+-- Recuperare
+SMODS.Joker {
+	name = 'Recuperare',
+	key = 'recuperare',
+	rarity = "cry_exotic",
+	atlas = "JOE_Exotic",
+	pos = { x = 0, y = 4},
+	soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
+	cost = 50,
+	config = { extra = { chips = 1, mult = 1, xchips = 1, xmult = 1, echips = 1, emult = 1, eechips = 1, eemult = 1, eeechips = 1, eeemult = 1, dollars = 0 } },
+	calculate = function(self, card, context)
+		local e = card.ability.extra
+		if context.individual and context.cardarea == G.play and not context.end_of_round then
+			local other = context.other_card
+			e.mult = e.mult+(other:get_chip_mult()+other:get_chip_h_mult())
+			e.chips = e.chips+(other:get_chip_bonus()+other:get_chip_h_bonus())
+			e.xmult = e.xmult+(other:get_chip_x_mult()+other:get_chip_h_x_mult())
+			e.xchips = e.xchips+(other:get_chip_x_bonus()+other:get_chip_h_x_bonus())
+			e.dollars = e.dollars+(other:get_p_dollars()+other:get_h_dollars())
+			return {
+				message = localize('k_upgrade_ex')
+			}
+		end
+		if context.joker_main then
+			return {
+				xmult = math.max(1, e.mult),
+				xchips = math.max(1, e.chips),
+				emult = e.xmult,
+				echips = e.xchips,
+				dollars = e.dollars
+			}
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		local e = card.ability.extra
+		info_queue[#info_queue+1] = { key = 'dd_payasaka_recuperare', set = 'DescriptionDummy', vars = {
+				e.mult, e.chips,
+				e.xmult, e.xchips,
+				e.emult, e.echips,
+				e.eemult, e.eechips,
+				e.eeemult, e.eeechips,
+				e.dollars
+			}}
+		return {}
 	end
 }

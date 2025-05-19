@@ -730,6 +730,16 @@ return {
 					"lua file {C:attention}required/loaded",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
 				}
+			},
+			j_payasaka_recuperare = {
+				name = "Recuperare",
+				text = {
+					"{C:attention}Saves{} values of scored",
+					"cards to this Joker",
+					"then {C:attention}returns{} saved values",
+					"one {C:attention}level{} higher",
+					"{C:inactive}(e.g. +Mult -> XMult)"
+				}
 			}
 		},
 		Blind = {
@@ -792,7 +802,25 @@ return {
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
 			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } },
-			dd_payasaka_ahead = { name = "Ahead", text = { "This card is feeling", "rather {C:blue}pointy" } }
+			dd_payasaka_ahead = { name = "Ahead", text = { "This card is feeling", "rather {C:blue}pointy" } },
+			dd_payasaka_recuperare = {
+				name = "://VALUES",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"{X:chips,C:white}X#2#{} Chips",
+					"{X:dark_edition,C:white}^#3#{} Mult",
+					"{X:dark_edition,C:white}^#4#{} Chips",
+					--[[
+					"{X:dark_edition,C:white}^#5#{} Mult",
+					"{X:dark_edition,C:white}^#6#{} Chips",
+					"{X:dark_edition,C:white}^^#7#{} Mult",
+					"{X:dark_edition,C:white}^^#8#{} Chips",
+					"{X:dark_edition,C:white}^^^#9#{} Mult",
+					"{X:dark_edition,C:white}^^^#10#{} Chips",
+					]]
+					"{C:money}$#11#{}",
+				}
+			}
 		},
 		DOSCard = {
 			c_payasaka_dos_wild = {
