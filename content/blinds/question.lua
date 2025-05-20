@@ -506,16 +506,25 @@ function info_from_fused(fused)
         end
     end
     local desc_nodes = {}
+	local name_nodes = localize{type = 'name', key = fused, set = "Blind", name_nodes = {}, vars = {}}
+	local spr = AnimatedSprite(0,0, 0.5, 0.5, G.ANIMATION_ATLAS[G.P_BLINDS[fused].atlas] or G.ANIMATION_ATLAS['blind_chips'],  G.P_BLINDS[fused].pos)
+	spr:define_draw_steps({   {shader = 'dissolve', shadow_height = 0.05},  {shader = 'dissolve'}  })
+	spr.float = true
+	spr.config = {blind = G.P_BLINDS[fused], force_focus = true}
+	table.insert(name_nodes, 1, {
+		n = G.UIT.O,
+		config={align = "cl", object = spr},
+	})
 	local loc_vars = G.P_BLINDS[fused].vars
 	if G.P_BLINDS[fused].loc_vars then loc_vars = G.P_BLINDS[fused].loc_vars(G.P_BLINDS[fused]) end
-    localize{type = 'descriptions', key = fused, set = "Blind", nodes = desc_nodes, vars = loc_vars}
+    localize{type = 'descriptions', key = fused, set = "Blind", nodes = desc_nodes, vars = loc_vars and loc_vars.vars and loc_vars.vars or {}}
     local desc = {}
     for _, v in ipairs(desc_nodes) do
         desc[#desc+1] = {n=G.UIT.R, config={align = "cl"}, nodes=v}
     end
-    return 
-    {n=G.UIT.R, config={align = "cl", colour = lighten(G.C.GREY, 0.4), r = 0.1, padding = 0.05}, nodes={
-        {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1}, nodes = localize{type = 'name', key = fused, set = "Blind", name_nodes = {}, vars = {}}},
+    return
+    {n=G.UIT.R, config={align = "cl", colour = lighten(G.P_BLINDS[fused].boss_colour or G.C.GREY, 0.4), r = 0.1, padding = 0.05}, nodes={
+        {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1}, nodes = name_nodes},
         {n=G.UIT.R, config={align = "cl", minw = width, minh = 0.4, r = 0.1, padding = 0.05, colour = desc_nodes.background_colour or G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=desc}}}
     }}
 end
@@ -537,7 +546,7 @@ local blind_hoverref = Blind.hover
 function Blind.hover(self)
     if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then 
         if not self.hovering and self.states.visible and self.children.animatedSprite.states.visible then
-            if G.GAME.round_resets.last_cast_boss and self.show_fusions then
+            if G.GAME.round_resets.last_cast_boss and self.config.blind and self.config.blind.show_fusions then
                 G.blind_fused = UIBox{
                     definition = create_UIBox_blind_fused(self),
                     config = {
