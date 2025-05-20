@@ -61,6 +61,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	vec2 pos = (uv*texture_details.ba) / 11.875;
 	float ofs = checkered.r;
+	float t = checkered.g;
 
 	// Use the slider values for direction and normalize them
 	vec2 direction = normalize(vec2(1., 1.));
