@@ -20,6 +20,7 @@ PTASaka.DOSCard = SMODS.Consumable:extend {
 	atlas = "JOE_DOS",
 	pyroxenes = 5,
 	cost = 0,
+	ignore_shadow = true,
 	required_params = {
 		'key',
 	},
@@ -30,6 +31,8 @@ PTASaka.DOSCard = SMODS.Consumable:extend {
 			card:remove_from_area()
 			PTASaka.dos_cardarea:emplace(copy)
 		end
+		card.ambient_tilt = 0
+		card.no_shadow = true
 	end,
 	can_use = function(self, card)
 		return false
@@ -79,7 +82,8 @@ PTASaka.DOSCard {
 	atlas = "JOE_DOS",
 	pos = { x = 2, y = 0 },
 	config = { extra = { payasaka_dos = true, payasaka_type = 2, } },
-	update = function(self, card, layer)
+	update = function(self, card, dt)
+		PTASaka.DOSCard.update(self, card, dt)
 		if not card.payasaka_wild_two then
 			-- PLEASE just die already
 			card.children.front = nil

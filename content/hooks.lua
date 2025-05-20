@@ -412,11 +412,23 @@ local oldluh = level_up_hand
 ---@param instant boolean|nil
 ---@param amount number
 function level_up_hand(card, hand, instant, amount, ...)
-	SMODS.calculate_context({ payasaka_level_up_before = true, other_card = card, scoring_name = hand, poker_hand = G
-	.GAME.hands[hand], instant = instant })
+	SMODS.calculate_context({
+		payasaka_level_up_before = true,
+		other_card = card,
+		scoring_name = hand,
+		poker_hand = G
+			.GAME.hands[hand],
+		instant = instant
+	})
 	oldluh(card, hand, instant, amount, ...)
-	SMODS.calculate_context({ payasaka_level_up_after = true, other_card = card, scoring_name = hand, poker_hand = G
-	.GAME.hands[hand], instant = instant })
+	SMODS.calculate_context({
+		payasaka_level_up_after = true,
+		other_card = card,
+		scoring_name = hand,
+		poker_hand = G
+			.GAME.hands[hand],
+		instant = instant
+	})
 end
 
 -- Accept dos card buy space
@@ -488,6 +500,13 @@ function CardArea:align_cards()
 	if self ~= PTASaka.dos_cardarea then return u(self) end
 	u(self)
 	for k, card in ipairs(self.cards) do
+        card.rank = k
+    end
+	local deck_height = (self.config.deck_height or -0.15) / self.config.card_limit
+	for k, card in ipairs(self.cards) do
+		-- override rotation
+		card.T.r = 0 + 0.3*self.shuffle_amt*(1 + k*0.05)*(k%2 == 1 and 1 or -0)
+		card.T.y = card.T.y + deck_height*k
 		if not card.states.drag.can then goto continue end
 		if card.facing == 'front' and not card.states.drag.is and k ~= #self.cards then
 			card:flip()
@@ -672,16 +691,16 @@ end
 local old_mod_chips = mod_chips
 function mod_chips(_chips)
 	_chips = _chips *
-	pseudorandom("payasaka_tmtrainer_randomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-		G.GAME.payasaka_tmtrainer_high_rnd or 1)
+		pseudorandom("payasaka_tmtrainer_randomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
+			G.GAME.payasaka_tmtrainer_high_rnd or 1)
 	return old_mod_chips(_chips)
 end
 
 local old_mod_mult = mod_mult
 function mod_mult(_mult)
 	_mult = _mult *
-	pseudorandom("payasaka_tmtrainer_randomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-		G.GAME.payasaka_tmtrainer_high_rnd or 1)
+		pseudorandom("payasaka_tmtrainer_randomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
+			G.GAME.payasaka_tmtrainer_high_rnd or 1)
 	return old_mod_mult(_mult)
 end
 
@@ -690,14 +709,14 @@ function Moveable:juice_up(amt, rot)
 	old_juice_up(self, amt, rot)
 	-- Randomize juice amounts
 	self.juice.r_amt = self.juice.r_amt *
-	pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-		G.GAME.payasaka_tmtrainer_high_rnd or 1)
+		pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
+			G.GAME.payasaka_tmtrainer_high_rnd or 1)
 	self.juice.scale_amt = self.juice.scale_amt *
-	pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-		G.GAME.payasaka_tmtrainer_high_rnd or 1)
+		pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
+			G.GAME.payasaka_tmtrainer_high_rnd or 1)
 	self.VT.scale = self.VT.scale *
-	pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-		G.GAME.payasaka_tmtrainer_high_rnd or 1)
+		pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
+			G.GAME.payasaka_tmtrainer_high_rnd or 1)
 end
 
 local cardHoverHook = Card.hover
