@@ -149,6 +149,11 @@ if Cryptid and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
 
+-- Cross mod content: Ortalab
+if Ortalab and conf["Cross Mod Content"] then
+assert(SMODS.load_file("content/jokers/ortalab.lua"))()
+end
+
 -- Pyroxenes
 assert(SMODS.load_file("content/pyrox.lua"))()
 

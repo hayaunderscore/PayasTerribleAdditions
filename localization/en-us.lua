@@ -747,7 +747,58 @@ return {
 					"{C:chips}Ahead{} Jokers each",
 					"give {X:dark_edition,C:white}^#1#*#2#{} Chips",
 				}
-			}
+			},
+			j_payasaka_scrapped = {
+				name = "Scrapped",
+				text = {
+					"Held cards {C:attention}later",
+					"give {X:chips,C:white}X#1#{} Chips",
+					"when {C:attention}played"
+				}
+			},
+			j_payasaka_missingno = {
+				name = "{font:payasaka_pokemon}MISSINGNO.",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for each time the",
+					"word {C:attention}\"finity\"{} has been said",
+					"in the {C:attention}Balatro Discord{}",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:blue,s:0.7}https://discord.gg/balatro{}",
+				}
+			},
+			j_payasaka_bajablast = {
+				name = "Baja Blast",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"Decreases by {X:chips,C:white}X#2#{}",
+					"for every {C:spades}Spade",
+					"or {C:clubs}Club{} card played",
+				},
+			},
+			j_payasaka_photobinder = {
+				name = "Photobinder",
+				text = {
+					"{C:attention}Multiplies{} the effects",
+					"of leftmost and rightmost",
+					"Jokers by {X:attention,C:white}X#1#",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Does not affect other Photocopier{}",
+					"{C:inactive,s:0.8}If it did, that would be silly.{}"
+				}
+			},
+			j_payasaka_clubcleaver = {
+				name = "Club Cleaver",
+				text = {
+					"{C:green}#1# in #2#{} chance for",
+					"held cards with",
+					"{C:clubs}Club{} suit to give",
+					"{X:chips,C:white}X#3#{} Chips",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}:drool:",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -824,6 +875,14 @@ return {
 					"{X:dark_edition,C:white}^^^^#9#{} Mult",
 					"{X:dark_edition,C:white}^^^^#10#{} Chips",
 					"{C:money}$#11#{}",
+				}
+			},
+			dd_payasaka_missingno_finity = {
+				name = "With Finity enabled:",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"creating a {C:dark_edition}Showdown{} Joker",
+					"{C:inactive}(Must have room)"
 				}
 			}
 		},
