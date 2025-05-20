@@ -11,7 +11,7 @@ SMODS.Joker {
 	pos = { x = 9, y = 1 },
 	atlas = "JOE_Jokers",
 	pools = {["Joker"] = true, ["Meme"] = true},
-	config = { extra = { e_chips = 1.5 } },
+	config = { extra = { e_chips = 1.1 } },
 	calculate = function(self, card, context)
 		if context.other_joker then
 			if context.other_joker:is_ahead() then
