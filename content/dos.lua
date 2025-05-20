@@ -145,12 +145,12 @@ local old_draw_card = draw_card
 function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
 	-- Override this...
 	local old_to = to
-	if card and card.payasaka_wild_two and to == G.discard then
+	if card and card.payasaka_wild_two and (to == G.discard or to == G.deck) then
 		to = PTASaka.dos_cardarea
 		stay_flipped = false
 	end
 	old_draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
-	if card and card.payasaka_wild_two and old_to == G.discard then
+	if card and card.payasaka_wild_two and (old_to == G.discard or old_to == G.deck) then
 		G.E_MANAGER:add_event(Event {
 			func = function()
 				card:set_ability(G.P_CENTERS["c_payasaka_dos_wildtwo"])
