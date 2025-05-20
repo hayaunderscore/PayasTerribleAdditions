@@ -740,6 +740,13 @@ return {
 					"one {C:attention}level{} higher",
 					"{C:inactive}(e.g. +Mult -> XMult)"
 				}
+			},
+			j_payasaka_fanhead = {
+				name = "Fanhead",
+				text = {
+					"{C:chips}Ahead{} Jokers each",
+					"give {X:dark_edition,C:white}^#1#*#2#{} Chips",
+				}
 			}
 		},
 		Blind = {
