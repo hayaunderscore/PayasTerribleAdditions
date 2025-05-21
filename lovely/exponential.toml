@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1000
 
 # Scale number differently
 [[patches]]
@@ -10,7 +10,7 @@ target = 'functions/button_callbacks.lua'
 pattern = '''e.config.object.scale = scale_number(G.GAME.current_round.current_hand.mult, 0.9, 1000)'''
 position = 'after'
 payload = '''
-local scale = 5 - (PTASaka.payasaka_text_size or 0)
+local scale = (Yggdrasil and 16 or 6) - (PTASaka.payasaka_text_size or 0)
 if string.len(new_mult_text) > scale then
 	e.config.object.scale = e.config.object.scale / (string.len(new_mult_text)/scale)
 end
@@ -24,7 +24,40 @@ target = 'functions/button_callbacks.lua'
 pattern = '''e.config.object.scale = scale_number(G.GAME.current_round.current_hand.chips, 0.9, 1000)'''
 position = 'after'
 payload = '''
-local scale = 5 - (PTASaka.payasaka_text_size or 0)
+local scale = (Yggdrasil and 16 or 6) - (PTASaka.payasaka_text_size or 0)
+if string.len(new_chip_text) > scale then
+	e.config.object.scale = e.config.object.scale / (string.len(new_chip_text)/scale)
+end
+'''
+match_indent = true
+times = 1
+
+# Entropy bandaid fix
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS entr "lib/fixes.lua"]'''
+pattern = '''if string.len(new_mult_text) > 6 then
+          e.config.object.scale = 0.9 / (string.len(new_mult_text)/6)
+        end'''
+position = 'at'
+payload = '''
+local scale = (Yggdrasil and 16 or 6) - (PTASaka.payasaka_text_size or 0)
+if string.len(new_mult_text) > scale then
+	e.config.object.scale = e.config.object.scale / (string.len(new_mult_text)/scale)
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS entr "lib/fixes.lua"]'''
+pattern = '''if string.len(new_chip_text) > 6 then
+      e.config.object.scale = 0.9 / (string.len(new_chip_text)/6)
+    end'''
+position = 'at'
+payload = '''
+local scale = (Yggdrasil and 12 or 6) - (PTASaka.payasaka_text_size or 0)
 if string.len(new_chip_text) > scale then
 	e.config.object.scale = e.config.object.scale / (string.len(new_chip_text)/scale)
 end
@@ -37,10 +70,13 @@ times = 1
 [[patches]]
 [patches.pattern]
 target = 'functions/UI_definitions.lua'
-pattern = '''{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
-position = 'at'
+pattern = '''return {n=G.UIT.ROOT, config = {align = "cm", padding = 0.03, colour = G.C.UI.TRANSPARENT_DARK}, nodes={'''
+position = 'before'
 payload = '''
-{n=G.UIT.O, config={object = DynaText{string = {"X"}, pop_in_rate = 9999999, silent = true, scale = scale*2, colours = {G.C.UI_MULT}, shadow = true}, id = 'chips_what_mult'}},
+local realhand = Yggdrasil and contents.hand.nodes[1] or contents.hand
+local sc = (Yggdrasil and contents.hand.nodes[1] or contents.hand).nodes[1].nodes[2].nodes[2].nodes[1].config.scale
+local exis = DynaText{string = {"X"}, pop_in_rate = 9999999, silent = true, scale = sc, colours = {G.C.UI_MULT}, shadow = true}
+realhand.nodes[1].nodes[2].nodes[2].nodes[1] = {n=G.UIT.O, config={object = exis, id = 'chips_what_mult'}}
 '''
 match_indent = true
 times = 1
