@@ -1730,10 +1730,12 @@ return {
 			k_payasaka_daeha = "Prismatic",
 		},
 		challenge_names = {
-			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place"
+			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place",
+			c_payasaka_freeticket = "Eternal Ticket to Hell"
 		},
 		hardcore_challenge_names = {
-			hc_payasaka_ultrastuckrock = "Trains vs. Jimbo"
+			hc_payasaka_ultrastuckrock = "Trains vs. Jimbo",
+			hc_payasaka_finityfreeticket = "Finite Ticket to Limbo"
 		},
 	},
 	labels = {

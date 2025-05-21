@@ -36,6 +36,13 @@ SMODS.Challenge {
 	}
 }
 
+if MoreFluff then
+	SMODS.Challenge {
+		key = 'freeticket',
+		vouchers = { { id = 'v_mf_superboss_ticket' } }
+	}
+end
+
 if AKYRS then
 	AKYRS.HardcoreChallenge {
 		key = 'ultrastuckrock',
@@ -92,4 +99,13 @@ if AKYRS then
 		},
 		difficulty = 8,
 	}
+
+	if MoreFluff and next(SMODS.find_mod('finity')) then
+		AKYRS.HardcoreChallenge {
+			key = 'finityfreeticket',
+			vouchers = { { id = 'v_mf_superboss_ticket' } },
+			sleeve = 'sleeve_finity_challenger',
+			difficulty = 8,
+		}
+	end
 end
