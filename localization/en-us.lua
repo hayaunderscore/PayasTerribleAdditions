@@ -1668,6 +1668,13 @@ return {
 					"Art for Triahead",
 					":]"
 				}
+			},
+			credit_missingnumber = {
+				name = "missingnumber",
+				text = {
+					"Art and inspiration for",
+					"{font:payasaka_pokemon}MISSINGNO."
+				}
 			}
 		}
 	},

@@ -466,8 +466,36 @@ local tabs = function() return
 									create_credit("credit_ari"),
 									create_credit("credit_aikoyori"),
 									create_credit("credit_airrice"),
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									{
+										n = G.UIT.O,
+										config = {
+											object = DynaText{
+												string = "Many thanks to",
+												float = true,
+												pop_in = 0,
+												pop_in_rate = 4,
+												silent = true,
+												shadow = true,
+												scale = 0.5,
+												colours = {SMODS.Gradients["payasaka_prismatic_gradient"]}
+											}
+										}
+									}
+								}
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.1 },
+								nodes = {
 									create_credit("credit_canichat"),
 									create_credit("credit_notmario"),
+									create_credit("credit_missingnumber"),
 								}
 							},
 						}
