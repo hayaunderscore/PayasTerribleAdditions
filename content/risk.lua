@@ -250,8 +250,18 @@ PTASaka.Risk {
 		end
 		-- cryptid being a piece of shit
 		G.P_BLINDS['bl_payasaka_question'].mult_ante = G.GAME.round_resets.ante
+		-- shitty hack
+		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
 		G.E_MANAGER:add_event(Event {
 			func = function()
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.2,
+					func = function()
+						G.GAME.round_resets.blind_states[G.GAME.blind_on_deck] = old_state
+						return true
+					end
+				})
 				if G.blind_select_opts and G.blind_select_opts.boss then
 					local par = G.blind_select_opts.boss.parent
 
@@ -422,8 +432,17 @@ PTASaka.Risk {
 	use = function(self, card, area, copier)
 		G.GAME.payasaka_prelude_next_blind = G.GAME.round_resets.blind_choices.Boss
 		G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_prelude'
+		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
 		G.E_MANAGER:add_event(Event {
 			func = function()
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.2,
+					func = function()
+						G.GAME.round_resets.blind_states[G.GAME.blind_on_deck] = old_state
+						return true
+					end
+				})
 				if G.blind_select_opts and G.blind_select_opts.boss then
 					local par = G.blind_select_opts.boss.parent
 
@@ -471,8 +490,18 @@ PTASaka.Risk {
 		for k, v in pairs(G.P_BLINDS) do
 			if v.boss and v.boss.showdown then showdown[k] = true end
 		end
+		-- for some reason the game restores the state of the last boss blind to current
+		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
 		G.E_MANAGER:add_event(Event {
 			func = function()
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.2,
+					func = function()
+						G.GAME.round_resets.blind_states[G.GAME.blind_on_deck] = old_state
+						return true
+					end
+				})
 				if G.GAME.round_resets.last_cast_boss then
 					_, G.GAME.round_resets.last_cast_boss = pseudorandom_element(showdown, pseudoseed('aikoyori'))
 					G.GAME.payasaka_merged_boss_keys[2] = G.GAME.round_resets.last_cast_boss
