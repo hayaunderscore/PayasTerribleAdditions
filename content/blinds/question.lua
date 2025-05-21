@@ -23,11 +23,17 @@ SMODS.Blind {
 			conc = conc.." and "..localized[#localized]
 			return {vars = {conc}}
 		else
-			return {vars = {""}}
+			return {key = "bl_payasaka_question_alt"}
 		end
 	end,
 	show_fusions = true,
 	set_blind = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
+		if not next(G.GAME.payasaka_merged_boss_keys) then
+			for i = 1,2 do
+				G.GAME.payasaka_merged_boss_keys[i] = get_new_boss()
+			end
+		end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			SMODS.merge_lists(self.boss, (G.P_BLINDS[v].boss and type(G.P_BLINDS[v].boss) == "table") and G.P_BLINDS[v].boss or {})
 			-- todo support multiple debuffs
@@ -170,6 +176,7 @@ SMODS.Blind {
 		end
 	end,
 	defeat = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].defeat then
 				--print("defeated")
@@ -180,8 +187,10 @@ SMODS.Blind {
 				G.hand:change_size(1)
 			end
 		end
+		G.GAME.payasaka_merged_boss_keys = nil
 	end,
 	drawn_to_hand = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].drawn_to_hand then
 				--print("drawn")
@@ -221,6 +230,7 @@ SMODS.Blind {
 		end
 	end,
 	press_play = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].press_play then
 				--print("play time")
@@ -270,6 +280,7 @@ SMODS.Blind {
 		end
 	end,
 	recalc_debuff = function(self, card, from_blind)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = false
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].recalc_debuff then
@@ -280,6 +291,7 @@ SMODS.Blind {
 		return ret
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = false
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].debuff_hand then
@@ -340,6 +352,7 @@ SMODS.Blind {
 		return ret
 	end,
 	stay_flipped = function(self, area, card)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = false
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].stay_flipped then
@@ -380,6 +393,7 @@ SMODS.Blind {
 		return ret
 	end,
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local _m, _c, yeppers = mult, hand_chips, false
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].modify_hand then
@@ -396,10 +410,8 @@ SMODS.Blind {
 	get_loc_debuff_text = function(self)
 		return "???"
 	end,
-	in_pool = function(self)
-		return false
-	end,
 	cry_ante_base_mod = function(self, dt)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		if G.SETTINGS.paused then
 			return 0
 		else
@@ -414,6 +426,7 @@ SMODS.Blind {
 		end
 	end,
 	cry_after_play = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_after_play then
 				--print("modified !!!")
@@ -422,6 +435,7 @@ SMODS.Blind {
 		end
 	end,
 	cry_before_play = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_before_play then
 				--print("modified !!!")
@@ -430,6 +444,7 @@ SMODS.Blind {
 		end
 	end,
 	cry_calc_ante_gain = function(self)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = 1
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_calc_ante_gain then
@@ -440,6 +455,7 @@ SMODS.Blind {
 		return ret
 	end,
 	cry_cap_score = function(self, score)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count,hand_chips or 1e300,mult or 1e300))
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_cap_score then
@@ -450,6 +466,7 @@ SMODS.Blind {
 		return ret
 	end,
 	cry_round_base_mod = function(self, dt)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = 1
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_round_base_mod then
@@ -460,6 +477,7 @@ SMODS.Blind {
 		return ret
 	end,
 	calculate = function(self, blind, context)
+		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local rets = {}
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].calculate then
@@ -546,7 +564,7 @@ local blind_hoverref = Blind.hover
 function Blind.hover(self)
     if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then 
         if not self.hovering and self.states.visible and self.children.animatedSprite.states.visible then
-            if G.GAME.round_resets.last_cast_boss and self.config.blind and self.config.blind.show_fusions then
+            if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) and self.config.blind and self.config.blind.show_fusions then
                 G.blind_fused = UIBox{
                     definition = create_UIBox_blind_fused(self),
                     config = {
