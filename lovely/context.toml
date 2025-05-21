@@ -62,7 +62,7 @@ target = 'functions/state_events.lua'
 pattern = "-- TARGET: effects before scoring starts"
 position = 'before'
 payload = '''
-text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
+text,disp_text,poker_hands,_,__ = G.FUNCS.get_poker_hand_info(G.play.cards)
 '''
 match_indent = true
 times = 1
