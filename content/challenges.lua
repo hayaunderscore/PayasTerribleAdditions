@@ -100,7 +100,7 @@ if AKYRS then
 		difficulty = 8,
 	}
 
-	if MoreFluff and next(SMODS.find_mod('finity')) then
+	if MoreFluff and next(SMODS.find_mod('finity')) and CardSleeves then
 		AKYRS.HardcoreChallenge {
 			key = 'finityfreeticket',
 			vouchers = { { id = 'v_mf_superboss_ticket' } },
