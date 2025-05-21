@@ -10,6 +10,12 @@ if PTASaka.Mod.config["Property Cards"] then
 		unlocked = true,
 		discovered = true,
 		cost = 4,
+		pta_credit = {
+			art = {
+				credit = 'ariyi',
+				colour = HEX('09d707')
+			},
+		},
 		can_use = function(self, card)
 			local highlighted = {}
 			for _, v in ipairs(G.consumeables.highlighted) do
@@ -99,6 +105,12 @@ if PTASaka.Mod.config["Property Cards"] then
 			discovered = true,
 			display_size = { w = 107, h = 107 },
 			dependencies = "MoreFluff",
+			pta_credit = {
+				art = {
+					credit = 'ariyi',
+					colour = HEX('09d707')
+				},
+			},
 			can_use = function(self, card)
 				return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
 			end,
