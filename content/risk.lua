@@ -234,7 +234,7 @@ PTASaka.Risk {
 			end
 		end
 		G.GAME.payasaka_cannot_reroll = true
-		local current_boss = G.GAME.round_resets.last_cast_boss
+		local current_boss = G.GAME.round_resets.last_cast_boss or get_new_boss()
 		G.GAME.payasaka_merged_boss_keys = G.GAME.payasaka_merged_boss_keys or {}
 		if next(G.GAME.payasaka_merged_boss_keys) == nil then
 			-- first entry is the current boss
