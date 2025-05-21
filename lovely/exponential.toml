@@ -10,9 +10,9 @@ target = 'functions/button_callbacks.lua'
 pattern = '''e.config.object.scale = scale_number(G.GAME.current_round.current_hand.mult, 0.9, 1000)'''
 position = 'after'
 payload = '''
-local scale = (Yggdrasil and 16 or 6) - (PTASaka.payasaka_text_size or 0)
+local scale = (Yggdrasil and 16 or 4.5) - (PTASaka.payasaka_text_size or 0)
 if string.len(new_mult_text) > scale then
-	e.config.object.scale = e.config.object.scale / (string.len(new_mult_text)/scale)
+	e.config.object.scale = (Yggdrasil and 0.5 or 0.9) / (string.len(new_mult_text)/scale)
 end
 '''
 match_indent = true
@@ -24,9 +24,9 @@ target = 'functions/button_callbacks.lua'
 pattern = '''e.config.object.scale = scale_number(G.GAME.current_round.current_hand.chips, 0.9, 1000)'''
 position = 'after'
 payload = '''
-local scale = (Yggdrasil and 16 or 6) - (PTASaka.payasaka_text_size or 0)
+local scale = (Yggdrasil and 16 or 4.5) - (PTASaka.payasaka_text_size or 0)
 if string.len(new_chip_text) > scale then
-	e.config.object.scale = e.config.object.scale / (string.len(new_chip_text)/scale)
+	e.config.object.scale = (Yggdrasil and 0.5 or 0.9) / (string.len(new_chip_text)/scale)
 end
 '''
 match_indent = true
@@ -41,9 +41,9 @@ pattern = '''if string.len(new_mult_text) > 6 then
         end'''
 position = 'at'
 payload = '''
-local scale = (Yggdrasil and 16 or 6) - (PTASaka.payasaka_text_size or 0)
+local scale = (Yggdrasil and 16 or 4.5) - (PTASaka.payasaka_text_size or 0)
 if string.len(new_mult_text) > scale then
-	e.config.object.scale = e.config.object.scale / (string.len(new_mult_text)/scale)
+	e.config.object.scale = (Yggdrasil and 0.5 or 0.9) / (string.len(new_mult_text)/scale)
 end
 '''
 match_indent = true
@@ -57,9 +57,9 @@ pattern = '''if string.len(new_chip_text) > 6 then
     end'''
 position = 'at'
 payload = '''
-local scale = (Yggdrasil and 12 or 6) - (PTASaka.payasaka_text_size or 0)
+local scale = (Yggdrasil and 12 or 4.5) - (PTASaka.payasaka_text_size or 0)
 if string.len(new_chip_text) > scale then
-	e.config.object.scale = e.config.object.scale / (string.len(new_chip_text)/scale)
+	e.config.object.scale = (Yggdrasil and 0.5 or 0.9) / (string.len(new_chip_text)/scale)
 end
 '''
 match_indent = true
