@@ -61,13 +61,13 @@ to_big = to_big or function(a) return a end
 
 -- Shittim deck rerolling
 G.FUNCS.can_reroll_booster = function(e)
-	if G.GAME and G.GAME.payasaka_allow_reroll and not G.CONTROLLER.locks.use and not G.CONTROLLER.locks.booster_reroll and G.pack_cards and (G.pack_cards.cards[1]) and
+	if ((G.GAME and G.GAME.payasaka_allow_reroll) or (booster_obj and booster_obj.kind == 'Gacha')) and not G.CONTROLLER.locks.use and not G.CONTROLLER.locks.booster_reroll and G.pack_cards and (G.pack_cards.cards[1]) and
 		(G.STATE == G.STATES.SMODS_BOOSTER_OPENED or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.BUFFOON_PACK or (G.hand and (G.hand.cards[1] or (G.hand.config.card_limit <= 0))))
-		and booster_obj and booster_obj.cost ~= 0 and not (to_big(G.GAME.dollars-G.GAME.bankrupt_at) - to_big(booster_obj.cost or 0) < to_big(0)) then
+		and booster_obj and booster_obj.cost ~= 0 and not (to_big(G.GAME.dollars - G.GAME.bankrupt_at) - to_big(booster_obj.cost or 0) < to_big(0)) then
 		e.config.colour = G.C.GREY
 		e.config.button = 'reroll_booster'
 		e.states.visible = true
-	elseif not (G.GAME and G.GAME.payasaka_allow_reroll) then
+	elseif not ((G.GAME and G.GAME.payasaka_allow_reroll) or (booster_obj and booster_obj.kind == 'Gacha')) then
 		e.states.visible = false
 	else
 		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
@@ -100,13 +100,23 @@ G.FUNCS.reroll_booster = function(e)
 
 			for i = #G.pack_cards.cards, 1, -1 do
 				local c = G.pack_cards:remove_card(G.pack_cards.cards[i])
-				c:start_dissolve({G.C.WHITE, G.C.WHITE}, false, 0.75, true)
+				c:start_dissolve({ G.C.WHITE, G.C.WHITE }, false, 0.75, true)
+			end
+
+			if G.payasaka_gacha_pack_extra then
+				for i = #G.payasaka_gacha_pack_extra.cards, 1, -1 do
+					local c = G.payasaka_gacha_pack_extra:remove_card(G.payasaka_gacha_pack_extra.cards[i])
+					c:start_dissolve({ G.C.WHITE, G.C.WHITE }, false, 0.75, true)
+				end
 			end
 
 			--save_run()
 
 			play_sound('coin2')
 			play_sound('other1')
+
+			local _size = G.GAME.pack_size
+			if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' then _size = math.floor(_size / 2) end
 
 			for i = 1, G.GAME.pack_size do
 				local card = nil
@@ -172,8 +182,15 @@ G.FUNCS.reroll_booster = function(e)
 					end
 				end
 				if card then
-					card:start_materialize({G.C.WHITE, G.C.WHITE}, true)
-					G.pack_cards:emplace(card)
+					card:start_materialize({ G.C.WHITE, G.C.WHITE }, true)
+					if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' then
+						if i <= _size then G.pack_cards:emplace(card) else G.payasaka_gacha_pack_extra:emplace(card) end
+					else
+						G.pack_cards:emplace(card)
+					end
+					if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' and (not (SMODS.OPENED_BOOSTER.edition and SMODS.OPENED_BOOSTER.edition.negative)) then
+						card:flip()
+					end
 				end
 			end
 			return true
@@ -248,5 +265,33 @@ SMODS.Back {
 	unlocked = true,
 	apply = function(self, back)
 		G.GAME.payasaka_only_risk = true
+	end
+}
+
+SMODS.Back {
+	key = 'gacha',
+	atlas = "JOE_Decks",
+	pos = { x = 1, y = 1 },
+	unlocked = true,
+	config = { joker_slot = 5 },
+	apply = function(self, back)
+		G.GAME.payasaka_fucking_hell = true
+		G.GAME.joker_rate = 0
+		G.GAME.banned_keys['p_buffoon_normal_1'] = true
+		G.GAME.banned_keys['p_buffoon_normal_2'] = true
+		G.GAME.banned_keys['p_buffoon_jumbo_1'] = true
+		G.GAME.banned_keys['p_buffoon_mega_1'] = true
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				if #G.consumeables.cards < G.consumeables.config.card_limit then
+					local _c = SMODS.add_card { key = 'c_payasaka_gacha', area = G.consumeables }
+					_c:juice_up()
+				end
+				return true
+			end
+		})
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { self.config.joker_slot } }
 	end
 }

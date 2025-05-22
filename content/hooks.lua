@@ -388,6 +388,19 @@ function Card:set_sprites(center, front)
 		self.children.pta_front.states.hover.can = false
 		self.children.pta_front.states.click.can = false
 	end
+	if center and center.key == 'c_payasaka_gacha' then
+		self.children.gacha_layer = Sprite(
+			self.T.x,
+			self.T.y,
+			self.T.w*(85/71),
+			self.T.h,
+			G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"],
+			{ x = 0, y = 2 }
+		)
+		self.children.gacha_layer.role.draw_major = self
+		self.children.gacha_layer.states.hover.can = false
+		self.children.gacha_layer.states.click.can = false
+	end
 end
 
 local old_can_use = Card.can_use_consumeable

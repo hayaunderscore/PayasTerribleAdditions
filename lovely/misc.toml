@@ -58,6 +58,12 @@ if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' and not game_over 
 	end
     G.GAME.risk_cards_risks = {}
 end
+if G.GAME.blind_on_deck == 'Boss' and not game_over and G.GAME.payasaka_fucking_hell then
+	if #G.consumeables.cards < G.consumeables.config.card_limit then
+		local _c = SMODS.add_card { key = 'c_payasaka_gacha', area = G.consumeables }
+		_c:juice_up()
+	end
+end
 '''
 match_indent = true
 times = 1
@@ -130,5 +136,35 @@ pattern = '''if not chunk then return nil, "Error processing file '" .. path .. 
 position = 'after'
 payload = '''
 pta_amount_of_lua_files_loaded_please_dont_override = pta_amount_of_lua_files_loaded_please_dont_override + 1
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''local sell = nil'''
+position = 'before'
+payload = '''
+if (G.payasaka_gacha_pack_extra and (card.area == G.pack_cards or card.area == G.payasaka_gacha_pack_extra)) then
+        if G.STATE == G.STATES.SMODS_BOOSTER_OPENED and (SMODS.OPENED_BOOSTER and SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha') then
+            return {
+                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'use_card', func = 'can_select_from_gacha'}, nodes={
+                    {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+                  }},
+              }}
+        end
+    end
+'''
+match_indent = true
+
+# Patch Nopeus to remove stupid ahh crash
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS nopeus "Nopeus.lua"]'''
+pattern = '''G.pack_cards:remove()'''
+position = 'at'
+payload = '''
+if G.pack_cards then G.pack_cards:remove() end
 '''
 match_indent = true

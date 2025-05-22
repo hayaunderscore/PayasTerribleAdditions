@@ -566,7 +566,7 @@ function PTASaka.make_pyrox_boosters(base_key, normal_poses, jumbo_poses, mega_p
 		local t = copy_table(common_values)
 		t.key = base_key .. "_normal_" .. index
 		t.pos = pos
-		t.config = { extra = pack_size, choose = 1 }
+		t.config = { extra = pos.size or pack_size, choose = pos.choose or 1 }
 		--t.cost = 4
 		t.pyroxenes = 4
 		SMODS.Booster(t)
@@ -575,7 +575,7 @@ function PTASaka.make_pyrox_boosters(base_key, normal_poses, jumbo_poses, mega_p
 		local t = copy_table(common_values)
 		t.key = base_key .. "_jumbo_" .. index
 		t.pos = pos
-		t.config = { extra = pack_size + 1, choose = 1 }
+		t.config = { extra = pos.size or (pack_size + 1), choose = pos.choose or 1 }
 		--t.cost = 6
 		t.pyroxenes = 6
 		SMODS.Booster(t)
@@ -584,7 +584,7 @@ function PTASaka.make_pyrox_boosters(base_key, normal_poses, jumbo_poses, mega_p
 		local t = copy_table(common_values)
 		t.key = base_key .. "_mega_" .. index
 		t.pos = pos
-		t.config = { extra = pack_size + 1, choose = 2 }
+		t.config = { extra = pos.size or (pack_size + 1), choose = pos.choose or 2 }
 		--t.cost = 8
 		t.pyroxenes = 8
 		SMODS.Booster(t)

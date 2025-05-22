@@ -26,6 +26,7 @@ SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas
 
 -- Tarots and Spectrals
 SMODS.Atlas { key = "JOE_Tarots", path = "tarots.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Tarots_Adjust", path = "tarots.png", px = 85, py = 95 }
 
 -- Property atlas(es)
 SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
@@ -121,6 +122,7 @@ assert(SMODS.load_file("content/tarots.lua"))()
 assert(SMODS.load_file("content/dos.lua"))()
 assert(SMODS.load_file("content/risk.lua"))()
 assert(SMODS.load_file("content/rewards.lua"))()
+assert(SMODS.load_file("content/gachapack.lua"))()
 
 -- Vouchers
 assert(SMODS.load_file("content/vouchers.lua"))()

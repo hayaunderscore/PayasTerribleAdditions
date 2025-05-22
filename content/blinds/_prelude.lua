@@ -13,26 +13,6 @@ SMODS.Blind {
 	end,
 	defeat = function(self)
 		G.GAME.payasaka_prelude = false
-	end,
-	calculate = function(self, blind, context)
-		local play_count = #G.play.cards
-		if context.after and G.GAME.payasaka_prelude then
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.1,
-				func = function()
-					local it = 1
-					for i = 1, #context.full_hand do
-						context.full_hand[i]:set_debuff(true)
-						if (not context.full_hand[i].shattered) and (not context.full_hand[i].destroyed) then
-							draw_card(G.play, G.deck, it * 100 / play_count, 'down', false, context.full_hand[i])
-						end
-						it = it + 1
-					end
-					return true
-				end
-			}))
-		end
 	end
 }
 

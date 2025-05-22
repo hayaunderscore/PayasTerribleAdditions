@@ -144,6 +144,7 @@ pattern = '''elseif config.name == 'hands' then'''
 position = 'before'
 payload = '''
 elseif config.name == 'boss_pyrox_bonus' then
+	table.insert(left_text, {n=G.UIT.T, config={text = config.pyroxenes or 0, scale = 0.8*scale, colour = G.C.BLUE, shadow = true, juice = true}})
 	table.insert(left_text, {n=G.UIT.O, config={object = DynaText({string = ' '..localize('k_payasaka_pyroxene_bonus')..' ', colours = {G.C.UI.TEXT_LIGHT}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})
 '''
 match_indent = true
@@ -168,7 +169,7 @@ position = 'at'
 payload = '''
 local pyroxenes = 0
 
-if G.GAME.blind and G.GAME.blind.boss then
+if (G.GAME.blind and G.GAME.blind.boss) or G.GAME.payasaka_fucking_hell then
 	add_round_eval_row({name = 'boss_pyrox_bonus', bonus = true, pyroxenes = 5, pitch = pitch})
 	pyroxenes = pyroxenes + 5
 	pitch = pitch + 0.06

@@ -41,6 +41,18 @@ return {
 					"{C:inactive}(Heavy WIP!)"
 				}
 			},
+			b_payasaka_gacha = {
+				name = "Gacha Deck",
+				text = {
+					"Jokers and Buffoon Packs can no",
+					"longer {C:attention}appear{} in the shop",
+					"Get {C:blue}¥5{} every round",
+					"Start with a {C:attention,T:c_payasaka_gacha}Gacha{} spectral",
+					"at the start of an ante",
+					"{C:attention}+#1#{} Joker slots",
+					"{C:inactive,s:0.8}Is this even fair?"
+				}
+			},
 		},
 		Joker = {
 			j_payasaka_buruakacard = {
@@ -1125,11 +1137,19 @@ return {
 				name = "Center",
 				text = {
 					"Turns {C:attention}#1#{} selected Joker into",
-					"a {C:prismatic}Prismatic{} Joker and",
+					"a {C:ayasaka_prismatic_gradient}Prismatic{} Joker and",
 					"turn {C:attention}all{} other Jokers into",
 					"ones of the same {C:attention}rarity{}"
 				}
-			}
+			},
+			c_payasaka_gacha = {
+				name = "Gacha",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} {C:attention,E:1}random{} {C:joker}Jokers{}",
+					"{C:inactive,s:0.8}9B, 1G :){}"
+				},
+			},
 		},
 		Risk = {
 			c_payasaka_doubledown = {
@@ -1738,6 +1758,7 @@ return {
 			k_property_pack = "Property Pack",
 			k_moji_pack = "Reward Pack",
 			k_risk_pack = "Risk Pack",
+			k_gacha_pack = "Gacha Pack",
 			k_legendary_pack = "Legendary Pack",
 			b_payasaka_reroll = "Reroll",
 			k_payasaka_comment = "Paya's comment:",
