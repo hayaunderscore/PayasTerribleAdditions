@@ -799,6 +799,53 @@ return {
 					"{C:inactive,s:0.8}:drool:",
 				}
 			},
+			j_payasaka_smoker = {
+				name = "Smoker",
+				text = {
+					"Discarding {C:attention}#1#{} cards",
+					"draws {C:attention}#2#{} more"
+				}
+			},
+			j_payasaka_suittaker = {
+				name = "Suittaker",
+				text = {
+					"Debuffs cards with",
+					"{V:1}#2#{} suit, {C:attention}held",
+					"debuffed cards each",
+					"give {X:mult,C:white}X#1#{} Mult",
+					"{C:inactive,s:0.8}Suit changes every round"
+				}
+			},
+			j_payasaka_catcher = {
+				name = "Claw Catcher",
+				text = {
+					"{C:attention}+#1#{} consumable slot",
+					"{C:attention}Creates{} a random",
+					"consumeable at the",
+					"end of round",
+					"{C:inactive}(Must have room)"
+				}
+			},
+			j_payasaka_patrick = {
+				name = "Risky Patrick",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for {C:attention}every",
+					"{C:risk}Risk{} card used in",
+					"this {C:attention}run, creates",
+					"{C:attention}#2#{} {C:risk}Risk{} card at",
+					"the end of an {C:attention}ante",
+					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)"
+				}
+			},
+			j_payasaka_jackpot = {
+				name = "Jackpot Joker",
+				text = {
+					"{C:attention}Aces{}, {C:attention}7s{}, {C:attention}5s{}",
+					"{C:attention}3s{} and {C:attention}2s{} give {X:attention,C:white}X#1#{}",
+					"their {C:attention}chip value{} as money",
+					"{C:inactive}(Max of {C:money}$#2#{C:inactive})"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {

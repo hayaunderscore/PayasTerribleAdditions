@@ -157,4 +157,21 @@ end
 match_indent = true
 times = 1
 
-
+# Custom context for drawing additional cards lmao
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "for i=1, hand_space do --draw cards from deckL"
+position = "before"
+payload = '''
+local add = {}
+SMODS.calculate_context({payasaka_draw_to_deck = true}, add)
+SMODS.trigger_effects(add)
+for k, v in ipairs(add) do
+	for _k, _v in pairs(v) do
+		hand_space = math.min(hand_space + (_v.draw_amount or 0), #G.deck.cards)
+	end
+end
+'''
+match_indent = true
+times = 1
