@@ -104,6 +104,15 @@ function Game:start_run(args)
 	for k, v in ipairs(G.P_CENTER_POOLS["Food"]) do
 		PTASaka.food_jokers[v.key] = v
 	end
+
+	-- Shuffle gacha table
+	local function shuffle(tbl)
+		for i = #tbl, 2, -1 do
+			local j = pseudorandom('gacha_fuck_you',i)
+			tbl[i], tbl[j] = tbl[j], tbl[i]
+		end
+	end
+	shuffle(PTASaka.gacha_rarity_table)
 end
 
 -- Custom G.GAME stuff
@@ -392,7 +401,7 @@ function Card:set_sprites(center, front)
 		self.children.gacha_layer = Sprite(
 			self.T.x,
 			self.T.y,
-			self.T.w*(85/71),
+			self.T.w * (85 / 71),
 			self.T.h,
 			G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"],
 			{ x = 0, y = 2 }
@@ -513,13 +522,13 @@ function CardArea:align_cards()
 	if self ~= PTASaka.dos_cardarea then return u(self) end
 	u(self)
 	for k, card in ipairs(self.cards) do
-        card.rank = k
-    end
+		card.rank = k
+	end
 	local deck_height = (self.config.deck_height or -0.15) / self.config.card_limit
 	for k, card in ipairs(self.cards) do
 		-- override rotation
-		card.T.r = 0 + 0.3*self.shuffle_amt*(1 + k*0.05)*(k%2 == 1 and 1 or -0)
-		card.T.y = card.T.y + deck_height*k
+		card.T.r = 0 + 0.3 * self.shuffle_amt * (1 + k * 0.05) * (k % 2 == 1 and 1 or -0)
+		card.T.y = card.T.y + deck_height * k
 		if not card.states.drag.can then goto continue end
 		if card.facing == 'front' and not card.states.drag.is and k ~= #self.cards then
 			card:flip()

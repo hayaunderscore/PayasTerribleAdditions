@@ -1,5 +1,15 @@
 -- Arona's Domain
 
+-- The multiples is for the random function to pick that more likely
+-- Why not use a weight table perhaps? Why because fuck you
+PTASaka.gacha_rarity_table = { "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Rare", "Common", "Common", "Common", "Common", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Uncommon",
+					"Uncommon", "Rare", "Uncommon", "Uncommon", "Legendary", "payasaka_ahead", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Common", "Common", "Common", "Common", "Common", "payasaka_daeha", "Common",  "Uncommon", "Common", "Common", "Uncommon" }
+
+if next(SMODS.find_mod('finity')) then
+	-- This would be really funny
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table+1] = 'finity_showdown'
+end
+
 SMODS.Consumable {
 	key = 'gacha',
 	set = 'Spectral',
@@ -199,8 +209,7 @@ SMODS.Consumable {
 			i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
 			G.pack_cards, nil,
 			pseudorandom_element(
-				{ "Common", "Common", "Common", "Common", "Common", "Common", "Uncommon", "Uncommon", "Uncommon",
-					"Uncommon", "Rare", "Rare", "Legendary" }, pseudoseed('haha')), true, true, nil)
+				PTASaka.gacha_rarity_table, pseudoseed('haha')), true, true, nil)
 		return c
 	end,
 	ease_background_colour = function(self)
