@@ -56,7 +56,7 @@ SMODS.Joker {
 			card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt - 1
 			G.E_MANAGER:add_event(Event {
 				func = function()
-					G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count - 1
+					G.GAME.payasaka_exponential_count = math.max(G.GAME.payasaka_exponential_count - 1, 0)
 					return true
 				end
 			})
