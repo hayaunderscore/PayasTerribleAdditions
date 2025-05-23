@@ -2,12 +2,15 @@
 
 -- The multiples is for the random function to pick that more likely
 -- Why not use a weight table perhaps? Why because fuck you
-PTASaka.gacha_rarity_table = { "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Rare", "Common", "Common", "Common", "Common", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Uncommon",
-					"Uncommon", "Rare", "Uncommon", "Uncommon", "Legendary", "payasaka_ahead", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Common", "Common", "Common", "Common", "Common", "payasaka_daeha", "Common",  "Uncommon", "Common", "Common", "Uncommon" }
+PTASaka.gacha_rarity_table = { "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Rare",
+	"Common", "Common", "Common", "Common", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Uncommon",
+	"Uncommon", "Rare", "Uncommon", "Uncommon", "Legendary", "payasaka_ahead", "Uncommon", "Uncommon", "Uncommon",
+	"Uncommon", "Common", "Common", "Common", "Common", "Common", "payasaka_daeha", "Common", "Uncommon", "Common",
+	"Common", "Uncommon" }
 
 if next(SMODS.find_mod('finity')) then
 	-- This would be really funny
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table+1] = 'finity_showdown'
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = 'finity_showdown'
 end
 
 SMODS.Consumable {
@@ -345,6 +348,54 @@ G.FUNCS.can_select_from_gacha = function(e)
 	end
 end
 
+local function PityShow()
+	local cards = PTASaka.FH.merge(G.pack_cards.cards, G.payasaka_gacha_pack_extra.cards)
+	attention_text({
+		text = "Now let's see what you didn't get...",
+		hold = (0.2 * #cards) + 1.2 * (G.SETTINGS.GAMESPEED),
+		scale = 0.5,
+		major = G.pack_cards,
+		align = "tm",
+		offset = { x = 0, y = -0.5 },
+		noisy = true
+	})
+	for i = 1, #cards do
+		---@type Card
+		local c = cards[i]
+		if c.highlighted then c:highlight(false) end
+		c.states.click.can = false
+	end
+	delay(0.2*G.SETTINGS.GAMESPEED)
+	for i = 1, #cards do
+		local percent = 1.2 - (i - 0.999) / (#cards - 0.998) * 0.4
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				cards[i]:flip(); play_sound('card1', percent); cards[i]
+					:juice_up(0.3, 0.3); return true
+			end
+		}))
+	end
+end
+
+local old_skip = G.FUNCS.skip_booster
+G.FUNCS.skip_booster = function(e)
+	if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' then
+		PityShow()
+		G.E_MANAGER:add_event(Event {
+			delay = 1 * (G.SETTINGS.GAMESPEED),
+			trigger = 'after',
+			func = function()
+				old_skip(e)
+				return true
+			end
+		})
+		return
+	end
+	old_skip(e)
+end
+
 G.FUNCS.gacha_select_card = function(e)
 	local c1 = e.config.ref_table
 	G.E_MANAGER:add_event(Event({
@@ -359,7 +410,15 @@ G.FUNCS.gacha_select_card = function(e)
 			G[c1.ability.set == "Joker" and "jokers" or "consumeables"]:emplace(c1)
 			G.GAME.pack_choices = G.GAME.pack_choices - 1
 			if G.GAME.pack_choices <= 0 then
-				G.FUNCS.end_consumeable(nil, delay_fac)
+				PityShow()
+				G.E_MANAGER:add_event(Event {
+					delay = 1 * (G.SETTINGS.GAMESPEED),
+					trigger = 'after',
+					func = function()
+						G.FUNCS.end_consumeable(nil, delay_fac)
+						return true
+					end
+				})
 			end
 			return true
 		end

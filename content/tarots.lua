@@ -331,10 +331,10 @@ SMODS.Seal {
 				x_chips = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.x_chips or nil,
 				xchips_message = { message = localize { type = "variable", key = "a_xchips", vars = { s.x_chips } }, colour =
 				G.C.CHIPS, sound = "xchips" } or nil,
-				e_mult = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.e_mult or nil,
+				e_mult = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and s.e_mult or nil,
 				emult_message = Talisman and
 				{ message = ("^%d Mult"):format(s.e_mult), colour = G.C.DARK_EDITION, sound = "talisman_emult" } or nil,
-				e_chips = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.e_chips or nil,
+				e_chips = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and s.e_chips or nil,
 				echip_message = Talisman and
 				{ message = ("^%d Chips"):format(s.e_chips), colour = G.C.DARK_EDITION, sound = "talisman_echip" } or nil,
 			}
