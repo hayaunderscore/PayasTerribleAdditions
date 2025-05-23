@@ -5,6 +5,7 @@ SMODS.Blind {
 	dollars = 6,
 	mult = 2,
 	boss_colour = HEX('7b194e'),
+	boss = { min = 0 },
 	set_blind = function(self)
 		G.GAME.payasaka_prelude = true
 	end,
@@ -13,6 +14,9 @@ SMODS.Blind {
 	end,
 	defeat = function(self)
 		G.GAME.payasaka_prelude = false
+	end,
+	in_pool = function(self)
+		return false
 	end
 }
 

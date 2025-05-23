@@ -6,7 +6,7 @@ SMODS.Blind {
 	dollars = 8,
 	mult = 2,
 	boss = {
-		min = 0, max = 1999,
+		min = 0, max = 1999, showdown = true,
 		merged_keys = {},
 	},
 	boss_colour = HEX('46585c'),
@@ -329,7 +329,7 @@ SMODS.Blind {
 			end
 			if G.P_BLINDS[v].name == 'The Arm' then 
 				G.GAME.blind.triggered = false
-				if G.GAME.hands[handname].level > 1 then
+				if to_big(G.GAME.hands[handname].level) > to_big(1) then
 					G.GAME.blind.triggered = true
 					if not check then
 						level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
