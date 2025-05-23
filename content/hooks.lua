@@ -368,7 +368,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 	end
 
 	local ret = calculate_individual_effect_hook(effect, scored_card, key, amount, from_edition)
-	if amount and to_big(amount) > to_big(0) and PTASaka.recuperares and next(PTASaka.recuperares) and whitelisted_keys[key] and ret then
+	if amount and is_number(amount) and to_big(amount) > to_big(0) and PTASaka.recuperares and next(PTASaka.recuperares) and whitelisted_keys[key] and ret then
 		for k, joker in ipairs(PTASaka.recuperares) do
 			local e = joker.ability.extra
 			if joker ~= scored_card then
