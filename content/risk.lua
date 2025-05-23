@@ -83,7 +83,9 @@ PTASaka.Risk {
 	apply_risk = function(self, ability)
 		for i = 1, math.min(ability.debuff, #G.deck.cards) do
 			local c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]
-			while c.ability.debuffed_by_risk do c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)] end
+			local tries = 50
+			local try = 0
+			while c.ability.debuffed_by_risk do if try > tries then break end; c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]; try = try + 1 end
 			c.debuff = true
 			c.ability.debuffed_by_risk = true
 		end
