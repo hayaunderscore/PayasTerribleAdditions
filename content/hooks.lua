@@ -104,15 +104,6 @@ function Game:start_run(args)
 	for k, v in ipairs(G.P_CENTER_POOLS["Food"]) do
 		PTASaka.food_jokers[v.key] = v
 	end
-
-	-- Shuffle gacha table
-	local function shuffle(tbl)
-		for i = #tbl, 2, -1 do
-			local j = pseudorandom('gacha_fuck_you',i)
-			tbl[i], tbl[j] = tbl[j], tbl[i]
-		end
-	end
-	shuffle(PTASaka.gacha_rarity_table)
 end
 
 -- Custom G.GAME stuff
@@ -126,6 +117,20 @@ function Game:init_game_object()
 	ret.payasaka_pyroxenes = 0
 	-- Exponentials
 	ret.payasaka_exponential_count = 0
+
+	if G and G.STAGE == G.STAGES.RUN then
+		-- Shuffle gacha table
+		local function shuffle(tbl)
+			for i = #tbl, 2, -1 do
+				local j = pseudorandom('gacha_fuck_you',i)
+				tbl[i], tbl[j] = tbl[j], tbl[i]
+			end
+		end
+		shuffle(PTASaka.gacha_rarity_table)
+
+		ret.payasaka_gacha_rarity_table = PTASaka.gacha_rarity_table
+	end
+
 	return ret
 end
 

@@ -27,6 +27,14 @@ PTASaka.DescriptionDummy {
 	key = "property_card"
 }
 
+PTASaka.DescriptionDummy {
+	key = "ahead",
+	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		desc_nodes.title = localize({ type = 'name_text', set = 'DescriptionDummy', key = _c.key })
+		localize { type = 'descriptions', set = 'DescriptionDummy', key = _c.key, nodes = desc_nodes, vars = specific_vars or {} }
+	end
+}
+
 -- Adult card card list
 local dummy = PTASaka.DescriptionDummy {
 	key = "adultcard_area",

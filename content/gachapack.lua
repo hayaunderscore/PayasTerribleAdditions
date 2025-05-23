@@ -212,7 +212,7 @@ SMODS.Consumable {
 			i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
 			G.pack_cards, nil,
 			pseudorandom_element(
-				PTASaka.gacha_rarity_table, pseudoseed('haha')), true, true, nil)
+				G.GAME.payasaka_gacha_rarity_table, pseudoseed('haha')), true, true, nil)
 		return c
 	end,
 	ease_background_colour = function(self)
@@ -416,6 +416,8 @@ G.FUNCS.gacha_select_card = function(e)
 					trigger = 'after',
 					func = function()
 						G.FUNCS.end_consumeable(nil, delay_fac)
+						G.pack_cards:remove(); G.pack_cards.REMOVED = true; G.pack_cards = nil;
+						G.payasaka_gacha_pack_extra:remove(); G.payasaka_gacha_pack_extra.REMOVED = true; G.payasaka_gacha_pack_extra = nil;
 						return true
 					end
 				})
