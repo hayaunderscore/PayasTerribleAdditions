@@ -12,6 +12,10 @@ SMODS.Joker {
 			credit = 'Mr. Logan',
 			colour = HEX('c1410e')
 		},
+		art = {
+			credit = 'Mr. Logan',
+			colour = HEX('c1410e')
+		},
 	},
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not context.end_of_round then

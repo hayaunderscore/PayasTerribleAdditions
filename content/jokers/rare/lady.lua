@@ -12,6 +12,10 @@ SMODS.Joker {
 			credit = 'ariyi',
 			colour = HEX('09d707')
 		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
 	},
 	update = function(self, card, dt)
 		if G.STATE == G.STATES.SELECTING_HAND then

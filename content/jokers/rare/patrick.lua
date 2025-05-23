@@ -12,6 +12,10 @@ SMODS.Joker {
 			credit = 'ariyi',
 			colour = HEX('09d707')
 		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
 	},
 	calculate = function(self, card, context)
 		if context.blueprint then return nil, true end

@@ -7,6 +7,16 @@ SMODS.Joker {
 	blueprint_compat = false,
 	demicoloncompat = false,
 	config = {extra = 1},
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if (context.end_of_round and context.cardarea == G.jokers and not (context.game_over and context.individual and context.repetition)) or context.forcetrigger then
 			if #G.consumeables.cards < G.consumeables.config.card_limit then

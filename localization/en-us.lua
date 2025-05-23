@@ -819,7 +819,7 @@ return {
 				}
 			},
 			j_payasaka_suittaker = {
-				name = "Suittaker",
+				name = "Lady",
 				text = {
 					"Debuffs cards with",
 					"{V:1}#2#{} suit, {C:attention}held",
@@ -839,7 +839,7 @@ return {
 				}
 			},
 			j_payasaka_patrick = {
-				name = "Risky Patrick",
+				name = "Lucky",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for {C:attention}every",
 					"{C:risk}Risk{} card used in",
