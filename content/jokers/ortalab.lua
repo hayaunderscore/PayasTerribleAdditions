@@ -1,4 +1,5 @@
-if not Ortalab then return end
+local dep = {'ortalab'}
+if not Ortalab then dep = nil end
 
 -- Monster Energy -> Baja Blast
 SMODS.Joker {
@@ -13,7 +14,7 @@ SMODS.Joker {
 	cost = 3,
 	blueprint_compat = true,
 	demicoloncompat = true,
-	dependencies = 'ortalab',
+	dependencies = dep,
 	pools = {["Joker"] = true, ["Food"] = true},
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent then
@@ -83,7 +84,7 @@ SMODS.Joker {
 	cost = 8,
 	blueprint_compat = true,
 	demicoloncompat = true,
-	dependencies = 'ortalab',
+	dependencies = dep,
 	calculate = function(self, card, context)
 		local extra = card.ability.extra
 		if (context.individual and not context.end_of_round) then
@@ -133,7 +134,7 @@ SMODS.Joker {
 	cost = 15,
 	blueprint_compat = false,
 	demicoloncompat = false,
-	dependencies = 'ortalab',
+	dependencies = dep,
 	update = function(self, card2, dt)
 		if G.STAGE == G.STAGES.RUN and card2.added_to_deck then
 			-- Get cards from left and right
@@ -235,7 +236,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	config = { extra = { odds = 2, x_chips = 2 }, },
 	pools = {["Joker"] = true, ["Meme"] = true},
-	dependencies = 'ortalab',
+	dependencies = dep,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds, card.ability.extra.x_chips } }
 	end,
@@ -311,7 +312,9 @@ SMODS.Joker {
 	end,
 	loc_vars = function(self, info_queue, card)
 		local extra = card.ability.extra
-		info_queue[#info_queue+1] = { key = 'dd_payasaka_missingno_finity', set = 'DescriptionDummy', vars = { card.ability.cry_rigged and extra.finity_odds or (G.GAME.probabilities.normal or 1), extra.finity_odds } }
+		local dd = PTASaka.DescriptionDummies["dd_payasaka_missingno_finity"]
+		dd.vars = { card.ability.cry_rigged and extra.finity_odds or (G.GAME.probabilities.normal or 1), extra.finity_odds }
+		info_queue[#info_queue+1] = dd
 		return {
 			vars = { extra.finity_mult, extra.finity_count }
 		}
