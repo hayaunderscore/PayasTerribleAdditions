@@ -179,8 +179,8 @@ pattern = '''draw_card(G.play,G.discard, it*100/play_count,'down', false, v)'''
 position = 'at'
 payload = '''
 if G.GAME.payasaka_prelude then
-	v:set_debuff(true)
 	draw_card(G.play,G.deck, it*100/play_count,'down', false, v)
+	G.deck:shuffle('prelude_shuf'..G.GAME.round_resets.ante)
 else
 	draw_card(G.play,G.discard, it*100/play_count,'down', false, v)
 end

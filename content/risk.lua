@@ -477,6 +477,13 @@ PTASaka.Risk {
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_prelude_next_blind = nil
 		G.GAME.payasaka_cannot_reroll = nil
+		for _, area in ipairs({G.play, G.hand, G.deck, G.discard}) do
+			for i = 1, #area.cards do
+				---@type Card
+				local c = area.cards[i]
+				SMODS.debuff_card(c, false, 'payasaka_prelude')
+			end
+		end
 		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }

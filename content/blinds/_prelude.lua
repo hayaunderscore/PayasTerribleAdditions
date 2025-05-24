@@ -15,6 +15,23 @@ SMODS.Blind {
 	defeat = function(self)
 		G.GAME.payasaka_prelude = false
 	end,
+	calculate = function(self, blind, context)
+		if G.GAME.payasaka_prelude and context.after then
+			for k, v in ipairs(G.play.cards) do
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						SMODS.debuff_card(v, true, 'payasaka_prelude')
+						play_sound('timpani')
+						v:juice_up(0.2, 0.3)
+						return true
+					end
+				})
+			end
+			delay(0.4)
+		end
+	end,
 	in_pool = function(self)
 		return false
 	end

@@ -1748,6 +1748,13 @@ return {
 					"Art and inspiration for",
 					"{font:payasaka_pokemon}MISSINGNO."
 				}
+			},
+			credit_loggers = {
+				name = "Mr. Logan",
+				text = {
+					"Additional art",
+					"and ideas"
+				}
 			}
 		}
 	},

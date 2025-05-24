@@ -461,6 +461,7 @@ local tabs = function() return
 								config = { align = "cm", padding = 0.1 },
 								nodes = {
 									create_credit("credit_ari"),
+									create_credit("credit_loggers"),
 									create_credit("credit_aikoyori"),
 									create_credit("credit_airrice"),
 								}
