@@ -14,14 +14,14 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.pre_discard and #context.full_hand == card.ability.extra.count then
+		if context.pre_discard and #context.full_hand == card.ability.extra.count and not context.blueprint_card then
 			card.ability.extra.should_trigger = true
 		end
-		if card.ability.extra.should_trigger and context.payasaka_draw_to_deck then
+		if card.ability.extra.should_trigger and context.payasaka_draw_to_deck and not context.blueprint_card then
 			card.ability.extra.should_trigger = false
 			return {
 				draw_amount = card.ability.extra.amount,
-				message = "Smokin!"
+				message = "Smoke Break"
 			}
 		end
 	end,

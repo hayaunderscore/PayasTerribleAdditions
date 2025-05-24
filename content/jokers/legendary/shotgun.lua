@@ -12,7 +12,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.setting_blind then
+		if context.setting_blind and not context.blueprint_card_card then
 			local my_pos = 0
 			for i = 1, #G.jokers.cards do
 				local _card = G.jokers.cards[i]

@@ -8,7 +8,7 @@ SMODS.Joker {
 	discovered = true,
 	blueprint_compat = false,
 	demicoloncompat = true,
-	eternal_compat = false,
+	--eternal_compat = false, -- Needed for Stuck challenge
 	perishable_compat = false,
 	pos = { x = 2, y = 3 },
 	atlas = "JOE_Jokers",
@@ -20,7 +20,7 @@ SMODS.Joker {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.setting_blind and not context.blueprint then
+		if context.setting_blind and not context.blueprint_card then
 			local start_here = false
 			local played_sound = false
 			for j = 1, #G.jokers.cards do

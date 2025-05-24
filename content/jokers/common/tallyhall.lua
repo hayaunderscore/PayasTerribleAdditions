@@ -13,12 +13,14 @@ SMODS.Joker {
 	pos = { x = 3, y = 1 },
 	cost = 5,
 	blueprint_compat = true,
-	demicoloncompat = false,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play then
-			local lastsign = card.ability.extra.current_increment >= 0 and 1 or -1
-			card.ability.extra.current_increment = (math.abs(card.ability.extra.current_increment) + 1) * -lastsign
-			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.current_increment
+		if (context.individual and context.cardarea == G.play) or context.forcetrigger then
+			if not context.blueprint_card and not context.forcetrigger then
+				local lastsign = card.ability.extra.current_increment >= 0 and 1 or -1
+				card.ability.extra.current_increment = (math.abs(card.ability.extra.current_increment) + 1) * -lastsign
+				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.current_increment
+			end
 			return {
 				mult_mod = card.ability.extra.mult,
 				message = localize { type = 'variable', key = 'a_tallymult', vars = { card.ability.extra.mult } },

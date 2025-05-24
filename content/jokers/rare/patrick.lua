@@ -4,8 +4,8 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 8, y = 4 },
 	cost = 8,
-	blueprint_compat = false,
-	demicoloncompat = false,
+	blueprint_compat = true,
+	demicoloncompat = true,
 	config = { extra = { x_mult = 1, x_mult_mod = 0.2, risk = 1 } },
 	pta_credit = {
 		idea = {
@@ -18,8 +18,7 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.blueprint then return nil, true end
-		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == "Risk" then
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == "Risk" and not context.blueprint_card then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_mod
 			return {
 				message = localize('k_upgrade_ex')

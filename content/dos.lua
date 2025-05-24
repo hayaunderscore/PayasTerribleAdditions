@@ -56,7 +56,7 @@ PTASaka.DOSCard {
 	config = { extra = { payasaka_dos = true, payasaka_type = 1, } },
 	calculate = function(self, card, context)
 		if card ~= PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards] then return end
-		if context.setting_blind and not context.blueprint and not context.retrigger and not context.retrigger_joker then
+		if context.setting_blind and not context.blueprint_card and not context.retrigger and not context.retrigger_joker then
 			PTASaka.dos_cardarea.disabled = true
 			local pool = {}
 			for k, v in pairs(G.P_CENTER_POOLS["Joker"]) do

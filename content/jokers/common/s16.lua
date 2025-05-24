@@ -9,7 +9,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				mult = card.ability.extra.mult
 			}

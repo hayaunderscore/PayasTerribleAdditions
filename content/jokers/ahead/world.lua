@@ -17,7 +17,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.x_chips, not card.ability.cry_rigged and (G.GAME.probabilities.normal or 1) or card.ability.extra.odds, card.ability.extra.odds, card.ability.extra.f_x_chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.before or context.forcetrigger then
+		if context.before or (context.forcetrigger and context.scoring_hand) then
 			for i = 1, #context.scoring_hand do
 				local _c = context.scoring_hand[i]
 				local prob = pseudorandom("payasaka_world") < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds

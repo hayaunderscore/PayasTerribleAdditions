@@ -6,6 +6,8 @@ SMODS.Joker {
 	pos = { x = 7, y = 1 },
 	config = { extra = 0.1 },
 	cost = 25,
+	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {

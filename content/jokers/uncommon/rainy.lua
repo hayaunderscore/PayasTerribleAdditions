@@ -8,7 +8,7 @@ SMODS.Joker {
 	blueprint_compat = false,
 	demicoloncompat = false,
 	calculate = function(self, card, context)
-		if context.before then
+		if context.before and not context.blueprint_card then
 			for i = 1, #G.play.cards do
 				local _c = G.play.cards[i]
 				--print("uh hi")

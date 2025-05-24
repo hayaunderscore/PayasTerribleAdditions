@@ -10,7 +10,7 @@ SMODS.Joker {
 	pixel_size = { w = 71, h = 83 },
 	calculate = function(self, card, context)
 		local extra = card.ability.extra
-		if not context.blueprint and context.before and pseudorandom('cartridge_debuff') < (G.GAME.probabilities.normal or 1)/extra.odds then
+		if not context.blueprint_card and context.before and pseudorandom('cartridge_debuff') < (G.GAME.probabilities.normal or 1)/extra.odds then
 			card.pta_no_show_debuff = true
 			card:set_debuff(true)
 			card_eval_status_text(card, 'extra', nil, nil, nil, {

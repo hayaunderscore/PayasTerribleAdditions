@@ -25,7 +25,7 @@ SMODS.Joker {
 		}
 	},
 	calculate = function(self, card, context)
-		if next(SMODS.find_card("j_payasaka_plana")) and context.individual and context.cardarea == G.play and not context.end_of_round then
+		if (next(SMODS.find_card("j_payasaka_plana")) and context.individual and context.cardarea == G.play and not context.end_of_round) and not context.blueprint_card then
 			-- light suits
 			local other = context.other_card
 			if other and (not other.debuff) and (other:is_suit('Diamonds') or other:is_suit('Hearts')) then
@@ -96,7 +96,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play and not context.end_of_round then
+		if (context.individual and context.cardarea == G.play and not context.end_of_round) and not context.blueprint_card then
 			-- dark suits
 			local other = context.other_card
 			if other and (not other.debuff) and (other:is_suit('Spades') or other:is_suit('Clubs')) then

@@ -18,7 +18,7 @@ SMODS.Joker {
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds, card.ability.extra.x_chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play then
+		if context.individual and context.cardarea == G.play and not context.end_of_round then
 			local _c = context.other_card
 			if _c and _c:is_suit('Spades') and pseudorandom('payasaka_arrowstone') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds then
 				return {

@@ -12,7 +12,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play then
+		if context.individual and context.cardarea == G.play and not context.blueprint_card then
 			if context.other_card and context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs") then
 				card.ability.extra.pyrox = card.ability.extra.pyrox + card.ability.extra.increase
 				return {

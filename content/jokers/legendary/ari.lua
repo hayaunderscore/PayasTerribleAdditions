@@ -17,6 +17,8 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	blueprint_compat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.other_card and context.individual and context.cardarea == G.play and not context.end_of_round then
 			local other_card = context.other_card
@@ -25,6 +27,11 @@ SMODS.Joker {
 					x_mult = card.ability.extra
 				}
 			end
+		end
+		if context.forcetrigger then
+			return {
+				x_mult = card.ability.extra
+			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)

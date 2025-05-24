@@ -4,8 +4,8 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 9, y = 4 },
 	cost = 6,
-	blueprint_compat = false,
-	demicoloncompat = false,
+	blueprint_compat = true,
+	demicoloncompat = true,
 	config = { extra = { econ_mult = 0.5, econ_max = 20 } },
 	pta_credit = {
 		idea = {
@@ -25,6 +25,11 @@ SMODS.Joker {
 					dollars = math.min(math.floor(c:get_chip_bonus() * card.ability.extra.econ_mult), card.ability.extra.econ_max)
 				}
 			end
+		end
+		if context.forcetrigger then
+			return {
+				dollars = card.ability.extra.econ_max
+			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)

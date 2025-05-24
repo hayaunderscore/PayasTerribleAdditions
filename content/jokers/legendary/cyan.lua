@@ -62,7 +62,7 @@ SMODS.Joker {
 	end,
 	calculate = function(self, card, context)
 		local im = card.ability.immutable
-		if context.individual and context.cardarea == G.play and not context.game_over then
+		if (context.individual and context.cardarea == G.play and not context.game_over) and not context.blueprint_card then
 			local other_card = context.other_card
 			if other_card and (other_card:is_suit('Spades') or other_card:is_suit('Clubs')) then
 				card.ability.extra.planet_multiplier = card.ability.extra.planet_multiplier + card.ability.extra.chip_gain

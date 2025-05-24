@@ -14,12 +14,14 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play and next(context.poker_hands['Pair']) then
-			if context.other_card:is_suit('Spades') or context.other_card:is_suit('Clubs') then
-				card.ability.dark_cards = card.ability.dark_cards + 1
-			end
-			if context.other_card:is_suit('Hearts') or context.other_card:is_suit('Diamonds') then
-				card.ability.light_cards = card.ability.light_cards + 1
+		if not context.blueprint_card then
+			if context.individual and context.cardarea == G.play and next(context.poker_hands['Pair']) then
+				if context.other_card:is_suit('Spades') or context.other_card:is_suit('Clubs') then
+					card.ability.dark_cards = card.ability.dark_cards + 1
+				end
+				if context.other_card:is_suit('Hearts') or context.other_card:is_suit('Diamonds') then
+					card.ability.light_cards = card.ability.light_cards + 1
+				end
 			end
 		end
 		if context.joker_main or context.forcetrigger then

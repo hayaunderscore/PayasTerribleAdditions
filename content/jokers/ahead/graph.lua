@@ -18,7 +18,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.x_chips, card.ability.extra.f_x_chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play then
+		if context.individual and context.cardarea == G.play and not context.blueprint_card_card then
 			if context.other_card:is_suit('Spades') then
 				card.ability.extra.f_x_chips = card.ability.extra.x_chips + card.ability.extra.f_x_chips
 				return {

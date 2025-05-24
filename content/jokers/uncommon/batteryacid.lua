@@ -21,7 +21,7 @@ SMODS.Joker {
 				xmult = card.ability.extra.xblind*2
 			}
 		end
-		if context.end_of_round and not context.repetition and context.game_over == false and not context.blueprint then
+		if context.end_of_round and not context.repetition and context.game_over == false and not context.blueprint_card then
 			card.ability.extra.xblind = card.ability.extra.xblind - card.ability.extra.decrease
 			if card.ability.extra.xblind <= 1 then
 				G.E_MANAGER:add_event(Event({

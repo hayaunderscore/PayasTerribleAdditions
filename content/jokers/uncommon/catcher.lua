@@ -4,8 +4,8 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pos = { x = 7, y = 4 },
 	cost = 6,
-	blueprint_compat = false,
-	demicoloncompat = false,
+	blueprint_compat = true,
+	demicoloncompat = true,
 	config = {extra = 1},
 	pta_credit = {
 		idea = {

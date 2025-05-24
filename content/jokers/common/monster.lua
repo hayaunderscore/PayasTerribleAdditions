@@ -13,7 +13,7 @@ SMODS.Joker {
 	demicoloncompat = true,
 	pools = {["Joker"] = true, ["Food"] = true},
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent then
+		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent and not context.blueprint_card then
 			if context.other_card and context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
 				card.ability.extra.xmult = card.ability.extra.xmult - card.ability.extra.decrease
 				if card.ability.extra.xmult <= 1 then

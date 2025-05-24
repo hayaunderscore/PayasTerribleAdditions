@@ -25,6 +25,7 @@ SMODS.Joker {
 	},
 	calculate = function(self, card, context)
 		if context.blueprint then return nil, true end
+		if context.forcetrigger then return nil, true end
 		if context.using_consumeable then
 			ease_dollars(-card.ability.extra.money)
 			return {

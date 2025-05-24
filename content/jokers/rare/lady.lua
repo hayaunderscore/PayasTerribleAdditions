@@ -20,7 +20,7 @@ SMODS.Joker {
 	update = function(self, card, dt)
 	end,
 	calculate = function(self, card, context)
-		if context.hand_drawn and not context.blueprint then
+		if context.hand_drawn and not context.blueprint_card then
 			local count = 0
 			for i = 1, #G.hand.cards do
 				local c = G.hand.cards[i]
@@ -47,7 +47,7 @@ SMODS.Joker {
 				xmult = card.ability.extra.x_mult
 			}
 		end
-		if context.end_of_round and not context.game_over and not context.individual and not context.blueprint then
+		if context.end_of_round and not context.game_over and not context.individual and not context.blueprint_card then
 			-- Reset debuffs
 			for _, area in ipairs({G.hand, G.discard, G.play}) do
 				for i = 1, #area.cards do
