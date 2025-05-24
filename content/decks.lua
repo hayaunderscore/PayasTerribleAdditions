@@ -103,7 +103,7 @@ G.FUNCS.reroll_booster = function(e)
 				c:start_dissolve({ G.C.WHITE, G.C.WHITE }, false, 0.75, true)
 			end
 
-			if G.payasaka_gacha_pack_extra then
+			if G.payasaka_gacha_pack_extra and G.payasaka_gacha_pack_extra.cards then
 				for i = #G.payasaka_gacha_pack_extra.cards, 1, -1 do
 					local c = G.payasaka_gacha_pack_extra:remove_card(G.payasaka_gacha_pack_extra.cards[i])
 					c:start_dissolve({ G.C.WHITE, G.C.WHITE }, false, 0.75, true)
@@ -115,10 +115,10 @@ G.FUNCS.reroll_booster = function(e)
 			play_sound('coin2')
 			play_sound('other1')
 
-			local _size = G.GAME.pack_size
+			local _size = SMODS.OPENED_BOOSTER.ability.extra
 			if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' then _size = math.floor(_size / 2) end
 
-			for i = 1, G.GAME.pack_size do
+			for i = 1, SMODS.OPENED_BOOSTER.ability.extra do
 				local card = nil
 				if G.STATE == G.STATES.TAROT_PACK then
 					if G.GAME.used_vouchers.v_omen_globe and pseudorandom('omen_globe') > 0.8 then
