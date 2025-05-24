@@ -42,7 +42,9 @@ SMODS.Blind {
 				-- Fix Finity creating an infinite loop by using The Cast as the bosses for... The Cast.
 				local old_name = G.GAME.selected_back.name
 				G.GAME.selected_back.name = "b_red"
-				G.GAME.payasaka_merged_boss_keys[i] = get_new_boss()
+				local new_boss = get_new_boss()
+				while new_boss == 'bl_payasaka_question' do new_boss = get_new_boss() end
+				G.GAME.payasaka_merged_boss_keys[i] = new_boss
 				G.GAME.selected_back.name = old_name
 			end
 		end
