@@ -6,7 +6,7 @@ SMODS.Joker {
 	cost = 7,
 	blueprint_compat = true,
 	demicoloncompat = true,
-	config = { extra = { suit = 'Hearts', x_mult = 1.5, retrigger = false } },
+	config = { extra = { suit = 'Hearts', x_mult = 1.5 } },
 	pta_credit = {
 		idea = {
 			credit = 'ariyi',
@@ -18,37 +18,23 @@ SMODS.Joker {
 		},
 	},
 	update = function(self, card, dt)
-		if G.STATE == G.STATES.SELECTING_HAND then
-			if card.ability.extra.retrigger then
-				G.E_MANAGER:add_event(Event{
-					trigger = 'after',
-					delay = 0.1,
-					blocking = false,
-					func = function()
-						local count = 0
-						for i = 1, #G.hand.cards do
-							---@type Card
-							local c = G.hand.cards[i]
-							if card.ability.extra.suit and c:is_suit(card.ability.extra.suit) then
-								c:set_debuff(true)
-								c:juice_up()
-								count = count+1
-							end
-						end
-						if count > 0 then
-							play_sound('timpani')
-							card:juice_up()
-						end
-						return true
-					end
-				})
-				card.ability.extra.retrigger = false
-			end
-		else
-			card.ability.extra.retrigger = true
-		end
 	end,
 	calculate = function(self, card, context)
+		if context.hand_drawn and not context.blueprint then
+			local count = 0
+			for i = 1, #G.hand.cards do
+				local c = G.hand.cards[i]
+				if c:is_suit(card.ability.extra.suit) then
+					SMODS.debuff_card(c, true, 'payasaka_lady')
+					count = count + 1
+					c:juice_up(0.2, 0.3)
+				end
+			end
+			if count > 0 then
+				card:juice_up()
+				play_sound('timpani')
+			end
+		end
 		if context.individual and context.cardarea == G.hand and not context.end_of_round then
 			if context.other_card and context.other_card.debuff then
 				return {
@@ -62,6 +48,13 @@ SMODS.Joker {
 			}
 		end
 		if context.end_of_round and not context.game_over and not context.individual and not context.blueprint then
+			-- Reset debuffs
+			for _, area in ipairs({G.hand, G.discard, G.play}) do
+				for i = 1, #area.cards do
+					local c = area.cards[i]
+					SMODS.debuff_card(c, false, 'payasaka_lady')
+				end
+			end
 			-- Only use suits of cards available in the deck
 			local valid = {}
 			for _, v in ipairs(G.playing_cards or {}) do

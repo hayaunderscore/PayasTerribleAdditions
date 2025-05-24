@@ -81,24 +81,26 @@ PTASaka.Risk {
 	pos = { x = 0, y = 1 },
 	config = { extra = { debuff = 10 } },
 	apply_risk = function(self, ability)
-		for i = 1, math.min(ability.debuff, #G.deck.cards) do
-			local c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]
-			local tries = 50
-			local try = 0
-			while c.ability.debuffed_by_risk do if try > tries then break end; c = G.deck.cards[pseudorandom('fuck', 1, #G.deck.cards)]; try = try + 1 end
-			c.debuff = true
-			c.ability.debuffed_by_risk = true
+		G.GAME.payasaka_hinder_cards = G.GAME.payasaka_hinder_cards or PTASaka.shallow_copy(G.deck.cards)
+		G.GAME.payasaka_already_hindered = G.GAME.payasaka_already_hindered or {}
+		local count = math.min(ability.debuff, #G.GAME.payasaka_hinder_cards)
+		while count > 0 do
+			---@type Card
+			local c = table.remove(G.GAME.payasaka_hinder_cards, pseudorandom('fuck', 1, #G.GAME.payasaka_hinder_cards))
+			if c then
+				G.GAME.payasaka_already_hindered[#G.GAME.payasaka_already_hindered+1] = c
+			end
+			count = count - 1
 		end
 	end,
 	apply_reward = function(self, ability)
 		for _, area in ipairs({ G.hand, G.discard, G.deck }) do
 			for _, card in ipairs(area.cards) do
-				if card.ability.debuffed_by_risk then
-					card.ability.debuffed_by_risk = nil
-					card.debuff = false
-				end
+				SMODS.debuff_card(card, false, 'payasaka_risk_hinder')
 			end
 		end
+		G.GAME.payasaka_hinder_cards = nil
+		G.GAME.payasaka_already_hindered = nil
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.debuff } }

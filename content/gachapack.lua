@@ -416,8 +416,6 @@ G.FUNCS.gacha_select_card = function(e)
 					trigger = 'after',
 					func = function()
 						G.FUNCS.end_consumeable(nil, delay_fac)
-						G.pack_cards:remove(); G.pack_cards.REMOVED = true; G.pack_cards = nil;
-						G.payasaka_gacha_pack_extra:remove(); G.payasaka_gacha_pack_extra.REMOVED = true; G.payasaka_gacha_pack_extra = nil;
 						return true
 					end
 				})
