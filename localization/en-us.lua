@@ -1277,8 +1277,9 @@ return {
 			c_payasaka_shine = {
 				name = "Shine",
 				text = {
-					"Give up to {C:attention}#1#{} cards a {C:attention}random{}",
-					"edition, enhancement or seal",
+					"Give up to {C:attention}#1#{} cards",
+					"a {C:attention}random{} edition,",
+					"enhancement or seal",
 				}
 			},
 			c_payasaka_parlay = {
@@ -1473,6 +1474,33 @@ return {
 		},
 		Other = {
 			undiscovered_property = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does"
+				}
+			},
+			undiscovered_doscard = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does"
+				}
+			},
+			undiscovered_risk = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does"
+				}
+			},
+			undiscovered_reward = {
 				name = "Not Discovered",
 				text = {
 					"Purchase or use",
