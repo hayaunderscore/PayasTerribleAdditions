@@ -833,7 +833,7 @@ return {
 				text = {
 					"{C:attention}+#1#{} consumable slot",
 					"{C:attention}Creates{} a random",
-					"consumeable at the",
+					"consumable at the",
 					"end of round",
 					"{C:inactive}(Must have room)"
 				}
