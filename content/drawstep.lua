@@ -59,6 +59,38 @@ SMODS.DrawStep {
 
 SMODS.draw_ignore_keys.gacha_layer = true
 
+-- Additional layer for Gacha spectral
+SMODS.DrawStep {
+	key = 'property_houses',
+	order = 63,
+	func = function(self)
+		if self.ability.set == "Property" then
+			self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
+			---@type Sprite
+			local layer = self.children.property_houses
+			layer:set_sprite_pos({ x = math.min((self.ability.house_status or 0), 5), y = 2 })
+			layer:draw_shader('dissolve', 0, nil, nil, self.children.center, nil, nil, nil, nil, nil, 0.6)
+			layer:draw_shader('dissolve', nil, nil, nil, self.children.center)
+			layer:draw_shader('booster', nil, self.ARGS.send_to_shader, nil, self.children.center)
+			if self.edition then
+				for k, v in pairs(G.P_CENTER_POOLS.Edition) do
+					if v.shader then
+						if self.edition[v.key:sub(3)] then
+							layer:draw_shader(v.shader, nil, nil, nil, self.children.center)
+						end
+					end
+				end
+			end
+			if (self.edition and self.edition.negative) then
+				layer:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil, self.children.center)
+			end
+		end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
+SMODS.draw_ignore_keys.property_houses = true
+
 -- Draw wild card use butan
 SMODS.DrawStep {
 	key = 'wild_use_button',

@@ -415,6 +415,19 @@ function Card:set_sprites(center, front)
 		self.children.gacha_layer.states.hover.can = false
 		self.children.gacha_layer.states.click.can = false
 	end
+	if center and center.set == "Property" then
+		self.children.property_houses = Sprite(
+			self.T.x,
+			self.T.y,
+			self.T.w,
+			self.T.h,
+			G.ASSET_ATLAS[center.atlas or center.set],
+			center.pos
+		)
+		self.children.property_houses.role.draw_major = self
+		self.children.property_houses.states.hover.can = false
+		self.children.property_houses.states.click.can = false
+	end
 end
 
 local old_can_use = Card.can_use_consumeable

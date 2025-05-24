@@ -50,26 +50,6 @@ PTASaka.Property = SMODS.Consumable:extend {
 	in_pool = function(self, args)
 		return true, { allow_duplicates = true }
 	end,
-	draw = function(self, card, layer)
-		card.children.center:draw_shader('negative_shine', nil, card.ARGS.send_to_shader)
-		-- update soul_parts
-		if not card.children.soul_parts then
-			card.children.soul_parts = Sprite(card.T.x, card.T.y, card.T.w, card.T.h, card.children.center.atlas, { x = 0, y = 2 })
-			card.children.soul_parts.role.draw_major = card
-			card.children.soul_parts.states.hover.can = false
-			card.children.soul_parts.states.click.can = false
-		end
-		if card.children.soul_parts then
-			-- update position
-			card.children.soul_parts.T.y = card.T.y
-			card.children.soul_parts.T.x = card.T.x
-			card.children.soul_parts.T.r = card.T.r
-			card.children.soul_parts:set_sprite_pos({ x = math.min((card.ability.house_status or 0), 5), y = 2 })
-			-- draw it
-			card.children.soul_parts:draw_shader('dissolve', 0, nil, nil, card.children.center)
-			card.children.soul_parts:draw_shader('dissolve', nil, nil, nil, card.children.center)
-		end
-	end,
 	calc_dollar_bonus = function(self, card)
 		return card.ability.extra.money + ((card.ability.house_status or 0) * (card.ability.extra.money/2))
 	end

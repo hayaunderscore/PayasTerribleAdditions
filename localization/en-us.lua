@@ -1377,7 +1377,7 @@ return {
 		},
 		Property = {
 			c_payasaka_brownproperty = {
-				name = 'Brown Property',
+				name = 'Joker Avenue',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"is a {C:attention}#3#{}",
@@ -1386,7 +1386,7 @@ return {
 				}
 			},
 			c_payasaka_blueproperty = {
-				name = 'Blue Property',
+				name = 'Jest Road',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
@@ -1397,7 +1397,7 @@ return {
 				}
 			},
 			c_payasaka_pinkproperty = {
-				name = 'Pink Property',
+				name = 'Comic Mall',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
@@ -1407,7 +1407,7 @@ return {
 				}
 			},
 			c_payasaka_orangeproperty = {
-				name = 'Orange Property',
+				name = 'Droll Street',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
@@ -1418,7 +1418,7 @@ return {
 				}
 			},
 			c_payasaka_redproperty = {
-				name = 'Red Property',
+				name = 'Virtue Square',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
@@ -1429,7 +1429,7 @@ return {
 				}
 			},
 			c_payasaka_yellowproperty = {
-				name = 'Yellow Property',
+				name = 'Leicester Square',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
@@ -1440,7 +1440,7 @@ return {
 				}
 			},
 			c_payasaka_greenproperty = {
-				name = 'Green Property',
+				name = 'Wit Street',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
@@ -1451,7 +1451,7 @@ return {
 				}
 			},
 			c_payasaka_darkblueproperty = {
-				name = 'Dark Blue Property',
+				name = 'Mayfair',
 				text = {
 					"Gains {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
