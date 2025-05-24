@@ -1,3 +1,11 @@
+-- Finity cross mod
+if next(SMODS.find_mod('finity')) then
+	FinisherBossBlindStringMap = FinisherBossBlindStringMap or {}
+	FinisherBossBlindStringMap["bl_payasaka_question"] = {"j_payasaka_missingno", "The Cast"}
+	FinisherBossBlindQuips = FinisherBossBlindQuips or {}
+	FinisherBossBlindQuips["bl_payasaka_question"] = {"question", 4}
+end
+
 -- Fuses two boss blinds together. Jesus.
 SMODS.Blind {
 	key = "question",
@@ -31,7 +39,11 @@ SMODS.Blind {
 		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		if not next(G.GAME.payasaka_merged_boss_keys) then
 			for i = 1,2 do
+				-- Fix Finity creating an infinite loop by using The Cast as the bosses for... The Cast.
+				local old_name = G.GAME.selected_back.name
+				G.GAME.selected_back.name = "b_red"
 				G.GAME.payasaka_merged_boss_keys[i] = get_new_boss()
+				G.GAME.selected_back.name = old_name
 			end
 		end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do

@@ -33,3 +33,17 @@ for _, joker in ipairs(jokers) do
 '''
 match_indent = true
 times = 1
+
+# The Cast's Finity joker will only appear at a chance
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS finity "Finity.lua"]'''
+pattern = '''add_tag(tag)'''
+position = 'after'
+payload = '''
+if G.GAME.blind.config.blind.key == 'bl_payasaka_question' and pseudorandom('hahafuckyou') > (G.GAME.probabilities.normal or 1)/6 then
+	tag:nope()
+end
+'''
+match_indent = true
+times = 1

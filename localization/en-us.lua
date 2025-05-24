@@ -1763,6 +1763,24 @@ return {
 		}
 	},
 	misc = {
+		quips = {
+			lq_question_1 = {
+				"Quite, quite",
+				"unfortunate!"
+			},
+			lq_question_2 = {
+				"Going back to your",
+				"Cryptid hide-hole?"
+			},
+			lq_question_3 = {
+				"Unbelievable.",
+			},
+			lq_question_4 = {
+				"All that's left of",
+				"you is dust...",
+				"and your skull."
+			},
+		},
 		dictionary = {
 			k_property = "Property",
 			b_property_cards = "Property Cards",
