@@ -33,7 +33,7 @@ SMODS.DrawStep {
 	key = 'gacha_layer',
 	order = 62,
 	func = function(self)
-		if self.config.center.key == 'c_payasaka_gacha' then
+		if self.config.center.key == 'c_payasaka_gacha' and (self.config.center.discovered or self.bypass_discovery_center) then
 			---@type Sprite
 			local layer = self.children.gacha_layer
 			if self:should_draw_base_shader() then
@@ -64,7 +64,7 @@ SMODS.DrawStep {
 	key = 'property_houses',
 	order = 63,
 	func = function(self)
-		if self.ability.set == "Property" then
+		if self.ability.set == "Property" and (self.config.center.discovered or self.bypass_discovery_center) then
 			self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
 			---@type Sprite
 			local layer = self.children.property_houses
