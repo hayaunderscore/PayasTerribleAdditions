@@ -17,13 +17,13 @@ if PTASaka.Mod.config["Property Cards"] then
 			},
 		},
 		can_use = function(self, card)
-			local highlighted = {}
-			for _, v in ipairs(G.consumeables.highlighted) do
-				if v ~= card and v.ability.set == 'Property' then
-					table.insert(highlighted, v)
+			local properties = {}
+			for _, v in ipairs(G.consumeables.cards) do
+				if v.ability.set == 'Property' then
+					table.insert(properties, v)
 				end
 			end
-			return #highlighted ~= 0 and #highlighted <= card.ability.extra.max_highlighted
+			return #properties > 0
 		end,
 		in_pool = function(self, args)
 			local properties = {}
@@ -35,12 +35,15 @@ if PTASaka.Mod.config["Property Cards"] then
 			return #properties > 0
 		end,
 		use = function(self, card, area, copier)
-			local used_tarot = copier or card
+			local possible_properties = PTASaka.FH.filter(G.consumeables.cards, function(c)
+				return (c and c.ability.set == 'Property')
+			end)
+			local count = math.min(#possible_properties, card.ability.extra.max_highlighted)
 			local highlighted = {}
-			for _, v in ipairs(G.consumeables.highlighted) do
-				if v ~= card and v.ability.set == 'Property' then
-					table.insert(highlighted, v)
-				end
+			while count > 0 do
+				local c = table.remove(possible_properties, pseudorandom('avarice', 1, #possible_properties))
+				if c then highlighted[#highlighted+1] = c end
+				count = count - 1
 			end
 			for i = 1, #highlighted do
 				local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
@@ -80,9 +83,13 @@ if PTASaka.Mod.config["Property Cards"] then
 				}))
 			end
 			delay(0.6)
-			G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
-				G.consumeables:unhighlight_all(); return true
-			end }))
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.2,
+				func = function()
+					G.consumeables:unhighlight_all(); return true
+				end
+			}))
 		end,
 		loc_vars = function(self, info_queue, card)
 			info_queue[#info_queue + 1] = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
@@ -153,6 +160,12 @@ SMODS.Consumable {
 	unlocked = true,
 	discovered = true,
 	cost = 4,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	can_use = function(self, card)
 		local highlighted = {}
 		for _, v in ipairs(G.jokers.highlighted) do
@@ -212,9 +225,13 @@ SMODS.Consumable {
 			}))
 		end
 		delay(0.6)
-		G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
-			G.jokers:unhighlight_all(); return true
-		end }))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.jokers:unhighlight_all(); return true
+			end
+		}))
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_payasaka_nil
@@ -237,6 +254,12 @@ if next(SMODS.find_mod("MoreFluff")) and PTASaka.Mod.config["Cross Mod Content"]
 		discovered = true,
 		display_size = { w = 107, h = 107 },
 		dependencies = "MoreFluff",
+		pta_credit = {
+			art = {
+				credit = 'ariyi',
+				colour = HEX('09d707')
+			},
+		},
 		can_use = function(self, card)
 			return #G.jokers.cards < G.jokers.config.card_limit
 		end,
@@ -275,6 +298,12 @@ SMODS.Consumable {
 	pos = { x = 2, y = 0 },
 	cost = 5,
 	config = { max_highlighted = 1, extra = 'payasaka_random', edition = 'e_payasaka_jpeg' },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_SEALS[(card.ability or self.config).extra]
 		info_queue[#info_queue + 1] = G.P_CENTERS[(card.ability or self.config).edition]
@@ -305,9 +334,13 @@ SMODS.Consumable {
 
 			delay(0.5)
 		end
-		G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
-			G.hand:unhighlight_all(); return true
-		end }))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.hand:unhighlight_all(); return true
+			end
+		}))
 	end
 }
 
@@ -326,25 +359,41 @@ SMODS.Seal {
 			--print("please")
 			return {
 				x_mult = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.x_mult or nil,
-				xmult_message = { message = localize { type = "variable", key = "a_xmult", vars = { s.x_mult } }, colour =
-				G.C.MULT, sound = "multhit2" } or nil,
+				xmult_message = {
+					message = localize { type = "variable", key = "a_xmult", vars = { s.x_mult } },
+					colour =
+						G.C.MULT,
+					sound = "multhit2"
+				} or nil,
 				x_chips = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.x_chips or nil,
-				xchips_message = { message = localize { type = "variable", key = "a_xchips", vars = { s.x_chips } }, colour =
-				G.C.CHIPS, sound = "xchips" } or nil,
-				e_mult = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and s.e_mult or nil,
+				xchips_message = {
+					message = localize { type = "variable", key = "a_xchips", vars = { s.x_chips } },
+					colour =
+						G.C.CHIPS,
+					sound = "xchips"
+				} or nil,
+				e_mult = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and s
+				.e_mult or nil,
 				emult_message = Talisman and
-				{ message = ("^%d Mult"):format(s.e_mult), colour = G.C.DARK_EDITION, sound = "talisman_emult" } or nil,
-				e_chips = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and s.e_chips or nil,
+					{ message = ("^%d Mult"):format(s.e_mult), colour = G.C.DARK_EDITION, sound = "talisman_emult" } or
+					nil,
+				e_chips = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and
+				s.e_chips or nil,
 				echip_message = Talisman and
-				{ message = ("^%d Chips"):format(s.e_chips), colour = G.C.DARK_EDITION, sound = "talisman_echip" } or nil,
+					{ message = ("^%d Chips"):format(s.e_chips), colour = G.C.DARK_EDITION, sound = "talisman_echip" } or
+					nil,
 			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		local s = card.ability.seal
 		local odds = card.ability.cry_rigged and 0.9 or s.extra.odds
-		info_queue[#info_queue + 1] = { key = Talisman and "payasaka_randomeffects_talisman" or "payasaka_randomeffects", set =
-		"Other", vars = { s.dollars, s.x_chips, s.x_mult, s.e_chips, s.e_mult } }
+		info_queue[#info_queue + 1] = {
+			key = Talisman and "payasaka_randomeffects_talisman" or "payasaka_randomeffects",
+			set =
+			"Other",
+			vars = { s.dollars, s.x_chips, s.x_mult, s.e_chips, s.e_mult }
+		}
 		return { vars = { G.GAME.probabilities.normal, odds } }
 	end,
 	get_p_dollars = function(self, card)
@@ -365,6 +414,12 @@ SMODS.Consumable {
 	pos = { x = 3, y = 0 },
 	cost = 5,
 	config = { max_highlighted = 1 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_payasaka_nil
 		return { vars = { (card.ability or self.config).max_highlighted } }
@@ -405,9 +460,15 @@ SMODS.Consumable {
 		-- Trigger the Joker collection menu
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				PTASaka.mechanic_menu = true
-				G.FUNCS.your_collection_jokers(nil)
 				G.SETTINGS.paused = true
+				PTASaka.mechanic_menu = true
+				G.FUNCS.overlay_menu {
+					definition = SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Joker, { 5, 5, 5 }, {
+						no_materialize = true,
+						h_mod = 0.95,
+						back_func = 'exit_overlay_menu',
+					})
+				}
 				PTASaka.mechanic_got_selected = false
 				return true
 			end
@@ -456,9 +517,13 @@ SMODS.Consumable {
 		end
 		delay(0.6)
 
-		G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
-			G.jokers:unhighlight_all(); return true
-		end }))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.jokers:unhighlight_all(); return true
+			end
+		}))
 	end
 }
 
@@ -493,10 +558,10 @@ SMODS.Consumable {
 		x = 1, y = 1,
 		draw = function(self, scale_mod, rotate_mod)
 			local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
-			0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
-			(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
+				0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
+				(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
 			local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
-			0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+				0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
 			self.children.floating_sprite:draw_shader('dissolve', 0, nil, nil, self.children.center, scale_mod,
 				rotate_mod, nil, 0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
 			self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod,
@@ -600,9 +665,13 @@ SMODS.Consumable {
 			}))
 		end
 
-		G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
-			G.jokers:unhighlight_all(); return true
-		end }))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.jokers:unhighlight_all(); return true
+			end
+		}))
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.max_highlighted } }

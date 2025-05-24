@@ -1037,7 +1037,8 @@ return {
 				name = "Avarice",
 				text = {
 					"Adds a house to {C:attention}#1#",
-					"selected {C:property}Property{} cards",
+					"random {C:property}Property{} cards",
+					"in your consumables",
 					"{C:inactive,s:0.8}Having more than 4 houses",
 					"{C:inactive,s:0.8}replaces it with a hotel",
 				},

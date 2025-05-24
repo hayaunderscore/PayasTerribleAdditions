@@ -32,7 +32,7 @@ PTASaka.DOSCard = SMODS.Consumable:extend {
 			PTASaka.dos_cardarea:emplace(copy)
 		end
 		card.ambient_tilt = 0
-		card.no_shadow = true
+		card.no_shadow = (card.area and card.area == PTASaka.dos_cardarea)
 	end,
 	can_use = function(self, card)
 		return false
@@ -167,6 +167,7 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 				card.children.front = nil
 				card.children.card = nil
 				card.payasaka_wild_two = nil
+				card:set_debuff(false)
 				return true
 			end
 		})
@@ -312,6 +313,7 @@ G.FUNCS.payasaka_dos_wild_card_set = function(e)
 			G.FUNCS.overlay_menu {
 				definition = SMODS.card_collection_UIBox(G.P_CENTER_POOLS.DOSCard, { 5, 6 }, {
 					no_materialize = true,
+					back_func = 'exit_overlay_menu',
 				})
 			}
 			PTASaka.dos_got_selected = false
