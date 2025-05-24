@@ -238,6 +238,8 @@ PTASaka.Risk {
 			end
 		end
 		G.GAME.payasaka_cannot_reroll = true
+		local old_name = G.GAME.selected_back.name
+		G.GAME.selected_back.name = "b_red"
 		local current_boss = G.GAME.round_resets.last_cast_boss or get_new_boss()
 		G.GAME.payasaka_merged_boss_keys = G.GAME.payasaka_merged_boss_keys or {}
 		if next(G.GAME.payasaka_merged_boss_keys) == nil then
@@ -246,7 +248,8 @@ PTASaka.Risk {
 		end
 		-- Get a random boss blind to append to the current one
 		G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys + 1] = get_new_boss()
-
+		G.GAME.selected_back.name = old_name
+		
 		-- get biggest chips multiplier
 		for i = 1, #G.GAME.payasaka_merged_boss_keys do
 			local blind = G.P_BLINDS[G.GAME.payasaka_merged_boss_keys[i]]

@@ -47,6 +47,7 @@ SMODS.Blind {
 				G.GAME.payasaka_merged_boss_keys[i] = new_boss
 				G.GAME.selected_back.name = old_name
 			end
+			G.GAME.blind:set_text()
 		end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			SMODS.merge_lists(self.boss, (G.P_BLINDS[v].boss and type(G.P_BLINDS[v].boss) == "table") and G.P_BLINDS[v].boss or {})
@@ -385,8 +386,10 @@ SMODS.Blind {
 					if not any_forced then 
 						G.hand:unhighlight_all()
 						local forced_card = pseudorandom_element(G.hand.cards, pseudoseed('cerulean_bell'))
-						forced_card.ability.forced_selection = true
-						G.hand:add_to_highlighted(forced_card)
+						if forced_card then
+							forced_card.ability.forced_selection = true
+							G.hand:add_to_highlighted(forced_card)
+						end
 					end
 				end
 				if G.P_BLINDS[v].name == 'Crimson Heart' and G.GAME.blind.prepped and G.jokers.cards[1] then
