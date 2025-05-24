@@ -133,11 +133,6 @@ assert(SMODS.load_file("content/decks.lua"))()
 -- Enhancements
 assert(SMODS.load_file("content/enhancements.lua"))()
 
--- Cross mod content: JokerDisplay
-if JokerDisplay then
-assert(SMODS.load_file("content/jokerdisplay.lua"))()
-end
-
 -- Cross mod content: CardSleeves
 assert(SMODS.load_file("content/sleeve.lua"))()
 
