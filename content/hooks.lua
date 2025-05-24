@@ -331,7 +331,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			message = localize('k_nope_ex'),
 			colour = G.C.PURPLE,
 			extrafunc = function()
-				play_sound("payasaka_coolgong", percent, 0.6)
+				play_sound("payasaka_coolgong", 0.8+percent*0.2, 0.6)
 			end
 		})
 		local rand = pseudorandom('aww_random_effect', 1, 3)
