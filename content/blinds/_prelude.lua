@@ -34,7 +34,10 @@ SMODS.Blind {
 	end,
 	in_pool = function(self)
 		return false
-	end
+	end,
+	get_loc_debuff_text = function(self)
+		return "Played cards are debuffed and drawn back to the deck"
+	end,
 }
 
 -- Mostly taken from blindexpander by mysthaps

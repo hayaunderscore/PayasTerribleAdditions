@@ -65,7 +65,7 @@ SMODS.DrawStep {
 	order = 63,
 	func = function(self)
 		if self.ability.set == "Property" and (self.config.center.discovered or self.bypass_discovery_center) then
-			self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
+			--self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
 			---@type Sprite
 			local layer = self.children.property_houses
 			layer:set_sprite_pos({ x = math.min((self.ability.house_status or 0), 5), y = 2 })

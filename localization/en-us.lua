@@ -872,7 +872,10 @@ return {
 			},
 			bl_payasaka_question_alt = { name = 'The Cast', text = { "You shouldn't spoil", "yourself, now..." } },
 			bl_payasaka_prelude = {
-				name = 'Prelude Blind'
+				name = 'Prelude Blind',
+				text = {
+					"The calm before the storm..."
+				}
 			},
 		},
 		Edition = {
