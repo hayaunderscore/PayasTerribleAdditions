@@ -878,6 +878,16 @@ return {
 					"{C:inactive}[1]: #1#",
 					"{C:inactive}[2]: #2#",
 				}
+			},
+			j_payasaka_droptarget = {
+				name = "Drop Target",
+				text = {
+					"This Joker gains {C:blue}+#1#{} chips",
+					"for when a played card",
+					"gets a {C:green}#2# in #3#{} chance to",
+					"be sent back to the deck",
+					"{C:inactive}(Currently {C:blue}+#4#{C:inactive} Chips)"
+				}
 			}
 		},
 		Blind = {

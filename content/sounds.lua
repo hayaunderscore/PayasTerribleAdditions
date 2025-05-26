@@ -28,3 +28,6 @@ create_sound("horse")
 create_sound("horsebounce")
 
 create_sound("coolgong")
+
+-- Drop Target
+create_sound("drop_target")

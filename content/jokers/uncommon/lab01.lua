@@ -13,7 +13,7 @@ SMODS.Joker {
 	rarity = 2,
 	cost = 6,
 	blueprint_compat = false,
-	demicoloncompat = false,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		local rets = {}
 		if context.setting_blind then
