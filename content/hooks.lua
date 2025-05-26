@@ -24,9 +24,9 @@ function Game:start_run(args)
 	-- Initialize possible LAB=01 cardareas first
 	local PREGAME = args and args.savetext and args.savetext.GAME or { payasaka_lab_joker_ids = {} }
 	for k, v in pairs(PREGAME.payasaka_lab_joker_ids or {}) do
-		G["payasaka_lab_jokers_"..tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
+		G["payasaka_lab_jokers_" .. tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
 			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
-		local dummy_area = G["payasaka_lab_jokers_"..tostring(k)]
+		local dummy_area = G["payasaka_lab_jokers_" .. tostring(k)]
 		-- dont display you fuck
 		dummy_area.states.visible = false
 		dummy_area.states.collide.can = false
@@ -137,7 +137,7 @@ function Game:init_game_object()
 		-- Shuffle gacha table
 		local function shuffle(tbl)
 			for i = #tbl, 2, -1 do
-				local j = pseudorandom('gacha_fuck_you',i)
+				local j = pseudorandom('gacha_fuck_you', i)
 				tbl[i], tbl[j] = tbl[j], tbl[i]
 			end
 		end
@@ -260,8 +260,8 @@ function SMODS.find_card(key, count_debuffed)
 	local ret = find_old(key, count_debuffed)
 
 	for k, _ in pairs(G.GAME.payasaka_lab_joker_ids or {}) do
-		if G["payasaka_lab_jokers_"..tostring(k)] and G["payasaka_lab_jokers_"..tostring(k)].cards then
-			for _, v in ipairs(G["payasaka_lab_jokers_"..tostring(k)].cards) do
+		if G["payasaka_lab_jokers_" .. tostring(k)] and G["payasaka_lab_jokers_" .. tostring(k)].cards then
+			for _, v in ipairs(G["payasaka_lab_jokers_" .. tostring(k)].cards) do
 				if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
 					ret[#ret + 1] = v
 				end
@@ -376,7 +376,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			message = localize('k_nope_ex'),
 			colour = G.C.PURPLE,
 			extrafunc = function()
-				play_sound("payasaka_coolgong", 0.8+percent*0.2, 0.6)
+				play_sound("payasaka_coolgong", 0.8 + percent * 0.2, 0.6)
 			end
 		})
 		local rand = pseudorandom('aww_random_effect', 1, 3)
@@ -514,6 +514,23 @@ function level_up_hand(card, hand, instant, amount, ...)
 			.GAME.hands[hand],
 		instant = instant
 	})
+end
+
+-- Deep Deck Diver's discard effects
+local gfcr = G.FUNCS.can_discard
+G.FUNCS.can_discard = function(e)
+	local can_deep = next(find_joker('Deep Deck Diver'))
+	if can_deep then
+		---@type Card
+		local diver = find_joker('Deep Deck Diver')[1]
+		can_deep = can_deep and not (to_big(G.GAME.dollars - G.GAME.bankrupt_at) - to_big(diver.ability.extra.cost or 0) < to_big(0))
+	end
+	if (G.GAME.current_round.discards_left <= 0 and can_deep) and #G.hand.highlighted > 0 then
+		e.config.colour = G.C.RED
+		e.config.button = 'discard_cards_from_highlighted'
+	else
+		gfcr(e)
+	end
 end
 
 -- Accept dos card buy space

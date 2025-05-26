@@ -902,6 +902,17 @@ return {
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
                 },
             },
+			j_payasaka_diver = {
+				name = "Deep Deck Diver",
+				text = {
+					"Each discard costs {C:money}$#1#",
+					"when discarding {C:attention}without",
+					"any discards left",
+					"Cost {C:attention}doubles{} for every",
+					"discard done this way",
+					"{C:inactive}Resets at the end of ante"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
