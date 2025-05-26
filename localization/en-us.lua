@@ -857,6 +857,27 @@ return {
 					"their {C:attention}chip value{} as money",
 					"{C:inactive}(Max of {C:money}$#2#{C:inactive})"
 				}
+			},
+			j_payasaka_miscommunication = {
+				name = "Miscommunication",
+				text = {
+					"When entering a blind,",
+					"{C:green}#1# in #2#{} chance of",
+					"guaranteeing any {C:attention}probability",
+					"until end of round"
+				}
+			},
+			j_payasaka_lab01 = {
+				name = "LAB=01",
+				text = {
+					"Mimics {C:attention}2{} random",
+					"{C:blue}Common{} or {C:green}Uncommon",
+					"Jokers upon setting",
+					"a blind, lasts",
+					"until end of round",
+					"{C:inactive}[1]: #1#",
+					"{C:inactive}[2]: #2#",
+				}
 			}
 		},
 		Blind = {

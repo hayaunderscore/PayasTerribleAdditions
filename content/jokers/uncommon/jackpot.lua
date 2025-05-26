@@ -2,7 +2,7 @@ SMODS.Joker {
 	key = 'jackpot',
 	rarity = 2,
 	atlas = "JOE_Jokers",
-	pos = { x = 9, y = 4 },
+	pos = { x = 10, y = 4 },
 	cost = 6,
 	blueprint_compat = true,
 	demicoloncompat = true,

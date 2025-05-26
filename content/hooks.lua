@@ -21,6 +21,19 @@ function Game:start_run(args)
 	-- Exponentials
 	PTASaka.payasaka_exponential_count = 0
 
+	-- Initialize possible LAB=01 cardareas first
+	local PREGAME = args and args.savetext and args.savetext.GAME or { payasaka_lab_joker_ids = {} }
+	for k, v in pairs(PREGAME.payasaka_lab_joker_ids or {}) do
+		G["payasaka_lab_jokers_"..tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
+			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
+		local dummy_area = G["payasaka_lab_jokers_"..tostring(k)]
+		-- dont display you fuck
+		dummy_area.states.visible = false
+		dummy_area.states.collide.can = false
+		dummy_area.states.focus.can = false
+		dummy_area.states.click.can = false
+	end
+
 	sr(self, args)
 
 	-- Cast proper initialization
@@ -117,6 +130,8 @@ function Game:init_game_object()
 	ret.payasaka_pyroxenes = 0
 	-- Exponentials
 	ret.payasaka_exponential_count = 0
+	-- LAB=01
+	ret.payasaka_lab_joker_ids = {}
 
 	if G and G.STAGE == G.STAGES.RUN then
 		-- Shuffle gacha table
@@ -199,12 +214,28 @@ function Card:set_ability(center, ...)
 	end
 end
 
+local function find_joker_by_sort_id(id)
+	for _, area in ipairs(SMODS.get_card_areas('jokers')) do
+		if area.cards then
+			for i = 1, #area.cards do
+				if area.cards[i].sort_id == id then
+					return area.cards[i]
+				end
+			end
+		end
+	end
+	return nil
+end
+
 -- Hook to change card juiced in text notifications for adult card
 local cest = card_eval_status_text
 function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
 	if G.STAGE == G.STAGES.RUN and PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards[1] and card.area == PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.pta_owner then
 		--PTASaka.adultcard_cardarea.T.x = PTASaka.adultcard_cardarea.pta_owner.VT.x
 		card = PTASaka.adultcard_cardarea.pta_owner
+	end
+	if G.STAGE == G.STAGES.RUN and card.area and card.area.config.joker_parent then
+		card = find_joker_by_sort_id(card.area.config.joker_parent) or card
 	end
 	cest(card, eval_type, amt, percent, dir, extra)
 end
@@ -217,13 +248,27 @@ function Card:juice_up(m, m2)
 		--PTASaka.adultcard_cardarea.T.x = PTASaka.adultcard_cardarea.pta_owner.VT.x
 		c = PTASaka.adultcard_cardarea.pta_owner
 	end
+	if G.STAGE == G.STAGES.RUN and c.area and c.area.config.joker_parent then
+		c = find_joker_by_sort_id(c.area.config.joker_parent) or c
+	end
 	juice(c, m, m2)
 end
 
--- Hook to find cards in PTASaka.adultcard_cardarea
+-- Hook to find cards in PTASaka.adultcard_cardarea and LAB=01's cardarea(s)
 local find_old = SMODS.find_card
 function SMODS.find_card(key, count_debuffed)
 	local ret = find_old(key, count_debuffed)
+
+	for k, _ in pairs(G.GAME.payasaka_lab_joker_ids or {}) do
+		if G["payasaka_lab_jokers_"..tostring(k)] and G["payasaka_lab_jokers_"..tostring(k)].cards then
+			for _, v in ipairs(G["payasaka_lab_jokers_"..tostring(k)].cards) do
+				if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
+					ret[#ret + 1] = v
+				end
+			end
+		end
+	end
+
 	if not PTASaka.adultcard_cardarea then return ret end
 	if not PTASaka.adultcard_cardarea.cards then return ret end
 	if not PTASaka.adultcard_cardarea.cards[1] then return ret end

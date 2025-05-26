@@ -283,6 +283,19 @@ SMODS.Back {
 		G.GAME.banned_keys['p_buffoon_mega_1'] = true
 		G.E_MANAGER:add_event(Event{
 			func = function()
+				-- Go through all possible modded booster packs
+				for k, booster in ipairs(G.P_CENTER_POOLS.Booster) do
+					---@type SMODS.Booster
+					local booster = booster
+					if booster.create_card then
+						local dummy = booster:create_card({ ability = copy_table(booster.config), fake_card = 1 }, 1)
+						if dummy and dummy.config and dummy.config.center and dummy.config.center.set == 'Joker' then
+							G.GAME.banned_keys[booster.key] = true
+							print('Banned '..booster.key..' from Gacha Deck')
+						end
+						if dummy and dummy.remove then dummy:remove() end
+					end
+				end
 				if #G.consumeables.cards < G.consumeables.config.card_limit then
 					local _c = SMODS.add_card { key = 'c_payasaka_gacha', area = G.consumeables }
 					_c:juice_up()

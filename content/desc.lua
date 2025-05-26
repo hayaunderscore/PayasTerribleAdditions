@@ -23,6 +23,11 @@ PTASaka.DescriptionDummy = SMODS.Center:extend {
 	end
 }
 
+function PTASaka.generate_ui_for_info_queue(key, set, desc_nodes, specific_vars)
+	desc_nodes.title = localize({ type = 'name_text', set = set, key = key })
+	localize { type = 'descriptions', set = set, key = key, nodes = desc_nodes, vars = specific_vars }
+end
+
 PTASaka.DescriptionDummy {
 	key = "property_card"
 }
@@ -30,24 +35,21 @@ PTASaka.DescriptionDummy {
 PTASaka.DescriptionDummy {
 	key = "ahead",
 	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		desc_nodes.title = localize({ type = 'name_text', set = 'DescriptionDummy', key = _c.key })
-		localize { type = 'descriptions', set = 'DescriptionDummy', key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars or {} }
+		PTASaka.generate_ui_for_info_queue(_c.key, 'DescriptionDummy', desc_nodes, specific_vars or _c.vars or {})
 	end
 }
 
 PTASaka.DescriptionDummy {
 	key = "missingno_finity",
 	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		desc_nodes.title = localize({ type = 'name_text', set = 'DescriptionDummy', key = _c.key })
-		localize { type = 'descriptions', set = 'DescriptionDummy', key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars or {} }
+		PTASaka.generate_ui_for_info_queue(_c.key, 'DescriptionDummy', desc_nodes, specific_vars or _c.vars or {})
 	end
 }
 
 PTASaka.DescriptionDummy {
 	key = "recuperare",
 	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		desc_nodes.title = localize({ type = 'name_text', set = 'DescriptionDummy', key = _c.key })
-		localize { type = 'descriptions', set = 'DescriptionDummy', key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars or {} }
+		PTASaka.generate_ui_for_info_queue(_c.key, 'DescriptionDummy', desc_nodes, specific_vars or _c.vars or {})
 	end
 }
 

@@ -8,20 +8,25 @@ SMODS.ConsumableType {
 	default = 'c_payasaka_crime'
 }
 
+local offs = {
+	x = 5, y = 1
+}
+
 SMODS.UndiscoveredSprite {
 	key = 'Reward',
 	atlas = 'JOE_Risk',
 	path = 'risk.png',
 	pos = { x = 3, y = 2 },
 	px = 71, py = 95,
+	inject = function(self, i)
+		self.pos.x = self.pos.x + offs.x
+		self.pos.y = self.pos.y + offs.y
+		SMODS.UndiscoveredSprite.inject(self, i)
+	end,
 }
 
 G.C.SET.Reward = HEX('7f8481')
 G.C.SECONDARY_SET.Reward = HEX('d7e0e0')
-
-local offs = {
-	x = 5, y = 1
-}
 
 PTASaka.Reward = SMODS.Consumable:extend {
 	set = 'Reward',
@@ -633,7 +638,7 @@ PTASaka.make_boosters('moji',
 SMODS.Tag {
 	key = 'tier1reward',
 	atlas = "JOE_Tags",
-	pos = { x = 1, y = 0 },
+	pos = { x = 1, y = 1 },
 	in_pool = function(self, args)
 		return false
 	end,
@@ -659,7 +664,7 @@ SMODS.Tag {
 SMODS.Tag {
 	key = 'tier2reward',
 	atlas = "JOE_Tags",
-	pos = { x = 1, y = 0 },
+	pos = { x = 2, y = 1 },
 	in_pool = function(self, args)
 		return false
 	end,
@@ -685,7 +690,7 @@ SMODS.Tag {
 SMODS.Tag {
 	key = 'tier3reward',
 	atlas = "JOE_Tags",
-	pos = { x = 1, y = 0 },
+	pos = { x = 3, y = 1 },
 	in_pool = function(self, args)
 		return false
 	end,

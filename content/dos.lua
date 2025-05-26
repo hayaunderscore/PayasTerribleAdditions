@@ -62,6 +62,7 @@ PTASaka.DOSCard {
 			for k, v in pairs(G.P_CENTER_POOLS["Joker"]) do
 				if
 					v.unlocked == true
+					and v.rarity
 					and (not Cryptid or not Cryptid.no(v, "doe", k))
 					and not (G.GAME.banned_keys[v.key] or (G.GAME.cry_banished_keys and G.GAME.cry_banished_keys[v.key]))
 				then
