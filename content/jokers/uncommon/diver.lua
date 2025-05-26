@@ -28,7 +28,7 @@ SMODS.Joker {
 			ease_discard(1)
 			card.ability.extra.cost = card.ability.extra.cost * 2
 			return {
-				message = "Tax!"
+				message = "Splash!"
 			}
 		end
 		if context.end_of_round and G.GAME.blind.boss and not context.individual and context.cardarea == G.jokers then
