@@ -204,6 +204,8 @@ PTASaka.Risk {
 	pos = { x = 0, y = 0 },
 	apply_risk = function(self, ability)
 		G.E_MANAGER:add_event(Event {
+			trigger = 'after',
+			delay = 0.4,
 			func = function()
 				G.GAME.blind.chips = G.GAME.blind.chips * 2
 				--G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money

@@ -209,3 +209,40 @@ else
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''G.E_MANAGER:add_event(Event({
+          trigger = 'immediate',
+          func = function()
+            ease_round(1)'''
+position = 'before'
+payload = '''
+G.GAME.payasaka_blind_override = e.config.ref_table
+G.E_MANAGER:add_event(Event({
+	trigger = 'immediate',
+	func = function()
+		local add = {}
+		SMODS.calculate_context({payasaka_pre_setting_blind = true, blind = G.GAME.payasaka_blind_override}, add)
+		SMODS.trigger_effects(add)
+		for k, v in ipairs(add) do
+			for _k, _v in pairs(v) do
+				G.GAME.payasaka_blind_override = G.P_BLINDS[_v.override] or G.GAME.payasaka_blind_override
+			end
+		end
+		return true
+	end
+}))
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''G.GAME.round_resets.blind = e.config.ref_table'''
+position = 'at'
+payload = '''
+G.GAME.round_resets.blind = G.GAME.payasaka_blind_override
+'''
+match_indent = true

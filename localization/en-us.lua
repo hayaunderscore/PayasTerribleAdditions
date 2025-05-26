@@ -912,6 +912,16 @@ return {
 					"discard done this way",
 					"{C:inactive}Resets at the end of ante"
 				}
+			},
+			j_payasaka_livefast = {
+				name = "Live Fast",
+				text = {
+					"{C:mult}+#1#{} Mult",
+					"Creates and uses",
+					"{C:attention}#2#{} Risk cards",
+					"when selecting a",
+					"boss blind"
+				}
 			}
 		},
 		Blind = {
