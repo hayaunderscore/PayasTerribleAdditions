@@ -70,6 +70,8 @@ function Game.update_new_round(self, dt)
 		G.GAME.blind:set_blind(G.P_BLINDS[G.GAME.payasaka_prelude_next_blind])
 
 		G.STATE = G.STATES.DRAW_TO_HAND
+		-- Reset back to 1e300 if we have too much score as we can't really ease back to 0 from here
+		if number_format(G.GAME.chips) == "naneinf" then G.GAME.chips = 1e300 end
 		G.E_MANAGER:add_event(Event({
 			trigger = 'ease',
 			blocking = false,
