@@ -31,3 +31,6 @@ create_sound("coolgong")
 
 -- Drop Target
 create_sound("drop_target")
+
+-- Fanhead
+SMODS.Sound { key = 'echips', path = 'exponential_chips' .. ".wav" }

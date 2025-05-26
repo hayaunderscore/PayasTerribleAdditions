@@ -93,3 +93,13 @@ if extra and extra.extrafunc then extrafunc = extra.extrafunc end
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if extrafunc then extrafunc() end"
+position = "at"
+payload = '''
+if extrafunc then extrafunc(percent) end
+'''
+match_indent = true

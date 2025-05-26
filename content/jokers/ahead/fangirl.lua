@@ -10,20 +10,50 @@ SMODS.Joker {
 	perishable_compat = false,
 	pos = { x = 9, y = 1 },
 	atlas = "JOE_Jokers",
-	pools = {["Joker"] = true, ["Meme"] = true},
-	config = { extra = { e_chips = 1.1 } },
+	pools = { ["Joker"] = true, ["Meme"] = true },
+	config = { extra = { e_chips = 0.04 } },
 	calculate = function(self, card, context)
 		if context.other_joker then
 			if context.other_joker:is_ahead() then
-				return {
-					e_chips = card.ability.extra.e_chips * PTASaka.ahead_count
-				}
+				if Talisman then
+					return {
+						e_chips = ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1
+					}
+				else
+					-- For now, this'll do...
+					return {
+						xchips = hand_chips ^ (((card.ability.extra.e_chips) * PTASaka.ahead_count)),
+						xchip_message = {
+							message = "^" .. ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1 .. " Chips",
+							colour = G.C.DARK_EDITION,
+							extrafunc = function(p)
+								play_sound('payasaka_echips', 0.8 + p * 0.2, 1)
+							end,
+							delay = 0.65,
+						},
+					}
+				end
 			end
 		end
 		if context.forcetrigger then
-			return {
-				e_chips = card.ability.extra.e_chips * PTASaka.ahead_count
-			}
+			if Talisman then
+				return {
+					e_chips = ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1
+				}
+			else
+				-- For now, this'll do...
+				return {
+					xchips = hand_chips ^ (((card.ability.extra.e_chips) * PTASaka.ahead_count)),
+					xchip_message = {
+						message = "^" .. ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1 .. " Chips",
+						colour = G.C.DARK_EDITION,
+						extrafunc = function(p)
+							play_sound('payasaka_echips', 0.8 + p * 0.2, 1)
+						end,
+						delay = 0.65,
+					},
+				}
+			end
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
