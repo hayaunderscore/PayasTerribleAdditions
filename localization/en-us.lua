@@ -885,12 +885,23 @@ return {
 				name = "Drop Target",
 				text = {
 					"This Joker gains {C:blue}+#1#{} chips",
-					"for when a played card",
-					"gets a {C:green}#2# in #3#{} chance to",
-					"be sent back to the deck",
+					"when a played card gets",
+					"a {C:green}#2# in #3#{} chance to be",
+					"sent back to the deck",
 					"{C:inactive}(Currently {C:blue}+#4#{C:inactive} Chips)"
 				}
-			}
+			},
+			j_payasaka_butcher = {
+                name = "Butcher Vanity",
+                text = {
+                    "When a blind is selected,",
+                    "gain {X:mult,C:white}X#1#{} Mult and {C:attention}destroy{}",
+                    "a random {C:attention}Food{} Joker",
+					"{C:red,E:1}Self destructs{} if there",
+					"are no Food Jokers",
+                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
 		},
 		Blind = {
 			bl_payasaka_nether = {
