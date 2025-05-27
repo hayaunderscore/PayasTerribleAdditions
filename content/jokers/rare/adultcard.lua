@@ -9,7 +9,7 @@ SMODS.Joker {
 	cost = 10,
 	loc_vars = function(self, info_queue, card)
 		-- Only show up when we actually have something in it
-		if PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards[1] then
+		if PTASaka.adultcard_cardarea and PTASaka.adultcard_cardarea.cards and PTASaka.adultcard_cardarea.cards[1] then
 			info_queue[#info_queue + 1] = PTASaka.DescriptionDummies["dd_payasaka_adultcard_area"]
 		end
 		return {
