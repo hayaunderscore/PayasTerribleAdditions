@@ -1193,6 +1193,8 @@ return {
 					"Turns up to {C:attention}#1#",
 					"selected {C:red}nil{} card",
 					"to a Joker of choice",
+					"Adds {C:dark_edition}Eternal{} to",
+					"selected Joker",
 					"{C:inactive,s:0.8}No limits.",
 				},
 				payasaka_comment = {
