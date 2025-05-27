@@ -381,7 +381,7 @@ end
 
 local old_skip = G.FUNCS.skip_booster
 G.FUNCS.skip_booster = function(e)
-	if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' then
+	if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' and not (SMODS.OPENED_BOOSTER.edition and SMODS.OPENED_BOOSTER.edition.negative) then
 		PityShow()
 		G.E_MANAGER:add_event(Event {
 			delay = 1 * (G.SETTINGS.GAMESPEED),
@@ -409,7 +409,7 @@ G.FUNCS.gacha_select_card = function(e)
 			end
 			G[c1.ability.set == "Joker" and "jokers" or "consumeables"]:emplace(c1)
 			G.GAME.pack_choices = G.GAME.pack_choices - 1
-			if G.GAME.pack_choices <= 0 then
+			if G.GAME.pack_choices <= 0 and not (SMODS.OPENED_BOOSTER.edition and SMODS.OPENED_BOOSTER.edition.negative) then
 				PityShow()
 				G.E_MANAGER:add_event(Event {
 					delay = 1 * (G.SETTINGS.GAMESPEED),
@@ -419,6 +419,8 @@ G.FUNCS.gacha_select_card = function(e)
 						return true
 					end
 				})
+			elseif G.GAME.pack_choices <= 0 then
+				G.FUNCS.end_consumeable(nil, delay_fac)
 			end
 			return true
 		end

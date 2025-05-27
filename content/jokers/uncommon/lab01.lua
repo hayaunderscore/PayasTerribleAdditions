@@ -72,7 +72,7 @@ SMODS.Joker {
 				---@type Card
 				local joker = area.cards[i]
 				local ret = joker:calculate_joker(context)
-				if ret then
+				if ret and type(ret) == "table" then
 					ret.message_card = card
 					ret.card = card
 					rets[#rets+1] = ret

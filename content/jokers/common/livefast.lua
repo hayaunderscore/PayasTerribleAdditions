@@ -20,6 +20,7 @@ SMODS.Joker {
 				if risk then
 					risk:start_materialize()
 					risk:use_consumeable(risk.area, nil)
+					SMODS.calculate_context({using_consumeable = true, consumeable = risk, area = G.consumeables})
 					table.insert(c, risk)
 				end
 			end
