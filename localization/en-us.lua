@@ -742,7 +742,7 @@ return {
 				}
 			},
 			j_payasaka_missingno = {
-				name = "{font:payasaka_pokemon}MISSINGNO.",
+				name = "{f:payasaka_pokemon}MISSINGNO.",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for each time the",
 					"word {C:attention}\"finity\"{} has been said",
@@ -892,6 +892,26 @@ return {
 					"{C:attention}#2#{} Risk cards",
 					"when selecting a",
 					"boss blind"
+				}
+			},
+			j_payasaka_freetoplay = {
+				name = "F2P Model",
+				text = {
+					"Gains {X:mult,C:white}X#1#{} Mult when a",
+					"non {C:attention}Dud{} Joker is picked",
+					"in a {C:spectral}Gacha{} card",
+					"{C:green}#2# in #3#{} chance of creating",
+					"a {C:spectral}Gacha{} card at the",
+					"end of round",
+					"{C:inactive,s:0.8}Can spawn Duds in Gacha cards",
+					"{C:inactive}(Currently {X:mult,C:white}X#4#{C:inactive} Mult)"
+				}
+			},
+			j_payasaka_dud = {
+				name = "{f:5}薬子サヤ",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"{C:dark_edition}+#2#{} Joker slot"
 				}
 			}
 		},
@@ -1405,13 +1425,13 @@ return {
 				}
 			},
 			v_payasaka_tmtrainer = {
-				name = "{font:payasaka_pokemon}TMTRAINER",
+				name = "{f:payasaka_pokemon}TMTRAINER",
 				text = {
 					"",
 				}
 			},
 			v_payasaka_cooltrainer = {
-				name = "{font:payasaka_pokemon}CoolTrainer♀",
+				name = "{f:payasaka_pokemon}CoolTrainer♀",
 				text = {
 					"",
 				}
@@ -1816,7 +1836,7 @@ return {
 				name = "missingnumber",
 				text = {
 					"Art and inspiration for",
-					"{font:payasaka_pokemon}MISSINGNO."
+					"{f:payasaka_pokemon}MISSINGNO."
 				}
 			},
 			credit_loggers = {
@@ -1865,6 +1885,7 @@ return {
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
+			k_payasaka_dud = "Dud",
 			k_payasaka_pyroxene_bonus = "Pyroxene drop",
 			b_payasaka_dos_switch = "SWITCH",
 			k_payasaka_active = "active",

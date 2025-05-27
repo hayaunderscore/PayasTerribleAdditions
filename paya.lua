@@ -55,16 +55,19 @@ SMODS.Atlas { key = "JOE_Exotic", path = "cryptid/exotics.png", px = 71, py = 95
 -- Icon lmao
 SMODS.Atlas { key = "modicon", path = "icon.png", px = 34, py = 34 }
 
+PTASaka.Font = SMODS.Font or (AKYRS and AKYRS.Font) or nil
+PTASaka.Fonts = SMODS.Fonts or (AKYRS and AKYRS.Fonts) or nil
+
 -- Fonts
 -- TODO move this to SMODS.Font when that pr gets merged
-if AKYRS then
-	AKYRS.Font{
+if PTASaka.Font then
+	PTASaka.Font {
 		key = "pokemon",
 		path = "pokemon-font.ttf",
-		render_scale = 12,
+		render_scale = 200,
 		TEXT_HEIGHT_SCALE = 0.9, 
 		TEXT_OFFSET = {x=12,y=-24}, 
-		FONTSCALE = 0.05,
+		FONTSCALE = 0.06,
 		squish = 1, 
 		DESCSCALE = 1.25
 	}

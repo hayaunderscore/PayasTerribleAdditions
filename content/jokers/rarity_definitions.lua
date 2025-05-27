@@ -19,3 +19,10 @@ SMODS.Rarity {
 	pools = { ["Joker"] = true },
 	default_weight = 0, -- Legendary status
 }
+
+SMODS.Rarity {
+	key = "dud",
+	badge_colour = HEX('469274'),
+	--pools = { ["Joker"] = true },
+	default_weight = 0, -- Only available via Gacha Cards
+}
