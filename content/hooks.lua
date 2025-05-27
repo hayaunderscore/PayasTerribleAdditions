@@ -111,6 +111,21 @@ function Game:start_run(args)
 		end
 	end
 
+	-- Ortalab compat
+	if Ortalab and not PTASaka.added_ortalab_food_jokers then
+		local p = G.P_CENTER_POOLS["Food"]
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_taliaferro)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_sunnyside)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_hot_chocolate)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_miracle_cure)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_royal_gala)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_fine_wine)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_mystery_soda)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_popcorn_bag)
+		SMODS.insert_pool(p, G.P_CENTERS.j_ortalab_salad)
+		PTASaka.added_ortalab_food_jokers = true
+	end
+
 	-- Junko/Dango
 	PTASaka.food_jokers = {}
 	-- Index based list -> Key-Value based list
