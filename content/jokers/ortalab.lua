@@ -10,11 +10,17 @@ SMODS.Joker {
 	end,
 	rarity = 1,
 	atlas = "JOE_Jokers",
-	pos = { x = 8, y = 3 },
+	pos = { x = 9, y = 9 },
 	cost = 3,
 	blueprint_compat = true,
 	demicoloncompat = true,
 	dependencies = dep,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	pools = {["Joker"] = true, ["Food"] = true},
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent then
