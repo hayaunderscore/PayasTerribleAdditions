@@ -910,8 +910,9 @@ return {
 			j_payasaka_dud = {
 				name = "{f:5}薬子サヤ",
 				text = {
-					"{X:mult,C:white}X#1#{} Mult",
-					"{C:dark_edition}+#2#{} Joker slot"
+					"{C:mult}+#1#{} Mult",
+					"{C:dark_edition}+#2#{} Joker slot",
+					"{C:inactive,s:0.8,f:5}あなたは不発弾を手に入れた！"
 				}
 			},
 			j_payasaka_cast = {

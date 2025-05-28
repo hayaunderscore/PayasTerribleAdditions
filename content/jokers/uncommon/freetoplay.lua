@@ -42,12 +42,12 @@ SMODS.Joker {
 	cost = 1,
 	blueprint_compat = true,
 	demicoloncompat = true,
-	config = { extra = { x_mult = 2.5, joker_slot = 1 } },
+	config = { extra = { mult = 10, joker_slot = 0.5 } },
 	no_doe = true,
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				x_mult = card.ability.extra.x_mult
+				mult = card.ability.extra.mult
 			}
 		end
 	end,
@@ -60,7 +60,7 @@ SMODS.Joker {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.joker_slot
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.x_mult, card.ability.extra.joker_slot } }
+		return { vars = { card.ability.extra.mult, card.ability.extra.joker_slot } }
 	end,
 	in_pool = function(self, args)
 		return false
