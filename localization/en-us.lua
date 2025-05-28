@@ -913,7 +913,18 @@ return {
 					"{X:mult,C:white}X#1#{} Mult",
 					"{C:dark_edition}+#2#{} Joker slot"
 				}
-			}
+			},
+			j_payasaka_cast = {
+				name = "Cast",
+				text = {
+					"Mimics {C:attention}2{} random {C:red}Showdown{}",
+					"Jokers when selecting a blind",
+					"Resets when exiting the shop",
+					"{C:inactive}Joker values are kept",
+					"{C:inactive}[1]: #1#",
+					"{C:inactive}[2]: #2#",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -1859,12 +1870,29 @@ return {
 				"Cryptid hide-hole?"
 			},
 			lq_question_3 = {
-				"Unbelievable.",
+				"Had The Plant as",
+				"one of the fused?"
 			},
 			lq_question_4 = {
 				"All that's left of",
 				"you is dust...",
 				"and your skull."
+			},
+			lq_m_1 = {
+				"Interesting...",
+			},
+			lq_m_2 = {
+				"Very, very",
+				"interesting..."
+			},
+			lq_m_3 = {
+				"ZZAZZAZZAZAZZAZ",
+				"ZAZZZAZAZAZZAZA"
+			},
+			lq_m_4 = {
+				"______",
+				"{f:payasaka_pokemon}TYPE",
+				"{f:payasaka_pokemon}CoolTrainer♀"
 			},
 		},
 		dictionary = {

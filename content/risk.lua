@@ -242,6 +242,7 @@ PTASaka.Risk {
 		G.GAME.payasaka_cannot_reroll = true
 		local old_name = G.GAME.selected_back.name
 		G.GAME.selected_back.name = "b_red"
+		G.GAME.banned_keys['bl_payasaka_question'] = true
 		local current_boss = G.GAME.round_resets.last_cast_boss or get_new_boss()
 		G.GAME.payasaka_merged_boss_keys = G.GAME.payasaka_merged_boss_keys or {}
 		if next(G.GAME.payasaka_merged_boss_keys) == nil then
@@ -251,6 +252,13 @@ PTASaka.Risk {
 		-- Get a random boss blind to append to the current one
 		G.GAME.payasaka_merged_boss_keys[#G.GAME.payasaka_merged_boss_keys + 1] = get_new_boss()
 		G.GAME.selected_back.name = old_name
+		G.GAME.banned_keys['bl_payasaka_question'] = nil
+
+		-- what have you done
+		if (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then
+			G.GAME.payasaka_natural_cast = true
+			G.GAME.payasaka_hard_mode_cast = true
+		end
 		
 		-- get biggest chips multiplier
 		for i = 1, #G.GAME.payasaka_merged_boss_keys do
@@ -307,6 +315,15 @@ PTASaka.Risk {
 		add_tag(Tag('tag_ethereal'))
 		]]
 		add_tag(Tag('tag_payasaka_tier2reward'))
+		G.E_MANAGER:add_event(Event{
+			trigger = 'after',
+			delay = 0.5,
+			blocking = false,
+			func = function()
+				G.GAME.payasaka_hard_mode_cast = nil
+				return true
+			end
+		})
 	end,
 }
 

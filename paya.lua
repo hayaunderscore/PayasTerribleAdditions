@@ -154,6 +154,11 @@ if Ortalab and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/jokers/ortalab.lua"))()
 end
 
+-- Cross mod content: Finity
+if next(SMODS.find_mod('finity')) and conf["Cross Mod Content"] then
+assert(SMODS.load_file("content/jokers/finity.lua"))()
+end
+
 -- Pyroxenes
 assert(SMODS.load_file("content/pyrox.lua"))()
 

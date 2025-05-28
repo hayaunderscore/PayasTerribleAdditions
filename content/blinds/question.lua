@@ -1,9 +1,11 @@
 -- Finity cross mod
 if next(SMODS.find_mod('finity')) then
 	FinisherBossBlindStringMap = FinisherBossBlindStringMap or {}
-	FinisherBossBlindStringMap["bl_payasaka_question"] = {"j_payasaka_missingno", "The Cast"}
+	FinisherBossBlindStringMap["bl_payasaka_question"] = {"j_payasaka_cast", "The Cast"}
+	FinisherBossBlindStringMap["bl_payasaka_question_hard"] = {"j_payasaka_missingno", "MISSINGNO."}
 	FinisherBossBlindQuips = FinisherBossBlindQuips or {}
 	FinisherBossBlindQuips["bl_payasaka_question"] = {"question", 4}
+	FinisherBossBlindQuips["bl_payasaka_question_hard"] = {"m", 4}
 end
 
 -- Fuses two boss blinds together. Jesus.
@@ -42,9 +44,21 @@ SMODS.Blind {
 				-- Fix Finity creating an infinite loop by using The Cast as the bosses for... The Cast.
 				local old_name = G.GAME.selected_back.name
 				G.GAME.selected_back.name = "b_red"
+				-- Generally do not use showdown bosses as valid combinations for the cast
+				local showdown = false
+				if (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then
+					G.GAME.round_resets.ante = G.GAME.round_resets.ante - 1
+					showdown = true
+				end
+				G.GAME.banned_keys['bl_payasaka_question'] = true
 				local new_boss = get_new_boss()
-				while new_boss == 'bl_payasaka_question' do new_boss = get_new_boss() end
+				G.GAME.banned_keys['bl_payasaka_question'] = nil
+				if showdown then
+					G.GAME.round_resets.ante = G.GAME.round_resets.ante + 1
+				end
 				G.GAME.payasaka_merged_boss_keys[i] = new_boss
+				-- Differentiate between Cast created by a Cast risk card and Cast as a showdown
+				G.GAME.payasaka_natural_cast = true
 				G.GAME.selected_back.name = old_name
 			end
 			G.GAME.blind:set_text()

@@ -22,11 +22,22 @@ function Game:start_run(args)
 	PTASaka.payasaka_exponential_count = 0
 
 	-- Initialize possible LAB=01 cardareas first
-	local PREGAME = args and args.savetext and args.savetext.GAME or { payasaka_lab_joker_ids = {} }
+	local PREGAME = args and args.savetext and args.savetext.GAME or { payasaka_lab_joker_ids = {}, payasaka_cast_joker_ids = {} }
 	for k, v in pairs(PREGAME.payasaka_lab_joker_ids or {}) do
 		G["payasaka_lab_jokers_" .. tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
 			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
 		local dummy_area = G["payasaka_lab_jokers_" .. tostring(k)]
+		-- dont display you fuck
+		dummy_area.states.visible = false
+		dummy_area.states.collide.can = false
+		dummy_area.states.focus.can = false
+		dummy_area.states.click.can = false
+	end
+	-- Same with Cast
+	for k, v in pairs(PREGAME.payasaka_cast_joker_ids or {}) do
+		G["payasaka_cast_jokers_" .. tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
+			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
+		local dummy_area = G["payasaka_cast_jokers_" .. tostring(k)]
 		-- dont display you fuck
 		dummy_area.states.visible = false
 		dummy_area.states.collide.can = false
@@ -147,6 +158,8 @@ function Game:init_game_object()
 	ret.payasaka_exponential_count = 0
 	-- LAB=01
 	ret.payasaka_lab_joker_ids = {}
+	-- Cast
+	ret.payasaka_cast_joker_ids = {}
 
 	if G and G.STAGE == G.STAGES.RUN then
 		-- Shuffle gacha table
@@ -277,6 +290,16 @@ function SMODS.find_card(key, count_debuffed)
 	for k, _ in pairs(G.GAME.payasaka_lab_joker_ids or {}) do
 		if G["payasaka_lab_jokers_" .. tostring(k)] and G["payasaka_lab_jokers_" .. tostring(k)].cards then
 			for _, v in ipairs(G["payasaka_lab_jokers_" .. tostring(k)].cards) do
+				if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
+					ret[#ret + 1] = v
+				end
+			end
+		end
+	end
+
+	for k, _ in pairs(G.GAME.payasaka_cast_joker_ids or {}) do
+		if G["payasaka_cast_jokers_" .. tostring(k)] and G["payasaka_cast_jokers_" .. tostring(k)].cards then
+			for _, v in ipairs(G["payasaka_cast_jokers_" .. tostring(k)].cards) do
 				if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
 					ret[#ret + 1] = v
 				end
