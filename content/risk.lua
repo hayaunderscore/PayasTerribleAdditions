@@ -456,6 +456,7 @@ PTASaka.Risk {
 		},
 	},
 	use = function(self, card, area, copier)
+		if G.GAME.payasaka_prelude_next_blind then return end
 		G.GAME.payasaka_prelude_next_blind = G.GAME.round_resets.blind_choices.Boss
 		G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_prelude'
 		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
@@ -495,6 +496,9 @@ PTASaka.Risk {
 		})
 		G.GAME.payasaka_cannot_reroll = true
 		PTASaka.Risk.use(self, card, area, copier)
+	end,
+	can_use = function()
+		return not G.GAME.payasaka_prelude_next_blind
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_prelude_next_blind = nil

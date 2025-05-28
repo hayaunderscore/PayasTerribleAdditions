@@ -28,9 +28,9 @@ SMODS.Joker {
 				trigger = 'after',
 				delay = 0.4,
 				func = function()
-					for i = 1, #c do
+					for i = 1, #G.play.cards do
 						card:juice_up()
-						c[i]:start_dissolve()
+						G.play.cards[i]:start_dissolve()
 						return true
 					end
 				end
