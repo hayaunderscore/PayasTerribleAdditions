@@ -81,7 +81,7 @@ times = 1
 
 [[patches]]
 [patches.pattern]
-target = '''game.lua'''
+target = '''card_character.lua'''
 pattern = '''if G.GAME.blind and FinisherBossBlindQuips[G.GAME.blind.config.blind.key] and not G.GAME.won then
 	self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS[FinisherBossBlindStringMap[G.GAME.blind.config.blind.key][1]], {bypass_discovery_center = true})
 else'''
