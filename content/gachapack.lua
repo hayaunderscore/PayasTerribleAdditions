@@ -414,7 +414,7 @@ G.FUNCS.gacha_select_card = function(e)
 			end
 			G[c1.ability.set == "Joker" and "jokers" or "consumeables"]:emplace(c1)
 			if c1.config.center.key ~= "j_payasaka_dud" then
-				SMODS.calculate_context({payasaka_taking_gacha = true, other_card = c1, area = G[c1.ability.set == "Joker" and "jokers" or "consumeables"]})
+				SMODS.calculate_context({payasaka_taking_gacha = true, card = c1, area = G[c1.ability.set == "Joker" and "jokers" or "consumeables"]})
 			end
 			G.GAME.pack_choices = G.GAME.pack_choices - 1
 			if G.GAME.pack_choices <= 0 and not (SMODS.OPENED_BOOSTER.edition and SMODS.OPENED_BOOSTER.edition.negative) then

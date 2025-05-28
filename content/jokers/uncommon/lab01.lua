@@ -12,7 +12,7 @@ SMODS.Joker {
 	pos = { x = 10, y = 5 },
 	rarity = 2,
 	cost = 6,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		local rets = {}

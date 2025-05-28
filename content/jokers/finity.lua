@@ -13,7 +13,7 @@ SMODS.Joker {
 	soul_pos = { x = 10, y = 8 },
 	rarity = "finity_showdown",
 	cost = 10,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	dependencies = 'finity',
 	config = { cast_kept_values = { } },

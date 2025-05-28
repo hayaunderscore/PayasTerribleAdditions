@@ -926,6 +926,15 @@ return {
 					"{C:inactive}[2]: #2#",
 				}
 			},
+			j_payasaka_4byte = {
+				name = "Four-Byte Burger",
+				text = {
+					"This Joker gains {X:mult,C:white}X#1#{} Mult",
+					"for each {C:attention}unique{} {C:enhanced}Food{} Joker",
+					"taken in this run",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
