@@ -1475,7 +1475,7 @@ return {
 				}
 			},
 			v_payasaka_equilibrium = {
-				name = "Voucher of Equilibrium",
+				name = "Equilibrium",
 				text = {
 					"All Jokers have the",
 					"{C:attention}same chance{} of",
@@ -1487,8 +1487,9 @@ return {
 				text = {
 					"{C:attention}Anything{} can appear in",
 					"the place of {C:attention}any{} card",
-					"{C:inactive,s:0.8}(Jokers, Consumeables, and Decks)",
-					"{C:inactive}So entropic..."
+					"{C:inactive}So entropic...",
+					"{C:inactive,s:0.8}(Jokers, Consumeables,",
+					"{C:inactive,s:0.8}Decks and even Sleeves!)",
 				}
 			},
 		},

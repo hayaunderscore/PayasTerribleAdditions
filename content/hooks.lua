@@ -310,8 +310,15 @@ SMODS.Consumable {
 		end
 	end,
 	set_card_type_badge = function(self, card, badges)
+		self.mod = G.P_CENTERS[card.ability.set_deck].mod
+		badges[#badges+1] = create_badge(card.ability.dummy_set == "Back" and "Deck" or "Sleeve", HEX('eb2d31'))
 	end
 }
+
+-- No.
+if Overflow then
+	Overflow.blacklist["c_payasaka_dummy_centersleeve"] = true
+end
 
 local banned_types = {
 	["Tag"] = true,
@@ -337,7 +344,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, ...)
 	if G.GAME.used_vouchers["v_payasaka_parakmi"] then
 		-- Hell on earth.
 		valid_pools = {
-			_type,
+			"Joker",
 			"Consumeables",
 			"Back",
 		}
