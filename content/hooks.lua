@@ -257,7 +257,7 @@ SMODS.Consumable {
 		if card.ability.dummy_set == "Sleeve" then
 			if G.P_CENTERS[card.ability.set_deck].apply then
 				--CardSleeves.Sleeve.apply(G.P_CENTERS[card.ability.set_deck])
-				G.P_CENTERS[card.ability.set_deck]:apply()
+				G.P_CENTERS[card.ability.set_deck]:apply(G.P_CENTERS[card.ability.set_deck])
 			end
 		end
 	end,
