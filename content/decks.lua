@@ -287,7 +287,8 @@ SMODS.Back {
 				for k, booster in ipairs(G.P_CENTER_POOLS.Booster) do
 					---@type SMODS.Booster
 					local booster = booster
-					if booster.create_card then
+					-- Hack to fix redeeming this via Decline
+					if booster.create_card and booster.group_key ~= "k_standard_pack" then
 						local dummy = booster:create_card({ ability = copy_table(booster.config), fake_card = 1 }, 1)
 						if dummy and dummy.config and dummy.config.center and dummy.config.center.set == 'Joker' then
 							G.GAME.banned_keys[booster.key] = true

@@ -1482,6 +1482,15 @@ return {
 					"appearing in the shop",
 				}
 			},
+			v_payasaka_parakmi = {
+				name = "Decline",
+				text = {
+					"{C:attention}Anything{} can appear in",
+					"the place of {C:attention}any{} card",
+					"{C:inactive,s:0.8}(Jokers, Consumeables, and Decks)",
+					"{C:inactive}So entropic..."
+				}
+			},
 		},
 		Property = {
 			c_payasaka_brownproperty = {

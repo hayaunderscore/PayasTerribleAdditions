@@ -354,6 +354,29 @@ SMODS.Voucher {
 		G.E_MANAGER:add_event(Event{
 			func = function()
 				play_sound("payasaka_coolgong", 1, 0.6)
+				return true
+			end
+		})
+	end,
+	-- Cannot be in the normal pool ever, and can only appear via Remember
+	in_pool = function(self, args)
+		return false
+	end
+}
+
+SMODS.Voucher {
+	key = "parakmi",
+	atlas = 'JOE_Vouchers',
+	pos = { x = 5, y = 0 },
+	soul_pos = { x = 5, y = 1 },
+	cost = 10,
+	pyroxenes = 100,
+	requires = { "v_payasaka_equilibrium" },
+	redeem = function(self, voucher)
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				play_sound("payasaka_coolgong", 1, 0.6)
+				return true
 			end
 		})
 	end,

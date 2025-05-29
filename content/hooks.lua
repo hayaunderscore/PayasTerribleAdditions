@@ -144,6 +144,10 @@ function Game:start_run(args)
 	for k, v in ipairs(G.P_CENTER_POOLS["Food"]) do
 		PTASaka.food_jokers[v.key] = v
 	end
+
+	-- No.
+	SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
+	SMODS.remove_pool(G.P_CENTER_POOLS["Tarot"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
 end
 
 -- Custom G.GAME stuff
@@ -181,24 +185,176 @@ function Game:init_game_object()
 	return ret
 end
 
+SMODS.Consumable {
+	key = 'dummy_centersleeve',
+	set = 'Tarot',
+	no_doe = true,
+	discovered = true,
+	no_collection = true,
+	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		if not card then
+			card = self:create_fake_card()
+		end
+		local target = {
+			type = 'descriptions',
+			key = card.ability.set_deck,
+			set = card.ability.dummy_set,
+			nodes = desc_nodes,
+			AUT = full_UI_table,
+			vars =
+				specific_vars or {}
+		}
+		local res = {}
+		if self.loc_vars and type(self.loc_vars) == 'function' then
+			res = self:loc_vars(info_queue, card) or {}
+			target.vars = res.vars or target.vars
+			target.key = res.key or target.key
+			target.set = res.set or target.set
+			target.scale = res.scale
+			target.text_colour = res.text_colour
+		end
+		if desc_nodes == full_UI_table.main and not full_UI_table.name then
+			full_UI_table.name = self.set == 'Enhanced' and 'temp_value' or
+				localize { type = 'name', set = target.set, key = res.name_key or target.key, nodes = full_UI_table.name, vars = res.name_vars or target.vars or {} }
+		elseif desc_nodes ~= full_UI_table.main and not desc_nodes.name and self.set ~= 'Enhanced' then
+			desc_nodes.name = localize { type = 'name_text', key = res.name_key or target.key, set = target.set }
+		end
+		if specific_vars and specific_vars.debuffed and not res.replace_debuff then
+			target = {
+				type = 'other',
+				key = 'debuffed_' ..
+					(specific_vars.playing_card and 'playing_card' or 'default'),
+				nodes = desc_nodes,
+				AUT = full_UI_table,
+			}
+		end
+		if res.main_start then
+			desc_nodes[#desc_nodes + 1] = res.main_start
+		end
+		localize(target)
+		if res.main_end then
+			desc_nodes[#desc_nodes + 1] = res.main_end
+		end
+		desc_nodes.background_colour = res.background_colour
+	end,
+	set_sprites = function(self, card, front)
+		if card.ability and card.ability.set_deck then
+			local _center = G.P_CENTERS[card.ability.set_deck]
+			if card.children.center then
+				card.children.center.atlas = G.ASSET_ATLAS
+					[(_center.atlas or (_center.set == 'Joker' or _center.consumeable or _center.set == 'Voucher') and _center.set) or 'centers']
+				card.children.center:set_sprite_pos(_center.pos)
+			end
+		end
+	end,
+	use = function(self, card, area, copier)
+		if card.ability.dummy_set == "Back" then
+			local copy = PTASaka.deep_copy(G.P_CENTERS[card.ability.set_deck])
+			copy.center = G.P_CENTERS[card.ability.set_deck]
+			local fake = {name = G.P_CENTERS[card.ability.set_deck].name, effect = copy}
+			Back.apply_to_run(fake)
+		end
+		if card.ability.dummy_set == "Sleeve" then
+			if G.P_CENTERS[card.ability.set_deck].apply then
+				--CardSleeves.Sleeve.apply(G.P_CENTERS[card.ability.set_deck])
+				G.P_CENTERS[card.ability.set_deck]:apply()
+			end
+		end
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	in_pool = function(self, args)
+		return false
+	end,
+	loc_vars = function(self, info_queue, card)
+		local ret = { vars = {} }
+		if card.ability.set_deck and G.P_CENTERS[card.ability.set_deck] then
+			---@type SMODS.Back
+			local _center = G.P_CENTERS[card.ability.set_deck]
+			local vars = _center.loc_vars and _center:loc_vars(info_queue, card.ability)
+			if vars and vars.vars then return vars end
+			local name_to_check = _center.name or ""
+			local effect_config = _center.config or {}
+			local loc_args = {}
+			if name_to_check == 'Blue Deck' then
+				loc_args = { effect_config.hands }
+			elseif name_to_check == 'Red Deck' then
+				loc_args = { effect_config.discards }
+			elseif name_to_check == 'Yellow Deck' then
+				loc_args = { effect_config.dollars }
+			elseif name_to_check == 'Green Deck' then
+				loc_args = { effect_config.extra_hand_bonus, effect_config.extra_discard_bonus }
+			elseif name_to_check == 'Black Deck' then
+				loc_args = { effect_config.joker_slot, -effect_config.hands }
+			elseif name_to_check == 'Magic Deck' then
+				loc_args = { localize { type = 'name_text', key = 'v_crystal_ball', set = 'Voucher' }, localize { type = 'name_text', key = 'c_fool', set = 'Tarot' } }
+			elseif name_to_check == 'Nebula Deck' then
+				loc_args = { localize { type = 'name_text', key = 'v_telescope', set = 'Voucher' }, -1 }
+			elseif name_to_check == 'Ghost Deck' then
+			elseif name_to_check == 'Abandoned Deck' then
+			elseif name_to_check == 'Checkered Deck' then
+			elseif name_to_check == 'Zodiac Deck' then
+				loc_args = { localize { type = 'name_text', key = 'v_tarot_merchant', set = 'Voucher' },
+					localize { type = 'name_text', key = 'v_planet_merchant', set = 'Voucher' },
+					localize { type = 'name_text', key = 'v_overstock_norm', set = 'Voucher' } }
+			elseif name_to_check == 'Painted Deck' then
+				loc_args = { effect_config.hand_size, effect_config.joker_slot }
+			elseif name_to_check == 'Anaglyph Deck' then
+				loc_args = { localize { type = 'name_text', key = 'tag_double', set = 'Tag' } }
+			elseif name_to_check == 'Plasma Deck' then
+				loc_args = { effect_config.ante_scaling }
+			elseif name_to_check == 'Erratic Deck' then
+			end
+			return { vars = loc_args }
+		end
+	end,
+	set_card_type_badge = function(self, card, badges)
+	end
+}
+
+local banned_types = {
+	["Tag"] = true,
+	["Voucher"] = true,
+	["Enhanced"] = true,
+	["Seal"] = true,
+	["Sticker"] = true,
+}
+
 -- for Voucher of Equilibrium
 local old_get_current_pool = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, ...)
-	if _type ~= "Joker" or not G.GAME.used_vouchers["v_payasaka_equilibrium"] then
+	if banned_types[_type] then
+		return old_get_current_pool(_type,
+		_rarity, _legendary, _append, ...)
+	end
+	if (_type ~= "Joker" and not G.GAME.used_vouchers["v_payasaka_parakmi"]) or not G.GAME.used_vouchers["v_payasaka_equilibrium"] then
 		return old_get_current_pool(_type,
 			_rarity, _legendary, _append, ...)
 	end
 	local pool_items = {}
-	for _, v in pairs(G.P_CENTER_POOLS[_type]) do
-		local in_pool, pool_opts
-		if v.in_pool and type(v.in_pool) == 'function' then
-			in_pool, pool_opts = v:in_pool({ source = _append })
-		end
-		if v.unlocked
-			and not v.no_doe
-			and (in_pool or not v.in_pool)
-			and not G.GAME.banned_keys[v.key] then
-			pool_items[#pool_items + 1] = v.key
+	local valid_pools = { _type }
+	if G.GAME.used_vouchers["v_payasaka_parakmi"] then
+		-- Hell on earth.
+		valid_pools = {
+			_type,
+			"Consumeables",
+			"Back",
+		}
+		if CardSleeves then valid_pools[#valid_pools + 1] = "Sleeve" end
+	end
+	for _, pool in ipairs(valid_pools) do
+		for _, v in pairs(G.P_CENTER_POOLS[pool]) do
+			local in_pool, pool_opts
+			if v.in_pool and type(v.in_pool) == 'function' then
+				in_pool, pool_opts = v:in_pool({ source = _append })
+			end
+			if v.unlocked
+				and not v.no_doe
+				and (in_pool or not v.in_pool)
+				and not G.GAME.banned_keys[v.key] then
+				pool_items[#pool_items + 1] = v.key
+			end
 		end
 	end
 	if not next(pool_items) then pool_items[#pool_items + 1] = "j_joker" end
