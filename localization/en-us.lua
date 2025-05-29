@@ -1339,7 +1339,7 @@ return {
 				}
 			},
 			c_payasaka_hone = {
-				name = "Hone",
+				name = "Align",
 				text = {
 					"Levels up the {C:purple,E:1}most played",
 					"poker hand by {C:attention}#1#",
@@ -1379,8 +1379,8 @@ return {
 			c_payasaka_dream = {
 				name = "Dream",
 				text = {
-					"Creates a {C:dark_edition}Negative",
-					"{C:chips}Common{} Joker",
+					"Creates a random",
+					"{C:dark_edition}Negative{} Joker",
 				}
 			},
 			c_payasaka_sprint = {

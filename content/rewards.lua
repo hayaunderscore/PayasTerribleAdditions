@@ -411,7 +411,8 @@ PTASaka.Reward {
 	atlas = 'JOE_Risk',
 	pos = { x = 2, y = 1 },
 	use = function(self, card, area, copier)
-		SMODS.add_card { set = "Joker", rarity = "Common", edition = "e_negative", area = G.jokers }
+		SMODS.add_card { set = "Joker", edition = "e_negative", area = G.jokers }
+		play_sound('timpani')
 		card:juice_up()
 		delay(0.6)
 	end,

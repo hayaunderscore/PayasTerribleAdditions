@@ -38,26 +38,59 @@ PTASaka.Risk = SMODS.Consumable:extend {
 			ability = PTASaka.deep_copy(card
 				.ability.extra)
 		}
-		G.E_MANAGER:add_event(Event {
+		local top_dynatext = nil
+		local bot_dynatext = nil
+
+		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
 			delay = 0.4,
 			func = function()
+				top_dynatext = DynaText({ string = localize { type = 'name_text', set = self.set, key = self.key }, colours = { G.C.WHITE }, rotate = 1, shadow = true, bump = true, float = true, scale = 0.9, pop_in = 0.6 /
+				G.SPEEDFACTOR, pop_in_rate = 1.5 * G.SPEEDFACTOR })
+				bot_dynatext = DynaText({ string = "Applied!", colours = { G.C.WHITE }, rotate = 2, shadow = true, bump = true, float = true, scale = 0.9, pop_in = 1.4 /
+				G.SPEEDFACTOR, pop_in_rate = 1.5 * G.SPEEDFACTOR, pitch_shift = 0.25 })
 				card:juice_up(0.3, 0.5)
 				play_sound('card1')
-				card_eval_status_text(card, 'extra', nil, nil, 'up',
-					{ message = "Risk applied!", colour = G.C.MULT, instant = true })
+				play_sound('coin1')
+				card.children.top_disp = UIBox {
+					definition = { n = G.UIT.ROOT, config = { align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15 }, nodes = {
+						{ n = G.UIT.O, config = { object = top_dynatext } }
+					} },
+					config = { align = "tm", offset = { x = 0, y = 0 }, parent = card }
+				}
+				card.children.bot_disp = UIBox {
+					definition = { n = G.UIT.ROOT, config = { align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15 }, nodes = {
+						{ n = G.UIT.O, config = { object = bot_dynatext } }
+					} },
+					config = { align = "bm", offset = { x = 0, y = 0 }, parent = card }
+				}
 				return true
 			end
-		})
-		G.E_MANAGER:add_event(Event {
+		}))
+		delay(0.6)
+
+		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
-			delay = 2.3 + 0.4,
+			delay = 2.6,
 			func = function()
+				top_dynatext:pop_out(4)
+				bot_dynatext:pop_out(4)
 				card:start_dissolve()
-				delay(1)
 				return true
 			end
-		})
+		}))
+
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.5,
+			func = function()
+				card.children.top_disp:remove()
+				card.children.top_disp = nil
+				card.children.bot_disp:remove()
+				card.children.bot_disp = nil
+				return true
+			end
+		}))
 	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.BLIND_SELECT or booster_obj or G.STATE == G.STATES.SHOP
@@ -88,7 +121,7 @@ PTASaka.Risk {
 			---@type Card
 			local c = table.remove(G.GAME.payasaka_hinder_cards, pseudorandom('fuck', 1, #G.GAME.payasaka_hinder_cards))
 			if c then
-				G.GAME.payasaka_already_hindered[#G.GAME.payasaka_already_hindered+1] = c
+				G.GAME.payasaka_already_hindered[#G.GAME.payasaka_already_hindered + 1] = c
 			end
 			count = count - 1
 		end
@@ -255,11 +288,11 @@ PTASaka.Risk {
 		G.GAME.banned_keys['bl_payasaka_question'] = nil
 
 		-- what have you done
-		if (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then
+		if (G.GAME.round_resets.ante) % G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then
 			G.GAME.payasaka_natural_cast = true
 			G.GAME.payasaka_hard_mode_cast = true
 		end
-		
+
 		-- get biggest chips multiplier
 		for i = 1, #G.GAME.payasaka_merged_boss_keys do
 			local blind = G.P_BLINDS[G.GAME.payasaka_merged_boss_keys[i]]
@@ -271,7 +304,7 @@ PTASaka.Risk {
 		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
 		G.E_MANAGER:add_event(Event {
 			func = function()
-				G.E_MANAGER:add_event(Event{
+				G.E_MANAGER:add_event(Event {
 					trigger = 'after',
 					delay = 0.2,
 					func = function()
@@ -315,7 +348,7 @@ PTASaka.Risk {
 		add_tag(Tag('tag_ethereal'))
 		]]
 		add_tag(Tag('tag_payasaka_tier2reward'))
-		G.E_MANAGER:add_event(Event{
+		G.E_MANAGER:add_event(Event {
 			trigger = 'after',
 			delay = 0.5,
 			blocking = false,
@@ -456,13 +489,13 @@ PTASaka.Risk {
 		},
 	},
 	use = function(self, card, area, copier)
-		if G.GAME.payasaka_prelude_next_blind then return end
+		if G.GAME.payasaka_prelude_next_blind then card:start_dissolve(); return end
 		G.GAME.payasaka_prelude_next_blind = G.GAME.round_resets.blind_choices.Boss
 		G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_prelude'
 		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
 		G.E_MANAGER:add_event(Event {
 			func = function()
-				G.E_MANAGER:add_event(Event{
+				G.E_MANAGER:add_event(Event {
 					trigger = 'after',
 					delay = 0.2,
 					func = function()
@@ -503,7 +536,7 @@ PTASaka.Risk {
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_prelude_next_blind = nil
 		G.GAME.payasaka_cannot_reroll = nil
-		for _, area in ipairs({G.play, G.hand, G.deck, G.discard}) do
+		for _, area in ipairs({ G.play, G.hand, G.deck, G.discard }) do
 			for i = 1, #area.cards do
 				---@type Card
 				local c = area.cards[i]
@@ -531,7 +564,7 @@ PTASaka.Risk {
 		local old_state = G.GAME.round_resets.blind_states[G.GAME.blind_on_deck]
 		G.E_MANAGER:add_event(Event {
 			func = function()
-				G.E_MANAGER:add_event(Event{
+				G.E_MANAGER:add_event(Event {
 					trigger = 'after',
 					delay = 0.2,
 					func = function()
@@ -664,14 +697,14 @@ PTASaka.make_pyrox_boosters('moji',
 local rpox = 5
 PTASaka.make_boosters('risk',
 	{
-		{ x = rpox, y = 0 },
-		{ x = rpox+1, y = 0 },
+		{ x = rpox,   y = 0 },
+		{ x = rpox + 1, y = 0 },
 	},
 	{
-		{ x = rpox+2, y = 0 },
+		{ x = rpox + 2, y = 0 },
 	},
 	{
-		{ x = rpox+3, y = 0 },
+		{ x = rpox + 3, y = 0 },
 	},
 	{
 		atlas = 'JOE_Risk',
@@ -699,7 +732,7 @@ function G.UIDEF.current_risks()
 	local voucher_tables = {}
 	local voucher_table_rows = {}
 	for k, v in ipairs(G.GAME.risk_cards_risks or {}) do
-		keys_used[#keys_used+1] = G.P_CENTERS[v.key]
+		keys_used[#keys_used + 1] = G.P_CENTERS[v.key]
 	end
 	for k, v in ipairs(keys_used) do
 		if next(v) then
@@ -720,7 +753,7 @@ function G.UIDEF.current_risks()
 				(#v == 1 and 1 or 1.33) * G.CARD_W,
 				(area_count >= 10 and 0.75 or 1.07) * G.CARD_H,
 				{ card_limit = 2, type = 'voucher', highlight_limit = 0 })
-			
+
 			local center = v
 			local card = Card(voucher_areas[#voucher_areas].T.x + voucher_areas[#voucher_areas].T.w / 2,
 				voucher_areas[#voucher_areas].T.y, G.CARD_W, G.CARD_H, nil, center,
