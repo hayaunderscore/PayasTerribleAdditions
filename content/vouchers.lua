@@ -14,11 +14,11 @@ SMODS.Voucher {
 	pos = { x = 0, y = 0 },
 	cost = 10,
 	config = { mult = 10 },
-	redeem = function (self, card)
+	redeem = function(self, card)
 		G.GAME.payasaka_monopolizer_mult = G.GAME.payasaka_monopolizer_mult or 0
 		G.GAME.payasaka_monopolizer_mult = G.GAME.payasaka_monopolizer_mult + card.ability.mult
 	end,
-	unredeem = function (self, card)
+	unredeem = function(self, card)
 		G.GAME.payasaka_monopolizer_mult = G.GAME.payasaka_monopolizer_mult or 0
 		G.GAME.payasaka_monopolizer_mult = G.GAME.payasaka_monopolizer_mult - card.ability.mult
 	end,
@@ -45,11 +45,11 @@ SMODS.Voucher {
 	cost = 10,
 	config = { x_mult = 1.5 },
 	requires = { "v_payasaka_monopolizer" },
-	redeem = function (self, card)
+	redeem = function(self, card)
 		G.GAME.payasaka_monopolizer_x_mult = G.GAME.payasaka_monopolizer_x_mult or 0
 		G.GAME.payasaka_monopolizer_x_mult = G.GAME.payasaka_monopolizer_x_mult + card.ability.x_mult
 	end,
-	unredeem = function (self, card)
+	unredeem = function(self, card)
 		G.GAME.payasaka_monopolizer_x_mult = G.GAME.payasaka_monopolizer_x_mult or 0
 		G.GAME.payasaka_monopolizer_x_mult = G.GAME.payasaka_monopolizer_x_mult - card.ability.x_mult
 	end,
@@ -99,7 +99,7 @@ function PTASaka.ZZAZZ_string(_str)
 		if pseudorandom("payasaka_ZZAZZ_string") > 0.2 and not excluded_letters[s] then
 			s = "Z"
 		end
-		push = push..s
+		push = push .. s
 	end
 	return push
 end
@@ -146,7 +146,7 @@ SMODS.Voucher {
 						{
 							n = G.UIT.O,
 							config = {
-								object = DynaText{
+								object = DynaText {
 									string = TMTRAINER_STRINGS_ONE,
 									colours = { G.C.UI.TEXT_DARK },
 									pop_in_rate = 9999999,
@@ -170,7 +170,7 @@ SMODS.Voucher {
 						{
 							n = G.UIT.O,
 							config = {
-								object = DynaText{
+								object = DynaText {
 									string = TMTRAINER_STRINGS_TWO,
 									colours = { G.C.UI.TEXT_DARK },
 									pop_in_rate = 9999999,
@@ -238,7 +238,7 @@ SMODS.Voucher {
 						{
 							n = G.UIT.O,
 							config = {
-								object = DynaText{
+								object = DynaText {
 									string = TMTRAINER_STRINGS_ONE,
 									colours = { G.C.UI.TEXT_DARK },
 									pop_in_rate = 9999999,
@@ -262,7 +262,7 @@ SMODS.Voucher {
 						{
 							n = G.UIT.O,
 							config = {
-								object = DynaText{
+								object = DynaText {
 									string = TMTRAINER_STRINGS_TWO,
 									colours = { G.C.UI.TEXT_DARK },
 									pop_in_rate = 9999999,
@@ -293,3 +293,72 @@ function Game:start_run(args)
 	return ret
 end
 ]]
+
+SMODS.Voucher {
+	key = "friends",
+	atlas = 'JOE_Vouchers',
+	pos = { x = 2, y = 0 },
+	cost = 10,
+	config = { modded_rate = 0.35 },
+	redeem = function(self, card)
+		G.GAME.payasaka_modded_rate = G.GAME.payasaka_modded_rate + card.ability.modded_rate
+	end,
+	unredeem = function(self, card)
+		G.GAME.payasaka_modded_rate = math.max(G.GAME.payasaka_modded_rate - card.ability.modded_rate, 0)
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.modded_rate * 100 } }
+	end
+}
+
+SMODS.Rarities["Rare"].get_weight = function(self, weight, object_type)
+	return weight + (G.GAME.payasaka_rare_weight or 0)
+end
+
+SMODS.Rarities["Legendary"].get_weight = function(self, weight, object_type)
+	return weight + (G.GAME.payasaka_legendary_weight or 0)
+end
+
+SMODS.Voucher {
+	key = "crash",
+	atlas = 'JOE_Vouchers',
+	pos = { x = 3, y = 0 },
+	cost = 10,
+	config = { rare_rate = 0.1, legendary_rate = 0.05 },
+	requires = { "v_payasaka_friends" },
+	redeem = function(self, card)
+		G.GAME.payasaka_rare_weight = G.GAME.payasaka_rare_weight or 0
+		G.GAME.payasaka_legendary_weight = G.GAME.payasaka_legendary_weight or 0
+		G.GAME.payasaka_rare_weight = G.GAME.payasaka_rare_weight + card.ability.rare_rate
+		G.GAME.payasaka_legendary_weight = G.GAME.payasaka_legendary_weight + card.ability.legendary_rate
+	end,
+	unredeem = function(self, card)
+		G.GAME.payasaka_rare_weight = G.GAME.payasaka_rare_weight or 0
+		G.GAME.payasaka_legendary_weight = G.GAME.payasaka_legendary_weight or 0
+		G.GAME.payasaka_rare_weight = G.GAME.payasaka_rare_weight - card.ability.rare_rate
+		G.GAME.payasaka_legendary_weight = G.GAME.payasaka_legendary_weight - card.ability.legendary_rate
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.rare_rate * 100, card.ability.legendary_rate * 100 } }
+	end,
+}
+
+SMODS.Voucher {
+	key = "equilibrium",
+	atlas = 'JOE_Vouchers',
+	pos = { x = 4, y = 0 },
+	cost = 10,
+	pyroxenes = 15,
+	requires = { "v_payasaka_crash" },
+	redeem = function(self, voucher)
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				play_sound("payasaka_coolgong", 1, 0.6)
+			end
+		})
+	end,
+	-- Cannot be in the normal pool ever, and can only appear via Remember
+	in_pool = function(self, args)
+		return false
+	end
+}

@@ -22,7 +22,8 @@ function Game:start_run(args)
 	PTASaka.payasaka_exponential_count = 0
 
 	-- Initialize possible LAB=01 cardareas first
-	local PREGAME = args and args.savetext and args.savetext.GAME or { payasaka_lab_joker_ids = {}, payasaka_cast_joker_ids = {} }
+	local PREGAME = args and args.savetext and args.savetext.GAME or
+		{ payasaka_lab_joker_ids = {}, payasaka_cast_joker_ids = {} }
 	for k, v in pairs(PREGAME.payasaka_lab_joker_ids or {}) do
 		G["payasaka_lab_jokers_" .. tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
 			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
@@ -161,6 +162,9 @@ function Game:init_game_object()
 	-- Cast
 	ret.payasaka_cast_joker_ids = {}
 
+	-- Custom Modded pool stuff
+	ret.payasaka_modded_rate = 0
+
 	if G and G.STAGE == G.STAGES.RUN then
 		-- Shuffle gacha table
 		local function shuffle(tbl)
@@ -175,6 +179,30 @@ function Game:init_game_object()
 	end
 
 	return ret
+end
+
+-- for Voucher of Equilibrium
+local old_get_current_pool = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append, ...)
+	if _type ~= "Joker" or not G.GAME.used_vouchers["v_payasaka_equilibrium"] then
+		return old_get_current_pool(_type,
+			_rarity, _legendary, _append, ...)
+	end
+	local pool_items = {}
+	for _, v in pairs(G.P_CENTER_POOLS[_type]) do
+		local in_pool, pool_opts
+		if v.in_pool and type(v.in_pool) == 'function' then
+			in_pool, pool_opts = v:in_pool({ source = _append })
+		end
+		if v.unlocked
+			and not v.no_doe
+			and (in_pool or not v.in_pool)
+			and not G.GAME.banned_keys[v.key] then
+			pool_items[#pool_items + 1] = v.key
+		end
+	end
+	if not next(pool_items) then pool_items[#pool_items + 1] = "j_joker" end
+	return pool_items, "payasaka_equilibrium" .. G.GAME.round_resets.ante
 end
 
 local dc = discover_card
@@ -561,7 +589,8 @@ G.FUNCS.can_discard = function(e)
 	if can_deep then
 		---@type Card
 		local diver = find_joker('Deep Deck Diver')[1]
-		can_deep = can_deep and not (to_big(G.GAME.dollars - G.GAME.bankrupt_at) - to_big(diver.ability.extra.cost or 0) < to_big(0))
+		can_deep = can_deep and
+			not (to_big(G.GAME.dollars - G.GAME.bankrupt_at) - to_big(diver.ability.extra.cost or 0) < to_big(0))
 	end
 	if (G.GAME.current_round.discards_left <= 0 and can_deep) and #G.hand.highlighted > 0 then
 		e.config.colour = G.C.RED

@@ -1457,6 +1457,31 @@ return {
 					"",
 				}
 			},
+			v_payasaka_friends = {
+				name = "Friends of Jimbo",
+				text = {
+					"Modded Jokers appear",
+					"{C:attention}#1#%{} more frequently",
+					"in the shop"
+				}
+			},
+			v_payasaka_crash = {
+				name = "Crash Log",
+				text = {
+					"{C:red}Rare{} and {C:legendary}Legendary{} Jokers",
+					"appear {C:attention}#1#%{} and {C:attention}#2#%{}",
+					"more frequently in the",
+					"shop respectively"
+				}
+			},
+			v_payasaka_equilibrium = {
+				name = "Voucher of Equilibrium",
+				text = {
+					"All Jokers have the",
+					"{C:attention}same chance{} of",
+					"appearing in the shop",
+				}
+			},
 		},
 		Property = {
 			c_payasaka_brownproperty = {

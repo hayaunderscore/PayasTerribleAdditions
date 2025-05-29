@@ -228,3 +228,17 @@ if not self.cards then self.cards = {} end
 if not self.children then self.children = {} end
 '''
 match_indent = true
+
+# Friends of Jimbo stuff
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if add and not G.GAME.banned_keys[v.key] then '''
+position = 'before'
+payload = '''
+G.GAME.payasaka_modded_rate = G.GAME.payasaka_modded_rate or 0
+if not v.mod and G.GAME.payasaka_modded_rate > 0 and pseudorandom('modded') < G.GAME.payasaka_modded_rate then
+	add = false
+end
+'''
+match_indent = true

@@ -283,10 +283,10 @@ PTASaka.Reward {
 						local edition = poll_edition('wheel_of_fortune', nil, true, true)
 						_c:set_edition(edition)
 					elseif which == 2 then -- enhancement
-						local enhancement = SMODS.poll_enhancement({key = 'shine_proc', guaranteed = true})
+						local enhancement = SMODS.poll_enhancement({ key = 'shine_proc', guaranteed = true })
 						_c:set_ability(enhancement)
 					else -- seal
-						local seal = SMODS.poll_seal({key = 'shine_proc', guaranteed = true})
+						local seal = SMODS.poll_seal({ key = 'shine_proc', guaranteed = true })
 						_c:set_seal(seal)
 					end
 					return true
@@ -359,6 +359,25 @@ PTASaka.Reward {
 	end
 }
 
+-- Vanilla version of pseudorandom_element for Remember to use
+-- Remember ignores pool checks
+local function remember_pseudorandom_element(_t, seed)
+	if seed then math.randomseed(seed) end
+	local keys = {}
+	for k, v in pairs(_t) do
+		keys[#keys + 1] = { k = k, v = v }
+	end
+
+	if keys[1] and keys[1].v and type(keys[1].v) == 'table' and keys[1].v.sort_id then
+		table.sort(keys, function(a, b) return a.v.sort_id < b.v.sort_id end)
+	else
+		table.sort(keys, function(a, b) return a.k < b.k end)
+	end
+
+	local key = keys[math.random(#keys)].k
+	return _t[key], key
+end
+
 PTASaka.Reward {
 	key = 'remember',
 	atlas = 'JOE_Risk',
@@ -375,7 +394,7 @@ PTASaka.Reward {
 				for _, v in ipairs(G.P_CENTER_POOLS["Voucher"]) do
 					if v.requires and next(v.requires) then
 						for _, required in ipairs(v.requires) do
-							if required == center then
+							if required == center and not G.GAME.used_vouchers[v.key] then
 								eligible_vouchers[#eligible_vouchers + 1] = v.key
 								break_two = true
 								break
@@ -387,7 +406,7 @@ PTASaka.Reward {
 			end
 		end
 		if next(eligible_vouchers) then
-			local new_voucher = SMODS.add_card { key = pseudorandom_element(eligible_vouchers, pseudoseed('rember')), area = G.play }
+			local new_voucher = SMODS.add_card { key = remember_pseudorandom_element(eligible_vouchers, pseudoseed('rember')), area = G.play }
 			-- You are not taking my money
 			new_voucher.cost = 0
 			new_voucher:redeem()
@@ -402,7 +421,28 @@ PTASaka.Reward {
 		end
 	end,
 	can_use = function(self, card)
-		if next(G.GAME.used_vouchers) then return true end
+		local eligible_vouchers = {}
+		for center, _ in pairs(G.GAME.used_vouchers) do
+			---@type SMODS.Voucher
+			local voucher = G.P_CENTERS[center]
+			-- Find an upgrade to said voucher
+			local break_two = false
+			if voucher then
+				for _, v in ipairs(G.P_CENTER_POOLS["Voucher"]) do
+					if v.requires and next(v.requires) then
+						for _, required in ipairs(v.requires) do
+							if required == center and not G.GAME.used_vouchers[v.key] then
+								eligible_vouchers[#eligible_vouchers + 1] = v.key
+								break_two = true
+								break
+							end
+						end
+					end
+					if break_two then break end
+				end
+			end
+		end
+		return next(eligible_vouchers)
 	end,
 }
 
