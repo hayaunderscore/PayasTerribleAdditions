@@ -259,10 +259,9 @@ SMODS.Consumable {
 		if card.ability.dummy_set == "Back" then
 			local copy = PTASaka.deep_copy(G.P_CENTERS[card.ability.set_deck])
 			copy.center = G.P_CENTERS[card.ability.set_deck]
-			local fake = {name = G.P_CENTERS[card.ability.set_deck].name, effect = copy}
+			local fake = { name = G.P_CENTERS[card.ability.set_deck].name, effect = copy }
 			Back.apply_to_run(fake)
 			-- hiiii
-			
 		end
 		if card.ability.dummy_set == "Sleeve" then
 			if G.P_CENTERS[card.ability.set_deck].apply then
@@ -321,7 +320,7 @@ SMODS.Consumable {
 	end,
 	set_card_type_badge = function(self, card, badges)
 		self.mod = G.P_CENTERS[card.ability.set_deck].mod
-		badges[#badges+1] = create_badge(card.ability.dummy_set == "Back" and "Deck" or "Sleeve", HEX('eb2d31'))
+		badges[#badges + 1] = create_badge(card.ability.dummy_set == "Back" and "Deck" or "Sleeve", HEX('eb2d31'))
 	end
 }
 
@@ -343,7 +342,7 @@ local old_get_current_pool = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, ...)
 	if banned_types[_type] then
 		return old_get_current_pool(_type,
-		_rarity, _legendary, _append, ...)
+			_rarity, _legendary, _append, ...)
 	end
 	if (_type ~= "Joker" and not G.GAME.used_vouchers["v_payasaka_parakmi"]) or not G.GAME.used_vouchers["v_payasaka_equilibrium"] then
 		return old_get_current_pool(_type,
@@ -398,6 +397,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	local card = old_create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if card and card.config.center.rarity == "payasaka_ahead" and card.config.center.key ~= "j_payasaka_nil" then
 		card:set_edition("e_foil", true, nil)
+	end
+	-- Somehow????
+	if card.config.center.key == "c_payasaka_dummy_centersleeve" and card.ability and not card.ability.set_deck then
+		card.ability.dummy_set = "Back"
+		card.ability.set_deck = G.P_CENTERS.b_red
+		card:set_sprites(G.P_CENTERS[card.ability.set_deck])
 	end
 	return card
 end
