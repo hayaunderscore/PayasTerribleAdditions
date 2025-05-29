@@ -247,12 +247,22 @@ SMODS.Consumable {
 			end
 		end
 	end,
+	set_ability = function(self, card, initial, delay)
+		-- Somehow????
+		if card.ability and not card.ability.set_deck then
+			card.ability.dummy_set = "Back"
+			card.ability.set_deck = G.P_CENTERS.b_red
+			card:set_sprites(G.P_CENTERS[card.ability.set_deck])
+		end
+	end,
 	use = function(self, card, area, copier)
 		if card.ability.dummy_set == "Back" then
 			local copy = PTASaka.deep_copy(G.P_CENTERS[card.ability.set_deck])
 			copy.center = G.P_CENTERS[card.ability.set_deck]
 			local fake = {name = G.P_CENTERS[card.ability.set_deck].name, effect = copy}
 			Back.apply_to_run(fake)
+			-- hiiii
+			
 		end
 		if card.ability.dummy_set == "Sleeve" then
 			if G.P_CENTERS[card.ability.set_deck].apply then
@@ -1040,6 +1050,7 @@ local old_juice_up = Moveable.juice_up
 function Moveable:juice_up(amt, rot)
 	old_juice_up(self, amt, rot)
 	-- Randomize juice amounts
+	self.juice = self.juice or {}
 	self.juice.r_amt = self.juice.r_amt *
 		pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
 			G.GAME.payasaka_tmtrainer_high_rnd or 1)
