@@ -147,7 +147,7 @@ function Game:start_run(args)
 
 	-- No.
 	SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
-	SMODS.remove_pool(G.P_CENTER_POOLS["Tarot"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
+	SMODS.remove_pool(G.P_CENTER_POOLS["Reward"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
 end
 
 -- Custom G.GAME stuff
@@ -187,7 +187,7 @@ end
 
 SMODS.Consumable {
 	key = 'dummy_centersleeve',
-	set = 'Tarot',
+	set = 'Reward',
 	no_doe = true,
 	discovered = true,
 	no_collection = true,
