@@ -911,7 +911,7 @@ local old_juice_up = Moveable.juice_up
 function Moveable:juice_up(amt, rot)
 	old_juice_up(self, amt, rot)
 	-- Randomize juice amounts
-	self.juice = self.juice or {}
+	if not (self.juice and next(self.juice)) then return end
 	self.juice.r_amt = self.juice.r_amt *
 		pseudorandom("payasaka_tmtrainer_vrandomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
 			G.GAME.payasaka_tmtrainer_high_rnd or 1)
