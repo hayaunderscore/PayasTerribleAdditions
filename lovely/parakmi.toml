@@ -1,0 +1,42 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''local t3 = {'''
+position = 'before'
+payload = '''
+if (card.ability.set == 'Back' or card.ability.set == 'Sleeve') then
+	t2 = {
+		n = G.UIT.ROOT, config = { ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GREEN, shadow = true, r = 0.08, minh = 0.94, func = 'can_redeem_deck_or_sleeve', one_press = true, button = 'redeem_from_shop', hover = true }, nodes = {
+		{ n = G.UIT.T, config = { text = localize('b_redeem'), colour = G.C.WHITE, scale = 0.4 } }
+	} }
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''elseif card.ability.set == 'Voucher' then '''
+position = 'before'
+payload = '''
+elseif card.ability.set == 'Back' then
+	delay(0.1)
+    draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
+    G.GAME.round_scores.cards_purchased.amt = G.GAME.round_scores.cards_purchased.amt + 1
+    if area and area.config.type ~= 'shop' then e.config.ref_table.cost = 0 end
+	PTASaka.deck_sleeve_redeem(e.config.ref_table)
+elseif card.ability.set == 'Sleeve' then
+	delay(0.1)
+    draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
+    G.GAME.round_scores.cards_purchased.amt = G.GAME.round_scores.cards_purchased.amt + 1
+    if area and area.config.type ~= 'shop' then e.config.ref_table.cost = 0 end
+    PTASaka.deck_sleeve_redeem(e.config.ref_table)
+'''
+match_indent = true
+times = 1

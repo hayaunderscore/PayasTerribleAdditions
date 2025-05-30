@@ -185,150 +185,6 @@ function Game:init_game_object()
 	return ret
 end
 
-SMODS.Consumable {
-	key = 'dummy_centersleeve',
-	set = 'Reward',
-	no_doe = true,
-	discovered = true,
-	no_collection = true,
-	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		if not card then
-			card = self:create_fake_card()
-		end
-		local target = {
-			type = 'descriptions',
-			key = card.ability.set_deck,
-			set = card.ability.dummy_set,
-			nodes = desc_nodes,
-			AUT = full_UI_table,
-			vars =
-				specific_vars or {}
-		}
-		local res = {}
-		if self.loc_vars and type(self.loc_vars) == 'function' then
-			res = self:loc_vars(info_queue, card) or {}
-			target.vars = res.vars or target.vars
-			target.key = res.key or target.key
-			target.set = res.set or target.set
-			target.scale = res.scale
-			target.text_colour = res.text_colour
-		end
-		if desc_nodes == full_UI_table.main and not full_UI_table.name then
-			full_UI_table.name = self.set == 'Enhanced' and 'temp_value' or
-				localize { type = 'name', set = target.set, key = res.name_key or target.key, nodes = full_UI_table.name, vars = res.name_vars or target.vars or {} }
-		elseif desc_nodes ~= full_UI_table.main and not desc_nodes.name and self.set ~= 'Enhanced' then
-			desc_nodes.name = localize { type = 'name_text', key = res.name_key or target.key, set = target.set }
-		end
-		if specific_vars and specific_vars.debuffed and not res.replace_debuff then
-			target = {
-				type = 'other',
-				key = 'debuffed_' ..
-					(specific_vars.playing_card and 'playing_card' or 'default'),
-				nodes = desc_nodes,
-				AUT = full_UI_table,
-			}
-		end
-		if res.main_start then
-			desc_nodes[#desc_nodes + 1] = res.main_start
-		end
-		localize(target)
-		if res.main_end then
-			desc_nodes[#desc_nodes + 1] = res.main_end
-		end
-		desc_nodes.background_colour = res.background_colour
-	end,
-	set_sprites = function(self, card, front)
-		if card.ability and card.ability.set_deck then
-			local _center = G.P_CENTERS[card.ability.set_deck]
-			if card.children.center then
-				card.children.center.atlas = G.ASSET_ATLAS
-					[(_center.atlas or (_center.set == 'Joker' or _center.consumeable or _center.set == 'Voucher') and _center.set) or 'centers']
-				card.children.center:set_sprite_pos(_center.pos)
-			end
-		end
-	end,
-	set_ability = function(self, card, initial, delay)
-		-- Somehow????
-		if card.ability and not card.ability.set_deck then
-			card.ability.dummy_set = "Back"
-			card.ability.set_deck = G.P_CENTERS.b_red
-			card:set_sprites(G.P_CENTERS[card.ability.set_deck])
-		end
-	end,
-	use = function(self, card, area, copier)
-		if card.ability.dummy_set == "Back" then
-			local copy = PTASaka.deep_copy(G.P_CENTERS[card.ability.set_deck])
-			copy.center = G.P_CENTERS[card.ability.set_deck]
-			local fake = { name = G.P_CENTERS[card.ability.set_deck].name, effect = copy }
-			Back.apply_to_run(fake)
-			-- hiiii
-		end
-		if card.ability.dummy_set == "Sleeve" then
-			if G.P_CENTERS[card.ability.set_deck].apply then
-				--CardSleeves.Sleeve.apply(G.P_CENTERS[card.ability.set_deck])
-				G.P_CENTERS[card.ability.set_deck]:apply(G.P_CENTERS[card.ability.set_deck])
-			end
-		end
-	end,
-	can_use = function(self, card)
-		return true
-	end,
-	in_pool = function(self, args)
-		return false
-	end,
-	loc_vars = function(self, info_queue, card)
-		local ret = { vars = {} }
-		if card.ability.set_deck and G.P_CENTERS[card.ability.set_deck] then
-			---@type SMODS.Back
-			local _center = G.P_CENTERS[card.ability.set_deck]
-			local vars = _center.loc_vars and _center:loc_vars(info_queue, card.ability)
-			if vars and vars.vars then return vars end
-			local name_to_check = _center.name or ""
-			local effect_config = _center.config or {}
-			local loc_args = {}
-			if name_to_check == 'Blue Deck' then
-				loc_args = { effect_config.hands }
-			elseif name_to_check == 'Red Deck' then
-				loc_args = { effect_config.discards }
-			elseif name_to_check == 'Yellow Deck' then
-				loc_args = { effect_config.dollars }
-			elseif name_to_check == 'Green Deck' then
-				loc_args = { effect_config.extra_hand_bonus, effect_config.extra_discard_bonus }
-			elseif name_to_check == 'Black Deck' then
-				loc_args = { effect_config.joker_slot, -effect_config.hands }
-			elseif name_to_check == 'Magic Deck' then
-				loc_args = { localize { type = 'name_text', key = 'v_crystal_ball', set = 'Voucher' }, localize { type = 'name_text', key = 'c_fool', set = 'Tarot' } }
-			elseif name_to_check == 'Nebula Deck' then
-				loc_args = { localize { type = 'name_text', key = 'v_telescope', set = 'Voucher' }, -1 }
-			elseif name_to_check == 'Ghost Deck' then
-			elseif name_to_check == 'Abandoned Deck' then
-			elseif name_to_check == 'Checkered Deck' then
-			elseif name_to_check == 'Zodiac Deck' then
-				loc_args = { localize { type = 'name_text', key = 'v_tarot_merchant', set = 'Voucher' },
-					localize { type = 'name_text', key = 'v_planet_merchant', set = 'Voucher' },
-					localize { type = 'name_text', key = 'v_overstock_norm', set = 'Voucher' } }
-			elseif name_to_check == 'Painted Deck' then
-				loc_args = { effect_config.hand_size, effect_config.joker_slot }
-			elseif name_to_check == 'Anaglyph Deck' then
-				loc_args = { localize { type = 'name_text', key = 'tag_double', set = 'Tag' } }
-			elseif name_to_check == 'Plasma Deck' then
-				loc_args = { effect_config.ante_scaling }
-			elseif name_to_check == 'Erratic Deck' then
-			end
-			return { vars = loc_args }
-		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		self.mod = G.P_CENTERS[card.ability.set_deck].mod
-		badges[#badges + 1] = create_badge(card.ability.dummy_set == "Back" and "Deck" or "Sleeve", HEX('eb2d31'))
-	end
-}
-
--- No.
-if Overflow then
-	Overflow.blacklist["c_payasaka_dummy_centersleeve"] = true
-end
-
 local banned_types = {
 	["Tag"] = true,
 	["Voucher"] = true,
@@ -1156,6 +1012,33 @@ function Card:highlight(is_higlighted)
 			self.children.use_button = nil
 		end
 	end
+
+	-- Backs and Sleeves
+	if (self.area and self.area.config.type ~= 'shop' and self.ability and (self.ability.set == "Back" or self.ability.set == "Sleeve")) then
+		if self.highlighted then
+			local t2 = {
+				n = G.UIT.ROOT,
+				config = { ref_table = self, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GREEN, shadow = true, r = 0.08, minh = 0.94, func = 'can_redeem_deck_or_sleeve', one_press = true, button = 'redeem_from_shop', hover = true },
+				nodes = {
+					{ n = G.UIT.T, config = { text = localize('b_redeem'), colour = G.C.WHITE, scale = 0.4 } }
+				}
+			}
+			if self.children.use_button then
+				self.children.use_button:remove()
+				self.children.use_button = nil
+			end
+			self.children.use_button = UIBox {
+				definition = t2,
+				config = { align = "bm"
+				, offset = { x = 0, y = -0.3 },
+					parent = self }
+			}
+		elseif self.children.use_button then
+			self.children.use_button:remove()
+			self.children.use_button = nil
+		end
+	end
+
 	return ret
 end
 

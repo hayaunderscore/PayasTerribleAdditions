@@ -284,7 +284,7 @@ PTASaka.Reward {
 						_c:set_edition(edition)
 					elseif which == 2 then -- enhancement
 						local enhancement = SMODS.poll_enhancement({ key = 'shine_proc', guaranteed = true })
-						_c:set_ability(enhancement)
+						_c:set_ability(G.P_CENTERS[enhancement])
 					else -- seal
 						local seal = SMODS.poll_seal({ key = 'shine_proc', guaranteed = true })
 						_c:set_seal(seal)

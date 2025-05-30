@@ -242,39 +242,3 @@ if not v.mod and G.GAME.payasaka_modded_rate > 0 and pseudorandom('modded') < G.
 end
 '''
 match_indent = true
-
-# Do not create Decks    literally
-[[patches]]
-[patches.pattern]
-target = '''functions/common_events.lua'''
-pattern = '''local card = Card(area.T.x + area.T.w/2, area.T.y, G.CARD_W, G.CARD_H, front, center,'''
-position = 'before'
-payload = '''
-local deck_key, deck_set = nil, nil
-if center and (center.set == "Back" or center.set == "Sleeve") and not Entropy then
-	deck_key = center.key
-	deck_set = center.set
-	center = G.P_CENTERS["c_payasaka_dummy_centersleeve"]
-end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''functions/common_events.lua'''
-pattern = '''if card.ability.consumeable and not skip_materialize then card:start_materialize() end'''
-position = 'before'
-payload = '''
-if deck_key and deck_set then
-	card.ability.set_deck = deck_key
-	card.ability.dummy_set = deck_set
-	card.ability.name = center.name
-	card.ability.effect = {
-        center = center,
-        text_UI = '',
-        config = copy_table(center.config)
-    }
-	card:set_sprites(center, front)
-end
-'''
-match_indent = true

@@ -351,7 +351,7 @@ SMODS.Voucher {
 	pyroxenes = 15,
 	requires = { "v_payasaka_crash" },
 	redeem = function(self, voucher)
-		G.E_MANAGER:add_event(Event{
+		G.E_MANAGER:add_event(Event {
 			func = function()
 				play_sound("payasaka_coolgong", 1, 0.6)
 				return true
@@ -373,7 +373,7 @@ SMODS.Voucher {
 	pyroxenes = 100,
 	requires = { "v_payasaka_equilibrium" },
 	redeem = function(self, voucher)
-		G.E_MANAGER:add_event(Event{
+		G.E_MANAGER:add_event(Event {
 			func = function()
 				play_sound("payasaka_coolgong", 1, 0.6)
 				return true
@@ -385,3 +385,126 @@ SMODS.Voucher {
 		return false
 	end
 }
+
+G.FUNCS.can_redeem_deck_or_sleeve = function(e)
+  if (e.config.ref_table.cost > G.GAME.dollars - G.GAME.bankrupt_at) and (e.config.ref_table.area and e.config.ref_table.area.config.type == 'shop') then
+      e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+      e.config.button = nil
+  else
+    e.config.colour = G.C.GREEN
+    e.config.button = 'use_card'
+  end
+end
+
+function PTASaka.deck_sleeve_redeem(self)
+	if (self.ability.set == "Back" or self.ability.set == "Sleeve") then
+		stop_use()
+
+		self.states.hover.can = false
+		G.GAME.used_jokers[self.config.center_key] = true
+		local top_dynatext = nil
+		local bot_dynatext = nil
+
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				top_dynatext = DynaText({
+					string = localize { type = 'name_text', set = self.config.center.set, key = self.config.center.key },
+					colours = { G.C.WHITE },
+					rotate = 1,
+					shadow = true,
+					bump = true,
+					float = true,
+					scale = 0.9,
+					pop_in = 0.6 /
+						G.SPEEDFACTOR,
+					pop_in_rate = 1.5 * G.SPEEDFACTOR
+				})
+				bot_dynatext = DynaText({
+					string = localize('k_redeemed_ex'),
+					colours = { G.C.WHITE },
+					rotate = 2,
+					shadow = true,
+					bump = true,
+					float = true,
+					scale = 0.9,
+					pop_in = 1.4 /
+						G.SPEEDFACTOR,
+					pop_in_rate = 1.5 * G.SPEEDFACTOR,
+					pitch_shift = 0.25
+				})
+				self:juice_up(0.3, 0.5)
+				play_sound('card1')
+				play_sound('coin1')
+				self.children.top_disp = UIBox {
+					definition = { n = G.UIT.ROOT, config = { align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15 }, nodes = {
+						{ n = G.UIT.O, config = { object = top_dynatext } }
+					} },
+					config = { align = "tm", offset = { x = 0, y = 0 }, parent = self }
+				}
+				self.children.bot_disp = UIBox {
+					definition = { n = G.UIT.ROOT, config = { align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15 }, nodes = {
+						{ n = G.UIT.O, config = { object = bot_dynatext } }
+					} },
+					config = { align = "bm", offset = { x = 0, y = 0 }, parent = self }
+				}
+				return true
+			end
+		}))
+		ease_dollars(-self.cost)
+		inc_career_stat('c_shop_dollars_spent', self.cost)
+		inc_career_stat('c_vouchers_bought', 1)
+		set_voucher_usage(self)
+		check_for_unlock({ type = 'run_redeem' })
+
+		if self.ability.set == "Back" then
+			local copy = PTASaka.deep_copy(G.P_CENTERS[self.config.center_key])
+			copy.center = G.P_CENTERS[self.config.center_key]
+			local fake = { name = G.P_CENTERS[self.config.center_key].name, effect = copy }
+			Back.apply_to_run(fake)
+			-- hiiii
+		end
+		if self.ability.set == "Sleeve" then
+			if G.P_CENTERS[self.config.center_key].apply then
+				--CardSleeves.Sleeve.apply(G.P_CENTERS[card.ability.set_deck])
+				G.P_CENTERS[self.config.center_key]:apply(G.P_CENTERS[self.config.center_key])
+			end
+		end
+
+		delay(0.6)
+		SMODS.calculate_context({ buying_card = true, card = self })
+		if G.GAME.modifiers.inflation then
+			G.GAME.inflation = G.GAME.inflation + 1
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					for k, v in pairs(G.I.CARD) do
+						if v.set_cost then v:set_cost() end
+					end
+					return true
+				end
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 2.6,
+			func = function()
+				top_dynatext:pop_out(4)
+				bot_dynatext:pop_out(4)
+				return true
+			end
+		}))
+
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.5,
+			func = function()
+				self.children.top_disp:remove()
+				self.children.top_disp = nil
+				self.children.bot_disp:remove()
+				self.children.bot_disp = nil
+				return true
+			end
+		}))
+	end
+end
