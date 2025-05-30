@@ -24,12 +24,13 @@ SMODS.Joker {
 			if G.jokers.cards[my_pos+1] then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.add_xmult
 				local _card = G.jokers.cards[my_pos+1]
-				card.T.r = -0.2
-				card.children.floating_sprite.pinch.x = true
-				card:juice_up(0.3, 0.4)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('payasaka_shotgun', 1, 0.6)
+						card.T.r = -0.2
+						card.children.floating_sprite.T.r = -0.4
+						card.children.floating_sprite.pinch.x = true
+						card:juice_up(0.3, 0.4)
 						_card.T.r = -0.2
 						_card:juice_up(0.3, 0.4)
 						_card.states.drag.is = true
