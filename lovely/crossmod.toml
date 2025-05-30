@@ -55,10 +55,22 @@ target = '''=[SMODS finity "Finity.lua"]'''
 pattern = '''tag.config.display = FinisherBossBlindStringMap[G.GAME.blind.config.blind.key][2]'''
 position = 'after'
 payload = '''
-if G.GAME.blind.config.blind.key == 'bl_payasaka_question' and G.GAME.payasaka_hard_mode_cast and (Ortalab and PTASaka.Mod.config["Cross Mod Content"]) then
+if G.GAME.blind and G.GAME.blind.config.blind.key == 'bl_payasaka_question' and G.GAME.payasaka_hard_mode_cast and (Ortalab and PTASaka.Mod.config["Cross Mod Content"]) then
 	tag.config.joker = FinisherBossBlindStringMap[G.GAME.blind.config.blind.key.."_hard"][1]
 	tag.config.display = FinisherBossBlindStringMap[G.GAME.blind.config.blind.key.."_hard"][2]
 end
+'''
+match_indent = true
+times = 1
+
+# Fix Cast with Obsidian Orb crashing the game
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS finity "Finity.lua"]'''
+pattern = '''if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.key ~= "j_finity_obsidianorb" then'''
+position = 'at'
+payload = '''
+if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.key ~= "j_finity_obsidianorb" and G.jokers.cards[i].sort_id ~= (card.ability.cast_id or -1) then
 '''
 match_indent = true
 times = 1
@@ -70,8 +82,8 @@ target = '''game.lua'''
 pattern = '''local text = 'lq_' .. FinisherBossBlindQuips[G.GAME.blind.config.blind.key][1] .. '_' ..math.random(1,FinisherBossBlindQuips[G.GAME.blind.config.blind.key][2])'''
 position = 'at'
 payload = '''
-local key = G.GAME.blind.config.blind.key
-if G.GAME.blind.config.blind.key == 'bl_payasaka_question' and G.GAME.payasaka_hard_mode_cast and (Ortalab and PTASaka.Mod.config["Cross Mod Content"]) then
+local key = G.GAME.blind and G.GAME.blind.config.blind.key or ''
+if G.GAME.blind and G.GAME.blind.config.blind.key == 'bl_payasaka_question' and G.GAME.payasaka_hard_mode_cast and (Ortalab and PTASaka.Mod.config["Cross Mod Content"]) then
 	key = key.."_hard"
 end
 local text = 'lq_' .. FinisherBossBlindQuips[key][1] .. '_' ..math.random(1,FinisherBossBlindQuips[key][2])
@@ -87,11 +99,11 @@ pattern = '''if G.GAME.blind and FinisherBossBlindQuips[G.GAME.blind.config.blin
 else'''
 position = 'at'
 payload = '''
-local key = G.GAME.blind.config.blind.key
-if G.GAME.blind.config.blind.key == 'bl_payasaka_question' and G.GAME.payasaka_hard_mode_cast and (Ortalab and PTASaka.Mod.config["Cross Mod Content"]) then
+local key = G.GAME.blind and G.GAME.blind.config.blind.key or ''
+if G.GAME.blind and G.GAME.blind.config.blind.key == 'bl_payasaka_question' and G.GAME.payasaka_hard_mode_cast and (Ortalab and PTASaka.Mod.config["Cross Mod Content"]) then
 	key = key.."_hard"
 end
-if G.GAME.blind and FinisherBossBlindQuips[key] and not G.GAME.won then
+if G.GAME.blind and G.GAME.blind and FinisherBossBlindQuips[key] and not G.GAME.won then
 	self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS[FinisherBossBlindStringMap[key][1]], {bypass_discovery_center = true})
 else
 '''

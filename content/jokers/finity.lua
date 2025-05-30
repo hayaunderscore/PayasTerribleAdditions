@@ -40,7 +40,7 @@ SMODS.Joker {
 				if center.unlocked == true and center.discovered
 					and center.key ~= self.key
 					and (rarity ~= nil and rarity == "finity_showdown")
-					and (not Cryptid or not Cryptid.no(v, "doe", k))
+					and (not Cryptid or not Cryptid.no(center, "doe", k))
 					and not (G.GAME.banned_keys[center.key] or (G.GAME.cry_banished_keys and G.GAME.cry_banished_keys[center.key])) then
 					jokers[#jokers+1] = center
 				end
@@ -52,6 +52,7 @@ SMODS.Joker {
 				local jokeur = SMODS.add_card { area = area, key = joker.key }
 				if card.ability.cast_kept_values[joker.key] then
 					jokeur.ability = copy_table(card.ability.cast_kept_values[joker.key])
+					jokeur.ability.cast_id = card.sort_id
 					card.ability.cast_kept_values[joker.key] = nil
 				end
 			end
