@@ -8,7 +8,7 @@ SMODS.Joker {
 		extra = {
 			-- amount of times the words 'joyousspring' or 'joyous spring'
 			-- has been uttered in the Balatro discord
-			joyous_amt = 762,
+			joyous_amt = 840,
 			joyous_mult = 1, -- Will change the more people utter it
 			joyous_spring = init_joy_table {
 				is_tuner = true,
@@ -28,6 +28,12 @@ SMODS.Joker {
 	demicoloncompat = true,
 	dependencies = JoyousSpring and 'JoyousSpring' or nil,
 	generate_ui = JoyousSpring and JoyousSpring.generate_info_ui or SMODS.Joker.generate_ui,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	--set_sprites = JoyousSpring and JoyousSpring.set_back_sprite or SMODS.Joker.set_sprites,
 	calculate = function(self, card, context)
 		if not JoyousSpring then
