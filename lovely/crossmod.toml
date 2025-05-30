@@ -75,6 +75,18 @@ if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.key ~= "j_finit
 match_indent = true
 times = 1
 
+# Also fix Vermillion Virus
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS finity "Finity.lua"]'''
+pattern = '''if G.jokers.cards[i] == card then'''
+position = 'at'
+payload = '''
+if G.jokers.cards[i] == card or G.jokers.cards[i].sort_id == (card.ability.cast_id or -1) then
+'''
+match_indent = true
+times = 1
+
 # Missing In Number
 [[patches]]
 [patches.pattern]
