@@ -934,7 +934,14 @@ return {
 					"taken in this run",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
 				}
-			}
+			},
+			j_payasaka_desperado = {
+				name = "Desperado",
+				text = {
+					"Shop has an {C:attention}additional",
+					"{C:risk}Risk{} Pack for half the price",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
