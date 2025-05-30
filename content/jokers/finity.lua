@@ -5,6 +5,9 @@ local rarities = {
 	[4] = "Legendary"
 }
 
+if not FinisherBossBlinddecksprites then FinisherBossBlinddecksprites = {} end
+FinisherBossBlinddecksprites["bl_payasaka_question"] = {"payasaka_JOE_Decks", {x = 2, y = 1}}
+
 -- The Cast
 SMODS.Joker {
 	key = 'cast',
