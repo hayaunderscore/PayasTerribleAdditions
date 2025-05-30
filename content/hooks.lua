@@ -233,6 +233,176 @@ function get_current_pool(_type, _rarity, _legendary, _append, ...)
 	return pool_items, "payasaka_equilibrium" .. G.GAME.round_resets.ante
 end
 
+-- Trigger vanilla back effects
+local old_trigger = Back.trigger_effect
+function Back:trigger_effect(args)
+	local o = { old_trigger(self, args) }
+	if not args then return o and unpack(o) or nil end
+	if G.GAME.used_vouchers["b_anaglyph"] and args.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss then
+		G.E_MANAGER:add_event(Event({
+			func = (function()
+				add_tag(Tag('tag_double'))
+				play_sound('generic1', 0.9 + math.random() * 0.1, 0.8)
+				play_sound('holo1', 1.2 + math.random() * 0.1, 0.4)
+				return true
+			end)
+		}))
+	end
+	-- No need to retrigger the plasma deck effect twice, idiot
+	if G.GAME.used_vouchers["b_plasma"] and args.context == 'final_scoring_step' and self.name ~= 'Plasma Deck' then
+		local new_chips, new_mult = unpack(o)
+		args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
+		local tot = args.chips + args.mult
+		args.chips = math.floor(tot / 2)
+		args.mult = math.floor(tot / 2)
+		update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
+
+		G.E_MANAGER:add_event(Event({
+			func = (function()
+				local text = localize('k_balanced')
+				play_sound('gong', 0.94, 0.3)
+				play_sound('gong', 0.94 * 1.5, 0.2)
+				play_sound('tarot1', 1.5)
+				ease_colour(G.C.UI_CHIPS, { 0.8, 0.45, 0.85, 1 })
+				ease_colour(G.C.UI_MULT, { 0.8, 0.45, 0.85, 1 })
+				attention_text({
+					scale = 1.4, text = text, hold = 2, align = 'cm', offset = { x = 0, y = -2.7 }, major = G.play
+				})
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					blockable = false,
+					blocking = false,
+					delay = 4.3,
+					func = (function()
+						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2)
+						ease_colour(G.C.UI_MULT, G.C.RED, 2)
+						return true
+					end)
+				}))
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					blockable = false,
+					blocking = false,
+					no_delete = true,
+					delay = 6.3,
+					func = (function()
+						G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2],
+							G.C.BLUE[3], G.C.BLUE[4]
+						G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2],
+							G.C.RED[3], G.C.RED[4]
+						return true
+					end)
+				}))
+				return true
+			end)
+		}))
+
+		delay(0.6)
+	end
+	-- Handle multiple deck calculates
+	-- Code mostly taken from CardSleeves (https://github.com/larswijn/CardSleeves/blob/main/CardSleeves.lua#L1853)
+	if G.GAME.payasaka_used_decks then
+		for back, _ in pairs(G.GAME.payasaka_used_decks) do
+			---@class SMODS.Back
+			local obj = G.P_CENTERS[back]
+			if args.context == "final_scoring_step" then
+				local new_chips, new_mult = unpack(o)
+				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
+				if obj.calculate and type(obj.calculate) == "function" then
+					new_chips, new_mult = obj:calculate(obj, args)
+				elseif obj.trigger_effect and type(obj.trigger_effect) == "function" then
+					-- support old deprecated trigger_effect
+					new_chips, new_mult = obj:trigger_effect(args)
+				end
+				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
+			end
+			if type(obj.calculate) == "function" then
+				local context = type(args.context) == "table" and args.context or
+				args                                                       -- bit hacky, though this shouldn't even have to be used?
+				if context.repetition or context.retrigger_joker_check then
+					-- handle this by hooking SMODS.calculate_repetitions or SMODS.calculate_retriggers
+				elseif context.destroy_card or context.modify_scoring_hand then
+					-- handle very specific contexts that cannot be triggered through SMODS.calculate_effect
+					-- TODO lovely patch this instead when lovely patching other mods works on mac (see https://github.com/larswijn/CardSleeves/commit/e2b376d6d914e0bd929e68d865f15935bb1f6040)
+					local effect = obj:calculate(obj, context)
+					if effect then
+						-- janky hack mate
+						if not o[1] then
+							o[1] = effect
+						else
+							local index = o[1]
+							while index.extra do
+								index = index.extra
+							end
+							index.extra = effect
+						end
+					end
+				else
+					local effect = obj:calculate(obj, context)
+					if effect and type(effect) == "table" then
+						SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
+					end
+				end
+			elseif obj.trigger_effect and type(obj.trigger_effect) == "function" then
+				-- support old deprecated trigger_effect
+				obj:trigger_effect(args)
+			end
+		end
+	end
+	if G.GAME.payasaka_used_sleeves then
+		for back, _ in pairs(G.GAME.payasaka_used_sleeves) do
+			---@class SMODS.Back
+			local obj = G.P_CENTERS[back]
+			if args.context == "final_scoring_step" then
+				local new_chips, new_mult = unpack(o)
+				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
+				if obj.calculate and type(obj.calculate) == "function" then
+					new_chips, new_mult = obj:calculate(obj, args)
+				elseif obj.trigger_effect and type(obj.trigger_effect) == "function" then
+					-- support old deprecated trigger_effect
+					new_chips, new_mult = obj:trigger_effect(args)
+				end
+				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
+			end
+			if type(obj.calculate) == "function" then
+				local context = type(args.context) == "table" and args.context or
+				args                                                       -- bit hacky, though this shouldn't even have to be used?
+				if context.repetition or context.retrigger_joker_check then
+					-- handle this by hooking SMODS.calculate_repetitions or SMODS.calculate_retriggers
+				elseif context.destroy_card or context.modify_scoring_hand then
+					-- handle very specific contexts that cannot be triggered through SMODS.calculate_effect
+					-- TODO lovely patch this instead when lovely patching other mods works on mac (see https://github.com/larswijn/CardSleeves/commit/e2b376d6d914e0bd929e68d865f15935bb1f6040)
+					local effect = obj:calculate(obj, context)
+					if effect then
+						-- janky hack mate
+						if not o[1] then
+							o[1] = effect
+						else
+							local index = o[1]
+							while index.extra do
+								index = index.extra
+							end
+							index.extra = effect
+						end
+					end
+				else
+					local effect = obj:calculate(obj, context)
+					if effect and type(effect) == "table" then
+						SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
+					end
+				end
+			elseif obj.trigger_effect and type(obj.trigger_effect) == "function" then
+				-- support old deprecated trigger_effect
+				obj:trigger_effect(args)
+			end
+		end
+	end
+	if args.context == "final_scoring_step" then
+		return args.chips, args.mult
+	end
+	return unpack(o)
+end
+
 local dc = discover_card
 function discover_card(card)
 	card = card or {}

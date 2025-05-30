@@ -387,13 +387,13 @@ SMODS.Voucher {
 }
 
 G.FUNCS.can_redeem_deck_or_sleeve = function(e)
-  if (e.config.ref_table.cost > G.GAME.dollars - G.GAME.bankrupt_at) and (e.config.ref_table.area and e.config.ref_table.area.config.type == 'shop') then
-      e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-      e.config.button = nil
-  else
-    e.config.colour = G.C.GREEN
-    e.config.button = 'use_card'
-  end
+	if (e.config.ref_table.cost > G.GAME.dollars - G.GAME.bankrupt_at) and (e.config.ref_table.area and e.config.ref_table.area.config.type == 'shop') then
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+	else
+		e.config.colour = G.C.GREEN
+		e.config.button = 'use_card'
+	end
 end
 
 function PTASaka.deck_sleeve_redeem(self)
@@ -402,6 +402,7 @@ function PTASaka.deck_sleeve_redeem(self)
 
 		self.states.hover.can = false
 		G.GAME.used_jokers[self.config.center_key] = true
+		G.GAME.used_vouchers[self.config.center_key] = true
 		local top_dynatext = nil
 		local bot_dynatext = nil
 
@@ -454,23 +455,82 @@ function PTASaka.deck_sleeve_redeem(self)
 		}))
 		ease_dollars(-self.cost)
 		inc_career_stat('c_shop_dollars_spent', self.cost)
-		inc_career_stat('c_vouchers_bought', 1)
+		--inc_career_stat('c_vouchers_bought', 1)
 		set_voucher_usage(self)
 		check_for_unlock({ type = 'run_redeem' })
 
+		local conf = G.P_CENTERS[self.config.center_key].config
 		if self.ability.set == "Back" then
 			local copy = PTASaka.deep_copy(G.P_CENTERS[self.config.center_key])
 			copy.center = G.P_CENTERS[self.config.center_key]
 			local fake = { name = G.P_CENTERS[self.config.center_key].name, effect = copy }
 			Back.apply_to_run(fake)
+			if not G.GAME.payasaka_used_decks then G.GAME.payasaka_used_decks = {} end
+			G.GAME.payasaka_used_decks[self.config.center_key] = true
 			-- hiiii
 		end
 		if self.ability.set == "Sleeve" then
 			if G.P_CENTERS[self.config.center_key].apply then
 				--CardSleeves.Sleeve.apply(G.P_CENTERS[card.ability.set_deck])
 				G.P_CENTERS[self.config.center_key]:apply(G.P_CENTERS[self.config.center_key])
+				if not G.GAME.payasaka_used_sleeves then G.GAME.payasaka_used_sleeves = {} end
+				G.GAME.payasaka_used_sleeves[self.config.center_key] = true
 			end
 		end
+
+		-- Apply effects that would only apply at the start of a run
+		G.GAME.round_resets.hands = G.GAME.round_resets.hands + (conf.hands or 0)
+		if conf.hands then ease_hands_played(conf.hands or 0) end
+		G.GAME.round_resets.discards = G.GAME.round_resets.discards + (conf.discards or 0)
+		if conf.discards then ease_discard(conf.discards or 0) end
+		G.GAME.base_reroll_cost = math.max(0, G.GAME.base_reroll_cost - (conf.reroll_discount or 0))
+		if conf.dollars then ease_dollars(conf.dollars or 0) end
+		if conf.remove_faces then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.playing_cards then
+						local cardtable = {}
+						for k, v in ipairs(G.playing_cards) do cardtable[#cardtable + 1] = v end
+						for i = #cardtable, 1, -1 do
+							if (cardtable[i].base.id == 11 or cardtable[i].base.id == 12 or cardtable[i].base.id == 13) then
+								cardtable[i]:remove()
+								--G.playing_cards[i] = nil
+							end
+						end
+					end
+					return true
+				end,
+			}))
+		end
+		if conf.randomize_rank_suit then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					-- Only use suits of cards available in the deck
+					local valid = {}
+					for _, v in ipairs(G.playing_cards or {}) do
+						if not SMODS.has_no_suit(v) then valid[#valid + 1] = { card_key = string.sub(v.base.suit, 1, 1), key =
+							v.base.suit } end
+					end
+					-- Ok then.
+					if not valid[1] then valid = { SMODS.Suits['Hearts'] } end
+					if G.playing_cards then
+						for i = 1, #G.playing_cards do
+							---@type Card
+							local c = G.playing_cards[i]
+							if c then
+								local suit = pseudorandom_element(valid, pseudoseed('erratic')).key
+								local rank = pseudorandom_element(SMODS.Ranks, pseudoseed('erratic')).key
+								_ = SMODS.change_base(c, suit, rank)
+							end
+						end
+					end
+					return true
+				end,
+			}))
+		end
+		G.jokers.config.card_limit = G.jokers.config.card_limit + (conf.joker_slot or 0)
+		G.hand.config.card_limit = G.hand.config.card_limit + (conf.hand_size or 0)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + (conf.consumable_slot or 0)
 
 		delay(0.6)
 		SMODS.calculate_context({ buying_card = true, card = self })
