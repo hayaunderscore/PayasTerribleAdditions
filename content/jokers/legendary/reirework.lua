@@ -24,7 +24,7 @@ SMODS.Joker {
 			end
 		})
 		delay(0.5)
-		draw_card(G.play, card.from_area, nil, 'up', nil, card)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
 	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SELECTING_HAND

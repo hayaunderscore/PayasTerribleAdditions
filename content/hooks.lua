@@ -219,6 +219,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, ...)
 		valid_pools = {
 			"Joker",
 			"Consumeables",
+			"Voucher",
 			"Back",
 		}
 		if CardSleeves then valid_pools[#valid_pools + 1] = "Sleeve" end

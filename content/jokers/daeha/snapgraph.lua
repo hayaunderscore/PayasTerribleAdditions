@@ -93,7 +93,7 @@ SMODS.Joker {
 			delay((0.75 * 1.25) - 0.2)
 		end
 		delay(0.5)
-		draw_card(G.play, card.from_area, nil, 'up', nil, card)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
 	end,
 	can_use = function()
 		return G.STATE == G.STATES.SELECTING_HAND

@@ -21,7 +21,7 @@ if G and G.GAME then
 			update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
 			local fc = from_edition and scored_card or effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus
 			card_eval_status_text(m, 'extra', nil, percent, nil,
-				{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", percent, 0.5); fc:juice_up() end })
+				{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1, 0.5); fc:juice_up() end })
 			if not effect.remove_default_message then
 				if from_edition then
 					card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= to_big(amount) > to_big(0) and 'a_xmult' or 'a_xmult_minus',vars={amount}}, Xmult_mod =  amount, colour =  G.C.EDITION, edition = true})
@@ -60,7 +60,7 @@ if G and G.GAME then
 			update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
 			local fc = from_edition and scored_card or effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus
 			card_eval_status_text(m, 'extra', nil, percent, nil,
-				{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", percent, 0.5); fc:juice_up() end })
+				{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1, 0.5); fc:juice_up() end })
 			if not effect.remove_default_message then
 				if from_edition then
 					card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= to_big(amount) > to_big(0) and 'a_xchips' or 'a_xchips_minus',vars={amount}}, Xchips_mod =  amount, colour =  G.C.EDITION, edition = true})
