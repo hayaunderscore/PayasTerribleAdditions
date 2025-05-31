@@ -2019,5 +2019,6 @@ return {
 		property = "Property",
 		doscard = "DOS",
 		risk = "Risk",
+		back = "Deck",
 	},
 }

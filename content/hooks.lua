@@ -185,18 +185,26 @@ function Game:init_game_object()
 	return ret
 end
 
-local banned_types = {
+PTASaka.DeclineBlacklist = {
 	["Tag"] = true,
-	["Voucher"] = true,
-	["Enhanced"] = true,
+	["Stake"] = true,
+	["Unique"] = true,
 	["Seal"] = true,
 	["Sticker"] = true,
+	["Edition"] = true,
+	["Default"] = true,
+	["Enhanced"] = true,
 }
+
+if Entropy and Entropy.ParakmiBlacklist then
+	PTASaka.FH.merge(PTASaka.DeclineBlacklist, Entropy.ParakmiBlacklist)
+end
 
 -- for Voucher of Equilibrium
 local old_get_current_pool = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, ...)
-	if banned_types[_type] then
+	-- If we have Parakmi we don't really need to do anything else...
+	if PTASaka.DeclineBlacklist[_type] or next(SMODS.find_card('j_entr_parakmi')) then
 		return old_get_current_pool(_type,
 			_rarity, _legendary, _append, ...)
 	end
@@ -224,6 +232,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, ...)
 			if v.unlocked
 				and not v.no_doe
 				and (in_pool or not v.in_pool)
+				and not PTASaka.DeclineBlacklist[v.key]
 				and not G.GAME.banned_keys[v.key] then
 				pool_items[#pool_items + 1] = v.key
 			end
@@ -316,7 +325,7 @@ function Back:trigger_effect(args)
 				end
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
 			end
-			if type(obj.calculate) == "function" then
+			if type(obj.calculate) == "function" and args.context ~= "final_scoring_step" then
 				local context = type(args.context) == "table" and args.context or
 				args                                                       -- bit hacky, though this shouldn't even have to be used?
 				if context.repetition or context.retrigger_joker_check then
@@ -364,7 +373,7 @@ function Back:trigger_effect(args)
 				end
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
 			end
-			if type(obj.calculate) == "function" then
+			if type(obj.calculate) == "function" and args.context ~= "final_scoring_step" then
 				local context = type(args.context) == "table" and args.context or
 				args                                                       -- bit hacky, though this shouldn't even have to be used?
 				if context.repetition or context.retrigger_joker_check then

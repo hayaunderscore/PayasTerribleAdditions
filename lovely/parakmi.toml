@@ -40,3 +40,88 @@ elseif card.ability.set == 'Sleeve' then
 '''
 match_indent = true
 times = 1
+
+# Fix the game saving this for some reason
+[[patches]]
+[patches.pattern]
+target = 'back.lua'
+pattern = '''save_run()'''
+position = 'before'
+payload = '''
+if G.is_redeeming_deck then G.is_redeeming_deck = false; return true end
+'''
+match_indent = true
+times = 1
+
+# Fix vanilla backs not displaying their descriptions
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''elseif _c.set == 'Joker' then'''
+position = 'before'
+payload = '''
+elseif _c.set == 'Back' and not (_c.generate_ui and type(_c.generate_ui) == 'function') and not Entropy then
+	local loc_args = {}
+	local name_to_check = _c.name
+	local effect_config = _c.config
+	if name_to_check == 'Blue Deck' then loc_args = {effect_config.hands}
+    elseif name_to_check == 'Red Deck' then loc_args = {effect_config.discards}
+    elseif name_to_check == 'Yellow Deck' then loc_args = {effect_config.dollars}
+    elseif name_to_check == 'Green Deck' then loc_args = {effect_config.extra_hand_bonus, effect_config.extra_discard_bonus}
+    elseif name_to_check == 'Black Deck' then loc_args = {effect_config.joker_slot, -effect_config.hands}
+    elseif name_to_check == 'Magic Deck' then loc_args = {localize{type = 'name_text', key = 'v_crystal_ball', set = 'Voucher'}, localize{type = 'name_text', key = 'c_fool', set = 'Tarot'}}
+    elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}
+    elseif name_to_check == 'Ghost Deck' then
+    elseif name_to_check == 'Abandoned Deck' then 
+    elseif name_to_check == 'Checkered Deck' then
+    elseif name_to_check == 'Zodiac Deck' then loc_args = {localize{type = 'name_text', key = 'v_tarot_merchant', set = 'Voucher'}, 
+        localize{type = 'name_text', key = 'v_planet_merchant', set = 'Voucher'},
+        localize{type = 'name_text', key = 'v_overstock_norm', set = 'Voucher'}}
+    elseif name_to_check == 'Painted Deck' then loc_args = {effect_config.hand_size,effect_config.joker_slot}
+    elseif name_to_check == 'Anaglyph Deck' then loc_args = {localize{type = 'name_text', key = 'tag_double', set = 'Tag'}}
+    elseif name_to_check == 'Plasma Deck' then loc_args = {effect_config.ante_scaling}
+    elseif name_to_check == 'Erratic Deck' then
+    end
+	specific_vars = PTASaka.FH.merge(specific_vars, loc_args)
+	-- This is ignored if the back already has a generate_ui (like modded backs)
+	SMODS.Center.generate_ui(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    if specific_vars and specific_vars.pinned then info_queue[#info_queue+1] = {key = 'pinned_left', set = 'Other'} end
+    if specific_vars and specific_vars.sticker then info_queue[#info_queue+1] = {key = string.lower(specific_vars.sticker)..'_sticker', set = 'Other'} end
+'''
+match_indent = true
+times = 1
+
+# Entropy patch as we have our own calculate function
+[[patches]]
+[patches.pattern]
+target = '=[SMODS entr "lib/hooks.lua"]'
+pattern = '''if G.GAME.entr_bought_decks then'''
+position = 'at'
+payload = '''
+if G.GAME.entr_bought_decks and not G.GAME.payasaka_redeemed_deck_or_sleeve then
+'''
+match_indent = true
+times = 1
+
+# Also patch Entropy to not display its own redeem function
+[[patches]]
+[patches.pattern]
+target = '=[SMODS entr "lib/hooks.lua"]'
+pattern = '''if (card.ability.set == "Back" or card.ability.set == "Sleeve") then'''
+position = 'at'
+payload = '''
+if (card.ability.set == "Back" or card.ability.set == "Sleeve") and not PTASaka then
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS entr "lib/hooks.lua"]'
+pattern = '''if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then'''
+position = 'at'
+payload = '''
+if (card.config.center.set == "Back" or card.config.center.set == "Sleeve") and not PTASaka then
+'''
+match_indent = true
+times = 1

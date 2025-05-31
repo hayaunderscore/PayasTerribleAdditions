@@ -403,6 +403,7 @@ function PTASaka.deck_sleeve_redeem(self)
 		self.states.hover.can = false
 		G.GAME.used_jokers[self.config.center_key] = true
 		G.GAME.used_vouchers[self.config.center_key] = true
+		G.GAME.payasaka_redeemed_deck_or_sleeve = true
 		local top_dynatext = nil
 		local bot_dynatext = nil
 
@@ -453,10 +454,12 @@ function PTASaka.deck_sleeve_redeem(self)
 				return true
 			end
 		}))
-		ease_dollars(-self.cost)
+		if self.cost and self.cost > 0 then
+			ease_dollars(-self.cost)
+		end
 		inc_career_stat('c_shop_dollars_spent', self.cost)
 		--inc_career_stat('c_vouchers_bought', 1)
-		set_voucher_usage(self)
+		--set_voucher_usage(self)
 		check_for_unlock({ type = 'run_redeem' })
 
 		local conf = G.P_CENTERS[self.config.center_key].config
@@ -464,6 +467,7 @@ function PTASaka.deck_sleeve_redeem(self)
 			local copy = PTASaka.deep_copy(G.P_CENTERS[self.config.center_key])
 			copy.center = G.P_CENTERS[self.config.center_key]
 			local fake = { name = G.P_CENTERS[self.config.center_key].name, effect = copy }
+			G.is_redeeming_deck = true
 			Back.apply_to_run(fake)
 			if not G.GAME.payasaka_used_decks then G.GAME.payasaka_used_decks = {} end
 			G.GAME.payasaka_used_decks[self.config.center_key] = true
@@ -476,6 +480,12 @@ function PTASaka.deck_sleeve_redeem(self)
 				if not G.GAME.payasaka_used_sleeves then G.GAME.payasaka_used_sleeves = {} end
 				G.GAME.payasaka_used_sleeves[self.config.center_key] = true
 			end
+		end
+
+		-- Entropy compat
+		if Entropy then
+			G.GAME.entr_bought_decks = G.GAME.entr_bought_decks or {}
+			G.GAME.entr_bought_decks[#G.GAME.entr_bought_decks+1] = self.config.center_key
 		end
 
 		-- Apply effects that would only apply at the start of a run
@@ -508,8 +518,13 @@ function PTASaka.deck_sleeve_redeem(self)
 					-- Only use suits of cards available in the deck
 					local valid = {}
 					for _, v in ipairs(G.playing_cards or {}) do
-						if not SMODS.has_no_suit(v) then valid[#valid + 1] = { card_key = string.sub(v.base.suit, 1, 1), key =
-							v.base.suit } end
+						if not SMODS.has_no_suit(v) then
+							valid[#valid + 1] = {
+								card_key = string.sub(v.base.suit, 1, 1),
+								key =
+									v.base.suit
+							}
+						end
 					end
 					-- Ok then.
 					if not valid[1] then valid = { SMODS.Suits['Hearts'] } end
@@ -531,6 +546,51 @@ function PTASaka.deck_sleeve_redeem(self)
 		G.jokers.config.card_limit = G.jokers.config.card_limit + (conf.joker_slot or 0)
 		G.hand.config.card_limit = G.hand.config.card_limit + (conf.hand_size or 0)
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit + (conf.consumable_slot or 0)
+		-- Nostalgic Deck fix, mostly taken from Entropy
+		-- hi ruby
+		if conf.cry_beta then
+			local cnt = G.consumeables.config.card_limit
+			local cards = {}
+			for _, v in ipairs(G.jokers.cards) do
+				cards[#cards + 1] = v
+				v:remove_from_deck()
+				G.jokers:remove_card(v)
+			end
+			for _, v in ipairs(G.consumeables.cards) do
+				cards[#cards + 1] = v
+				v:remove_from_deck()
+				G.consumeables:remove_card(v)
+			end
+			G.consumeables:remove()
+			cnt = cnt + G.jokers.config.card_limit
+			G.jokers:remove()
+			G.consumeables = nil
+			local CAI = {
+				discard_W = G.CARD_W,
+				discard_H = G.CARD_H,
+				deck_W = G.CARD_W * 1.1,
+				deck_H = 0.95 * G.CARD_H,
+				hand_W = 6 * G.CARD_W,
+				hand_H = 0.95 * G.CARD_H,
+				play_W = 5.3 * G.CARD_W,
+				play_H = 0.95 * G.CARD_H,
+				joker_W = 4.9 * G.CARD_W,
+				joker_H = 0.95 * G.CARD_H,
+				consumeable_W = 2.3 * G.CARD_W,
+				consumeable_H = 0.95 * G.CARD_H
+			}
+			G.jokers = CardArea(
+				CAI.consumeable_W, 0,
+				CAI.joker_W + CAI.consumeable_W,
+				CAI.joker_H,
+				{ card_limit = cnt, type = 'joker', highlight_limit = 1e100 }
+			)
+			G.consumeables = G.jokers
+			for i, v in pairs(cards) do
+				v:add_to_deck()
+				G.jokers:emplace(v)
+			end
+		end
 
 		delay(0.6)
 		SMODS.calculate_context({ buying_card = true, card = self })
