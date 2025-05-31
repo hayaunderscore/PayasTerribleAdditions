@@ -228,6 +228,7 @@ SMODS.Joker {
 }
 
 -- Arrowstone -> Club Cleaver
+if PTASaka.Mod.config["Ahead"] then
 SMODS.Joker {
 	key = "clubcleaver",
 	rarity = "payasaka_ahead",
@@ -257,6 +258,7 @@ SMODS.Joker {
 		end
 	end
 }
+end
 
 local finity_exists = next(SMODS.find_mod('finity'))
 local f_dependency = {'ortalab'}

@@ -4,9 +4,14 @@
 -- Why not use a weight table perhaps? Why because fuck you
 PTASaka.gacha_rarity_table = { "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Rare",
 	"Common", "Common", "Common", "Common", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Uncommon",
-	"Uncommon", "Rare", "Uncommon", "Uncommon", "Legendary", "payasaka_ahead", "Uncommon", "Uncommon", "Uncommon",
-	"Uncommon", "Common", "Common", "Common", "Common", "Common", "payasaka_daeha", "Common", "Uncommon", "Common",
+	"Uncommon", "Rare", "Uncommon", "Uncommon", "Legendary", "Uncommon", "Uncommon", "Uncommon",
+	"Uncommon", "Common", "Common", "Common", "Common", "Common", "Common", "Uncommon", "Common",
 	"Common", "Uncommon", "payasaka_dud" }
+
+if PTASaka.Mod.config["Ahead"] then
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = 'payasaka_ahead'
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = 'payasaka_daeha'
+end
 
 if next(SMODS.find_mod('finity')) then
 	-- This would be really funny

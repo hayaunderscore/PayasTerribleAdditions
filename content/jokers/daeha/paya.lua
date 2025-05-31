@@ -64,17 +64,3 @@ SMODS.Joker {
 		end
 	end
 }
-
-function PTASaka.arrow(arrow, val1, val2, og_arrow)
-	og_arrow = og_arrow or 1
-	local val = val1
-	if arrow == 1 then
-		-- Talisman calculates tetrations like this
-		val = val ^ (og_arrow > 1 and (val2-1) or val2)
-	elseif arrow == 0 then
-		val = val * val2
-	else
-		val = val ^ PTASaka.arrow(arrow - 1, val, val2, arrow)
-	end
-	return val
-end

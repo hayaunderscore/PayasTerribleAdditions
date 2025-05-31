@@ -1,3 +1,4 @@
+if PTASaka.Mod.config["Risk Cards"] then
 SMODS.Joker {
 	name = "Fulminologist",
 	key = "desperado",
@@ -8,3 +9,4 @@ SMODS.Joker {
 	blueprint_compat = false,
 	demicoloncompat = false,
 }
+end

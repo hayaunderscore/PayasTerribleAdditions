@@ -1,3 +1,4 @@
+if PTASaka.Mod.config["Risk Cards"] then
 SMODS.Joker {
 	key = "patrick",
 	rarity = 3,
@@ -53,3 +54,4 @@ SMODS.Joker {
 		}
 	end
 }
+end

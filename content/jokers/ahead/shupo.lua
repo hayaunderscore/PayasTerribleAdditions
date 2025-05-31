@@ -73,32 +73,3 @@ SMODS.Joker {
 		end
 	end
 }
-
--- nil
-SMODS.Joker {
-	name = "payasaka_nil",
-	key = 'nil',
-	rarity = "payasaka_ahead",
-	cost = 0,
-	unlocked = true,
-	discovered = true,
-	blueprint_compat = false,
-	eternal_compat = false,
-	perishable_compat = false,
-	no_collection = true,
-	pos = { x = 5, y = 3 },
-	atlas = "JOE_Jokers",
-	no_doe = true, -- There is no reason for this to be available in DOE/Balanced sleeve
-	--[[
-	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + 1
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - 1
-	end,
-	]]
-	in_pool = function(self, args)
-		return false
-	end,
-	set_card_type_badge = function(self, card, badges) end
-}

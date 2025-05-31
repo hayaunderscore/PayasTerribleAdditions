@@ -169,6 +169,7 @@ SMODS.Joker {
 }
 
 -- Niveus Terras (WIP)
+if PTASaka.Mod.config["Ahead"] then
 SMODS.Joker {
 	name = 'Niveus Terras',
 	key = 'niveusterras',
@@ -204,6 +205,7 @@ SMODS.Joker {
 		}
 	end
 }
+end
 
 -- Recuperare
 SMODS.Joker {

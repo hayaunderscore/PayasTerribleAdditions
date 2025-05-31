@@ -4,4 +4,6 @@ return {
 	["Cross Mod Content"] = true,
 	["Music"] = true,
 	["Witty Comments"] = true,
+	["Ahead"] = true,
+	["Risk Cards"] = true,
 }

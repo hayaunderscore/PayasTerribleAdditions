@@ -1852,6 +1852,56 @@ return {
 				}
 			}
 		},
+		PTASet = {
+			ptaset_payasaka_ahead = {
+				name = "Ahead Jokers",
+				text = {
+					"Meme rarity that focuses on",
+					"{X:chips,C:white}XChips{}, {C:spades}Spades{} or both",
+					"{C:inactive,s:0.8}Intentionally unbalanced."
+				}
+			},
+			ptaset_payasaka_property = {
+				name = "Property Cards",
+				text = {
+					"Consumables that focus",
+					"on {C:money}econ{} generation",
+					"{C:inactive,s:0.8}Under construction."
+				}
+			},
+			ptaset_payasaka_risk = {
+				name = "Risk Cards",
+				text = {
+					"Consumables that implement",
+					"a {C:risk}Risk{} and {C:reward}Reward{} system",
+					"{C:inactive}Risks give Rewards.",
+					"{C:inactive,s:0.8}Under construction."
+				}
+			},
+			ptaset_payasaka_crossmod = {
+				name = "Cross-Mod Content",
+				text = {
+					"Cross-mod content featuring",
+					"{C:attention}additional{} content for Cryptid,",
+					"Revo's Vault, Ortalab, Finity",
+					"and more!"
+				}
+			},
+			ptaset_payasaka_music = {
+				name = "\"Soundtrack\"",
+				text = {
+					"Additional music for specific",
+					"areas throughout the mod",
+				}
+			},
+			ptaset_payasaka_comments = {
+				name = "Witty Comments",
+				text = {
+					"Paya's thoughts on",
+					"things... Probably."
+				}
+			},
+		},
 		PTACredits = {
 			credit_haya = {
 				name = "haya3218",

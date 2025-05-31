@@ -549,6 +549,7 @@ local rarities = {
 	[4] = "Legendary"
 }
 
+if PTASaka.Mod.config["Ahead"] then
 -- Center
 SMODS.Consumable {
 	set = 'Spectral',
@@ -678,3 +679,4 @@ SMODS.Consumable {
 		return { vars = { card.ability.max_highlighted } }
 	end
 }
+end

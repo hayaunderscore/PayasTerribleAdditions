@@ -11,6 +11,8 @@ conf["Property Cards"] = nil_sane(conf["Property Cards"], true)
 conf["Cross Mod Content"] = nil_sane(conf["Cross Mod Content"], true)
 conf["Music"] = nil_sane(conf["Music"], true)
 conf["Witty Comments"] = nil_sane(conf["Witty Comments"], true)
+conf["Ahead"] = nil_sane(conf["Ahead"], true)
+conf["Risk Cards"] = nil_sane(conf["Risk Cards"], true)
 
 -- hiii
 SMODS.optional_features.retrigger_joker = true
@@ -114,17 +116,21 @@ PTASaka.RequireFolder("content/jokers/uncommon/")
 PTASaka.RequireFolder("content/jokers/rare/")
 -- Legendary
 PTASaka.RequireFolder("content/jokers/legendary/")
--- Ahead
-PTASaka.RequireFolder("content/jokers/ahead/")
--- daehA
-PTASaka.RequireFolder("content/jokers/daeha/")
+if conf["Ahead"] then
+	-- Ahead
+	PTASaka.RequireFolder("content/jokers/ahead/")
+	-- daehA
+	PTASaka.RequireFolder("content/jokers/daeha/")
+end
 
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/tarots.lua"))()
 
 assert(SMODS.load_file("content/dos.lua"))()
-assert(SMODS.load_file("content/risk.lua"))()
-assert(SMODS.load_file("content/rewards.lua"))()
+if conf["Risk Cards"] then
+	assert(SMODS.load_file("content/risk.lua"))()
+	assert(SMODS.load_file("content/rewards.lua"))()
+end
 assert(SMODS.load_file("content/gachapack.lua"))()
 
 -- Vouchers
@@ -192,6 +198,7 @@ G.C.BADGE_TEMP_BG = SMODS.Gradient {
 
 local cmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
+	if obj and obj.pta_no_mod_badge then return end
 	cmb(obj, badges)
 	if SMODS.config.no_mod_badges then return end
 	local cred = obj and obj.pta_credit or nil
@@ -369,6 +376,103 @@ local function create_credit(_key)
 	}
 end
 
+-- Set toggles, similar to Cryptid
+PTASaka.SetToggle = SMODS.Center:extend{
+	set = "PTASet",
+	pos = { x = 0, y = 0 },
+	config = {},
+	class_prefix = "ptaset",
+	pta_associated_config = "Balanced-ish",
+	discovered = true,
+	unlocked = true,
+	required_params = {
+		"key",
+	},
+	inject = function(self, i)
+		if not G.P_CENTER_POOLS[self.set] then
+			G.P_CENTER_POOLS[self.set] = {}
+		end
+		SMODS.Center.inject(self, i)
+	end,
+	set_card_type_badge = function(self, card, badges) end,
+	pta_no_mod_badge = true,
+	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		specific_vars = specific_vars or {}
+		specific_vars.debuffed = nil
+		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+	end,
+	update = function(self, card, dt)
+		card.debuff = not conf[self.pta_associated_config]
+	end
+}
+
+-- Ahead Jokers
+PTASaka.SetToggle {
+	key = 'ahead',
+	atlas = "JOE_Jokers",
+	pos = { x = 1, y = 7 },
+	pta_associated_config = "Ahead"
+}
+-- Property Cards
+PTASaka.SetToggle {
+	key = 'property',
+	atlas = 'JOE_Properties',
+	pos = { x = 1, y = 1 },
+	pta_associated_config = "Property Cards"
+}
+-- Risk Cards
+PTASaka.SetToggle {
+	key = 'risk',
+	atlas = "JOE_Risk",
+	pos = { x = 2, y = 2 },
+	pta_associated_config = "Risk Cards",
+	draw = function(self, card, layer)
+		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+	end,
+}
+-- Cross Mod Content
+PTASaka.SetToggle {
+	key = 'crossmod',
+	atlas = "JOE_Jokers",
+	pos = { x = 9, y = 0 },
+	soul_pos = { x = 10, y = 0 },
+	pta_front_pos = { x = 10, y = 1 },
+	pta_associated_config = "Cross Mod Content",
+	draw = function(self, card, layer)
+		-- I have to render this shit manually :wilted_rose:
+		local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+		local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+		card.children.floating_sprite:draw_shader('dissolve',0, nil, nil, card.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
+		card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod)
+		card.children.pta_front:draw_shader('dissolve', nil, nil, nil, card.children.center)
+	end,
+}
+-- Music
+PTASaka.SetToggle {
+	key = 'music',
+	atlas = "JOE_Jokers",
+	pos = { x = 9, y = 1 },
+	pta_associated_config = "Music"
+}
+-- Witty Comments
+PTASaka.SetToggle {
+	key = 'comments',
+	atlas = "JOE_Jokers",
+	pos = { x = 0, y = 6 },
+	soul_pos = { x = 2, y = 6 },
+	pta_associated_config = "Witty Comments"
+}
+
+local cardClick = Card.click
+function Card:click()
+	cardClick(self)
+	if self.ability.set == "PTASet" then
+		conf[self.config.center.pta_associated_config] = not conf[self.config.center.pta_associated_config]
+		self.debuff = not conf[self.config.center.pta_associated_config]
+		play_sound('card1')
+	end
+end
+
 -- TODO: probably separate these into a different file
 local tabs = function() return
 {
@@ -376,13 +480,32 @@ local tabs = function() return
 		label = "Features",
 		chosen = true,
 		tab_definition_function = function()
+			G.pta_features_area = CardArea(
+				G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
+				3.25 * G.CARD_W,
+				0.95 * G.CARD_H,
+				{ card_limit = 3, type = 'title', highlight_limit = 0, collection = true }
+			)
+			G.pta_features_area_two = CardArea(
+				G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
+				3.25 * G.CARD_W,
+				0.95 * G.CARD_H,
+				{ card_limit = 3, type = 'title', highlight_limit = 0, collection = true }
+			)
+			for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
+				local area = k <= 3 and G.pta_features_area or G.pta_features_area_two
+				local card = Card(area.T.x + area.T.w / 2, area.T.y,
+					G.CARD_W, G.CARD_H, G.P_CARDS.empty,
+					v)
+				area:emplace(card)
+			end
 			return {
 				n = G.UIT.ROOT,
 				config = {
 					emboss = 0.05,
 					minh = 6,
 					r = 0.1,
-					minw = 10,
+					minw = 6,
 					align = "cm",
 					-- padding = 0.2,
 					colour = G.C.BLACK,
@@ -390,26 +513,54 @@ local tabs = function() return
 				nodes = {
 					{
 						n = G.UIT.C,
-						config = { align = "tm" },
+						config = { align = "cm", padding = 0.2 },
 						nodes = {
 							{
 								n = G.UIT.R,
-								config = { align = "cm", padding = 0.2 },
+								config = { align = "cm", padding = 0.5, colour = darken(G.C.BLACK, 0.2), emboss = 0.05, r = 0.1 },
 								nodes = {
-									create_toggle_with_description({label = "Balanced-ish", ref_table = conf, ref_value = "Balanced-ish"}, "option_balanced"),
-									--{n = G.UIT.R, config = {padding = 0.2}},
-									create_toggle_with_description({label = "Property Cards", ref_table = conf, ref_value = "Property Cards"}, "option_property_cards"),
-									create_toggle_with_description({label = "Cross Mod Content", ref_table = conf, ref_value = "Cross Mod Content"}, "option_crossmod"),
+									{
+										n = G.UIT.R,
+										config = { align = "cm" },
+										nodes = {
+											{ n = G.UIT.O, config = { object = G.pta_features_area } },
+										}
+									},
+									{
+										n = G.UIT.R,
+										config = { align = "cm" },
+										nodes = {
+											{ n = G.UIT.O, config = { object = G.pta_features_area_two } },
+										}
+									},
 								}
 							},
 							{
 								n = G.UIT.R,
-								config = { align = "cm", padding = 0.2 },
+								config = { align = "cm" },
 								nodes = {
-									create_toggle_with_description({label = "Music", ref_table = conf, ref_value = "Music"}, "option_music"),
-									create_toggle_with_description({label = "Witty Comments", ref_table = conf, ref_value = "Witty Comments"}, "option_wittycomments"),
+									{
+										n = G.UIT.C,
+										nodes = {
+											{
+												n = G.UIT.O,
+												config = {
+													object = DynaText{
+														string = "Specific options might require a restart",
+														float = true,
+														pop_in = 0,
+														pop_in_rate = 99999,
+														silent = true,
+														shadow = true,
+														scale = 0.4,
+														colours = {G.C.EDITION}
+													}
+												}
+											}
+										}
+									}
 								}
-							},
+							}
 						}
 					}
 				}
