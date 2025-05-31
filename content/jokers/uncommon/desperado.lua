@@ -1,5 +1,5 @@
 SMODS.Joker {
-	name = "Desperado",
+	name = "Fulminologist",
 	key = "desperado",
 	rarity = 2,
 	atlas = "JOE_Jokers",

@@ -936,7 +936,7 @@ return {
 				}
 			},
 			j_payasaka_desperado = {
-				name = "Desperado",
+				name = "Fulminologist",
 				text = {
 					"Shop has an {C:attention}additional",
 					"{C:risk}Risk{} Pack for half the price",
