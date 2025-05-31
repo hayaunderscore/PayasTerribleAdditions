@@ -76,7 +76,7 @@ function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blackli
 	if blacklist[key] then return val end
 	if (whitelist and whitelist[key]) or not whitelist then
 		local t = type(val)
-		if is_number(val) then
+		if is_number(val) and not (val == 1 and (key == "x_mult" or key == "x_chips")) then
 			reference[key] = val
 			return func(val, amt)
 		elseif t == "table" then
