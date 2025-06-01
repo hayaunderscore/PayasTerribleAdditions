@@ -14,7 +14,19 @@ SMODS.Joker {
 	pools = {["Joker"] = true, ["Meme"] = true, ["Food"] = true},
 	calculate = function(self, card, context)
 		if context.setting_blind then
-			G.GAME.blind.chips = G.GAME.blind.chips * card.ability.extra.xblind
+			G.E_MANAGER:add_event(Event {
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+					G.GAME.blind.chips = G.GAME.blind.chips * card.ability.extra.xblind
+					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+					--G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
+					G.GAME.blind:wiggle()
+					card:juice_up()
+					return true
+				end
+			})
+			delay(0.6)
 		end
 		if context.joker_main or context.forcetrigger then
 			return {

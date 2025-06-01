@@ -241,6 +241,7 @@ PTASaka.Risk {
 			delay = 0.4,
 			func = function()
 				G.GAME.blind.chips = G.GAME.blind.chips * 2
+				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 				--G.GAME.blind.dollars = G.GAME.blind.dollars * ability.money
 				G.GAME.blind:wiggle()
 				return true
