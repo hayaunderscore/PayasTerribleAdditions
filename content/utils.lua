@@ -64,25 +64,27 @@ end
 
 -- Loosely based on https://github.com/balt-dev/Inkbleed/blob/trunk/modules/misprintize.lua
 -- Specifically for non random values
-function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist)
+function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist, layer)
 	reference = reference or {}
 	key = key or "1"
 	amt = amt or 1
 	func = func or function(v, a)
 		return v * a
 	end
+	layer = layer or 0
 	blacklist = blacklist or PTASaka.MisprintizeForbidden
 	-- Forbidden, skip it
 	if blacklist[key] then return val end
 	if (whitelist and whitelist[key]) or not whitelist then
 		local t = type(val)
-		if is_number(val) and not (val == 1 and (key == "x_mult" or key == "x_chips")) then
+		--if is_number(val) then print("key: "..key.." val: "..val.." layer: "..layer) end
+		if is_number(val) and not (val == 1 and (key == "x_mult" or key == "x_chips") and layer == 1) then
 			reference[key] = val
 			return func(val, amt)
 		elseif t == "table" then
 			local k, v = next(val, nil)
 			while k ~= nil do
-				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist)
+				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist, layer + 1)
 				k, v = next(val, k)
 			end
 		end
