@@ -31,7 +31,7 @@ SMODS.Joker {
 				message = "Splash!"
 			}
 		end
-		if context.end_of_round and G.GAME.blind.boss and not context.individual and context.cardarea == G.jokers then
+		if context.end_of_round and G.GAME.blind.boss and context.main_eval then
 			card.ability.extra.cost = 2
 			return {
 				message = localize('k_reset').."!"

@@ -20,7 +20,7 @@ SMODS.Joker {
 				x_mult = card.ability.extra.x_mult
 			}
 		end
-		if context.end_of_round and context.cardarea == G.jokers and ((pseudorandom('f2p_model') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds)) and not context.individual then
+		if context.end_of_round and context.main_eval and ((pseudorandom('f2p_model') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds)) then
 			local _card = SMODS.add_card({ key = "c_payasaka_gacha" })
 			card:juice_up()
 			_card:juice_up()

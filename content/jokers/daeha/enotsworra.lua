@@ -30,7 +30,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.chips, enotsworrA_signs[card.ability.current_sign].sign, colours = { enotsworrA_signs[card.ability.current_sign].bgcolor, enotsworrA_signs[card.ability.current_sign].color } } }
 	end,
 	calculate = function(self, card, context)
-		if (context.end_of_round and pseudorandom('enotsworra_fuck') < (G.GAME.probabilities.normal or 1)/card.ability.odds and not context.repetition and not context.individual and not context.retrigger_joker_check) or context.forcetrigger then
+		if (context.end_of_round and pseudorandom('enotsworra_fuck') < (G.GAME.probabilities.normal or 1)/card.ability.odds and context.main_eval) or context.forcetrigger then
 			local new_sign = nil
 			while (new_sign == nil) or new_sign == card.ability.current_sign do
 				new_sign = pseudorandom_element(enotsworrA_validsigns, pseudoseed('enotsworra_fuck_shit'))

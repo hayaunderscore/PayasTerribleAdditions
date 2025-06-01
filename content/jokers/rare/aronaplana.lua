@@ -129,7 +129,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers and ((pseudorandom('plana_gift_card') < (G.GAME.probabilities.normal or 1)/card.ability.odds)) then
+		if context.end_of_round and context.main_eval and ((pseudorandom('plana_gift_card') < (G.GAME.probabilities.normal or 1)/card.ability.odds)) then
 			local _card = SMODS.add_card({ key = pseudorandom_element(G.P_CENTER_POOLS.Spectral,
 				pseudoseed("payasaka_plana")).key })
 			_card:set_edition('e_negative', true)

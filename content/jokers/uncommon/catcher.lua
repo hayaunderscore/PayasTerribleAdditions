@@ -18,7 +18,7 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if (context.end_of_round and context.cardarea == G.jokers and not (context.game_over and context.individual and context.repetition)) or context.forcetrigger then
+		if (context.end_of_round and context.main_eval and not (context.game_over)) or context.forcetrigger then
 			if #G.consumeables.cards < G.consumeables.config.card_limit then
 				G.E_MANAGER:add_event(Event{
 					func = function()

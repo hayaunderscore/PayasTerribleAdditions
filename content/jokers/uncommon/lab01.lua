@@ -52,7 +52,7 @@ SMODS.Joker {
 				message = 'Set!'
 			}
 		end
-		if context.end_of_round and context.cardarea == card.area and not context.game_over and not context.individual then
+		if context.end_of_round and not context.game_over and context.main_eval then
 			rets[#rets+1] = {
 				message = localize('k_reset').."!"
 			}

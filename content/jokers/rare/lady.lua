@@ -47,7 +47,7 @@ SMODS.Joker {
 				xmult = card.ability.extra.x_mult
 			}
 		end
-		if context.end_of_round and not context.game_over and not context.individual and not context.blueprint_card then
+		if context.end_of_round and not context.game_over and context.main_eval and not context.blueprint_card then
 			-- Reset debuffs
 			for _, area in ipairs({G.hand, G.discard, G.play}) do
 				for i = 1, #area.cards do

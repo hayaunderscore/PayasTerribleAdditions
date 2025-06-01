@@ -290,7 +290,7 @@ SMODS.Joker {
 				x_mult = extra.finity_mult * extra.finity_count
 			}
 		end
-		if (not context.blueprint_card) and finity_exists and context.end_of_round and (not context.individual) and context.cardarea == G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+		if (not context.blueprint_card) and finity_exists and context.end_of_round and context.main_eval and #G.jokers.cards < G.jokers.config.card_limit then
 			if (pseudorandom('finity_funny') < (G.GAME.probabilities.normal or 1)/extra.finity_odds) or card.ability.cry_rigged then
 				G.E_MANAGER:add_event(Event{
 					func = function()

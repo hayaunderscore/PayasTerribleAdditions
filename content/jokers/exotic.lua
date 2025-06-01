@@ -51,7 +51,7 @@ SMODS.Joker {
 				card = card
 			}
 		end
-		if context.end_of_round and context.cardarea == G.jokers then
+		if context.end_of_round and context.main_eval then
 			local rng = pseudorandom("payasaka_doodlekosmos")
 			if rng < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds or card.ability.cry_rigged then
 				G.E_MANAGER:add_event(Event{

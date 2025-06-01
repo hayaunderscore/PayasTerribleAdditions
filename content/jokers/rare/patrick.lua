@@ -30,7 +30,7 @@ SMODS.Joker {
 				x_mult = card.ability.extra.x_mult
 			}
 		end
-		if (G.GAME.blind_on_deck == 'Boss' and context.end_of_round and context.cardarea == G.jokers and not (context.game_over and context.individual and context.repetition)) or context.forcetrigger then
+		if (G.GAME.blind_on_deck == 'Boss' and context.end_of_round and context.main_eval and not (context.game_over)) or context.forcetrigger then
 			for i = 1, math.min(card.ability.extra.risk, G.consumeables.config.card_limit-#G.consumeables.cards) do
 				G.E_MANAGER:add_event(Event{
 					trigger = 'after',
