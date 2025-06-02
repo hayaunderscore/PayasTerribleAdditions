@@ -170,16 +170,18 @@ function Game:init_game_object()
 	ret.payasaka_modded_rate = 0
 
 	if G and G.STAGE == G.STAGES.RUN then
-		-- Shuffle gacha table
-		local function shuffle(tbl)
-			for i = #tbl, 2, -1 do
-				local j = pseudorandom('gacha_fuck_you', i)
-				tbl[i], tbl[j] = tbl[j], tbl[i]
-			end
-		end
-		shuffle(PTASaka.gacha_rarity_table)
+		-- -- Shuffle gacha table
+		-- local function shuffle(tbl)
+		-- 	for i = #tbl, 2, -1 do
+		-- 		local j = pseudorandom('gacha_fuck_you', i)
+		-- 		tbl[i], tbl[j] = tbl[j], tbl[i]
+		-- 	end
+		-- end
+		-- shuffle(PTASaka.gacha_rarity_table)
 
-		ret.payasaka_gacha_rarity_table = PTASaka.gacha_rarity_table
+		-- ret.payasaka_gacha_rarity_table = PTASaka.gacha_rarity_table
+		ret.payasaka_aliased_gacha_table = PTASaka.create_alias_table(PTASaka.gacha_rarity_table)
+		print(ret.payasaka_aliased_gacha_table)
 	end
 
 	return ret

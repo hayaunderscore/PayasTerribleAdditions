@@ -232,6 +232,58 @@ function PTASaka.create_soul_aura_for_card(c)
 	end
 end
 
+function PTASaka.create_alias_table(val)
+	local total = 0
+	for k, v in ipairs(val) do
+		assert(v[2] >= 0, "Weight must not be negative")
+		total = total + v[2]
+	end
+	assert(total > 0, "Total weights must be positive")
+	local normalized = #val / total
+	local norm = {}
+	local small_stack = {}
+	local big_stack = {}
+	for i, w in ipairs(val) do
+		norm[i] = w[2] * normalized
+		if norm[i] < 1 then
+			table.insert(small_stack, i)
+		else
+			table.insert(big_stack, i)
+		end
+	end
+
+	local prob = {}
+	local alias = {}
+	while small_stack[1] and big_stack[1] do -- both non-empty
+		small = table.remove(small_stack)
+		large = table.remove(big_stack)
+		prob[small] = norm[small]
+		alias[small] = large
+		norm[large] = norm[large] + norm[small] - 1
+		if norm[large] < 1 then
+			table.insert(small_stack, large)
+		else
+			table.insert(big_stack, large)
+		end
+	end
+
+	for _, v in ipairs(big_stack) do prob[v] = 1 end
+	for _, v in ipairs(small_stack) do prob[v] = 1 end
+
+	local values = {}
+	for k, v in ipairs(val) do
+		values[k] = v[1]
+	end
+
+	return { alias = alias, prob = prob, n = #val, values = values }
+end
+
+function PTASaka.pseudorandom_alias_element(t, seed)
+	local index = pseudorandom(seed, 1, t.n)
+	index = pseudorandom(seed) < t.prob[index] and index or t.alias[index]
+	return t.values[index]
+end
+
 -- ui stuff Taken from Aikoyori thanks aikoyori
 
 PTASaka.get_speed_mult = function(card)

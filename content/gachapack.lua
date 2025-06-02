@@ -1,24 +1,32 @@
 -- Arona's Domain
 
 -- The multiples is for the random function to pick that more likely
--- Why not use a weight table perhaps? Why because fuck you
-PTASaka.gacha_rarity_table = { "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Common", "Rare",
-	"Common", "Common", "Common", "Common", "Uncommon", "Uncommon", "Uncommon", "Uncommon", "Uncommon",
-	"Uncommon", "Rare", "Uncommon", "Uncommon", "Legendary", "Uncommon", "Uncommon", "Uncommon",
-	"Uncommon", "Common", "Common", "Common", "Common", "Common", "Common", "Uncommon", "Common",
-	"Common", "Uncommon", "payasaka_dud" }
+-- Now with weights!
+PTASaka.gacha_rarity_table = {
+	{"Common", 200},
+	{"Uncommon", 160},
+	{"Rare", 50},
+	{"Legendary", 15},
+}
 
 if PTASaka.Mod.config["Ahead"] then
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = 'payasaka_ahead'
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = 'payasaka_daeha'
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_ahead', 20}
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_daeha', 6}
 end
 
 if next(SMODS.find_mod('finity')) then
 	-- This would be really funny
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = 'finity_showdown'
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'finity_showdown', 10}
+end
+
+if Cryptid then
+	-- hahaha!
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'cry_epic', 25}
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'cry_exotic', 6}
 end
 
 SMODS.Consumable {
+	name = "pta-Gacha",
 	key = 'gacha',
 	set = 'Spectral',
 	atlas = "JOE_Tarots",
@@ -221,8 +229,8 @@ SMODS.Consumable {
 		local c = create_card("Joker",
 			i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
 			G.pack_cards, nil,
-			pseudorandom_element(
-				G.GAME.payasaka_gacha_rarity_table, pseudoseed('haha')), true, true, nil)
+			PTASaka.pseudorandom_alias_element(
+				G.GAME.payasaka_aliased_gacha_table, 'haha'), true, true, nil)
 		return c
 	end,
 	ease_background_colour = function(self)
