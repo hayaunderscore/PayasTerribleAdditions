@@ -1,7 +1,7 @@
 {
 	"id": "pta_saka",
 	"name": "Paya's Terrible Additions",
-	"author": ["haya3218"],
+	"author": ["haya3218", "ariyi"],
 	"description": "Yet another mod that adds whatever the hell I want to Balatro.",
 	"prefix": "payasaka",
 	"main_file": "paya.lua",
