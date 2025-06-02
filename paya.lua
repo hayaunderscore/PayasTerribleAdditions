@@ -58,11 +58,11 @@ SMODS.Atlas { key = "JOE_Exotic", path = "cryptid/exotics.png", px = 71, py = 95
 -- Icon lmao
 SMODS.Atlas { key = "modicon", path = "icon.png", px = 34, py = 34 }
 
-PTASaka.Font = SMODS.Font or (AKYRS and AKYRS.Font) or nil
-PTASaka.Fonts = SMODS.Fonts or (AKYRS and AKYRS.Fonts) or nil
+-- Small shortcuts idk
+PTASaka.Font = SMODS.Font
+PTASaka.Fonts = SMODS.Fonts
 
 -- Fonts
--- TODO move this to SMODS.Font when that pr gets merged
 if PTASaka.Font then
 	PTASaka.Font {
 		key = "pokemon",
