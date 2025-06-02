@@ -311,3 +311,10 @@ SMODS.Back {
 		return { vars = { self.config.joker_slot } }
 	end
 }
+
+-- Fix for Bunco
+local create_blind_card = Card.create_blind_card
+function Card:create_blind_card()
+	if create_blind_card then return create_blind_card(self) end
+	return self
+end
