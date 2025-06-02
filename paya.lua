@@ -462,7 +462,8 @@ function Card:click()
 	if self.ability.set == "PTASet" then
 		conf[self.config.center.pta_associated_config] = not conf[self.config.center.pta_associated_config]
 		self.debuff = not conf[self.config.center.pta_associated_config]
-		play_sound('card1')
+		self:juice_up()
+		play_sound('tarot2')
 	end
 end
 
@@ -487,9 +488,8 @@ local tabs = function() return
 			)
 			for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
 				local area = k <= 3 and G.pta_features_area or G.pta_features_area_two
-				local card = Card(area.T.x + area.T.w / 2, area.T.y,
-					G.CARD_W, G.CARD_H, G.P_CARDS.empty,
-					v)
+				local card = Card(area.T.x + (area.T.w / 2), area.T.y,
+					G.CARD_W, G.CARD_H, G.P_CARDS.empty, v)
 				area:emplace(card)
 			end
 			return {
@@ -514,14 +514,14 @@ local tabs = function() return
 								nodes = {
 									{
 										n = G.UIT.R,
-										config = { align = "cm" },
+										config = { align = "cm", no_fill = true },
 										nodes = {
 											{ n = G.UIT.O, config = { object = G.pta_features_area } },
 										}
 									},
 									{
 										n = G.UIT.R,
-										config = { align = "cm" },
+										config = { align = "cm", no_fill = true },
 										nodes = {
 											{ n = G.UIT.O, config = { object = G.pta_features_area_two } },
 										}
