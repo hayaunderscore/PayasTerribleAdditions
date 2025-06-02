@@ -1,5 +1,40 @@
 -- Custom draw step routines
 
+-- Ghost Trick!!!!!
+
+SMODS.DrawStep {
+	key = 'payasaka_ghosttrick_layer',
+	order = -999,
+	func = function(self)
+		if self.pta_trick_sprite then
+			local _F = self.pta_trick_sprite_args
+			local exptime = math.exp(-0.4 * G.real_dt)
+
+			if self.pta_tricked then
+				_F.intensity = 8
+			else
+				_F.intensity = -8
+			end
+
+			_F.timer = _F.timer + G.real_dt * (1 + _F.intensity * 0.2)
+			if _F.intensity_vel < 0 then _F.intensity_vel = _F.intensity_vel * (1 - 10 * G.real_dt) end
+			_F.intensity_vel = (1 - exptime) * (_F.intensity - _F.real_intensity) * G.real_dt * 25 +
+			exptime * _F.intensity_vel
+			_F.real_intensity = math.max(0, _F.real_intensity + _F.intensity_vel)
+			_F.change = (_F.change or 0) * (1 - 4. * G.real_dt) +
+			(4. * G.real_dt) * (_F.real_intensity < _F.intensity - 0.0 and 1 or 0) * _F.real_intensity
+			if _F.real_intensity < 0 then
+				self.pta_trick_sprite:remove()
+				self.pta_trick_sprite = nil
+				return
+			end
+			self.pta_trick_sprite:hard_set_T(self.children.center.T.x - 0.6, self.children.center.T.y - 0.6, self.T.w/10, self.T.h/10)
+			self.pta_trick_sprite:draw(nil)
+		end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
 -- Front sprite, for Arona, Plana and Silenced
 SMODS.DrawStep {
 	key = 'pta_front',
@@ -19,7 +54,8 @@ SMODS.DrawStep {
 				end
 			end
 			if (self.edition and self.edition.negative) then
-				self.children.pta_front:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil, self.children.center)
+				self.children.pta_front:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil,
+					self.children.center)
 			end
 		end
 	end,
@@ -37,20 +73,22 @@ SMODS.DrawStep {
 			---@type Sprite
 			local layer = self.children.gacha_layer
 			if self:should_draw_base_shader() then
-				layer:draw_shader('dissolve', nil, nil, nil, self.children.center, nil, nil, (-6)*(self.T.w/71))
-				layer:draw_shader('booster', nil, nil, nil, self.children.center, nil, nil, (-6)*(self.T.w/71))
+				layer:draw_shader('dissolve', nil, nil, nil, self.children.center, nil, nil, (-6) * (self.T.w / 71))
+				layer:draw_shader('booster', nil, nil, nil, self.children.center, nil, nil, (-6) * (self.T.w / 71))
 			end
 			if self.edition then
 				for k, v in pairs(G.P_CENTER_POOLS.Edition) do
 					if v.shader then
 						if self.edition[v.key:sub(3)] then
-							layer:draw_shader(v.shader, nil, nil, nil, self.children.center, nil, nil, (-6)*(self.T.w/71))
+							layer:draw_shader(v.shader, nil, nil, nil, self.children.center, nil, nil, (-6) *
+							(self.T.w / 71))
 						end
 					end
 				end
 			end
 			if (self.edition and self.edition.negative) then
-				layer:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil, self.children.center, nil, nil, (-6)*(self.T.w/71))
+				layer:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil, self.children.center, nil, nil,
+					(-6) * (self.T.w / 71))
 			end
 		end
 	end,

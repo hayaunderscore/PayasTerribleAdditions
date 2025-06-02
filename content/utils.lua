@@ -142,7 +142,7 @@ function PTASaka.arrow(arrow, val1, val2, og_arrow)
 	local val = val1
 	if arrow == 1 then
 		-- Talisman calculates tetrations like this
-		val = val ^ (og_arrow > 1 and (val2-1) or val2)
+		val = val ^ (og_arrow > 1 and (val2 - 1) or val2)
 	elseif arrow == 0 then
 		val = val * val2
 	else
@@ -171,31 +171,65 @@ end
 
 -- Copy of StrangeLib.make_boosters to get rid of StrangeLib requirement
 function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, common_values, pack_size)
-    pack_size = pack_size or 3
-    for index, pos in ipairs(normal_poses) do
-        local t = copy_table(common_values)
-        t.key = base_key .. "_normal_" .. index
-        t.pos = pos
-        t.config = { extra = pack_size, choose = 1 }
-        t.cost = 4
-        SMODS.Booster(t)
-    end
-    for index, pos in ipairs(jumbo_poses) do
-        local t = copy_table(common_values)
-        t.key = base_key .. "_jumbo_" .. index
-        t.pos = pos
-        t.config = { extra = pack_size + 2, choose = 1 }
-        t.cost = 6
-        SMODS.Booster(t)
-    end
-    for index, pos in ipairs(mega_poses) do
-        local t = copy_table(common_values)
-        t.key = base_key .. "_mega_" .. index
-        t.pos = pos
-        t.config = { extra = pack_size + 2, choose = 2 }
-        t.cost = 8
-        SMODS.Booster(t)
-    end
+	pack_size = pack_size or 3
+	for index, pos in ipairs(normal_poses) do
+		local t = copy_table(common_values)
+		t.key = base_key .. "_normal_" .. index
+		t.pos = pos
+		t.config = { extra = pack_size, choose = 1 }
+		t.cost = 4
+		SMODS.Booster(t)
+	end
+	for index, pos in ipairs(jumbo_poses) do
+		local t = copy_table(common_values)
+		t.key = base_key .. "_jumbo_" .. index
+		t.pos = pos
+		t.config = { extra = pack_size + 2, choose = 1 }
+		t.cost = 6
+		SMODS.Booster(t)
+	end
+	for index, pos in ipairs(mega_poses) do
+		local t = copy_table(common_values)
+		t.key = base_key .. "_mega_" .. index
+		t.pos = pos
+		t.config = { extra = pack_size + 2, choose = 2 }
+		t.cost = 8
+		SMODS.Booster(t)
+	end
+end
+
+-- Funny soul aura >:)))
+function PTASaka.create_soul_aura_for_card(c)
+	if not c.pta_trick_sprite then
+		c.pta_trick_sprite_args = c.pta_trick_sprite_args or {
+			intensity = 0,
+			real_intensity = 0,
+			intensity_vel = 0,
+			colour_1 = G.C.UI_CHIPS,
+			colour_2 = G.C.UI_CHIPLICK,
+			timer = G.TIMERS.REAL
+		}
+		---@type Sprite
+		c.pta_trick_sprite = Sprite(0, 0, c.T.w, c.T.h, G.ASSET_ATLAS["ui_1"],
+			{ x = 2, y = 0 })
+		c.pta_trick_sprite.states.hover.can = false
+		c.pta_trick_sprite.states.click.can = false
+		c.pta_trick_sprite.scale = { x = 1.2, y = 1.2 }
+		c.pta_trick_sprite.role.offset = { x = -0.1, y = -0.2 }
+		c.pta_trick_sprite:define_draw_steps({ {
+			shader = 'flame',
+			send = {
+				{ name = 'time',            ref_table = c.pta_trick_sprite_args, ref_value = 'timer' },
+				{ name = 'amount',          ref_table = c.pta_trick_sprite_args, ref_value = 'real_intensity' },
+				{ name = 'image_details',   ref_table = c.pta_trick_sprite,      ref_value = 'image_dims' },
+				{ name = 'texture_details', ref_table = c.pta_trick_sprite.RETS, ref_value = 'get_pos_pixel' },
+				{ name = 'colour_1',        ref_table = c.pta_trick_sprite_args, ref_value = 'colour_1' },
+				{ name = 'colour_2',        ref_table = c.pta_trick_sprite_args, ref_value = 'colour_2' },
+				{ name = 'id',              val = c.pta_trick_sprite.ID },
+			}
+		} })
+		c.pta_trick_sprite:get_pos_pixel()
+	end
 end
 
 -- ui stuff Taken from Aikoyori thanks aikoyori

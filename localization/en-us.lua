@@ -942,6 +942,13 @@ return {
 					"{C:risk}Risk{} Pack for half the price",
 				}
 			},
+			j_payasaka_sissel = {
+				name = "Spirit Ploy",
+				text = {
+					"{C:attention}Triggers{} a random scored",
+					"card during scoring"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {
