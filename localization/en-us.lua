@@ -685,7 +685,8 @@ return {
 			j_payasaka_silenced = {
 				name = 'Silenced',
 				text = {
-					"{C:attention}Debuffed{} cards and Jokers",
+					"{C:attention}Debuffed{} cards,",
+					"Jokers and consumables",
 					"each give {X:mult,C:white}X#1#{} Mult"
 				},
 			},
@@ -952,7 +953,7 @@ return {
 			j_payasaka_prosopagnosia = {
 				name = "Prosopagnosia",
 				text = {
-					"{C:attention}Aces{} count as",
+					"{C:attention}Aces{} also count as",
 					"{C:attention}all{} face cards"
 				}
 			}
