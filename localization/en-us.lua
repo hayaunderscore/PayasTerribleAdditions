@@ -427,7 +427,8 @@ return {
 				text = {
 					"Copies the {C:attention}leftmost",
 					"scored card {C:attention}#1#{} time and",
-					"adds it to the {C:attention}scoring hand"
+					"adds it to the {C:attention}scoring hand",
+					"{C:inactive}(Max of #2#)"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}winton"
@@ -955,6 +956,13 @@ return {
 				text = {
 					"{C:attention}Aces{} also count as",
 					"{C:attention}all{} face cards"
+				}
+			},
+			j_payasaka_yomiel = {
+				name = "Yomiel",
+				text = {
+					"{C:attention}Triggers{} a random",
+					"Joker during scoring"
 				}
 			}
 		},

@@ -10,9 +10,13 @@ SMODS.Joker {
 	soul_pos = { x = 2, y = 4 },
 	cost = 25,
 	blueprint_compat = true,
-	demicoloncompat = false,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.payasaka_before and context.scoring_hand then
+		card.ability.extra.limit = card.ability.extra.copy * 10
+		if context.payasaka_before then
+			card.ability.extra.limit_count = 0
+		end
+		if (context.payasaka_before or context.forcetrigger and card.ability.extra.limit_count < card.ability.extra.limit) and context.scoring_hand then
 			local copy = context.scoring_hand[1]
 			for i = 1, card.ability.extra.copy do
 				-- create the playing card
@@ -48,13 +52,19 @@ SMODS.Joker {
 				})
 			end
 
+			card.ability.extra.limit_count = card.ability.extra.limit_count + card.ability.extra.copy
+
 			-- update hand text
 			local text,disp_text = G.FUNCS.get_poker_hand_info(context.scoring_hand)
-			update_hand_text({delay = 0, modded = true}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
-			mult = mod_mult(G.GAME.hands[text].mult)
-			hand_chips = mod_chips(G.GAME.hands[text].chips)
+			update_hand_text({delay = 0, modded = true}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult + mult, chips = G.GAME.hands[text].chips + hand_chips})
+			mult = mod_mult(G.GAME.hands[text].mult + mult)
+			hand_chips = mod_chips(G.GAME.hands[text].chips + hand_chips)
+		elseif context.forcetrigger and card.ability.extra.limit_count >= card.ability.extra.limit then
+			return {
+				message = "Max of "..number_format(card.ability.extra.limit).."!"
+			}
 		end
-		if context.before then
+		if context.after then
 			G.E_MANAGER:add_event(Event{
 				trigger = 'after',
 				delay = 0.4,
@@ -81,6 +91,6 @@ SMODS.Joker {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.copy } }
+		return { vars = { card.ability.extra.copy, card.ability.extra.copy * 10 } }
 	end
 }

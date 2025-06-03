@@ -8,7 +8,7 @@ SMODS.DrawStep {
 	func = function(self)
 		if self.pta_trick_sprite then
 			local _F = self.pta_trick_sprite_args
-			local exptime = math.exp(-0.4 * G.real_dt)
+			local exptime = math.exp(-0.8 * G.real_dt)
 
 			if self.pta_tricked then
 				_F.intensity = 8
