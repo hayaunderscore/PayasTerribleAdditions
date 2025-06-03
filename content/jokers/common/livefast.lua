@@ -13,24 +13,25 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.payasaka_pre_setting_blind and G.GAME.blind_on_deck == 'Boss' and not context.blueprint_card then
+		if context.payasaka_pre_setting_blind and G.GAME.blind_on_deck == 'Boss' then
 			G.GAME.risk_cards_risks = G.GAME.risk_cards_risks or {}
 			-- Prevent Rift-Raft from cloning Risk cards created by Live Fast
 			PTASaka.should_clone = false
+			local juice_card = context.blueprint_card or card
 			local c = {}
 			for i = 1, card.ability.extra.risk_count do
 				local risk = SMODS.add_card({set = "Risk", area = G.play})
 				if risk then
 					risk:start_materialize()
 					risk:use_consumeable(risk.area, nil)
-					card:juice_up()
+					juice_card:juice_up()
 					SMODS.calculate_context({using_consumeable = true, consumeable = risk, area = G.consumeables})
 					G.E_MANAGER:add_event(Event{
 						trigger = 'after',
 						delay = 0.2,
 						func = function()
 							risk:start_dissolve()
-							card:juice_up()
+							juice_card:juice_up()
 							return true
 						end
 					})
