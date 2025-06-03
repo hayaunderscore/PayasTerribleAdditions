@@ -28,7 +28,8 @@ SMODS.DrawStep {
 				self.pta_trick_sprite = nil
 				return
 			end
-			self.pta_trick_sprite:hard_set_T(self.children.center.T.x - 0.6, self.children.center.T.y - 0.6, self.T.w/10, self.T.h/10)
+			self.pta_trick_sprite:hard_set_T(self.T.x - (8 * (self.T.w / 71)), self.T.y - (48 * (self.T.h / 95)), self.T.w/12, self.T.h/12)
+			self.pta_trick_sprite.VT.scale = self.VT.scale
 			self.pta_trick_sprite:draw(nil)
 		end
 	end,
