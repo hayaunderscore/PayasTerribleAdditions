@@ -20,7 +20,7 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not context.end_of_round then
 			local c = context.other_card or {base={id=0}}
-			if c.base.id == 14 or c.base.id == 7 or c.base.id == 5 or c.base.id == 3 or c.base.id == 2 then
+			if c:get_id() == 14 or c:get_id() == 7 or c:get_id() == 5 or c:get_id() == 3 or c:get_id() == 2 then
 				return {
 					dollars = math.min(math.floor(c:get_chip_bonus() * card.ability.extra.econ_mult), card.ability.extra.econ_max)
 				}

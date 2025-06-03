@@ -229,7 +229,7 @@ SMODS.Back {
 					local cardtable = {}
 					for k, v in ipairs(G.playing_cards) do cardtable[#cardtable + 1] = v end
 					for i = #cardtable, 1, -1 do
-						if cardtable[i].base.id < 11 then
+						if cardtable[i]:get_id() < 11 then
 							cardtable[i]:remove()
 							--G.playing_cards[i] = nil
 						end

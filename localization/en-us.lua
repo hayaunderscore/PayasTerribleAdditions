@@ -948,6 +948,13 @@ return {
 					"{C:attention}Triggers{} a random scored",
 					"card during scoring"
 				}
+			},
+			j_payasaka_prosopagnosia = {
+				name = "Prosopagnosia",
+				text = {
+					"{C:attention}Aces{} count as",
+					"{C:attention}all{} face cards"
+				}
 			}
 		},
 		Blind = {

@@ -137,7 +137,7 @@ SMODS.Joker {
 		if context.payasaka_before then
 			for i = 1, #context.scoring_hand do
 				local _c = context.scoring_hand[i]
-				if _c.base.id == 12 then goto continue end
+				if _c:get_id() == 12 then goto continue end
 				_c.base.id = 12
 				_c.base.nominal = 12
 				_c.base.value = 'Queen'

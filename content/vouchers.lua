@@ -502,7 +502,7 @@ function PTASaka.deck_sleeve_redeem(self)
 						local cardtable = {}
 						for k, v in ipairs(G.playing_cards) do cardtable[#cardtable + 1] = v end
 						for i = #cardtable, 1, -1 do
-							if (cardtable[i].base.id == 11 or cardtable[i].base.id == 12 or cardtable[i].base.id == 13) then
+							if (cardtable[i]:get_id() == 11 or cardtable[i]:get_id() == 12 or cardtable[i]:get_id() == 13) then
 								cardtable[i]:remove()
 								--G.playing_cards[i] = nil
 							end
