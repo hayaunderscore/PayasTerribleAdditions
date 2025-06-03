@@ -403,7 +403,9 @@ PTASaka.SetToggle = SMODS.Center:extend{
 		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 	end,
 	update = function(self, card, dt)
-		card.debuff = not conf[self.pta_associated_config]
+		if card.ability.set == "PTASet" then
+			card.debuff = not conf[self.pta_associated_config]
+		end
 	end
 }
 

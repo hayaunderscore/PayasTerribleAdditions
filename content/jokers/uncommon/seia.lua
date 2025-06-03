@@ -12,12 +12,24 @@ SMODS.Joker {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		local extra = card.ability.extra
-		if (context.individual and not context.end_of_round) or (context.other_joker or context.other_consumeable) then
-			if context.cardarea == G.play or context.cardarea == G.hand then
-				if context.other_card.debuff then
-					return {
-						x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult
-					}
+		if (context.joker_main) or (context.other_joker or context.other_consumeable) then
+			if context.joker_main then
+				local ret = {
+					x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult
+				}
+				for _, area in ipairs({G.play, G.hand}) do
+					for _, c in ipairs(area.cards) do
+						if c.debuff then
+							G.E_MANAGER:add_event(Event{
+								func = function()
+									card:juice_up()
+									return true
+								end
+							})
+							SMODS.calculate_individual_effect(ret, c, 'x_mult', ret.x_mult,
+								false)
+						end
+					end
 				end
 			end
 			if (context.other_joker or context.other_consumeable) then
