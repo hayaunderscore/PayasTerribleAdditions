@@ -278,7 +278,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''functions/state_events.lua'''
-pattern = '''if SMODS.saved then game_over = false end'''
+pattern = '''-- TARGET: main end_of_round evaluation'''
 position = 'before'
 payload = '''
 if next(SMODS.find_card('j_payasaka_iroyokia')) and game_over then
