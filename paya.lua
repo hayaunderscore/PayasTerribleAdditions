@@ -457,7 +457,7 @@ PTASaka.SetToggle {
 PTASaka.SetToggle {
 	key = 'music',
 	atlas = "JOE_Jokers",
-	pos = { x = 9, y = 1 },
+	pos = { x = 10, y = 6 },
 	pta_associated_config = "Music"
 }
 -- Witty Comments

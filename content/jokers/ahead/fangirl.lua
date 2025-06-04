@@ -8,10 +8,16 @@ SMODS.Joker {
 	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
-	pos = { x = 9, y = 1 },
+	pos = { x = 10, y = 6 },
 	atlas = "JOE_Jokers",
 	pools = { ["Joker"] = true, ["Meme"] = true },
 	config = { extra = { e_chips = 0.04 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.other_joker then
 			if context.other_joker:is_ahead() then

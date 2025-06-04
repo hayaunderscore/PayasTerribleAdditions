@@ -12,10 +12,6 @@ SMODS.Joker {
 			credit = 'ariyi',
 			colour = HEX('09d707')
 		},
-		idea = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
 	},
 	calculate = function(self, card, context)
 		if context.repetition then
