@@ -15,3 +15,23 @@ end
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = '''local final_line = {}'''
+position = 'before'
+payload = '''
+if _ > 1 and (G and G.GAME and G.GAME.payasaka_documentation_effects) then goto cont end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = '''args.nodes[#args.nodes+1] = final_line'''
+position = 'after'
+payload = '''
+::cont::
+'''
+match_indent = true

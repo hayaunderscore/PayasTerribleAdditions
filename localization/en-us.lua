@@ -977,6 +977,14 @@ return {
 						"it is present"
 					}
 				}
+			},
+			j_payasaka_documentation = {
+				name = "Documentation",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"Only the first line of",
+					"any description is shown"
+				}
 			}
 		},
 		Blind = {
