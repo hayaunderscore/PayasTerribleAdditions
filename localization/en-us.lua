@@ -729,10 +729,9 @@ return {
 			j_payasaka_fanhead = {
 				name = "Fanhead",
 				text = {
-					"{C:chips}Ahead{} Jokers each",
-					"give {X:dark_edition,C:white}^(#1#*n)+1{} Chips",
-					"{C:attention}n{} is current",
-					"Ahead count {C:inactive}[#2#]"
+					"Other {C:chips}Chip{} or {C:chips}Ahead{} Jokers",
+					"each give {X:dark_edition,C:white}^(#1#*n)+1{} Chips",
+					"{C:attention}n{} is Ahead count {C:inactive}[#2#]",
 				}
 			},
 			j_payasaka_scrapped = {

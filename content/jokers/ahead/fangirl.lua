@@ -20,7 +20,7 @@ SMODS.Joker {
 	},
 	calculate = function(self, card, context)
 		if context.other_joker then
-			if context.other_joker:is_ahead() then
+			if (context.other_joker:is_ahead() or context.other_joker.ability.payasaka_chip_joker) and context.other_joker ~= card then
 				if Talisman then
 					return {
 						e_chips = ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1

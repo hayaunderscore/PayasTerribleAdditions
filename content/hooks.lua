@@ -687,7 +687,6 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 	if key == "pf_chips" or key == "pfchips" then
 		hand_chips = amount(hand_chips)
 		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
-		print("PLEASE")
 		return true
 	elseif key == "pf_mult" or key == "pfmult" then
 		mult = amount(mult)
