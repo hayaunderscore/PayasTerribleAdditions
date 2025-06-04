@@ -14,18 +14,33 @@ match_indent = true
 payload = '''
 local id_patterns = {}
 table.insert(id_patterns, {
-    patt = "([%w_%[%]%.]+):get_id%(%)%s*%%%s*([%w_%[%]%.%(%)]+)%s*==%s*([%w_%[%]%.%(%)]+)",
+    patt = "([%w_.#]+):get_id%(%s*%)%s*%%%s*([%w_.%(%)#]+)%s*==%s*([%w_.%(%)#]+)",
     repl = "ids_op(%1, \"mod\", %2, %3)"
 })
 local ops = { ">=", "<=", "~=", "==", ">", "<" }
 for _, op in ipairs(ops) do
     local esc = op:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
     table.insert(id_patterns, {
-        patt = "([%w_%[%]%.]+):get_id%(%)%s*" .. esc .. "%s*([%w_%[%]%.]+):get_id%(%)",
+        patt = "([%w_.#]+):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+):get_id%(%s*%)",
         repl = "ids_op(%1, \"" .. op .. "\", %2:get_id())"
     })
     table.insert(id_patterns, {
-        patt = "([%w_%[%]%.]+):get_id%(%)%s*" .. esc .. "%s*([%w_%[%]%.%(%)]+)",
+        patt = "([%w_.#]+):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+)",
+        repl = "ids_op(%1, \"" .. op .. "\", %2)"
+    })
+end
+table.insert(id_patterns, {
+    patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*%%%s*([%w_.%(%)]+)%s*==%s*([%w_.%(%)]+)",
+    repl = "ids_op(%1, \"mod\", %2, %3)"
+})
+for _, op in ipairs(ops) do
+    local esc = op:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
+    table.insert(id_patterns, {
+        patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+%b[]):get_id%(%s*%)",
+        repl = "ids_op(%1, \"" .. op .. "\", %2:get_id())"
+    })
+    table.insert(id_patterns, {
+        patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.%(%)]+)",
         repl = "ids_op(%1, \"" .. op .. "\", %2)"
     })
 end
@@ -72,18 +87,33 @@ position = "before"
 payload = '''
 local id_patterns = {}
 table.insert(id_patterns, {
-    patt = "([%w_%[%]%.]+):get_id%(%)%s*%%%s*([%w_%[%]%.%(%)]+)%s*==%s*([%w_%[%]%.%(%)]+)",
+    patt = "([%w_.#]+):get_id%(%s*%)%s*%%%s*([%w_.%(%)#]+)%s*==%s*([%w_.%(%)#]+)",
     repl = "ids_op(%1, \"mod\", %2, %3)"
 })
 local ops = { ">=", "<=", "~=", "==", ">", "<" }
 for _, op in ipairs(ops) do
     local esc = op:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
     table.insert(id_patterns, {
-        patt = "([%w_%[%]%.]+):get_id%(%)%s*" .. esc .. "%s*([%w_%[%]%.]+):get_id%(%)",
+        patt = "([%w_.#]+):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+):get_id%(%s*%)",
         repl = "ids_op(%1, \"" .. op .. "\", %2:get_id())"
     })
     table.insert(id_patterns, {
-        patt = "([%w_%[%]%.]+):get_id%(%)%s*" .. esc .. "%s*([%w_%[%]%.%(%)]+)",
+        patt = "([%w_.#]+):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+)",
+        repl = "ids_op(%1, \"" .. op .. "\", %2)"
+    })
+end
+table.insert(id_patterns, {
+    patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*%%%s*([%w_.%(%)]+)%s*==%s*([%w_.%(%)]+)",
+    repl = "ids_op(%1, \"mod\", %2, %3)"
+})
+for _, op in ipairs(ops) do
+    local esc = op:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
+    table.insert(id_patterns, {
+        patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+%b[]):get_id%(%s*%)",
+        repl = "ids_op(%1, \"" .. op .. "\", %2:get_id())"
+    })
+    table.insert(id_patterns, {
+        patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.%(%)]+)",
         repl = "ids_op(%1, \"" .. op .. "\", %2)"
     })
 end
