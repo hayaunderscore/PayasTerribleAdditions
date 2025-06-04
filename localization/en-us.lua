@@ -985,6 +985,17 @@ return {
 					"Only the first line of",
 					"any description is shown"
 				}
+			},
+			j_payasaka_tablecount = {
+				name = "print(table.maxn(table))",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult and {X:chips,C:white}X#2#{} Chips if",
+					"played hand contains exactly",
+					"{C:inactive}#3#{} cards",
+					"{C:inactive,s:0.8}The count value, that is.",
+					"{C:inactive,s:0.8}Values are randomized each round",
+					"{C:inactive,s:0.8}Figure it out :]",
+				}
 			}
 		},
 		Blind = {
