@@ -964,6 +964,20 @@ return {
 					"{C:attention}Triggers{} a random",
 					"Joker during scoring"
 				}
+			},
+			j_payasaka_iroyokia = {
+				name = "{f:payasaka_reversed}iroyokiA",
+				text = {
+					{
+						"Prevents {C:red}death{} by",
+						"{C:attention}restoring{} your deck,",
+						"hands and discards",
+					},
+					{
+						"Mimics {C:dark_edition}Aikoyori{} if",
+						"it is present"
+					}
+				}
 			}
 		},
 		Blind = {

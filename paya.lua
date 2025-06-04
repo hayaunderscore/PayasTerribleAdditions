@@ -74,6 +74,17 @@ if PTASaka.Font then
 		squish = 1, 
 		DESCSCALE = 1.25
 	}
+
+	PTASaka.Font {
+		key = "reversed",
+		path = "11x6m.ttf",
+		render_scale = 200,
+		TEXT_HEIGHT_SCALE = 0.83, 
+		TEXT_OFFSET = {x=10,y=0}, 
+		FONTSCALE = 0.1,
+		squish = 1,
+		DESCSCALE = 1
+	}
 end
 
 -- MAIN CODE --

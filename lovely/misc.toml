@@ -274,3 +274,23 @@ if next(SMODS.find_card('j_payasaka_desperado')) and not nosave_shop then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''if SMODS.saved then game_over = false end'''
+position = 'before'
+payload = '''
+if next(SMODS.find_card('j_payasaka_iroyokia')) and game_over then
+	local c = SMODS.find_card('j_payasaka_iroyokia')[1]
+	G.GAME.blind.in_blind = true
+	card_eval_status_text(c, 'extra', nil, nil, nil, { message = "Nope!" })
+	G.FUNCS.draw_from_discard_to_deck()
+	G.STATE = G.STATES.DRAW_TO_HAND
+	ease_hands_played(G.GAME.round_resets.hands - G.GAME.current_round.hands_left)
+	ease_discard(G.GAME.round_resets.discards - G.GAME.current_round.discards_left)
+	G.STATE_COMPLETE = false
+	return true
+end
+'''
+match_indent = true
