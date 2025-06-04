@@ -229,7 +229,7 @@ SMODS.Consumable {
 		local c = create_card("Joker",
 			i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
 			G.pack_cards, nil,
-			PTASaka.pseudorandom_alias_element(
+			G.GAME.payasaka_unweighted_gacha and pseudorandom_element(PTASaka.gacha_rarity_table, pseudoseed('haha'))[1] or PTASaka.pseudorandom_alias_element(
 				G.GAME.payasaka_aliased_gacha_table, 'haha'), true, true, nil)
 		return c
 	end,

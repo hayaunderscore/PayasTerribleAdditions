@@ -1853,6 +1853,14 @@ return {
 					"{C:inactive,s:0.8}Does not work on MacOS",
 				},
 			},
+			sleeve_payasaka_gambling_alt = {
+				name = "Inaccurate Gacha Sleeve",
+				text = {
+					"Can {C:attention}reroll{} Booster Packs",
+					"in the {C:green}shop",
+					"Gacha weights are {C:dark_edition}nonexistent",
+				},
+			},
 		},
 		Seal = {
 			payasaka_random = {

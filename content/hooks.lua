@@ -807,7 +807,7 @@ G.FUNCS.can_discard = function(e)
 		can_deep = can_deep and
 			not (to_big(G.GAME.dollars - G.GAME.bankrupt_at) - to_big(diver.ability.extra.cost or 0) < to_big(0))
 	end
-	if (G.GAME.current_round.discards_left <= 0 and can_deep) and #G.hand.highlighted > 0 then
+	if ((G.GAME.current_round.discards_left or 0) <= 0 and can_deep) and #G.hand.highlighted > 0 then
 		e.config.colour = G.C.RED
 		e.config.button = 'discard_cards_from_highlighted'
 	else
