@@ -996,6 +996,29 @@ return {
 					"{C:inactive,s:0.8}Values are randomized each round",
 					"{C:inactive,s:0.8}Figure it out :]",
 				}
+			},
+			j_payasaka_upgraded = {
+				name = "Upgraded Joker",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult"
+				}
+			},
+			j_payasaka_sweetrock = {
+				name = "Sweet Rock",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"scoring a {C:attention}random{}",
+					"card held in hand",
+					"{C:inactive}THIS... IS ROCK."
+				}
+			},
+			j_payasaka_EVILgarb = {
+				name = "EVIL garb,,,",
+				text = {
+					"On {C:attention}first hand{} of round,",
+					"all listed probabilities are",
+					"{C:red}nullified"
+				}
 			}
 		},
 		Blind = {
