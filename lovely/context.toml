@@ -246,24 +246,3 @@ payload = '''
 G.GAME.round_resets.blind = G.GAME.payasaka_blind_override
 '''
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- Calculate context.other_joker effects'''
-position = 'before'
-payload = '''
-_card.ability.payasaka_chip_joker = false
--- Set this as a chip joker
-for k, v in ipairs(effects) do
-	for _k, _v in pairs(v) do
-		for effect_key, effect_value in pairs(_v) do
-			if effect_key:match("chip") and not effect_key:match("message") and effect_value and _card.ability.set == "Joker" then
-				_card.ability.payasaka_chip_joker = true
-			end
-		end
-	end
-end
-
-'''
-match_indent = true

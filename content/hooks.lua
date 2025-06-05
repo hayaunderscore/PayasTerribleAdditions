@@ -771,6 +771,28 @@ function Card:can_use_consumeable(any, skip)
 	return ret
 end
 
+-- Fanhead chip detection
+local old_eval_card = eval_card
+function eval_card(card, context, ...)
+	local ret, post = old_eval_card(card, context, ...)
+	if context.end_of_round then
+		card.ability.payasaka_chip_joker = false
+	end
+	-- Set this as a chip joker
+	if next(ret) then
+		for k, v in ipairs(ret or {}) do
+			for _k, _v in pairs(v) do
+				for effect_key, effect_value in pairs(_v) do
+					if effect_key:match("chip") and not effect_key:match("message") and effect_value and _card.ability.set == "Joker" then
+						card.ability.payasaka_chip_joker = true
+					end
+				end
+			end
+		end
+	end
+	return ret, post
+end
+
 -- Handle Cyan planet card effects
 local oldluh = level_up_hand
 ---@param card Card|nil

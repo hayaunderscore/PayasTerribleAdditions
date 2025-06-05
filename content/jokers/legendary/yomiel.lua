@@ -20,8 +20,9 @@ SMODS.Joker {
 		if context.individual and not context.end_of_round and context.cardarea == G.play then
 			local valid_jokers = {}
 			for _, car in ipairs(G.jokers.cards) do
-				if car.ability.set == "Joker" and car ~= card then valid_jokers[#valid_jokers + 1] = car end
+				if car.ability.set == "Joker" and PTASaka.check_forcetrigger(car) and car ~= card then valid_jokers[#valid_jokers + 1] = car end
 			end
+			if not next(valid_jokers) then return nil, false end
 			local c = pseudorandom_element(valid_jokers, pseudoseed('ghost_trick'))
 			card_eval_status_text(card, 'extra', nil, nil, nil, {
 				message = 'Trick!',
@@ -33,9 +34,7 @@ SMODS.Joker {
 				end
 			})
 			local effects = {}
-			local joker_eval, post = eval_card(c,
-				{ full_hand = G.play.cards, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands,
-					joker_main = not c.config.center.demicoloncompat, forcetrigger = c.config.center.demicoloncompat, cardarea = G.jokers })
+			local joker_eval, post = PTASaka.forcetrigger(c, context)
 			if next(joker_eval) then
                 if joker_eval.edition then joker_eval.edition = {} end
                 table.insert(effects, joker_eval)
