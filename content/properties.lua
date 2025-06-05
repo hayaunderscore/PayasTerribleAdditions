@@ -4,6 +4,7 @@ SMODS.ConsumableType {
 	primary_colour = HEX('AB88C3'),
 	secondary_colour = HEX('8967C3'),
 	shop_rate = 0.1,
+	default = "c_payasaka_brownproperty",
 	loc_txt = {},
 }
 
