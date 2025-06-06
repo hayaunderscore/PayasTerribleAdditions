@@ -32,7 +32,7 @@ SMODS.Joker {
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if next(G.GAME.pta_old_prob) then
+		if G.GAME.pta_old_prob and next(G.GAME.pta_old_prob) then
 			for k, prob in pairs(G.GAME.probabilities) do
 				if G.GAME.pta_old_prob[k] then
 					G.GAME.probabilities[k] = G.GAME.pta_old_prob[k]
