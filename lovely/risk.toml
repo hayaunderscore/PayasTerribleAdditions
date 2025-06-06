@@ -186,3 +186,37 @@ else
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])'''
+position = 'at'
+payload = '''
+if G.GAME.payasaka_perpetuate_active then
+	draw_card(G.hand, G.deck, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])
+	G.deck:shuffle('perpetuate_shuf'..G.GAME.round_resets.ante)
+else
+	draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "-- TARGET: adding to hand effects"
+position = 'before'
+payload = '''
+if G.GAME.payasaka_backfire_active and G.GAME.payasaka_backfire_active > 0 and pseudorandom('backfire') < (G.GAME.probabilities.normal or 1)/G.GAME.payasaka_backfire_active then
+	table.sort(G.jokers.cards, function(x, y) return x.sort_id > y.sort_id end)
+	G.jokers:set_ranks()
+end
+if G.GAME.payasaka_elusive_cards then
+	for _, c in ipairs(G.hand.cards) do
+		c:flip()
+	end
+end
+'''
+match_indent = true
+times = 1

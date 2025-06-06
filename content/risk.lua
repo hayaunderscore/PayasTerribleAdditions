@@ -1,6 +1,6 @@
 SMODS.ConsumableType {
 	key = 'Risk',
-	collection_rows = { 4, 4, 3 },
+	collection_rows = { 8, 6, 4 },
 	primary_colour = HEX('c42430'),
 	secondary_colour = HEX('891e2b'),
 	shop_rate = 0,
@@ -12,7 +12,7 @@ SMODS.UndiscoveredSprite {
 	key = 'Risk',
 	atlas = 'JOE_Risk',
 	path = 'risk.png',
-	pos = { x = 3, y = 2 },
+	pos = { x = 9, y = 5 },
 	px = 71, py = 95,
 }
 
@@ -92,6 +92,10 @@ PTASaka.Risk = SMODS.Consumable:extend {
 			end
 		}))
 	end,
+	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_risk"]
+	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.BLIND_SELECT or booster_obj or G.STATE == G.STATES.SHOP
 	end,
@@ -137,35 +141,6 @@ PTASaka.Risk {
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.debuff } }
-	end
-}
-
-PTASaka.Risk {
-	set = 'Risk',
-	key = 'crime',
-	atlas = "JOE_Risk",
-	pos = { x = 3, y = 0 },
-	config = { extra = { hand_neg = 1 } },
-	pta_credit = {
-		art = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-		idea = {
-			credit = 'ariyi and Aikoyori',
-			colour = HEX('09d707')
-		},
-	},
-	apply_risk = function(self, ability)
-		G.hand:change_size(-ability.hand_neg)
-	end,
-	apply_reward = function(self, ability)
-		G.hand:change_size(ability.hand_neg)
-		add_tag(Tag('tag_payasaka_tier1reward'))
-		--G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
-	end,
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.hand_neg } }
 	end
 }
 
@@ -232,6 +207,172 @@ PTASaka.Risk {
 }
 
 PTASaka.Risk {
+	set = 'Risk',
+	key = 'shrink',
+	atlas = "JOE_Risk",
+	pos = { x = 3, y = 2 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_shrink_active = true
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_shrink_active = nil
+		add_tag(Tag('tag_payasaka_tier1reward'))
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'genesis',
+	atlas = "JOE_Risk",
+	pos = { x = 4, y = 2 },
+	config = { extra = { cards = 7 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		for _ = 1, ability.cards do
+			create_playing_card(nil, G.deck, true, true)
+		end
+	end,
+	apply_reward = function(self, ability)
+		add_tag(Tag('tag_payasaka_tier1reward'))
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.cards } }
+	end
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'burden',
+	atlas = "JOE_Risk",
+	pos = { x = 0, y = 3 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		---@type Card|nil
+		local joker = pseudorandom_element(G.jokers.cards, pseudoseed('burden'))
+		if joker then
+			joker:set_eternal(true)
+			joker:juice_up()
+		end
+	end,
+	apply_reward = function(self, ability)
+		add_tag(Tag('tag_payasaka_tier1reward'))
+	end
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'ethereal',
+	atlas = "JOE_Risk",
+	pos = { x = 1, y = 3 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		---@type Card|nil
+		local joker = pseudorandom_element(G.jokers.cards, pseudoseed('burden'))
+		if joker then
+			joker:set_perishable(true)
+			joker:juice_up()
+		end
+	end,
+	apply_reward = function(self, ability)
+		add_tag(Tag('tag_payasaka_tier1reward'))
+	end
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'cyclone',
+	atlas = "JOE_Risk",
+	pos = { x = 2, y = 3 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		---@type Card|nil
+		local joker = pseudorandom_element(G.jokers.cards, pseudoseed('burden'))
+		if joker then
+			joker:set_perishable(true)
+			joker:juice_up()
+		end
+	end,
+	apply_reward = function(self, ability)
+		add_tag(Tag('tag_payasaka_tier1reward'))
+	end
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'crime',
+	atlas = "JOE_Risk",
+	pos = { x = 3, y = 0 },
+	config = { extra = { hand_neg = 1 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi and Aikoyori',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.hand:change_size(-ability.hand_neg)
+	end,
+	apply_reward = function(self, ability)
+		G.hand:change_size(ability.hand_neg)
+		add_tag(Tag('tag_payasaka_tier2reward'))
+		--G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.hand_neg } }
+	end
+}
+
+PTASaka.Risk {
 	key = 'doubledown',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 0 },
@@ -251,6 +392,140 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		add_tag(Tag('tag_payasaka_tier2reward'))
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'decay',
+	atlas = "JOE_Risk",
+	pos = { x = 0, y = 2 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	config = { extra = { level = 2 } },
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_decay_active = (G.GAME.payasaka_decay_active or 0) + ability.level
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_decay_active = nil
+		add_tag(Tag('tag_payasaka_tier2reward'))
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.level } }
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'stunted',
+	atlas = "JOE_Risk",
+	pos = { x = 4, y = 1 },
+	config = { extra = { chance = 2 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_stunted_active = true
+		G.GAME.payasaka_stunted_chance = ability.chance
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_stunted_active = false
+		G.GAME.payasaka_stunted_chance = nil
+		add_tag(Tag('tag_payasaka_tier2reward'))
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'perpetuate',
+	atlas = "JOE_Risk",
+	pos = { x = 4, y = 3 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_perpetuate_active = true
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_perpetuate_active = nil
+		add_tag(Tag('tag_payasaka_tier2reward'))
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'backfire',
+	atlas = "JOE_Risk",
+	pos = { x = 3, y = 3 },
+	config = { extra = { chance = 2 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_backfire_active = ability.chance or 2
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_backfire_active = nil
+		add_tag(Tag('tag_payasaka_tier2reward'))
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'elusive',
+	atlas = "JOE_Risk",
+	pos = { x = 1, y = 2 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_elusive_cards = (G.GAME.payasaka_elusive_cards or 0) + 1
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_elusive_cards = nil
+		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -348,7 +623,7 @@ PTASaka.Risk {
 		add_tag(Tag('tag_meteor'))
 		add_tag(Tag('tag_ethereal'))
 		]]
-		add_tag(Tag('tag_payasaka_tier2reward'))
+		add_tag(Tag('tag_payasaka_tier3reward'))
 		G.E_MANAGER:add_event(Event {
 			trigger = 'after',
 			delay = 0.5,
@@ -358,64 +633,6 @@ PTASaka.Risk {
 				return true
 			end
 		})
-	end,
-}
-
-PTASaka.Risk {
-	set = 'Risk',
-	key = 'decay',
-	atlas = "JOE_Risk",
-	pos = { x = 0, y = 2 },
-	pta_credit = {
-		art = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-		idea = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-	},
-	config = { extra = { level = 2 } },
-	apply_risk = function(self, ability)
-		G.GAME.payasaka_decay_active = (G.GAME.payasaka_decay_active or 0) + ability.level
-	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_decay_active = nil
-		add_tag(Tag('tag_payasaka_tier2reward'))
-	end,
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.level } }
-	end,
-}
-
-PTASaka.Risk {
-	set = 'Risk',
-	key = 'stunted',
-	atlas = "JOE_Risk",
-	pos = { x = 4, y = 1 },
-	config = { extra = { chance = 2 } },
-	pta_credit = {
-		art = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-		idea = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-	},
-	apply_risk = function(self, ability)
-		G.GAME.payasaka_stunted_active = true
-		G.GAME.payasaka_stunted_chance = ability.chance
-	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_stunted_active = false
-		G.GAME.payasaka_stunted_chance = nil
-		add_tag(Tag('tag_payasaka_tier2reward'))
-	end,
-	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
 	end,
 }
 
@@ -435,41 +652,16 @@ PTASaka.Risk {
 		},
 	},
 	apply_risk = function(self, ability)
-		G.jokers.cards[#G.jokers.cards].debuff = true
-		G.jokers.cards[#G.jokers.cards].ability.debuffed_by_risk = true
+		if next(G.jokers.cards) then
+			SMODS.debuff_card(G.jokers.cards[1], true, "risk_elysium")
+			SMODS.debuff_card(G.jokers.cards[#G.jokers.cards], true, "risk_elysium")
+		end
 	end,
 	apply_reward = function(self, ability)
 		for i = 1, #G.jokers.cards do
 			local joker = G.jokers.cards[i]
-			if joker.ability.debuffed_by_risk then
-				joker.debuff = false
-				joker.ability.debuffed_by_risk = nil
-			end
+			SMODS.debuff_card(joker, false, "risk_elysium")
 		end
-		add_tag(Tag('tag_payasaka_tier3reward'))
-	end,
-}
-
-PTASaka.Risk {
-	set = 'Risk',
-	key = 'elusive',
-	atlas = "JOE_Risk",
-	pos = { x = 1, y = 2 },
-	pta_credit = {
-		art = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-		idea = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-	},
-	apply_risk = function(self, ability)
-		G.GAME.payasaka_elusive_cards = (G.GAME.payasaka_elusive_cards or 0) + 1
-	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_elusive_cards = nil
 		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }

@@ -1098,6 +1098,13 @@ return {
 					"rather {C:blue}pointy"
 				}
 			},
+			dd_payasaka_risk = {
+				name = "Risk Card",
+				text = { 
+					"Effects are only applied",
+					"{C:attention}during{} the boss blind"
+				}
+			},
 			dd_payasaka_recuperare = {
 				name = "://VALUES",
 				text = {
@@ -1351,8 +1358,8 @@ return {
 			c_payasaka_decay = {
 				name = "Eclipse",
 				text = {
-					"{X:attention,C:white}÷#1#{} poker hand levels",
-					"during the boss blind",
+					"{X:attention,C:white}÷#1#{} poker",
+					"hand levels",
 				}
 			},
 			c_payasaka_stunted = {
@@ -1360,58 +1367,106 @@ return {
 				text = {
 					"Played {C:attention}Enhanced{} cards have a",
 					"{C:green}#1# in #2#{} chance of not {C:attention}activating",
-					"during the {C:attention}next{} boss blind",
 				}
 			},
 			c_payasaka_crime = {
 				name = "Crime",
 				text = {
-					"{C:red}-#1#{} hand size when the",
-					"boss blind is {C:attention}selected{}",
+					"{C:red}-#1#{} hand size",
 				}
 			},
 			c_payasaka_hinder = {
 				name = "Hinder",
 				text = {
 					"{C:attention}Debuff{} {C:attention}#1#{} random",
-					"cards in your deck upon",
-					"{C:attention}entering{} the boss blind"
+					"cards in your deck",
 				}
 			},
 			c_payasaka_hollow = {
 				name = "Hollow",
 				text = {
-					"{C:attention}Debuffs{} all consumables",
-					"during the {C:attention}next{} boss blind",
+					"{C:attention}Debuff{} all consumables",
 				}
 			},
 			c_payasaka_leak = {
 				name = "Leak",
 				text = {
-					"Lose {C:money}$#1#{} per {C:attention}scored{} card",
-					"during the {C:attention}next{} boss blind",
+					"Lose {C:money}$#1#{} per",
+					"{C:attention}scored{} card"
 				}
 			},
 			c_payasaka_elysium = {
 				name = "Elysium",
 				text = {
 					"{C:attention}Debuff{} the {C:attention}rightmost",
-					"Joker during the boss blind",
+					"and {C:attention}leftmost{} Joker",
 				}
 			},
 			c_payasaka_elusive = {
 				name = "Elusive",
 				text = {
-					"{C:attention}First{} drawn card is faced",
-					"down during the boss blind",
+					"{C:attention}First{} drawn card",
+					"is faced down",
+					"Held cards are",
+					"flipped after playing"
 				}
 			},
 			c_payasaka_prelude = {
 				name = "Prelude",
 				text = {
-					"{C:attention}Encounter{} a {C:attention}Prelude Blind",
-					"before the boss blind",
+					"{C:attention}Encounter{} a",
+					"{C:attention}Prelude Blind"
 				}
+			},
+			c_payasaka_shrink = {
+				name = "Shrink",
+				text = {
+					"Scored cards give",
+					"{C:attention}half{} its chip value",
+				},
+			},
+			c_payasaka_genesis = {
+				name = "Genesis",
+				text = {
+					"Adds {C:attention}#1#{} random basic",
+					"cards to your deck",
+				},
+			},
+			c_payasaka_burden = {
+				name = "Burden",
+				text = {
+					"Adds {C:purple}Eternal{} to",
+					"a random Joker",
+				},
+			},
+			c_payasaka_ethereal = {
+				name = "Ethereal",
+				text = {
+					"Adds {C:purple}Perishable{} to",
+					"a random Joker",
+				},
+			},
+			c_payasaka_cyclone = {
+				name = "Cyclone",
+				text = {
+					"Held cards are {C:attention}shuffled",
+					"back into the deck",
+				},
+			},
+			c_payasaka_perpetuate = {
+				name = "Perpetuate",
+				text = {
+					"Discarded cards {C:attention}return",
+					"back into the deck",
+				},
+			},
+			c_payasaka_backfire = {
+				name = "Backfire",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"reversing Joker order",
+					"when hand is played",
+				},
 			},
 		},
 		Reward = {

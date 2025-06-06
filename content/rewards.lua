@@ -16,12 +16,12 @@ SMODS.UndiscoveredSprite {
 	key = 'Reward',
 	atlas = 'JOE_Risk',
 	path = 'risk.png',
-	pos = { x = 3, y = 2 },
+	pos = { x = 8-5, y = 5-1 },
 	px = 71, py = 95,
-	inject = function(self, i)
+	register = function(self)
 		self.pos.x = self.pos.x + offs.x
 		self.pos.y = self.pos.y + offs.y
-		SMODS.UndiscoveredSprite.inject(self, i)
+		SMODS.UndiscoveredSprite.register(self)
 	end,
 }
 
@@ -46,10 +46,10 @@ PTASaka.Reward = SMODS.Consumable:extend {
 	in_pool = function(self, args)
 		return true
 	end,
-	inject = function(self, i)
+	register = function(self)
 		self.pos.x = self.pos.x + offs.x
 		self.pos.y = self.pos.y + offs.y
-		SMODS.Consumable.inject(self, i)
+		SMODS.Consumable.register(self)
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
