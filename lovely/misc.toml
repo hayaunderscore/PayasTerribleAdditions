@@ -294,3 +294,17 @@ if next(SMODS.find_card('j_payasaka_iroyokia')) and game_over then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''draw_card(G.deck,G.hand, i*100/hand_space,'up', true)'''
+position = 'after'
+payload = '''
+if G.GAME.payasaka_erratic_ultra then
+	local suit = pseudorandom_element(G.GAME.payasaka_erratic_saved_suits, pseudoseed('erratic2')).key
+	local rank = pseudorandom_element(G.GAME.payasaka_erratic_saved_ranks, pseudoseed('erratic2')).key
+	local _ = SMODS.change_base(G.deck.cards[#G.deck.cards], suit, rank)
+end
+'''
+match_indent = true

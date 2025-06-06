@@ -269,6 +269,31 @@ SMODS.Back {
 }
 
 SMODS.Back {
+	key = 'erraticerraticerratic',
+	atlas = "JOE_Decks",
+	pos = { x = 0, y = 2 },
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.payasaka_erratic_saved_suits = {}
+		G.GAME.payasaka_erratic_saved_ranks = {}
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				-- Only use suits of cards available in the deck, as well as ranks
+				for _, v in ipairs(G.playing_cards or {}) do
+					if not SMODS.has_no_suit(v) then G.GAME.payasaka_erratic_saved_suits[#G.GAME.payasaka_erratic_saved_suits + 1] = { card_key = string.sub(v.base.suit, 1, 1), key = v.base.suit } end
+					if not SMODS.has_no_rank(v) then G.GAME.payasaka_erratic_saved_ranks[#G.GAME.payasaka_erratic_saved_ranks + 1] = { card_key = string.sub(v.base.value, 1, 1), key = v.base.value } end
+				end
+				-- Ok then.
+				if not G.GAME.payasaka_erratic_saved_suits[1] then G.GAME.payasaka_erratic_saved_suits = {SMODS.Suits['Hearts']} end
+				if not G.GAME.payasaka_erratic_saved_ranks[1] then G.GAME.payasaka_erratic_saved_ranks = {SMODS.Ranks['Ace']} end
+				return true
+			end
+		})
+		G.GAME.payasaka_erratic_ultra = true
+	end,
+}
+
+SMODS.Back {
 	key = 'gacha',
 	atlas = "JOE_Decks",
 	pos = { x = 1, y = 1 },

@@ -53,6 +53,13 @@ return {
 					"{C:inactive,s:0.8}Is this even fair?"
 				}
 			},
+			b_payasaka_erraticerraticerratic = {
+				name = "Chaos Deck",
+				text = {
+					"Playing cards' {C:attention}Rank{} and {C:attention}Suit{}",
+					"are randomized when drawn",
+				}
+			},
 		},
 		Joker = {
 			j_payasaka_buruakacard = {
