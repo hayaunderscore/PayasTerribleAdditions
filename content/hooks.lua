@@ -156,6 +156,7 @@ function Game:init_game_object()
 	local ret = igo(self)
 	-- Risk card stuff
 	ret.risk_cards_risks = {}
+	ret.payasaka_risk_objects = {}
 	ret.risk_cards_rewards = {}
 	-- Pyroxenes
 	ret.payasaka_pyroxenes = 0
@@ -165,6 +166,7 @@ function Game:init_game_object()
 	ret.payasaka_lab_joker_ids = {}
 	-- Cast
 	ret.payasaka_cast_joker_ids = {}
+
 
 	-- Custom Modded pool stuff
 	ret.payasaka_modded_rate = 0

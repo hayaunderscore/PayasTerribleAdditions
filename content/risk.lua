@@ -1,3 +1,35 @@
+---@class RiskObject: Node
+PTASaka.RiskObject = Node:extend()
+function PTASaka.RiskObject:init(key)
+	---@type Risk
+	self.center = key and G.P_CENTERS[key] or {}
+	self.ability = next(self.center) and copy_table(self.center.config) or {}
+end
+
+function PTASaka.RiskObject:calculate(context)
+	if self.center.risk_calculate and type(self.center.risk_calculate) == 'function' then
+		return self.center:risk_calculate(self, context)
+	end
+end
+
+function PTASaka.RiskObject:save()
+	local tbl = {
+		ability = self.ability
+	}
+	for _, v in ipairs(G.P_CENTER_POOLS.Risk) do
+		if v and v.key == self.center.key then
+			tbl.config_name = v.key
+		end
+	end
+
+	return tbl
+end
+
+function PTASaka.RiskObject:load(tbl)
+	self.center = G.P_CENTERS[tbl.config_name]
+	self.ability = tbl.ability
+end
+
 SMODS.ConsumableType {
 	key = 'Risk',
 	collection_rows = { 8, 6, 4 },
@@ -19,6 +51,9 @@ SMODS.UndiscoveredSprite {
 G.C.SET.Risk = HEX('c42430')
 G.C.SECONDARY_SET.Risk = HEX('891e2b')
 
+---@class Risk: SMODS.Consumable
+---@field risk_calculate? fun(self: Risk|table, risk: RiskObject|table, context: CalcContext|table): table?, boolean?  Calculates effects based on parameters in `context`. See [SMODS calculation](https://github.com/Steamodded/smods/wiki/calculate_functions) docs for details. 
+---@overload fun(self: Risk): Risk
 PTASaka.Risk = SMODS.Consumable:extend {
 	set = 'Risk',
 	config = { extra = {} },
@@ -32,6 +67,7 @@ PTASaka.Risk = SMODS.Consumable:extend {
 			colour = HEX('09d707')
 		},
 	},
+	tier = 1,
 	use = function(self, card, area, copier)
 		G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks + 1] = {
 			key = self.key,
@@ -103,6 +139,12 @@ PTASaka.Risk = SMODS.Consumable:extend {
 	end,
 	apply_reward = function(self, ability)
 	end,
+	---@param self Risk
+	---@param risk RiskObject
+	---@param context CalcContext
+	risk_calculate = function(self, risk, context)
+		
+	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
 	end,
@@ -117,6 +159,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 1 },
 	config = { extra = { debuff = 10 } },
+	tier = 1,
 	apply_risk = function(self, ability)
 		G.GAME.payasaka_hinder_cards = G.GAME.payasaka_hinder_cards or PTASaka.shallow_copy(G.deck.cards)
 		G.GAME.payasaka_already_hindered = G.GAME.payasaka_already_hindered or {}
@@ -128,6 +171,33 @@ PTASaka.Risk {
 				G.GAME.payasaka_already_hindered[#G.GAME.payasaka_already_hindered + 1] = c
 			end
 			count = count - 1
+		end
+	end,
+	risk_calculate = function(self, risk, context)
+		if context.setting_blind then
+			if G.GAME.payasaka_already_hindered then
+				for i = 1, #G.GAME.payasaka_already_hindered do
+					draw_card(G.deck,G.hand, i*100/#G.GAME.payasaka_already_hindered,'up', false, G.GAME.payasaka_already_hindered[i], nil, nil)
+				end
+				delay(0.4)
+				for i = 1, #G.GAME.payasaka_already_hindered do
+					local c = G.GAME.payasaka_already_hindered[i]
+					G.E_MANAGER:add_event(Event{
+						trigger = 'after',
+						delay = 0.15,
+						func = function()
+							c:juice_up()
+							play_sound('timpani')
+							SMODS.debuff_card(c, true, 'payasaka_risk_hinder')
+							return true
+						end
+					})
+				end
+				delay(0.4)
+				for i = 1, #G.GAME.payasaka_already_hindered do
+					draw_card(G.hand,G.deck, i*100/#G.GAME.payasaka_already_hindered,'down', true, G.GAME.payasaka_already_hindered[i], nil, nil)
+				end
+			end
 		end
 	end,
 	apply_reward = function(self, ability)
@@ -149,6 +219,7 @@ PTASaka.Risk {
 	key = 'hollow',
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 1 },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -162,19 +233,14 @@ PTASaka.Risk {
 	apply_risk = function(self, ability)
 		for i = 1, #G.consumeables.cards do
 			local c = G.consumeables.cards[i]
-			c.debuff = true
-			c.ability.debuffed_by_risk = true
+			SMODS.debuff_card(c, true, "risk_hollow")
 		end
 	end,
 	apply_reward = function(self, ability)
 		for i = 1, #G.consumeables.cards do
 			local c = G.consumeables.cards[i]
-			if c.ability.debuffed_by_risk then
-				c.ability.debuffed_by_risk = nil
-				c.debuff = false
-			end
+			SMODS.debuff_card(c, false, "risk_hollow")
 		end
-		add_tag(Tag('tag_payasaka_tier1reward'))
 	end,
 }
 
@@ -184,6 +250,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 1 },
 	config = { extra = { money = 1 } },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -199,7 +266,21 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_leak_active = nil
-		add_tag(Tag('tag_payasaka_tier1reward'))
+	end,
+	risk_calculate = function(self, risk, context)
+		if context.payasaka_dos_before then
+			for i = 1, #context.scoring_hand do
+				local c = context.scoring_hand[i]
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						c:juice_up()
+						ease_dollars(-risk.ability.extra.money)
+					end
+				})
+			end
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.money } }
@@ -211,6 +292,7 @@ PTASaka.Risk {
 	key = 'shrink',
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 2 },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -226,7 +308,6 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_shrink_active = nil
-		add_tag(Tag('tag_payasaka_tier1reward'))
 	end,
 }
 
@@ -236,6 +317,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 4, y = 2 },
 	config = { extra = { cards = 7 } },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -251,9 +333,6 @@ PTASaka.Risk {
 			create_playing_card(nil, G.deck, true, true)
 		end
 	end,
-	apply_reward = function(self, ability)
-		add_tag(Tag('tag_payasaka_tier1reward'))
-	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.cards } }
 	end
@@ -264,6 +343,7 @@ PTASaka.Risk {
 	key = 'burden',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 3 },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -282,9 +362,6 @@ PTASaka.Risk {
 			joker:juice_up()
 		end
 	end,
-	apply_reward = function(self, ability)
-		add_tag(Tag('tag_payasaka_tier1reward'))
-	end
 }
 
 PTASaka.Risk {
@@ -292,6 +369,7 @@ PTASaka.Risk {
 	key = 'ethereal',
 	atlas = "JOE_Risk",
 	pos = { x = 1, y = 3 },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -310,9 +388,6 @@ PTASaka.Risk {
 			joker:juice_up()
 		end
 	end,
-	apply_reward = function(self, ability)
-		add_tag(Tag('tag_payasaka_tier1reward'))
-	end
 }
 
 PTASaka.Risk {
@@ -320,6 +395,7 @@ PTASaka.Risk {
 	key = 'cyclone',
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 3 },
+	tier = 1,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -338,9 +414,6 @@ PTASaka.Risk {
 			joker:juice_up()
 		end
 	end,
-	apply_reward = function(self, ability)
-		add_tag(Tag('tag_payasaka_tier1reward'))
-	end
 }
 
 PTASaka.Risk {
@@ -349,6 +422,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 0 },
 	config = { extra = { hand_neg = 1 } },
+	tier = 2,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -364,7 +438,6 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.hand:change_size(ability.hand_neg)
-		add_tag(Tag('tag_payasaka_tier2reward'))
 		--G.GAME.round_resets.discards = G.GAME.round_resets.discards + ability.hand_neg
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -376,6 +449,7 @@ PTASaka.Risk {
 	key = 'doubledown',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 0 },
+	tier = 2,
 	apply_risk = function(self, ability)
 		G.E_MANAGER:add_event(Event {
 			trigger = 'after',
@@ -390,9 +464,6 @@ PTASaka.Risk {
 		})
 		delay(0.6)
 	end,
-	apply_reward = function(self, ability)
-		add_tag(Tag('tag_payasaka_tier2reward'))
-	end,
 }
 
 PTASaka.Risk {
@@ -400,6 +471,7 @@ PTASaka.Risk {
 	key = 'decay',
 	atlas = "JOE_Risk",
 	pos = { x = 0, y = 2 },
+	tier = 2,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -411,12 +483,27 @@ PTASaka.Risk {
 		},
 	},
 	config = { extra = { level = 2 } },
-	apply_risk = function(self, ability)
-		G.GAME.payasaka_decay_active = (G.GAME.payasaka_decay_active or 0) + ability.level
-	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_decay_active = nil
-		add_tag(Tag('tag_payasaka_tier2reward'))
+	risk_calculate = function(self, risk, context)
+		if context.payasaka_dos_before then
+			local mto_big = to_big or function(a) return a end
+			risk.ability.last_hand_name = nil
+			if mto_big(G.GAME.hands[context.scoring_name].level) > mto_big(1) then
+				risk.ability.last_hand_name = context.scoring_name
+				risk.ability.last_hand_level = G.GAME.hands[context.scoring_name].level
+				level_up_hand(nil, context.scoring_name, nil, -math.max(1, G.GAME.hands[context.scoring_name].level - (G.GAME.hands[context.scoring_name].level/risk.ability.extra.level)))
+			end
+		end
+		if context.after and risk.ability.last_hand_name then
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					local hand = G.GAME.hands[risk.ability.last_hand_name]
+					hand.level = risk.ability.last_hand_level
+					hand.mult = math.max(hand.s_mult + hand.l_mult*(hand.level - 1), 1)
+					hand.chips = math.max(hand.s_chips + hand.l_chips*(hand.level - 1), 0)
+					return true
+				end
+			})
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.level } }
@@ -429,6 +516,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 4, y = 1 },
 	config = { extra = { chance = 2 } },
+	tier = 2,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -446,7 +534,6 @@ PTASaka.Risk {
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_stunted_active = false
 		G.GAME.payasaka_stunted_chance = nil
-		add_tag(Tag('tag_payasaka_tier2reward'))
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
@@ -458,6 +545,7 @@ PTASaka.Risk {
 	key = 'perpetuate',
 	atlas = "JOE_Risk",
 	pos = { x = 4, y = 3 },
+	tier = 2,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -473,7 +561,6 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_perpetuate_active = nil
-		add_tag(Tag('tag_payasaka_tier2reward'))
 	end,
 }
 
@@ -483,6 +570,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 3 },
 	config = { extra = { chance = 2 } },
+	tier = 2,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -498,7 +586,12 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_backfire_active = nil
-		add_tag(Tag('tag_payasaka_tier2reward'))
+	end,
+	risk_calculate = function(self, risk, context)
+		if context.press_play and pseudorandom('backfire_shit') < (G.GAME.probabilities.normal or 1)/risk.ability.extra.chance then
+			table.sort(G.jokers.cards, function(x, y) return x.sort_id > y.sort_id end)
+			G.jokers:set_ranks()
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
@@ -510,6 +603,7 @@ PTASaka.Risk {
 	key = 'elusive',
 	atlas = "JOE_Risk",
 	pos = { x = 1, y = 2 },
+	tier = 3,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -523,9 +617,19 @@ PTASaka.Risk {
 	apply_risk = function(self, ability)
 		G.GAME.payasaka_elusive_cards = (G.GAME.payasaka_elusive_cards or 0) + 1
 	end,
+	risk_calculate = function(self, risk, context)
+		if context.press_play then
+			for i = 1, #G.hand.cards do
+				---@type Card
+				local c = G.hand.cards[i]
+				if not c.highlighted then
+					c:flip()
+				end
+			end
+		end
+	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_elusive_cards = nil
-		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -534,6 +638,7 @@ PTASaka.Risk {
 	key = 'cast',
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 0 },
+	tier = 3,
 	use = function(self, card, area, copier)
 		-- no need to save it if the damn thing is already the question
 		-- im the motherfucking question bitch
@@ -623,7 +728,6 @@ PTASaka.Risk {
 		add_tag(Tag('tag_meteor'))
 		add_tag(Tag('tag_ethereal'))
 		]]
-		add_tag(Tag('tag_payasaka_tier3reward'))
 		G.E_MANAGER:add_event(Event {
 			trigger = 'after',
 			delay = 0.5,
@@ -641,6 +745,7 @@ PTASaka.Risk {
 	key = 'elysium',
 	atlas = "JOE_Risk",
 	pos = { x = 1, y = 1 },
+	tier = 3,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -662,7 +767,6 @@ PTASaka.Risk {
 			local joker = G.jokers.cards[i]
 			SMODS.debuff_card(joker, false, "risk_elysium")
 		end
-		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -671,6 +775,7 @@ PTASaka.Risk {
 	key = 'prelude',
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 2 },
+	tier = 3,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
@@ -736,7 +841,6 @@ PTASaka.Risk {
 				SMODS.debuff_card(c, false, 'payasaka_prelude')
 			end
 		end
-		add_tag(Tag('tag_payasaka_tier3reward'))
 	end,
 }
 
@@ -748,6 +852,7 @@ PTASaka.Risk {
 	config = { extra = {} },
 	hidden = true,
 	soul_set = 'Risk',
+	tier = 0,
 	use = function(self, card, area, copier)
 		local showdown = {}
 		for k, v in pairs(G.P_BLINDS) do

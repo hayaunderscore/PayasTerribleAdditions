@@ -34,54 +34,9 @@ times = 1
 [[patches]]
 [patches.pattern]
 target = 'functions/state_events.lua'
-pattern = '''-- TARGET: setting_blind effects'''
-position = 'before'
-payload = '''
-if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' then
-	for _, v in ipairs(G.GAME.risk_cards_risks) do
-		G.P_CENTERS[v.key].apply_risk(G.P_CENTERS[v.key], v.ability)
-	end
-end
-if G.GAME.payasaka_already_hindered then
-	for i = 1, #G.GAME.payasaka_already_hindered do
-		draw_card(G.deck,G.hand, i*100/#G.GAME.payasaka_already_hindered,'up', false, G.GAME.payasaka_already_hindered[i], nil, nil)
-	end
-	delay(0.4)
-	for i = 1, #G.GAME.payasaka_already_hindered do
-		local c = G.GAME.payasaka_already_hindered[i]
-		G.E_MANAGER:add_event(Event{
-			trigger = 'after',
-			delay = 0.15,
-			func = function()
-				c:juice_up()
-				play_sound('timpani')
-				SMODS.debuff_card(c, true, 'payasaka_risk_hinder')
-				return true
-			end
-		})
-	end
-	delay(0.4)
-	for i = 1, #G.GAME.payasaka_already_hindered do
-		draw_card(G.hand,G.deck, i*100/#G.GAME.payasaka_already_hindered,'down', true, G.GAME.payasaka_already_hindered[i], nil, nil)
-	end
-end
-
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
 pattern = '''-- TARGET: main end_of_round evaluation'''
 position = 'before'
 payload = '''
-if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' and not game_over then
-	for _, v in ipairs(G.GAME.risk_cards_risks) do
-		G.P_CENTERS[v.key].apply_reward(G.P_CENTERS[v.key], v.ability)
-	end
-    G.GAME.risk_cards_risks = {}
-end
 if G.GAME.blind_on_deck == 'Boss' and not game_over and G.GAME.payasaka_fucking_hell then
 	if #G.consumeables.cards < G.consumeables.config.card_limit then
 		local _c = SMODS.add_card { key = 'c_payasaka_gacha', area = G.consumeables }

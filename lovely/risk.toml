@@ -3,58 +3,102 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-# Leak
+# Save risk card stuff to here
 [[patches]]
 [patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- TARGET: effects before scoring starts'''
+target = 'functions/misc_functions.lua'
+pattern = '''G.culled_table =  recursive_table_cull{'''
 position = 'before'
 payload = '''
-if G.GAME.payasaka_leak_active then
-	G.E_MANAGER:add_event(Event({func = function()
-		for i = 1, #scoring_hand do
-			G.E_MANAGER:add_event(Event({func = function() scoring_hand[i]:juice_up(); return true end })) 
-			ease_dollars(-G.GAME.payasaka_leak_active)
-			delay(0.23)
+local risks = {}
+if G.GAME.payasaka_risk_objects then
+	for k, v in ipairs(G.GAME.payasaka_risk_objects) do
+		if v and (type(v) == "table") and v.is and v:is(PTASaka.RiskObject) then
+			local ret = v:save()
+			if ret then risks[k] = ret end
 		end
-	return true end })) 
+	end
 end
-'''
-match_indent = true
 
-# Eclipse
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- TARGET: effects before scoring starts'''
-position = 'before'
-payload = '''
-local mto_big = to_big or function(a) return a end
-G.GAME.payasaka_last_hand_name = nil
-if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 and mto_big(G.GAME.hands[text].level) > mto_big(1) then
-	G.GAME.payasaka_last_hand_name = text
-	G.GAME.payasaka_last_hand_level = G.GAME.hands[text].level
-	level_up_hand(nil, text, nil, -math.max(1, G.GAME.hands[text].level - (G.GAME.hands[text].level/G.GAME.payasaka_decay_active)))
-end
 '''
 match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- context.after calculations'''
+target = 'functions/misc_functions.lua'
+pattern = '''GAME = G.GAME,'''
 position = 'before'
 payload = '''
-if G.GAME.payasaka_decay_active and G.GAME.payasaka_decay_active > 0 and G.GAME.payasaka_last_hand_name then
-	G.E_MANAGER:add_event(Event{
-		func = function()
-			local hand = G.GAME.hands[G.GAME.payasaka_last_hand_name]
-			hand.level = G.GAME.payasaka_last_hand_level
-    		hand.mult = math.max(hand.s_mult + hand.l_mult*(hand.level - 1), 1)
-    		hand.chips = math.max(hand.s_chips + hand.l_chips*(hand.level - 1), 0)
-			return true
+pta_risks = risks,
+'''
+match_indent = true
+
+# Load them back in!!!!
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''G.GAME.blind:load(saveTable.BLIND)'''
+position = 'after'
+payload = '''
+G.GAME.payasaka_risk_objects = {}
+local risks = saveTable.pta_risks or {}
+for k, v in ipairs(risks) do
+	local risk = PTASaka.RiskObject(nil)
+	risk:load(v)
+	G.GAME.payasaka_risk_objects[k] = risk
+end
+'''
+match_indent = true
+
+# Add this to individual checks for SMODS
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''-- TARGET: add your own individual scoring targets'''
+position = 'after'
+payload = '''
+for k, v in ipairs(G.GAME.payasaka_risk_objects or {}) do
+	if (type(v) == "table") and v and v.is and v:is(PTASaka.RiskObject) then
+		t[#t+1] = { object = v, scored_card = G.GAME.blind.children.animatedSprite }
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: setting_blind effects'''
+position = 'before'
+payload = '''
+if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' then
+	for k, v in ipairs(G.GAME.risk_cards_risks) do
+		G.P_CENTERS[v.key].apply_risk(G.P_CENTERS[v.key], v.ability)
+		G.GAME.payasaka_risk_objects[k] = PTASaka.RiskObject(v.key)
+	end
+end
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: main end_of_round evaluation'''
+position = 'before'
+payload = '''
+if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' and not game_over then
+	for k_, v in ipairs(G.GAME.risk_cards_risks) do
+		G.P_CENTERS[v.key].apply_reward(G.P_CENTERS[v.key], v.ability)
+		if G.P_CENTERS[v.key].tier > 0 then
+			add_tag(Tag('tag_payasaka_tier'..G.P_CENTERS[v.key].tier..'reward'))
 		end
-	})
+		if G.GAME.payasaka_risk_objects[k] then
+			G.GAME.payasaka_risk_objects[k]:remove()
+			G.GAME.payasaka_risk_objects[k] = nil
+		end
+	end
+    G.GAME.risk_cards_risks = {}
 end
 '''
 match_indent = true
@@ -201,22 +245,3 @@ else
 end
 '''
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = "-- TARGET: adding to hand effects"
-position = 'before'
-payload = '''
-if G.GAME.payasaka_backfire_active and G.GAME.payasaka_backfire_active > 0 and pseudorandom('backfire') < (G.GAME.probabilities.normal or 1)/G.GAME.payasaka_backfire_active then
-	table.sort(G.jokers.cards, function(x, y) return x.sort_id > y.sort_id end)
-	G.jokers:set_ranks()
-end
-if G.GAME.payasaka_elusive_cards then
-	for _, c in ipairs(G.hand.cards) do
-		c:flip()
-	end
-end
-'''
-match_indent = true
-times = 1
