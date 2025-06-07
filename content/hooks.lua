@@ -183,7 +183,7 @@ function Game:init_game_object()
 
 		-- ret.payasaka_gacha_rarity_table = PTASaka.gacha_rarity_table
 		ret.payasaka_aliased_gacha_table = PTASaka.create_alias_table(PTASaka.gacha_rarity_table)
-		print(ret.payasaka_aliased_gacha_table)
+		--print(ret.payasaka_aliased_gacha_table)
 	end
 
 	return ret
