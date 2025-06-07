@@ -280,7 +280,7 @@ PTASaka.Risk {
 					delay = 0.15,
 					func = function()
 						c:juice_up()
-						ease_dollars(-risk.ability.extra.money)
+						ease_dollars(-risk.ability.extra.money, true)
 						return true
 					end
 				})
