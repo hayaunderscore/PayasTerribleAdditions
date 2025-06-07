@@ -1102,7 +1102,8 @@ return {
 				name = "Risk Card",
 				text = { 
 					"Effects are only applied",
-					"{C:attention}during{} the boss blind"
+					"{C:attention}during{} the boss blind",
+					"{C:inactive,s:0.9}(Reward: {C:dark_edition,s:0.9}#1#{C:inactive,s:0.9})"
 				}
 			},
 			dd_payasaka_recuperare = {
@@ -1466,6 +1467,13 @@ return {
 					"{C:green}#1# in #2#{} chance of",
 					"reversing Joker order",
 					"when hand is played",
+				},
+			},
+			c_payasaka_flow = {
+				name = "Flow",
+				text = {
+					"Held cards are {C:attention}debuffed",
+					"after playing a hand",
 				},
 			},
 		},

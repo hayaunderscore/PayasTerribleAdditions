@@ -32,7 +32,7 @@ end
 
 SMODS.ConsumableType {
 	key = 'Risk',
-	collection_rows = { 8, 6, 4 },
+	collection_rows = { 8, 7, 4 },
 	primary_colour = HEX('c42430'),
 	secondary_colour = HEX('891e2b'),
 	shop_rate = 0,
@@ -50,6 +50,13 @@ SMODS.UndiscoveredSprite {
 
 G.C.SET.Risk = HEX('c42430')
 G.C.SECONDARY_SET.Risk = HEX('891e2b')
+
+local reward_sets = {
+	[0] = {set = 'Reward', key = 'c_payasaka_mind'},
+	[1] = {set = 'Other', key = 'p_payasaka_moji_normal_1'},
+	[2] = {set = 'Other', key = 'p_payasaka_moji_jumbo_1'},
+	[3] = {set = 'Other', key = 'p_payasaka_moji_mega_1'},
+}
 
 ---@class Risk: SMODS.Consumable
 ---@field risk_calculate? fun(self: Risk|table, risk: RiskObject|table, context: CalcContext|table): table?, boolean?  Calculates effects based on parameters in `context`. See [SMODS calculation](https://github.com/Steamodded/smods/wiki/calculate_functions) docs for details. 
@@ -130,7 +137,9 @@ PTASaka.Risk = SMODS.Consumable:extend {
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_risk"]
+		local dd = PTASaka.DescriptionDummies["dd_payasaka_risk"]
+		dd.vars = { localize { type = 'name_text', set = reward_sets[self.tier].set, key = reward_sets[self.tier].key } }
+		info_queue[#info_queue+1] = dd
 	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.BLIND_SELECT or booster_obj or G.STATE == G.STATES.SHOP
@@ -871,6 +880,46 @@ PTASaka.Risk {
 			end
 		end
 	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
+	key = 'flow',
+	atlas = "JOE_Risk",
+	pos = { x = 0, y = 4 },
+	tier = 3,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	risk_calculate = function(self, risk, context)
+		if context.after and (G.GAME.chips + math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count,hand_chips,mult))) < G.GAME.blind.chips then
+			for i = 1, #G.hand.cards do
+				---@type Card
+				local c = G.hand.cards[i]
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						c:juice_up()
+						SMODS.debuff_card(c, true, "payasaka_flow")
+						return true
+					end
+				})
+			end
+		end
+		if context.end_of_round then
+			for i = 1, #G.playing_cards do
+				SMODS.debuff_card(G.playing_cards[i], false, "payasaka_flow")
+			end
+		end
+	end
 }
 
 PTASaka.Risk {
