@@ -5,7 +5,7 @@ require "love.filesystem"
 function john_madden(code, body, ...)
 	if body then
 		local audio = love.audio.newSource(love.filesystem.newFileData(body, "aeiou.wav"), "static")
-		audio:setVolume((G.SETTINGS.SOUND.game_sounds_volume/100)*1.5)
+		audio:setVolume((G.SETTINGS.SOUND.volume/100)*(G.SETTINGS.SOUND.game_sounds_volume/100)*4)
 		love.audio.play(audio)
 	end
 end
