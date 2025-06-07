@@ -499,12 +499,10 @@ return {
 			j_payasaka_paya = {
 				name = "Yonii Payasaka",
 				text = {
-					"Upon {C:attention}selecting{} a blind,",
 					"{C:green}#1# in #2#{} chance of",
-					"turning the {C:attention}operation{} of",
-					"chips and mult from",
-					"{C:attention}multiplication to",
-					"{X:dark_edition,C:white}exponentiation"
+					"changing the {C:attention}operator",
+					"from {C:red}X{} to {C:white,X:dark_edition}^{} upon",
+					"selecting a blind",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Self insert joker"

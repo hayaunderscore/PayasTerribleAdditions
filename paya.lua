@@ -400,6 +400,7 @@ PTASaka.SetToggle = SMODS.Center:extend{
 	required_params = {
 		"key",
 	},
+	no_doe = true, -- Chaos/Parakmi please don't choose this LMAO
 	inject = function(self, i)
 		if not G.P_CENTER_POOLS[self.set] then
 			G.P_CENTER_POOLS[self.set] = {}

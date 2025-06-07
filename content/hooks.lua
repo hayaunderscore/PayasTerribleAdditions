@@ -201,6 +201,8 @@ PTASaka.DeclineBlacklist = {
 }
 
 if Entropy and Entropy.ParakmiBlacklist then
+	Entropy.ChaosBlacklist["PTASet"] = true
+	Entropy.ParakmiBlacklist["PTASet"] = true
 	PTASaka.FH.merge(PTASaka.DeclineBlacklist, Entropy.ParakmiBlacklist)
 end
 

@@ -113,7 +113,6 @@ payload = '''
 if (card.ability.set == "Back" or card.ability.set == "Sleeve") and not PTASaka then
 '''
 match_indent = true
-times = 1
 
 [[patches]]
 [patches.pattern]
@@ -124,4 +123,3 @@ payload = '''
 if (card.config.center.set == "Back" or card.config.center.set == "Sleeve") and not PTASaka then
 '''
 match_indent = true
-times = 1

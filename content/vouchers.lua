@@ -399,6 +399,7 @@ end
 function PTASaka.deck_sleeve_redeem(self)
 	if (self.ability.set == "Back" or self.ability.set == "Sleeve") then
 		stop_use()
+		print("hi")
 
 		self.states.hover.can = false
 		G.GAME.used_jokers[self.config.center_key] = true
