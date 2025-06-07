@@ -164,9 +164,6 @@ target = 'functions/state_events.lua'
 pattern = "for i=1, hand_space do --draw cards from deckL"
 position = "before"
 payload = '''
-if G.GAME.payasaka_cyclone_active then
-	G.FUNCS.draw_from_hand_to_deck(nil)
-end
 local add = {}
 SMODS.calculate_context({payasaka_draw_to_deck = true}, add)
 SMODS.trigger_effects(add)

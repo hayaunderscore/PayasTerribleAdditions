@@ -175,7 +175,7 @@ PTASaka.Risk {
 	end,
 	risk_calculate = function(self, risk, context)
 		if context.setting_blind then
-			if G.GAME.payasaka_already_hindered then
+			if G.GAME.payasaka_already_hindered and next(G.GAME.payasaka_already_hindered) then
 				for i = 1, #G.GAME.payasaka_already_hindered do
 					draw_card(G.deck,G.hand, i*100/#G.GAME.payasaka_already_hindered,'up', false, G.GAME.payasaka_already_hindered[i], nil, nil)
 				end
@@ -198,6 +198,7 @@ PTASaka.Risk {
 					draw_card(G.hand,G.deck, i*100/#G.GAME.payasaka_already_hindered,'down', true, G.GAME.payasaka_already_hindered[i], nil, nil)
 				end
 			end
+			G.GAME.payasaka_already_hindered = {}
 		end
 	end,
 	apply_reward = function(self, ability)
@@ -261,12 +262,6 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
-	apply_risk = function(self, ability)
-		G.GAME.payasaka_leak_active = (G.GAME.payasaka_leak_active or 0) + ability.money
-	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_leak_active = nil
-	end,
 	risk_calculate = function(self, risk, context)
 		if context.payasaka_dos_before then
 			for i = 1, #context.scoring_hand do
@@ -406,14 +401,16 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
-	apply_risk = function(self, ability)
-		---@type Card|nil
-		local joker = pseudorandom_element(G.jokers.cards, pseudoseed('burden'))
-		if joker then
-			joker:set_perishable(true)
-			joker:juice_up()
+	risk_calculate = function(self, risk, context)
+		if context.after then
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					G.FUNCS.draw_from_hand_to_deck(nil)
+					return true
+				end
+			})
 		end
-	end,
+	end
 }
 
 PTASaka.Risk {
@@ -534,6 +531,38 @@ PTASaka.Risk {
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_stunted_active = false
 		G.GAME.payasaka_stunted_chance = nil
+	end,
+	risk_calculate = function(self, risk, context)
+		if context.payasaka_dos_before then
+			for i = 1, #G.play.cards do
+				local card = G.play.cards[i]
+				if pseudorandom('ham_slice') < (G.GAME.probabilities.normal or 1)/risk.ability.extra.chance and card.ability.set == 'Enhanced' then
+					card.ability.set = 'Default'
+					card.ability.payasaka_old_effect = card.ability.effect
+					card.ability.payasaka_old_ee = card.ability.extra_enhancement
+					card.ability.effect = nil
+					card.ability.extra_enhancement = false
+					card.ability.payasaka_stunted = true
+					card_eval_status_text(card, 'extra', nil, nil, nil,
+								{ message = "Stunted!" })
+				end
+			end
+		end
+		if context.after then
+			for i = 1, #G.play.cards do
+				local card = G.play.cards[i]
+				if card.ability.payasaka_stunted then
+					card.ability.set = 'Enhanced'
+					card.ability.effect = card.ability.effect
+					card.ability.extra_enhancement = card.ability.payasaka_old_ee
+					card.ability.payasaka_stunted = nil
+					card.ability.payasaka_old_effect = nil
+					card.ability.payasaka_old_ee = nil
+					card_eval_status_text(card, 'extra', nil, nil, nil,
+								{ message = "Reverted!" })
+				end
+			end
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }

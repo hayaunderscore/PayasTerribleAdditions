@@ -76,6 +76,9 @@ if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' then
 		G.P_CENTERS[v.key].apply_risk(G.P_CENTERS[v.key], v.ability)
 		G.GAME.payasaka_risk_objects[k] = PTASaka.RiskObject(v.key)
 	end
+	for k, v in ipairs(G.GAME.payasaka_risk_objects) do
+		G.GAME.payasaka_risk_objects[k]:calculate({setting_blind = true, blind = G.GAME.round_resets.blind})
+	end
 end
 
 '''
@@ -93,12 +96,17 @@ if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' and not game_over 
 		if G.P_CENTERS[v.key].tier > 0 then
 			add_tag(Tag('tag_payasaka_tier'..G.P_CENTERS[v.key].tier..'reward'))
 		end
+	end
+    G.GAME.risk_cards_risks = {}
+end
+if G.GAME.payasaka_risk_objects and G.GAME.blind_on_deck == 'Boss' and not game_over then
+	for k_, v in ipairs(G.GAME.payasaka_risk_objects) do
 		if G.GAME.payasaka_risk_objects[k] then
 			G.GAME.payasaka_risk_objects[k]:remove()
 			G.GAME.payasaka_risk_objects[k] = nil
 		end
 	end
-    G.GAME.risk_cards_risks = {}
+	G.GAME.payasaka_risk_objects = {}
 end
 '''
 match_indent = true
@@ -124,55 +132,6 @@ pattern = '''local stay_flipped = G.GAME and G.GAME.blind and G.GAME.blind:stay_
 position = 'at'
 payload = '''
 stay_flipped = stay_flipped or (G.GAME and G.GAME.blind and G.GAME.blind:stay_flipped(self, card, area))
-'''
-match_indent = true
-
-# Stunted
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- TARGET: effects before scoring starts'''
-position = 'after'
-payload = '''
-if G.GAME.payasaka_stunted_active then
-	for i = 1, #G.play.cards do
-		local card = G.play.cards[i]
-		if pseudorandom('ham_slice') < (G.GAME.probabilities.normal or 1)/G.GAME.payasaka_stunted_chance and card.ability.set == 'Enhanced' then
-			card.ability.set = 'Default'
-			card.ability.payasaka_old_effect = card.ability.effect
-			card.ability.payasaka_old_ee = card.ability.extra_enhancement
-			card.ability.effect = nil
-			card.ability.extra_enhancement = false
-			card.ability.payasaka_stunted = true
-			card_eval_status_text(card, 'extra', nil, nil, nil,
-						{ message = "Stunted!" })
-		end
-	end
-end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- context.after calculations'''
-position = 'after'
-payload = '''
-if G.GAME.payasaka_stunted_active then
-	for i = 1, #G.play.cards do
-		local card = G.play.cards[i]
-		if card.ability.payasaka_stunted then
-			card.ability.set = 'Enhanced'
-			card.ability.effect = card.ability.effect
-			card.ability.extra_enhancement = card.ability.payasaka_old_ee
-			card.ability.payasaka_stunted = nil
-			card.ability.payasaka_old_effect = nil
-			card.ability.payasaka_old_ee = nil
-			card_eval_status_text(card, 'extra', nil, nil, nil,
-						{ message = "Reverted!" })
-		end
-	end
-end
 '''
 match_indent = true
 
