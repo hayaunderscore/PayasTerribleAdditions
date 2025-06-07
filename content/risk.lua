@@ -281,6 +281,7 @@ PTASaka.Risk {
 					func = function()
 						c:juice_up()
 						ease_dollars(-risk.ability.extra.money)
+						return true
 					end
 				})
 			end
@@ -641,7 +642,7 @@ PTASaka.Risk {
 	key = 'elusive',
 	atlas = "JOE_Risk",
 	pos = { x = 1, y = 2 },
-	tier = 3,
+	tier = 2,
 	pta_credit = {
 		art = {
 			credit = 'ariyi',
