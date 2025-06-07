@@ -42,7 +42,17 @@ SMODS.Joker {
 			card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt + 1
 			G.E_MANAGER:add_event(Event {
 				func = function()
-					G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
+					if Entropy then
+						G.GAME.paya_operator = (G.GAME.paya_operator or 0) + 1
+						update_operator_display()
+					else
+						G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
+						local str = G.GAME.payasaka_exponential_count > 2 and
+							string.format("{%d}", G.GAME.payasaka_exponential_count) or
+							G.GAME.payasaka_exponential_count <= 0 and "X" or ("^"):rep(G.GAME.payasaka_exponential_count)
+						PTASaka.recalc_chips_mult_shit(str)
+					end
+					play_sound('tarot2')
 					return true
 				end
 			})
@@ -56,7 +66,17 @@ SMODS.Joker {
 			card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt - 1
 			G.E_MANAGER:add_event(Event {
 				func = function()
-					G.GAME.payasaka_exponential_count = math.max(G.GAME.payasaka_exponential_count - 1, 0)
+					if Entropy then
+						G.GAME.paya_operator = math.max((G.GAME.paya_operator or 0) - 1, 0)
+						update_operator_display()
+					else
+						G.GAME.payasaka_exponential_count = math.max(G.GAME.payasaka_exponential_count - 1, 0)
+						local str = G.GAME.payasaka_exponential_count > 2 and
+							string.format("{%d}", G.GAME.payasaka_exponential_count) or
+							G.GAME.payasaka_exponential_count <= 0 and "X" or ("^"):rep(G.GAME.payasaka_exponential_count)
+						PTASaka.recalc_chips_mult_shit(str)
+					end
+					play_sound('tarot2')
 					return true
 				end
 			})

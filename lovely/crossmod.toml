@@ -125,24 +125,22 @@ times = 1
 # Fix Entropy's own chip*mult operator crash
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS entr "lib/hooks.lua"]'''
+target = '''=[SMODS entr "lib/loader.lua"]'''
 pattern = '''local operator = G.HUD:get_UIE_by_ID('chipmult_op')'''
 position = 'after'
 payload = '''
 if PTASaka then
-	local op = colours and G.GAME.hands["High Card"].operator or G.GAME.hand_operator
-	local count = G.GAME.payasaka_exponential_count + (op or 0)
-	local str = count > 2 and
-		string.format("{%d}", count) or
-		count <= 0 and "X" or ("^"):rep(count)
-	operator = PTASaka.recalc_chips_mult_shit(str) or operator
+	local str = aoperator > 2 and
+		string.format("{%d}", aoperator) or
+		aoperator == -1 and "+" or aoperator <= 0 and "X" or ("^"):rep(aoperator)
+	operator = PTASaka.recalc_chips_mult_shit(str, aoperator) or operator
 end
 '''
 match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS entr "lib/hooks.lua"]'''
+target = '''=[SMODS entr "lib/loader.lua"]'''
 pattern = '''operator.config.text = txt'''
 position = 'at'
 payload = '''
@@ -154,7 +152,7 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS entr "lib/hooks.lua"]'''
+target = '''=[SMODS entr "lib/loader.lua"]'''
 pattern = '''operator.config.text_drawable:set(txt)'''
 position = 'at'
 payload = '''
@@ -166,12 +164,26 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS entr "lib/hooks.lua"]'''
+target = '''=[SMODS entr "lib/loader.lua"]'''
 pattern = '''operator.config.scale = 0.8'''
 position = 'at'
 payload = '''
 if not operator.config.object then
 	operator.config.scale = 0.8
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS entr "lib/loader.lua"]'''
+pattern = '''operator.config.colour = col'''
+position = 'at'
+payload = '''
+if not operator.config.object then
+	operator.config.colour = col
+else
+	operator.config.object.colours = { col }
 end
 '''
 match_indent = true

@@ -140,7 +140,7 @@ end
 function PTASaka.arrow(arrow, val1, val2, og_arrow)
 	-- Small compat with Entropy
 	if Entropy and G.GAME.hand_operator then
-		G.GAME.hand_operator = (G.GAME.hand_operator or 0) + G.GAME.payasaka_exponential_count
+		G.GAME.hand_operator = (G.GAME.hand_operator or 0)
 		return Entropy.get_chipmult_score(val1, val2)
 	end
 	og_arrow = og_arrow or 1
