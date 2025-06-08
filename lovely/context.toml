@@ -246,3 +246,15 @@ payload = '''
 G.GAME.round_resets.blind = G.GAME.payasaka_blind_override
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''if G.GAME.round_resets.blind_states.Boss == 'Defeated' then '''
+position = 'before'
+payload = '''
+local add = {}
+SMODS.calculate_context({payasaka_cash_out = true}, add)
+SMODS.trigger_effects(add)
+'''
+match_indent = true

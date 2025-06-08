@@ -510,7 +510,7 @@ function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
 		--PTASaka.adultcard_cardarea.T.x = PTASaka.adultcard_cardarea.pta_owner.VT.x
 		card = PTASaka.adultcard_cardarea.pta_owner
 	end
-	if G.STAGE == G.STAGES.RUN and card.area and card.area.config.joker_parent then
+	if G.STAGE == G.STAGES.RUN and card and card.area and card.area.config.joker_parent then
 		card = find_joker_by_sort_id(card.area.config.joker_parent) or card
 	end
 	cest(card, eval_type, amt, percent, dir, extra)

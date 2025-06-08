@@ -1088,7 +1088,7 @@ return {
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
-			dd_payasaka_property_card = { name = "Property", text = { "Each {C:green}house{} gives", "half the price of", "this {C:property}Property", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } },
+			dd_payasaka_property_card = { name = "Property", text = { "Get {C:money}$#1#{} upon beating", "the Boss Blind", "Resets back to {C:money}$#2#{}", "after cashing out", "{C:inactive,s:0.8}Houses add additional", "{C:attention,s:0.8}sell value", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } },
 			dd_payasaka_ahead = {
 				name = "Ahead",
 				text = { 
@@ -1650,92 +1650,92 @@ return {
 			c_payasaka_brownproperty = {
 				name = 'Joker Avenue',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"is a {C:attention}#3#{}",
-					"Does nothing else when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
+					"{C:inactive}Does nothing.",
 				}
 			},
 			c_payasaka_blueproperty = {
 				name = 'Jest Road',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
-					"Randomizes the {C:dark_edition}edition{} of up",
-					"to {C:attention}#4#{} selected cards",
-					"when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
+					"Randomizes the {C:dark_edition}edition{}",
+					"of up to {C:attention}#4#{} selected",
+					"cards when used",
 				}
 			},
 			c_payasaka_pinkproperty = {
 				name = 'Comic Mall',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
-					"Creates {C:attention}#4#{} random Food",
+					"Creates {C:attention}#4#{} Food",
 					"Jokers when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_orangeproperty = {
 				name = 'Droll Street',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
 					"Creates {C:attention}#4#{} {C:tarot}Tarot{}",
 					"cards when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_redproperty = {
 				name = 'Virtue Square',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
-					"Creates a {C:red}Rare{} Joker",
-					"when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
+					"Creates a {C:red}Rare{}",
+					"Joker when used",
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_yellowproperty = {
 				name = 'Leicester Square',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
 					"Levels up your {C:attention}most{}",
 					"{C:attention}played{} hand by {C:attention}#4#{}",
 					"levels when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_greenproperty = {
 				name = 'Wit Street',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
 					"Creates a {C:dark_edition}Legendary{}",
 					"Joker when used",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_darkblueproperty = {
 				name = 'Mayfair',
 				text = {
-					"Gains {C:money}$#2#{} if played hand",
+					"Sell value increases",
+					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
 					"{C:inactive,s:0.8}Does nothing..?",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 			c_payasaka_niyaniya = {
 				name = 'Niyaniya',
 				text = {
-					"Gains {C:money}$#2#{} per round",
+					"Sell value increases",
+					"by {C:money}$#2#{} every round",
 					"{C:inactive,s:0.8}(WIP, undecided yet)",
-					"{C:inactive,s:0.8}(Currently {C:money,s:0.8}$#1#{C:inactive,s:0.8} per round)",
 				}
 			},
 		},
