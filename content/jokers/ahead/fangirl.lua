@@ -32,9 +32,7 @@ SMODS.Joker {
 						xchip_message = {
 							message = "^" .. ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1 .. " Chips",
 							colour = G.C.DARK_EDITION,
-							extrafunc = function(p)
-								play_sound('payasaka_echips', 0.8 + p * 0.2, 1)
-							end,
+							sound = "payasaka_echips",
 							delay = 0.65,
 						},
 					}
@@ -53,9 +51,7 @@ SMODS.Joker {
 					xchip_message = {
 						message = "^" .. ((card.ability.extra.e_chips) * PTASaka.ahead_count) + 1 .. " Chips",
 						colour = G.C.DARK_EDITION,
-						extrafunc = function(p)
-							play_sound('payasaka_echips', 0.8 + p * 0.2, 1)
-						end,
+						sound = "payasaka_echips",
 						delay = 0.65,
 					},
 				}
