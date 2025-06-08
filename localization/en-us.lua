@@ -1735,7 +1735,8 @@ return {
 				text = {
 					"Sell value increases",
 					"by {C:money}$#2#{} every round",
-					"{C:inactive,s:0.8}(WIP, undecided yet)",
+					"{C:inactive,s:0.8}Does nothing..?",
+					"{C:inactive,s:0.8}Does not reset",
 				}
 			},
 		},

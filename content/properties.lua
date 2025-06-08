@@ -37,6 +37,10 @@ function PTASaka.PropertyGain(key, context, desired)
 	return false
 end
 
+function PTASaka.PropertyReset(key)
+	return key ~= "c_payasaka_niyaniya"
+end
+
 -- Base
 ---@class Property:SMODS.Consumable
 ---@field upgrade_use_effect? fun(self: Property|table, card: Card|table, context: CalcContext|table): table?, boolean? myeah
@@ -61,7 +65,7 @@ PTASaka.Property = SMODS.Consumable:extend {
 			}
 		end
 		-- Reset upon cashing out after a boss blind, and upgrade use effects...
-		if context.payasaka_cash_out and G.GAME.blind_on_deck == 'Boss' then
+		if context.payasaka_cash_out and G.GAME.blind_on_deck == 'Boss' and PTASaka.PropertyReset(card.config.center.key) then
 			card.sell_cost = card.ability.extra.money
 			local use_effect = self:upgrade_use_effect(card, context)
 			return {
