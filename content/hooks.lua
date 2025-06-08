@@ -1280,7 +1280,7 @@ end
 
 local oldcb = Card.get_chip_bonus
 function Card:get_chip_bonus()
-	if self.ability.payasaka_stunted then return self.base.nominal + (self.ability.perma_bonus or 0) end
+	if self.ability.payasaka_stunted then return (self.base.nominal + (self.ability.perma_bonus or 0)) / (G.GAME.payasaka_shrink_active and 2 or 1) end
 	return (oldcb(self) or 0) / (G.GAME.payasaka_shrink_active and 2 or 1)
 end
 
