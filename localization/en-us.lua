@@ -1055,6 +1055,19 @@ return {
 					"The calm before the storm..."
 				}
 			},
+			bl_payasaka_showdown_manifold_mayhem = {
+				name = 'Manifold Mayhem',
+				text = {
+					"Very variable blind"
+				}
+			},
+			bl_payasaka_showdown_sweet_sleep = {
+				name = 'Sweet Sleep',
+				text = {
+					"Score naneinf 10 times",
+					"...or don't!"
+				}
+			},
 		},
 		Edition = {
 			e_payasaka_jpeg = {

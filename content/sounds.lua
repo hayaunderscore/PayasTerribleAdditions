@@ -34,3 +34,6 @@ create_sound("drop_target")
 
 -- Fanhead
 SMODS.Sound { key = 'echips', path = 'exponential_chips' .. ".wav" }
+
+-- Some boss blinds cannot be disabled!
+create_sound("loudbuzzer")

@@ -232,6 +232,71 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''draw_card(G.deck,G.hand, i*100/hand_space,'up', true)'''
+position = 'after'
+payload = '''
+if G.GAME.payasaka_erratic_ultra then
+	local suit = pseudorandom_element(G.GAME.payasaka_erratic_saved_suits, pseudoseed('erratic2')).key
+	local rank = pseudorandom_element(G.GAME.payasaka_erratic_saved_ranks, pseudoseed('erratic2')).key
+	local _ = SMODS.change_base(G.deck.cards[#G.deck.cards], suit, rank)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''if G.GAME.chips - G.GAME.blind.chips >= 0 or G.GAME.current_round.hands_left < 1 then'''
+position = 'before'
+payload = '''
+if (G.GAME.payasaka_scored_naneinfs or 0) >= 9 then
+	G.STATE = G.STATES.NEW_ROUND
+	G.STATE_COMPLETE = false
+	if not Cryptid then
+		ease_ante((-G.GAME.round_resets.ante))
+	end
+	return true
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''-- TARGET: main end_of_round evaluation'''
+position = 'before'
+payload = '''
+if (G.GAME.payasaka_scored_naneinfs or 0) >= 9 then
+	G.GAME.payasaka_scored_naneinfs = 0
+	G.GAME.payasaka_defeated_perfectheart = true
+	game_over = false
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''if G.GAME.chips - G.GAME.blind.chips >= 0 then
+        add_round_eval_row({dollars = G.GAME.blind.dollars, name='blind1', pitch = pitch})'''
+position = 'at'
+payload = '''
+local fuck = false
+if G.GAME.chips - G.GAME.blind.chips >= 0 then
+	fuck = true
+end
+if G.GAME.payasaka_defeated_perfectheart then
+	fuck = true
+	G.GAME.payasaka_defeated_perfectheart = nil
+end
+if fuck then
+    add_round_eval_row({dollars = G.GAME.blind.dollars, name='blind1', pitch = pitch})
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = '''functions/state_events.lua'''
 pattern = '''-- TARGET: main end_of_round evaluation'''
 position = 'before'
@@ -246,20 +311,6 @@ if next(SMODS.find_card('j_payasaka_iroyokia')) and game_over then
 	ease_discard(G.GAME.round_resets.discards - G.GAME.current_round.discards_left)
 	G.STATE_COMPLETE = false
 	return true
-end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''draw_card(G.deck,G.hand, i*100/hand_space,'up', true)'''
-position = 'after'
-payload = '''
-if G.GAME.payasaka_erratic_ultra then
-	local suit = pseudorandom_element(G.GAME.payasaka_erratic_saved_suits, pseudoseed('erratic2')).key
-	local rank = pseudorandom_element(G.GAME.payasaka_erratic_saved_ranks, pseudoseed('erratic2')).key
-	local _ = SMODS.change_base(G.deck.cards[#G.deck.cards], suit, rank)
 end
 '''
 match_indent = true
