@@ -1024,6 +1024,17 @@ return {
 					"all listed probabilities are",
 					"{C:red}nullified"
 				}
+			},
+			j_payasaka_johnmadden = {
+				name = "Ask Madden",
+				text = {
+					"When drawing from the deck,",
+					"this Joker selects a specific",
+					"card on your hand, {C:attention}playing",
+					"this card gives {C:chips}+#1#{} Chips",
+					"and {C:mult}+#2#{} Mult",
+					"{C:inactive}This uses DECTalk!{}"
+				}
 			}
 		},
 		Blind = {

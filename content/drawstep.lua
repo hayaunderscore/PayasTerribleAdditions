@@ -141,3 +141,33 @@ SMODS.DrawStep {
 	end,
 	conditions = { vortex = false },
 }
+
+SMODS.DrawStep {
+	key = 'john_mark',
+	order = 1000,
+	func = function(self)
+		if self.ability.john_madden_marked then
+			---@type Sprite
+			local layer = self.children.john_mark
+			if not layer then
+				layer = Sprite(
+					self.T.x,
+					self.T.y,
+					self.T.w,
+					self.T.h,
+					G.ASSET_ATLAS["payasaka_JOE_Jokers2"],
+					{ x = 2, y = 2 }
+				)
+				layer.role.draw_major = self
+				layer.states.hover.can = false
+				layer.states.click.can = false
+				self.children.john_mark = layer
+			end
+			layer:draw_shader("dissolve", 0, nil, nil, self.children.center, 0.1, nil, nil, nil, nil, 0.6)
+			layer:draw_shader("dissolve", nil, nil, nil, self.children.center, 0.1)
+		end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
+SMODS.draw_ignore_keys.john_mark = true
