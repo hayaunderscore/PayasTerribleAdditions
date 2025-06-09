@@ -1068,6 +1068,14 @@ return {
 					"...or don't!"
 				}
 			},
+			bl_payasaka_showdown_sweet_sleep_alt = {
+				name = 'Sweet Sleep',
+				text = {
+					"Reset chips back to 0",
+					"if current chips does not",
+					"meet the blind requirement"
+				}
+			},
 		},
 		Edition = {
 			e_payasaka_jpeg = {

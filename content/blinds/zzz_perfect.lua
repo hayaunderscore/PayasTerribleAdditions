@@ -1,38 +1,67 @@
+-- Yes, this is an OMORI reference.
 SMODS.Blind {
 	key = 'showdown_sweet_sleep',
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 4 },
 	dollars = 6,
 	mult = -math.huge,
-	boss_colour = HEX('7b194e'),
+	boss_colour = HEX('ff63ac'),
 	boss = { min = 39, showdown = true },
 	set_blind = function(self)
-		G.GAME.blind.chip_text = "TREE(3)"
-		G.GAME.payasaka_scored_naneinfs = 0
+		if G.GAME.round_resets.ante == 39 then
+			G.GAME.blind.chip_text = "TREE(3)"
+			if Talisman then
+				G.GAME.blind.chips = to_big("nan")
+			end
+			G.GAME.payasaka_scored_naneinfs = 0
+		else
+			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*4*G.GAME.starting_params.ante_scaling
+			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+		end
 	end,
 	disable = function(self)
 		G.GAME.blind.disabled = false
 		play_sound("payasaka_loudbuzzer", 1, 0.2)
 		attention_text({
 			text = localize("k_nope_ex"),
-			scale = 1, 
+			scale = 1,
 			hold = 1.0,
 			rotate = math.pi / 8,
 			backdrop_colour = G.GAME.blind.boss_colour,
 			align = "cm",
 			major = G.GAME.blind,
-			offset = {x = 0, y = 0.1}
+			offset = { x = 0, y = 0.1 }
 		})
 	end,
 	calculate = function(self, blind, context)
 		if context.after then
-			if to_big(hand_chips*mult) == to_big(math.huge) then
-				G.GAME.payasaka_scored_naneinfs = G.GAME.payasaka_scored_naneinfs + 1
+			if G.GAME.round_resets.ante ~= 39 then
+				if to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult)) < to_big(G.GAME.blind.chips) then
+					G.E_MANAGER:add_event(Event({
+						trigger = 'ease',
+						blocking = false,
+						ref_table = G.GAME,
+						ref_value = 'chips',
+						ease_to = 0,
+						delay = 0.5,
+						func = (function(t) return math.floor(t) end)
+					}))
+				end
+			else
+				if to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult)) == to_big(Talisman and "Infinity" or math.huge) then
+					G.GAME.payasaka_scored_naneinfs = G.GAME.payasaka_scored_naneinfs + 1
+				end
 			end
 		end
 	end,
 	in_pool = function(self)
 		return false
+	end,
+	loc_vars = function(self)
+		return {
+			key = (G and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante or 0) == 39 and
+			"bl_payasaka_showdown_sweet_sleep" or "bl_payasaka_showdown_sweet_sleep_alt"
+		}
 	end
 }
 
