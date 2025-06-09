@@ -20,6 +20,12 @@ SMODS.Joker {
 	demicoloncompat = true,
 	dependencies = 'finity',
 	config = { cast_kept_values = { } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		local rets = {}
 		if context.setting_blind then

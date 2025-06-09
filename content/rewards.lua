@@ -16,13 +16,8 @@ SMODS.UndiscoveredSprite {
 	key = 'Reward',
 	atlas = 'JOE_Risk',
 	path = 'risk.png',
-	pos = { x = 8-5, y = 5-1 },
+	pos = { x = 0, y = 7 },
 	px = 71, py = 95,
-	register = function(self)
-		self.pos.x = self.pos.x + offs.x
-		self.pos.y = self.pos.y + offs.y
-		SMODS.UndiscoveredSprite.register(self)
-	end,
 }
 
 G.C.SET.Reward = HEX('7f8481')
@@ -525,7 +520,7 @@ PTASaka.Reward {
 PTASaka.Reward {
 	key = 'mind',
 	atlas = 'JOE_Risk',
-	pos = { x = 0, y = 2 },
+	pos = { x = 1, y = 2 },
 	hidden = true,
 	soul_set = 'Reward',
 	config = { extra = 2, choose = 1 },

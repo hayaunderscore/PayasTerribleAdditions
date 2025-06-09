@@ -1337,6 +1337,15 @@ return {
 					"{C:inactive,s:0.8}9B, 1G :){}"
 				},
 			},
+			c_payasaka_niyaniya = {
+				name = 'Niyaniya',
+				text = {
+					"Sell value increases",
+					"by {C:money}$#2#{} every round",
+					"{C:inactive,s:0.8}Does nothing..?",
+					"{C:inactive,s:0.8}Does not reset",
+				}
+			},
 		},
 		Risk = {
 			c_payasaka_doubledown = {
@@ -1728,15 +1737,6 @@ return {
 					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
 					"{C:inactive,s:0.8}Does nothing..?",
-				}
-			},
-			c_payasaka_niyaniya = {
-				name = 'Niyaniya',
-				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} every round",
-					"{C:inactive,s:0.8}Does nothing..?",
-					"{C:inactive,s:0.8}Does not reset",
 				}
 			},
 		},

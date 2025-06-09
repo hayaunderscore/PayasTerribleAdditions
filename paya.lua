@@ -112,11 +112,6 @@ assert(SMODS.load_file("content/challenges.lua"))()
 -- Tags
 assert(SMODS.load_file("content/tags.lua"))()
 
--- Property cards
-if conf["Property Cards"] then
-	assert(SMODS.load_file("content/properties.lua"))()
-end
-
 -- Load all jokers
 
 -- Rarity definitions
@@ -138,6 +133,11 @@ end
 
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/tarots.lua"))()
+
+-- Property cards
+if conf["Property Cards"] then
+	assert(SMODS.load_file("content/properties.lua"))()
+end
 
 assert(SMODS.load_file("content/dos.lua"))()
 if conf["Risk Cards"] then

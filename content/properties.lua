@@ -263,7 +263,7 @@ PTASaka.Property {
 	key = 'orangeproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 3, y = 0 },
-	config = { extra = { money = 4, gain = 2, poker_hand = "Three of a Kind", tarots = 1 } },
+	config = { extra = { money = 4, gain = 1, poker_hand = "Three of a Kind", tarots = 1 } },
 	unlocked = true,
 	discovered = true,
 	cost = 16,
@@ -320,7 +320,7 @@ PTASaka.Property {
 	key = 'yellowproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 5, y = 0 },
-	config = { extra = { money = 5, gain = 2, poker_hand = "Flush", levels = 2 } },
+	config = { extra = { money = 4, gain = 1, poker_hand = "Flush", levels = 2 } },
 	unlocked = true,
 	discovered = true,
 	cost = 24,
@@ -409,11 +409,11 @@ PTASaka.Property {
 }
 
 PTASaka.Property {
-	set = 'Property',
+	set = 'Spectral',
 	key = 'niyaniya',
 	atlas = 'JOE_Properties',
 	pos = { x = 2, y = 1 },
-	soul_pos = { x = 3, y = 1 },
+	--soul_pos = { x = 3, y = 1 },
 	config = { extra = { money = 25, gain = 15 } },
 	unlocked = false,
 	discovered = false,
