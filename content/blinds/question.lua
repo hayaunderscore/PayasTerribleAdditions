@@ -44,18 +44,12 @@ SMODS.Blind {
 				-- Fix Finity creating an infinite loop by using The Cast as the bosses for... The Cast.
 				local old_name = G.GAME.selected_back.name
 				G.GAME.selected_back.name = "b_red"
-				-- Generally do not use showdown bosses as valid combinations for the cast
-				local showdown = false
-				if (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then
-					G.GAME.round_resets.ante = G.GAME.round_resets.ante - 1
-					showdown = true
-				end
+				local old_ante = G.GAME.round_resets.ante
+				G.GAME.round_resets.ante = 8
 				G.GAME.banned_keys['bl_payasaka_question'] = true
 				local new_boss = get_new_boss()
 				G.GAME.banned_keys['bl_payasaka_question'] = nil
-				if showdown then
-					G.GAME.round_resets.ante = G.GAME.round_resets.ante + 1
-				end
+				G.GAME.round_resets.ante = old_ante
 				G.GAME.payasaka_merged_boss_keys[i] = new_boss
 				-- Differentiate between Cast created by a Cast risk card and Cast as a showdown
 				G.GAME.payasaka_natural_cast = true
@@ -64,10 +58,20 @@ SMODS.Blind {
 			G.GAME.blind:set_text()
 		end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			self.mult = math.max(2, G.P_BLINDS[v].mult)
+			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.GAME.starting_params.ante_scaling
+			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 			SMODS.merge_lists(self.boss, (G.P_BLINDS[v].boss and type(G.P_BLINDS[v].boss) == "table") and G.P_BLINDS[v].boss or {})
 			-- todo support multiple debuffs
-			G.GAME.blind.debuff = G.P_BLINDS[v].debuff or {}
+			G.GAME.blind.debuff = G.GAME.blind.debuff or { hand = {}, h_size_ge = 0, h_size_le = 0, is_face = false, suits = {}, values = {}, nominals = {} }
 			SMODS.merge_lists(G.GAME.blind.debuff, (G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table") and G.P_BLINDS[v].debuff or {})
+			if G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table" then
+				for bk, bv in pairs(G.P_BLINDS[v].debuff) do
+					if bk == "suit" or bk == "value" or bk == "nominal" then
+						G.GAME.blind.debuff[bk.."s"][bv] = true
+					end
+				end
+			end
 			-- blindexpander stuffs
 			if G.P_BLINDS[v].passives then
 				-- passives support
@@ -325,7 +329,10 @@ SMODS.Blind {
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].debuff_hand then
 				--print("debuffed le hand")
-				ret = G.P_BLINDS[v].debuff_hand(G.P_BLINDS[v], cards, hand, handname, check) == true
+				local result = G.P_BLINDS[v].debuff_hand(G.P_BLINDS[v], cards, hand, handname, check)
+				if result then
+					ret = true
+				end
 			end
 			if G.P_BLINDS[v].debuff then
 				G.GAME.blind.triggered = false
@@ -515,6 +522,25 @@ SMODS.Blind {
 				--print("modified !!!")
 				local calc = G.P_BLINDS[v].calculate(G.P_BLINDS[v], G.GAME.blind, context) or {}
 				rets[#rets+1] = calc
+			end
+			-- why.
+			if context.debuff_card and G.P_BLINDS[v].debuff then
+				for _, area in ipairs({{cards = G.playing_cards}, G.jokers, G.consumeables}) do
+					for _, card in ipairs(area.cards) do
+						if G.P_BLINDS[v].debuff.suit and card:is_suit(G.P_BLINDS[v].debuff.suit) then
+							rets[#rets+1] = { debuff = true }
+						end
+						if G.P_BLINDS[v].debuff.is_face and card:is_face() then
+							rets[#rets+1] = { debuff = true }
+						end
+						if G.P_BLINDS[v].debuff.value and G.P_BLINDS[v].debuff.value == card:get_id() then
+							rets[#rets+1] = { debuff = true }
+						end
+						if G.P_BLINDS[v].debuff.nominal == card.base.nominal then
+							rets[#rets+1] = { debuff = true }
+						end
+					end
+				end
 			end
 		end
 		return PTASaka.recursive_extra(rets, 1)

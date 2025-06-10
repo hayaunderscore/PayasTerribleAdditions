@@ -56,9 +56,6 @@ SMODS.Blind {
 			end
 		end
 	end,
-	in_pool = function(self)
-		return false
-	end,
 	loc_vars = function(self)
 		return {
 			vars = { self.config.funny.mult },
