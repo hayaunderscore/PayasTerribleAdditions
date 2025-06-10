@@ -11,7 +11,7 @@ PTASaka.gacha_rarity_table = {
 
 if PTASaka.Mod.config["Ahead"] then
 	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_ahead', 20}
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_daeha', 6}
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_daeha', 1}
 end
 
 if next(SMODS.find_mod('finity')) then
