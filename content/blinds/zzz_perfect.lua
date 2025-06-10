@@ -7,6 +7,7 @@ SMODS.Blind {
 	mult = -math.huge,
 	boss_colour = HEX('ff63ac'),
 	boss = { min = 39, showdown = true },
+	config = { funny = { mult = -0.25 } },
 	set_blind = function(self)
 		if G.GAME.round_resets.ante == 39 then
 			G.GAME.blind.chip_text = "TREE(3)"
@@ -36,13 +37,14 @@ SMODS.Blind {
 	calculate = function(self, blind, context)
 		if context.after then
 			if G.GAME.round_resets.ante ~= 39 then
-				if to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult)) < to_big(G.GAME.blind.chips) then
+				local chips = to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult))
+				if chips < to_big(G.GAME.blind.chips) then
 					G.E_MANAGER:add_event(Event({
 						trigger = 'ease',
 						blocking = false,
 						ref_table = G.GAME,
 						ref_value = 'chips',
-						ease_to = 0,
+						ease_to = chips * self.config.funny.mult,
 						delay = 0.5,
 						func = (function(t) return math.floor(t) end)
 					}))
@@ -59,6 +61,7 @@ SMODS.Blind {
 	end,
 	loc_vars = function(self)
 		return {
+			vars = { self.config.funny.mult },
 			key = (G and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante or 0) == 39 and
 			"bl_payasaka_showdown_sweet_sleep" or "bl_payasaka_showdown_sweet_sleep_alt"
 		}

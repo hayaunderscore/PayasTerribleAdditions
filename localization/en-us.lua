@@ -1071,7 +1071,7 @@ return {
 			bl_payasaka_showdown_sweet_sleep_alt = {
 				name = 'Sweet Sleep',
 				text = {
-					"Reset chips back to 0",
+					"Multiplies chips by X#1#",
 					"if current chips does not",
 					"meet the blind requirement"
 				}

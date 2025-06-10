@@ -31,11 +31,13 @@ local old_end_round = end_round
 function end_round()
 	old_end_round()
 	if G.GAME.blind_on_deck == 'Small' then
-		G.GAME.payasaka_small_blind_surplus = math.min(50, to_big(G.GAME.chips)/to_big(G.GAME.blind.chips))
+		G.GAME.payasaka_small_blind_surplus = to_big(G.GAME.chips)/to_big(G.GAME.blind.chips)
+		if (not Cryptid) and G.GAME.payasaka_small_blind_surplus > 50 then G.GAME.payasaka_small_blind_surplus = 50 end
 		--print(G.GAME.payasaka_small_blind_surplus)
 	end
 	if G.GAME.blind_on_deck == 'Big' then
-		G.GAME.payasaka_big_blind_surplus = math.min(50, to_big(G.GAME.chips)/to_big(G.GAME.blind.chips))
+		G.GAME.payasaka_big_blind_surplus = to_big(G.GAME.chips)/to_big(G.GAME.blind.chips)
+		if (not Cryptid) and G.GAME.payasaka_big_blind_surplus > 50 then G.GAME.payasaka_big_blind_surplus = 50 end
 		--print(G.GAME.payasaka_big_blind_surplus)
 	end
 end
