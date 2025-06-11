@@ -7,6 +7,8 @@ local rarities = {
 
 if not FinisherBossBlinddecksprites then FinisherBossBlinddecksprites = {} end
 FinisherBossBlinddecksprites["bl_payasaka_question"] = {"payasaka_JOE_Decks", {x = 2, y = 1}}
+FinisherBossBlinddecksprites["bl_payasaka_showdown_manifold_mayhem"] = {"payasaka_JOE_Decks", {x = 1, y = 2}}
+FinisherBossBlinddecksprites["bl_payasaka_showdown_sweet_sleep"] = {"payasaka_JOE_Decks", {x = 2, y = 2}}
 
 -- The Cast
 SMODS.Joker {
@@ -143,5 +145,87 @@ SMODS.Joker {
 			-- There is no need to save this anymore
 			G.GAME.payasaka_cast_joker_ids[card.sort_id] = nil
 		end
+	end
+}
+
+-- Manifold Mayhem
+SMODS.Joker {
+	key = 'manifold_mayhem',
+	atlas = "JOE_Jokers2",
+	pos = { x = 3, y = 2 },
+	soul_pos = { x = 3, y = 3 },
+	rarity = "finity_showdown",
+	cost = 10,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	dependencies = 'finity',
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	config = { extra = { max = 50 } },
+	calculate = function(self, card, context)
+		if context.joker_main or context.forcetrigger then
+			local mult = G and G.GAME and math.floor(((G.GAME.payasaka_small_blind_surplus or 2) * (G.GAME.payasaka_big_blind_surplus or 2))) or 4
+			if not Cryptid and mult > 50 then mult = 50 end
+			return {
+				x_mult = mult
+			}
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		if not Cryptid then
+			local dd = PTASaka.DescriptionDummies["dd_payasaka_manifold_limiter"]
+			dd.vars = { card.ability.extra.max }
+			info_queue[#info_queue+1] = dd
+		end
+		local mult = G and G.GAME and math.floor(((G.GAME.payasaka_small_blind_surplus or 2) * (G.GAME.payasaka_big_blind_surplus or 2))) or 4
+		if not Cryptid and mult > 50 then mult = 50 end
+		return {
+			vars = { mult }
+		}
+	end
+}
+
+-- Sweet Sleep
+SMODS.Joker {
+	key = 'sweet_sleep',
+	atlas = "JOE_Jokers2",
+	pos = { x = 4, y = 2 },
+	soul_pos = { x = 4, y = 3 },
+	rarity = "finity_showdown",
+	cost = 10,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	dependencies = 'finity',
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	config = { extra = { xchips = 2, xchip_mod = 0.1 }},
+	calculate = function(self, card, context)
+		if (G.GAME.current_round.hands_played == 0 and context.individual and not context.end_of_round and context.cardarea == G.play) or context.forcetrigger then
+			return {
+				x_chips = card.ability.extra.xchips
+			}
+		end
+		if context.discard and not context.blueprint then
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Upgrade!", instant = true })
+					return true
+				end
+			})
+			card.ability.extra.xchips = card.ability.extra.xchips + card.ability.extra.xchip_mod
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.xchips, card.ability.extra.xchip_mod }
+		}
 	end
 }

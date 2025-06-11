@@ -1,3 +1,11 @@
+-- Finity cross mod
+if next(SMODS.find_mod('finity')) then
+	FinisherBossBlindStringMap = FinisherBossBlindStringMap or {}
+	FinisherBossBlindStringMap["bl_payasaka_showdown_manifold_mayhem"] = {"j_payasaka_manifold_mayhem", "Manifold Mayhem"}
+	FinisherBossBlindQuips = FinisherBossBlindQuips or {}
+	FinisherBossBlindQuips["bl_payasaka_showdown_manifold_mayhem"] = {"manifold", 4}
+end
+
 SMODS.Blind {
 	key = 'showdown_manifold_mayhem',
 	atlas = "JOE_Blinds",

@@ -57,7 +57,14 @@ PTASaka.DescriptionDummy {
 }
 
 PTASaka.DescriptionDummy {
-	key = "recuperare",
+	key = "missingno_finity",
+	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		PTASaka.generate_ui_for_info_queue(_c.key, 'DescriptionDummy', desc_nodes, specific_vars or _c.vars or {})
+	end
+}
+
+PTASaka.DescriptionDummy {
+	key = "manifold_limiter",
 	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		PTASaka.generate_ui_for_info_queue(_c.key, 'DescriptionDummy', desc_nodes, specific_vars or _c.vars or {})
 	end

@@ -1,3 +1,11 @@
+-- Finity cross mod
+if next(SMODS.find_mod('finity')) then
+	FinisherBossBlindStringMap = FinisherBossBlindStringMap or {}
+	FinisherBossBlindStringMap["bl_payasaka_showdown_sweet_sleep"] = {"j_payasaka_sweet_sleep", "Sweet Sleep"}
+	FinisherBossBlindQuips = FinisherBossBlindQuips or {}
+	FinisherBossBlindQuips["bl_payasaka_showdown_sweet_sleep"] = {"perfectheart", 4}
+end
+
 -- Yes, this is an OMORI reference.
 SMODS.Blind {
 	key = 'showdown_sweet_sleep',

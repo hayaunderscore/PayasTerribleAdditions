@@ -1035,6 +1035,30 @@ return {
 					"and {C:mult}+#2#{} Mult",
 					"{C:inactive}This uses DECTalk!{}"
 				}
+			},
+			j_payasaka_manifold_mayhem = {
+				name = "Manifold Mayhem",
+				text = {
+					"This Joker's XMult is based",
+					"on {C:attention}collective{} Small and Big",
+					"Blind score {C:attention}surplus ratio{}",
+					"{C:inactive}(Currently {X:mult,C:white}X#1#{C:inactive} Mult)",
+				}
+			},
+			j_payasaka_sweet_sleep = {
+				name = "Sweet Sleep",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips per scored",
+					"card on the {C:attention}first{} hand",
+					"Gains {X:chips,C:white}X#2#{} Chips",
+					"per {C:attention}discarded{} card",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}It's best to unleash it all",
+					"{C:inactive,s:0.8}on the first hand, right?",
+					" ",
+					"{C:inactive,s:0.8}Right?",
+				}
 			}
 		},
 		Blind = {
@@ -1158,6 +1182,12 @@ return {
 					"{C:green}#1# in #2#{} chance of",
 					"creating a {C:dark_edition}Showdown{} Joker",
 					"{C:inactive}(Must have room)"
+				}
+			},
+			dd_payasaka_manifold_limiter = {
+				name = "No Cryptid?",
+				text = {
+					"Max of {X:mult,C:white}X#1#",
 				}
 			}
 		},
