@@ -48,6 +48,19 @@ function Game:start_run(args)
 
 	sr(self, args)
 
+	-- Maximus compat
+	if G.GAME.modifiers.mxms_nuclear_size then
+		G.GAME.modifiers.mxms_nuclear_size = false
+		if not Entropy then
+			G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
+			PTASaka.recalc_chips_mult_shit("^", G.GAME.payasaka_exponential_count)
+		else
+			G.GAME.paya_operator = G.GAME.paya_operator + 1
+			PTASaka.recalc_chips_mult_shit("^", G.GAME.paya_operator)
+		end
+		G.GAME.modifiers.mxms_paya_compat = true
+	end
+
 	-- Cast proper initialization
 	local merged = G.P_BLINDS['bl_payasaka_question']
 	if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) then

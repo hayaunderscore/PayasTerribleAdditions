@@ -187,3 +187,38 @@ else
 end
 '''
 match_indent = true
+
+# Fix Maximus Nuclear deck ante scaling
+[[patches]]
+[patches.pattern]
+target = '''blind.lua'''
+pattern = '''
+if G.GAME.modifiers.mxms_nuclear_size then
+    self.chips = self.chips^G.GAME.round_resets.ante
+end
+'''
+position = 'at'
+payload = '''
+if (G.GAME.modifiers.mxms_nuclear_size or G.GAME.modifiers.mxms_paya_compat) then
+    self.chips = self.chips^G.GAME.round_resets.ante
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if G.GAME.modifiers.mxms_nuclear_size then
+    blind_amt = blind_amt^G.GAME.round_resets.ante
+end
+'''
+position = 'at'
+payload = '''
+if (G.GAME.modifiers.mxms_nuclear_size or G.GAME.modifiers.mxms_paya_compat) then
+    blind_amt = blind_amt^G.GAME.round_resets.ante
+end
+'''
+match_indent = true
+times = 1
