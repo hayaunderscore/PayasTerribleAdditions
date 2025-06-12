@@ -280,8 +280,6 @@ if card.debuff then
 	local effects = {}
 	SMODS.calculate_context({payasaka_debuff_individual = true, card = card, cardarea = context.cardarea}, effects)
 
-	print(effects)
-
 	local flags = SMODS.trigger_effects(effects, card)
 end
 '''

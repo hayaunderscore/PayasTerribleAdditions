@@ -24,21 +24,21 @@ SMODS.Joker {
 					x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult,
 				}
 				if context.other_joker then
-					if not context.other_joker.debuff then return nil, true end
-					ret.message_card = context.other_joker
+					if not context.other_joker.debuff then return nil, false end
 					return ret
 				end
 				if context.other_consumeable then
-					if not context.other_consumeable.debuff then return nil, true end
+					if not context.other_consumeable.debuff then return nil, false end
 					ret.message_card = context.other_consumeable
+					ret.card = context.blueprint_card or card
 					if Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
 						for i = 1, context.other_consumeable.ability.qty do
-							SMODS.calculate_individual_effect(ret, card, 'x_mult', ret.x_mult,
+							SMODS.calculate_individual_effect(ret, context.other_consumeable, 'x_mult', ret.x_mult,
 								false)
 						end
 					elseif Overflow and context.other_consumeable.ability and context.other_consumeable.ability.immutable and context.other_consumeable.ability.immutable.overflow_amount then
 						for i = 1, context.other_consumeable.ability.immutable.overflow_amount do
-							SMODS.calculate_individual_effect(ret, card, 'x_mult', ret.x_mult,
+							SMODS.calculate_individual_effect(ret, context.other_consumeable, 'x_mult', ret.x_mult,
 								false)
 						end
 					else
