@@ -35,22 +35,11 @@ SMODS.Joker {
 				play_sound('timpani')
 			end
 		end
-		if context.joker_main then
-			local ret = {
-				x_mult = card.ability.extra.x_mult
+		if context.payasaka_debuff_individual and context.cardarea == G.hand then
+			return {
+				x_mult = card.ability.extra.x_mult,
+				message_card = context.card
 			}
-			for _, c in ipairs(G.hand.cards) do
-				if c.debuff then
-					G.E_MANAGER:add_event(Event{
-						func = function()
-							card:juice_up()
-							return true
-						end
-					})
-					SMODS.calculate_individual_effect(ret, c, 'x_mult', ret.x_mult,
-						false)
-				end
-			end
 		end
 		if context.forcetrigger then
 			return {

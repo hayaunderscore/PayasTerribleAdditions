@@ -258,3 +258,32 @@ SMODS.calculate_context({payasaka_cash_out = true}, add)
 SMODS.trigger_effects(add)
 '''
 match_indent = true
+
+# Add custom context to individual debuffed cards
+# I don't want to make other mods that add this trigger them twice...
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''else
+            if scoring_hand then
+                if in_scoring then context.cardarea = G.play else context.cardarea = 'unscored' end
+            end
+            SMODS.score_card(card, context)
+        end'''
+position = "after"
+payload = '''
+if card.debuff then
+	if scoring_hand then
+		if in_scoring then context.cardarea = G.play else context.cardarea = 'unscored' end
+	end
+
+	local effects = {}
+	SMODS.calculate_context({payasaka_debuff_individual = true, card = card, cardarea = context.cardarea}, effects)
+
+	print(effects)
+
+	local flags = SMODS.trigger_effects(effects, card)
+end
+'''
+match_indent = true
+times = 1

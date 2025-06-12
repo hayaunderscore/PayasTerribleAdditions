@@ -12,46 +12,33 @@ SMODS.Joker {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		local extra = card.ability.extra
-		if (context.joker_main) or (context.other_joker or context.other_consumeable) then
-			if context.joker_main then
-				local ret = {
-					x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult
+		if (context.payasaka_debuff_individual) or (context.other_joker or context.other_consumeable) then
+			if context.payasaka_debuff_individual then
+				return {
+					x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult,
+					message_card = context.card
 				}
-				for _, area in ipairs({G.play, G.hand}) do
-					for _, c in ipairs(area.cards) do
-						if c.debuff then
-							G.E_MANAGER:add_event(Event{
-								func = function()
-									card:juice_up()
-									return true
-								end
-							})
-							SMODS.calculate_individual_effect(ret, c, 'x_mult', ret.x_mult,
-								false)
-						end
-					end
-				end
 			end
 			if (context.other_joker or context.other_consumeable) then
 				local ret = {
-					x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult
+					x_mult = card.edition and card.edition.negative and extra.neg_x_mult or extra.x_mult,
 				}
 				if context.other_joker then
 					if not context.other_joker.debuff then return nil, true end
+					ret.message_card = context.other_joker
 					return ret
 				end
 				if context.other_consumeable then
 					if not context.other_consumeable.debuff then return nil, true end
+					ret.message_card = context.other_consumeable
 					if Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
-						local c = context.blueprint_card or card
 						for i = 1, context.other_consumeable.ability.qty do
-							G.E_MANAGER:add_event(Event{
-								func = function()
-									c:juice_up()
-									return true
-								end
-							})
-							SMODS.calculate_individual_effect(ret, context.other_consumeable, 'x_mult', ret.x_mult,
+							SMODS.calculate_individual_effect(ret, card, 'x_mult', ret.x_mult,
+								false)
+						end
+					elseif Overflow and context.other_consumeable.ability and context.other_consumeable.ability.immutable and context.other_consumeable.ability.immutable.overflow_amount then
+						for i = 1, context.other_consumeable.ability.immutable.overflow_amount do
+							SMODS.calculate_individual_effect(ret, card, 'x_mult', ret.x_mult,
 								false)
 						end
 					else
