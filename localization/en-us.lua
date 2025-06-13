@@ -1059,7 +1059,22 @@ return {
 					" ",
 					"{C:inactive,s:0.8}Right?",
 				}
-			}
+			},
+			j_payasaka_halfmoon = {
+				name = "Half Moon Cookie",
+				text = {
+					"Levels up the played",
+					"hand by {C:attention}#1#{} for the",
+					"next {C:attention}#2#{} hands",
+				}
+			},
+			j_payasaka_jellybeans = {
+				name = "Jellybeans",
+				text = {
+					"The next {C:attention}#1#{} played cards",
+					"get a {C:attention}random{} edition",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
