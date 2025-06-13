@@ -209,7 +209,18 @@ SMODS.Consumable {
 			func = function()
 				for i = 1, #highlighted do
 					highlighted[i]:remove_from_deck()
-					highlighted[i]:set_ability(pseudorandom_element(G.P_CENTER_POOLS["Joker"],
+					local pool = {}
+					for k, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+						if
+							v.unlocked == true
+							and v.rarity
+							and (not Cryptid or not Cryptid.no(v, "doe", k))
+							and not (G.GAME.banned_keys[v.key] or (G.GAME.cry_banished_keys and G.GAME.cry_banished_keys[v.key]))
+						then
+							pool[#pool + 1] = v.key
+						end
+					end
+					highlighted[i]:set_ability(pseudorandom_element(pool,
 						pseudoseed('payasaka_stamp')))
 					highlighted[i]:add_to_deck()
 				end

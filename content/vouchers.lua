@@ -387,7 +387,7 @@ SMODS.Voucher {
 }
 
 G.FUNCS.can_redeem_deck_or_sleeve = function(e)
-	if (e.config.ref_table.cost > G.GAME.dollars - G.GAME.bankrupt_at) and (e.config.ref_table.area and e.config.ref_table.area.config.type == 'shop') then
+	if (to_big(e.config.ref_table.cost) > to_big(G.GAME.dollars) - to_big(G.GAME.bankrupt_at)) and (e.config.ref_table.area and e.config.ref_table.area.config.type == 'shop') then
 		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 		e.config.button = nil
 	else
