@@ -1075,6 +1075,23 @@ return {
 					"get a {C:attention}random{} edition",
 				}
 			},
+			j_payasaka_deviouslamp = {
+				name = "Devious Lamp",
+				text = {
+					"Scored cards' values are",
+					"{C:attention}multiplied{} by {X:attention,C:white}X#1#{} for the",
+					"{C:attention}winning hand{} of the blind"
+				}
+			},
+			j_payasaka_azusa = {
+				name = "Azusa Miura",
+				text = { 
+					"This Joker gains {X:mult,C:white}X#1#{} Mult",
+					"if scored hand {C:attention}contains{}",
+					"a {C:attention}7{}, {C:attention}6{} and {C:attention}5{}",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {

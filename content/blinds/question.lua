@@ -65,13 +65,6 @@ SMODS.Blind {
 			-- todo support multiple debuffs
 			G.GAME.blind.debuff = G.GAME.blind.debuff or { hand = {}, h_size_ge = 0, h_size_le = 0, is_face = false, suits = {}, values = {}, nominals = {} }
 			SMODS.merge_lists(G.GAME.blind.debuff, (G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table") and G.P_BLINDS[v].debuff or {})
-			if G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table" then
-				for bk, bv in pairs(G.P_BLINDS[v].debuff) do
-					if bk == "suit" or bk == "value" or bk == "nominal" then
-						G.GAME.blind.debuff[bk.."s"][bv] = true
-					end
-				end
-			end
 			-- blindexpander stuffs
 			if G.P_BLINDS[v].passives then
 				-- passives support

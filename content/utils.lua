@@ -64,7 +64,7 @@ end
 
 -- Loosely based on https://github.com/balt-dev/Inkbleed/blob/trunk/modules/misprintize.lua
 -- Specifically for non random values
-function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist, layer)
+function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist, layer, blacklist_key)
 	reference = reference or {}
 	key = key or "1"
 	amt = amt or 1
@@ -72,24 +72,41 @@ function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blackli
 		return v * a
 	end
 	layer = layer or 0
+	blacklist_key = blacklist_key or function(k, v, l)
+		if v == 1 and l == 1 then
+			if k == "x_mult" or k == "x_chips" then
+				return false
+			end
+		end
+		return true
+	end
 	blacklist = blacklist or PTASaka.MisprintizeForbidden
 	-- Forbidden, skip it
 	if blacklist[key] then return val end
 	if (whitelist and whitelist[key]) or not whitelist then
 		local t = type(val)
 		--if is_number(val) then print("key: "..key.." val: "..val.." layer: "..layer) end
-		if is_number(val) and not (val == 1 and (key == "x_mult" or key == "x_chips") and layer == 1) then
+		if is_number(val) and blacklist_key(key, val, layer) then
 			reference[key] = val
 			return func(val, amt)
 		elseif t == "table" then
 			local k, v = next(val, nil)
 			while k ~= nil do
-				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist, layer + 1)
+				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist, layer + 1, blacklist_key)
 				k, v = next(val, k)
 			end
 		end
 	end
 	return val
+end
+
+-- The above, but with the parameters as a table instead
+-- In short, misprintizes values by multiplication or a specified `func` function.
+function PTASaka.Misprintize(t)
+	t = t or {}
+	assert(t.val, "PTASaka.Misprintize: Value not provided!")
+	assert(t.amt, "PTASaka.Misprintize: Amount not provided!")
+	return PTASaka.MMisprintize(t.val, t.amt, t.reference, t.key, t.func, t.whitelist, t.blacklist, t.layer, t.blacklist_key)
 end
 
 -- Taken from Cryptid...
