@@ -21,6 +21,7 @@ PTASaka.DOSCard = SMODS.Consumable:extend {
 	pyroxenes = 5,
 	cost = 0,
 	ignore_shadow = true,
+	pta_selectable = true,
 	required_params = {
 		'key',
 	},
@@ -92,7 +93,7 @@ PTASaka.DOSCard {
 	end,
 	calculate = function(self, card, context)
 		if card ~= PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards] then return end
-		if context.payasaka_dos_before then
+		if context.payasaka_dos_before and next(context.scoring_hand) then
 			PTASaka.dos_cardarea:remove_card(card)
 			G.play:emplace(card)
 			--draw_card(PTASaka.dos_cardarea, G.play, 1, 'up', true, card, nil, true)
@@ -168,6 +169,7 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 				card.children.front = nil
 				card.children.card = nil
 				card.payasaka_wild_two = nil
+				SMODS.debuff_card(card, "reset")
 				card:set_debuff(false)
 				return true
 			end
@@ -394,7 +396,7 @@ function PTASaka.dos_card_hover_ui(card)
 	if card.area and card.area == PTASaka.dos_cardarea then
 		return sell
 	end
-	return {}
+	return G.UIDEF.use_and_sell_buttons(card)
 end
 
 function PTASaka.dos_wild_card_ui(card)
@@ -410,5 +412,5 @@ function PTASaka.dos_wild_card_ui(card)
 			}
 		}
 	end
-	return {}
+	return {n = G.UIT.ROOT, config = {}, nodes = {}}
 end

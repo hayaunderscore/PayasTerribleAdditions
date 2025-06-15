@@ -299,7 +299,7 @@ SMODS.Consumable {
 					blocking = false,
 					func = function()
 						if self.kind == 'Gacha' then
-							if G.payasaka_gacha_pack_extra.VT.y < G.ROOM.T.h then
+							if G.payasaka_gacha_pack_extra and G.payasaka_gacha_pack_extra.VT.y < G.ROOM.T.h then
 								for k, v in ipairs(pack_cards) do
 									if k > math.floor(card.ability.extra / 2) then
 										G.payasaka_gacha_pack_extra:emplace(v)
@@ -310,9 +310,9 @@ SMODS.Consumable {
 										v:flip()
 									end
 								end
-								return true
 							end
 						end
+						return true
 					end
 				}))
 
