@@ -12,20 +12,20 @@ SMODS.Blind {
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 4 },
 	dollars = 6,
-	mult = -math.huge,
+	mult = 4,
 	boss_colour = HEX('ff63ac'),
 	boss = { min = 39, showdown = true },
 	config = { funny = { mult = -0.25 } },
 	set_blind = function(self)
 		if G.GAME.round_resets.ante == 39 then
 			G.GAME.blind.chip_text = "TREE(3)"
+			-- Set blind chips to NaN
 			if Talisman then
 				G.GAME.blind.chips = to_big("nan")
+			else
+				G.GAME.blind.chips = math.huge/math.huge
 			end
 			G.GAME.payasaka_scored_naneinfs = 0
-		else
-			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*4*G.GAME.starting_params.ante_scaling
-			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		end
 	end,
 	disable = function(self)
@@ -67,7 +67,7 @@ SMODS.Blind {
 	loc_vars = function(self)
 		return {
 			vars = { self.config.funny.mult },
-			key = (G and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante or 0) == 39 and
+			key = (G and G.GAME and G.GAME.round_resets and (G.GAME.round_resets.ante or 0) and G.STAGE == G.STAGES.RUN) == 39 and
 			"bl_payasaka_showdown_sweet_sleep" or "bl_payasaka_showdown_sweet_sleep_alt"
 		}
 	end

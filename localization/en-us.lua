@@ -1108,7 +1108,8 @@ return {
 			bl_payasaka_prelude = {
 				name = 'Prelude Blind',
 				text = {
-					"The calm before the storm..."
+					"The calm before",
+					"the storm..."
 				}
 			},
 			bl_payasaka_showdown_manifold_mayhem = {
