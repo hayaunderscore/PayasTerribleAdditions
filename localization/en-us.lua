@@ -1092,6 +1092,12 @@ return {
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
 				}
 			},
+			j_payasaka_irisu = {
+				name = "Irisu",
+				text = {
+					"???",
+				}
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
