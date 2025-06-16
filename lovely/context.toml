@@ -303,3 +303,36 @@ if PTASaka.food_jokers[self.config.center_key] and not G.GAME.found_food_jokers[
 end
 '''
 match_indent = true
+
+# Handle tired jokers
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''for i=1, hand_space do --draw cards from deckL'''
+position = 'before'
+payload = '''
+for _, area in pairs(SMODS.get_card_areas('jokers', nil)) do
+	for _, card in pairs(area.cards) do
+		if card.ability.payasaka_tired then
+			SMODS.debuff_card(card, G.GAME.current_round.hands_played < 1, "payasaka_tired")
+		end
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- context.end_of_round calculations'''
+position = 'after'
+payload = '''
+for _, area in pairs(SMODS.get_card_areas('jokers', "end_of_round")) do
+	for _, card in pairs(area.cards) do
+		if card.ability.payasaka_tired then
+			SMODS.debuff_card(card, G.GAME.current_round.hands_played < 1, "payasaka_tired")
+		end
+	end
+end
+'''
+match_indent = true

@@ -29,7 +29,6 @@ SMODS.Joker {
 						delay = 0.3,
 						blockable = false,
 						func = function()
-							card.area:remove_card(card)
 							card:remove()
 							card = nil
 							return true;

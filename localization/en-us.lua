@@ -1173,6 +1173,14 @@ return {
 					"Can be used",
 					"as any suit",
 				}
+			},
+			m_payasaka_volatile = {
+				name = "Volatile Card",
+				text = {
+					"{C:mult}+#1#{} Mult",
+					"Gains {C:mult}+#2#{} Mult",
+					"if not scored",
+				}
 			}
 		},
 		DescriptionDummy = {
@@ -1382,7 +1390,7 @@ return {
 				name = "Crack",
 				text = {
 					"Add either a",
-					"{C:legendary}Random Seal{} or",
+					"{C:legendary}Random Stamp{} or",
 					"a {C:dark_edition}xX_rainbow_Xx{}",
 					"to {C:attention}#1#{} selected",
 					"card in your hand"
@@ -2015,12 +2023,28 @@ return {
 				}
 			},
 			payasaka_random_seal = {
-				name = "Random Seal",
+				name = "Random Stamp",
 				text = {
 					"{C:attention}Each effect{} has a",
 					"{C:green}#1# in #2#{} chance",
 					"to be given",
 					"when played",
+				}
+			},
+			payasaka_sunset = {
+				name = "Sunset",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"{C:red}self-destructing{} if",
+					"blind was not beaten",
+					"in one hand"
+				}
+			},
+			payasaka_tired = {
+				name = "Tired",
+				text = {
+					"Debuffed on the",
+					"{C:attention}first hand{} of round",
 				}
 			},
 			payasaka_randomeffects = {
@@ -2074,7 +2098,7 @@ return {
 		},
 		Seal = {
 			payasaka_random = {
-				name = "Random Seal",
+				name = "Random Stamp",
 				text = {
 					"{C:attention}Each effect{} has a",
 					"{C:green}#1# in #2#{} chance",
@@ -2325,7 +2349,9 @@ return {
 		labels = {
 			payasaka_jpeg = 'YCbCr',
 			payasaka_checkered = 'Checkered',
-			payasaka_random_seal = "Random Seal",
+			payasaka_random_seal = "Random Stamp",
+			payasaka_sunset = "Sunset",
+			payasaka_tired = "Tired",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
 		},
