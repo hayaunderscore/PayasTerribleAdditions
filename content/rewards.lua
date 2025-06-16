@@ -5,7 +5,7 @@ SMODS.ConsumableType {
 	primary_colour = HEX('d7e0e0'),
 	shop_rate = 0,
 	loc_txt = {},
-	default = 'c_payasaka_crime'
+	default = 'c_payasaka_conform'
 }
 
 local offs = {

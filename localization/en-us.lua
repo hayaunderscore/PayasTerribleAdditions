@@ -869,16 +869,16 @@ return {
 				}
 			},
 			j_payasaka_butcher = {
-                name = "Butcher Vanity",
-                text = {
-                    "When a blind is selected,",
-                    "gain {X:mult,C:white}X#1#{} Mult and {C:attention}destroy{}",
-                    "a random {C:attention}Food{} Joker",
+				name = "Butcher Vanity",
+				text = {
+					"When a blind is selected,",
+					"gain {X:mult,C:white}X#1#{} Mult and {C:attention}destroy{}",
+					"a random {C:attention}Food{} Joker",
 					"{C:red,E:1}Self destructs{} if there",
 					"are no Food Jokers",
-                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
-                },
-            },
+					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+				},
+			},
 			j_payasaka_diver = {
 				name = "Deep Deck Diver",
 				text = {
@@ -1085,7 +1085,7 @@ return {
 			},
 			j_payasaka_azusa = {
 				name = "Azusa Miura",
-				text = { 
+				text = {
 					"This Joker gains {X:mult,C:white}X#1#{} Mult",
 					"if scored hand {C:attention}contains{}",
 					"a {C:attention}7{}, {C:attention}6{} and {C:attention}5{}",
@@ -1180,14 +1180,14 @@ return {
 			dd_payasaka_property_card = { name = "Property", text = { "Get {C:money}$#1#{} upon beating", "the Boss Blind", "Resets back to {C:money}$#2#{}", "after cashing out", "{C:inactive,s:0.8}Houses add additional", "{C:attention,s:0.8}sell value", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } },
 			dd_payasaka_ahead = {
 				name = "Ahead",
-				text = { 
+				text = {
 					"This card is feeling",
 					"rather {C:blue}pointy"
 				}
 			},
 			dd_payasaka_risk = {
 				name = "Risk Card",
-				text = { 
+				text = {
 					"Effects are only applied",
 					"{C:attention}during{} the boss blind",
 					"{C:inactive,s:0.9}(Reward: {C:dark_edition,s:0.9}#1#{C:inactive,s:0.9})"
@@ -1832,6 +1832,29 @@ return {
 					"by {C:money}$#2#{} if played hand",
 					"contains a {C:attention}#3#{}",
 					"{C:inactive,s:0.8}Does nothing..?",
+				}
+			},
+		},
+		Colour = {
+			c_payasaka_mfc_maroon = {
+				name = "Maroon",
+				text = {
+					"Create and use a",
+					"random {C:risk}Risk{} card for",
+					"every {C:attention}#4#{} rounds",
+					"this has been held",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+				}
+			},
+			c_payasaka_mfc_lightblue = {
+				name = "Light Blue",
+				text = {
+					"Create a {C:dark_edition}Negative{}",
+					"{C:reward}Reward{} card for",
+					"every {C:attention}#4#{} rounds",
+					"this has been held",
+					"{X:attention,C:white}X#5#{} Blind size",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
 				}
 			},
 		},

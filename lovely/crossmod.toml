@@ -222,3 +222,29 @@ end
 '''
 match_indent = true
 times = 1
+
+# Light Blue increases blind size
+# As for why this isn't a calculate function.... Bunco tends to mess with that.
+# I want this to work out of the box
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''-- TARGET: setting_blind effects'''
+position = 'before'
+payload = '''
+for _, card in pairs(G.consumeables.cards) do
+	if card.ability.set == "Colour" and card.ability.name == "col_Light_Blue" then
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				G.GAME.blind.chips = G.GAME.blind.chips * card.ability.blind_size_multiplier
+				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+				G.GAME.blind:wiggle()
+				return true
+			end
+		})
+		card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Hardened!" })
+	end
+end
+
+'''
+match_indent = true

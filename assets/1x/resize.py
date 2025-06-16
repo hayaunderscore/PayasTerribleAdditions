@@ -10,7 +10,7 @@ def upscale_pixel_art(input_image, output_directory, input_image_path):
 
     # Save the resized image
     filename = os.path.basename(input_image_path)
-    output_image_path = os.path.join(output_directory, filename)
+    output_image_path = os.path.join(output_directory, input_image_path)
     resized_image.save(output_image_path)
 
 if __name__ == "__main__":
