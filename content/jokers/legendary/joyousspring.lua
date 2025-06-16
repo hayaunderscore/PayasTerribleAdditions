@@ -8,7 +8,7 @@ SMODS.Joker {
 		extra = {
 			-- amount of times the words 'joyousspring' or 'joyous spring'
 			-- has been uttered in the Balatro discord
-			joyous_amt = 980,
+			joyous_amt = 1013,
 			joyous_mult = 1, -- Will change the more people utter it
 			joyous_spring = init_joy_table {
 				is_tuner = true,
