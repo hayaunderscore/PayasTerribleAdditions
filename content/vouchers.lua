@@ -300,6 +300,16 @@ SMODS.Voucher {
 	pos = { x = 2, y = 0 },
 	cost = 10,
 	config = { modded_rate = 0.35 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	redeem = function(self, card)
 		G.GAME.payasaka_modded_rate = G.GAME.payasaka_modded_rate + card.ability.modded_rate
 	end,
@@ -326,6 +336,12 @@ SMODS.Voucher {
 	cost = 10,
 	config = { rare_rate = 0.1, legendary_rate = 0.05 },
 	requires = { "v_payasaka_friends" },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	redeem = function(self, card)
 		G.GAME.payasaka_rare_weight = G.GAME.payasaka_rare_weight or 0
 		G.GAME.payasaka_legendary_weight = G.GAME.payasaka_legendary_weight or 0

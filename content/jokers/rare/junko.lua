@@ -13,6 +13,12 @@ SMODS.Joker {
 		["Joker"] = true,
 		["Food"] = true,
 	},
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	update = function(self, card, dt)
 		if G.STAGE ~= G.STAGES.RUN then return end
 		local food = false
