@@ -33,36 +33,52 @@ SMODS.Consumable {
 			colour = HEX('98acb1')
 		}
 	},
+	dependencies = "MoreFluff",
 	can_use = function(self, card)
-		return card.ability.val > 0
+		return (card.ability.val > 0) and (G.STATE == G.STATES.BLIND_SELECT or booster_obj or G.STATE == G.STATES.SHOP or G.STATE == G.STATES.ROUND_EVAL)
 	end,
 	use = function(self, card, area, copier)
-		G.E_MANAGER:add_event(Event {
-			func = function()
-				-- Prevent Rift-Raft from cloning Risk cards created by this
-				PTASaka.should_clone = false
-				for i = 1, card.ability.val do
-					local risk = SMODS.add_card({ set = "Risk", area = G.play })
+		local risks = {}
+		for i = 1, card.ability.val do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+					-- Prevent Rift-Raft from cloning Risk cards created by this
+					PTASaka.should_clone = false
+					play_sound('timpani')
+					local risk = SMODS.add_card({ set = "Risk", area = G.play, skip_materialize = true })
+					card:juice_up(0.3, 0.5)
+					risk:start_materialize({G.C.SECONDARY_SET.Risk})
+					risk:juice_up(0.3, 0.5)
+					PTASaka.should_clone = false
+					risks[#risks+1] = risk
+					return true
+				end
+			}))
+		end
+		for i = 1, card.ability.val do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+					local risk = risks[i]
 					if risk then
-						risk:start_materialize()
 						risk:use_consumeable(risk.area, nil)
-						card:juice_up()
 						SMODS.calculate_context({ using_consumeable = true, consumeable = risk, area = G.consumeables })
 						G.E_MANAGER:add_event(Event {
 							trigger = 'after',
 							delay = 0.2,
 							func = function()
 								risk:start_dissolve()
-								card:juice_up()
 								return true
 							end
 						})
 					end
+					return true
 				end
-				PTASaka.should_clone = false
-				return true
-			end
-		})
+			}))
+		end
 		delay(0.6)
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -99,6 +115,7 @@ SMODS.Consumable {
 			colour = HEX('98acb1')
 		}
 	},
+	dependencies = "MoreFluff",
 	can_use = function(self, card)
 		return card.ability.val > 0
 	end,

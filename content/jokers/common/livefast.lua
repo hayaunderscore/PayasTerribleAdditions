@@ -20,9 +20,9 @@ SMODS.Joker {
 			local juice_card = context.blueprint_card or card
 			local c = {}
 			for i = 1, card.ability.extra.risk_count do
-				local risk = SMODS.add_card({set = "Risk", area = G.play})
+				local risk = SMODS.add_card({set = "Risk", area = G.play, skip_materialize = true})
 				if risk then
-					risk:start_materialize()
+					risk:start_materialize({G.C.SECONDARY_SET.Risk})
 					risk:use_consumeable(risk.area, nil)
 					juice_card:juice_up()
 					SMODS.calculate_context({using_consumeable = true, consumeable = risk, area = G.consumeables})
