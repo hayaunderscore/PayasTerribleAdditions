@@ -163,7 +163,10 @@ return {
 				}
 			},
 			j_payasaka_arona = {
-				name = "Arona",
+				name = {
+					"{f:5}アロナ",
+					"{C:edition,s:0.5}Arona"
+				},
 				text = {
 					"{X:chips,C:white}X#1#{} Chips {C:inactive,s:0.8}:<{}",
 					"unless {C:dark_edition,E:2}Plana{} is around",
@@ -176,7 +179,10 @@ return {
 				}
 			},
 			j_payasaka_plana = {
-				name = "Plana",
+				name = {
+					"{f:5}プラナ",
+					"{C:edition,s:0.5}Plana"
+				},
 				text = {
 					"{C:green}#3# in #4#{} chance to",
 					"create a random {C:dark_edition}Negative",
@@ -497,7 +503,10 @@ return {
 				}
 			},
 			j_payasaka_paya = {
-				name = "Yonii Payasaka",
+				name = {
+					"{f:5}ヨニ早坂",
+					"{C:edition,s:0.5}Yonii \"Paya\" Hayasaka"
+				},
 				text = {
 					"{C:green}#1# in #2#{} chance of",
 					"changing the {C:attention}operator",
@@ -914,7 +923,10 @@ return {
 				}
 			},
 			j_payasaka_dud = {
-				name = "{f:5}薬子サヤ",
+				name = {
+					"{f:5}薬子サヤ",
+					"{C:edition,s:0.5}Yakushi Saya"
+				},
 				text = {
 					"{C:mult}+#1#{} Mult",
 					"{C:dark_edition}+#2#{} Joker slot",
@@ -1084,7 +1096,10 @@ return {
 				}
 			},
 			j_payasaka_azusa = {
-				name = "Azusa Miura",
+				name = {
+					"{f:5}三浦あずさ",
+					"{C:edition,s:0.5}Miura Azusa"
+				},
 				text = {
 					"This Joker gains {X:mult,C:white}X#1#{} Mult",
 					"if scored hand {C:attention}contains{}",
@@ -1093,7 +1108,10 @@ return {
 				}
 			},
 			j_payasaka_irisu = {
-				name = "Irisu",
+				name = {
+					"{f:5}入巣京子",
+					"{C:edition,s:0.5}Kyouko Irisu"
+				},
 				text = {
 					"{C:red}Destroys{} a random Joker",
 					"and takes their {C:attention}abilities",
