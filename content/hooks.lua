@@ -25,25 +25,15 @@ function Game:start_run(args)
 	local PREGAME = args and args.savetext and args.savetext.GAME or
 		{ payasaka_lab_joker_ids = {}, payasaka_cast_joker_ids = {} }
 	for k, v in pairs(PREGAME.payasaka_lab_joker_ids or {}) do
-		G["payasaka_lab_jokers_" .. tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
-			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
-		local dummy_area = G["payasaka_lab_jokers_" .. tostring(k)]
-		-- dont display you fuck
-		dummy_area.states.visible = false
-		dummy_area.states.collide.can = false
-		dummy_area.states.focus.can = false
-		dummy_area.states.click.can = false
+		PTASaka.create_storage_area("payasaka_lab_jokers_" .. tostring(k), 2, k)
 	end
 	-- Same with Cast
 	for k, v in pairs(PREGAME.payasaka_cast_joker_ids or {}) do
-		G["payasaka_cast_jokers_" .. tostring(k)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
-			{ card_limit = 2, type = 'joker', highlight_limit = 0 })
-		local dummy_area = G["payasaka_cast_jokers_" .. tostring(k)]
-		-- dont display you fuck
-		dummy_area.states.visible = false
-		dummy_area.states.collide.can = false
-		dummy_area.states.focus.can = false
-		dummy_area.states.click.can = false
+		PTASaka.create_storage_area("payasaka_cast_jokers_" .. tostring(k), 2, k)
+	end
+	-- Irisu also uses the same system lmao
+	for k, v in pairs(PREGAME.payasaka_irisu_ids or {}) do
+		PTASaka.create_storage_area("payasaka_irisu_" .. tostring(k), 1e300, k)
 	end
 
 	sr(self, args)
@@ -179,6 +169,8 @@ function Game:init_game_object()
 	ret.payasaka_lab_joker_ids = {}
 	-- Cast
 	ret.payasaka_cast_joker_ids = {}
+	-- Irisu
+	ret.payasaka_irisu_ids = {}
 
 
 	-- Custom Modded pool stuff
@@ -568,6 +560,16 @@ function SMODS.find_card(key, count_debuffed)
 		end
 	end
 
+	for k, _ in pairs(G.GAME.payasaka_irisu_ids or {}) do
+		if G["payasaka_irisu_" .. tostring(k)] and G["payasaka_irisu_" .. tostring(k)].cards then
+			for _, v in ipairs(G["payasaka_irisu_" .. tostring(k)].cards) do
+				if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
+					ret[#ret + 1] = v
+				end
+			end
+		end
+	end
+
 	if not PTASaka.adultcard_cardarea then return ret end
 	if not PTASaka.adultcard_cardarea.cards then return ret end
 	if not PTASaka.adultcard_cardarea.cards[1] then return ret end
@@ -578,6 +580,21 @@ function SMODS.find_card(key, count_debuffed)
 		end
 	end
 
+	return ret
+end
+
+local find_joker_ref = find_joker
+function find_joker(name, count_debuffed)
+	local ret = find_joker_ref(name, count_debuffed) or {}
+	for k, _ in pairs(G.GAME.payasaka_irisu_ids or {}) do
+		if G["payasaka_irisu_" .. tostring(k)] and G["payasaka_irisu_" .. tostring(k)].cards then
+			for _, v in pairs(G["payasaka_irisu_" .. tostring(k)].cards) do
+				if v and type(v) == 'table' and v.ability.name == name and (count_debuffed or not v.debuff) then
+					table.insert(ret, v)
+				end
+			end
+		end
+	end
 	return ret
 end
 
@@ -1192,7 +1209,7 @@ function PTASaka.use_joker(card, area, copier)
 	end
 end
 
-function G.UIDEF.payasaka_joker_use_buttons(card)
+function G.UIDEF.payasaka_joker_use_buttons(card, use_button)
 	local sell = {
 		n = G.UIT.C,
 		config = { align = "cr" },
@@ -1227,7 +1244,7 @@ function G.UIDEF.payasaka_joker_use_buttons(card)
 			},
 		}
 	}
-	local use = {
+	local use = use_button and use_button(card) or {
 		n = G.UIT.C,
 		config = { align = "cr" },
 		nodes = {
@@ -1271,6 +1288,16 @@ function G.UIDEF.payasaka_joker_use_buttons(card)
 	return t
 end
 
+-- Use soul_linked parameter if applicable
+local remove_ref = Card.remove
+function Card:remove()
+	if self.soul_linked and not self.ability.akyrs_sigma then
+		self.soul_linked:remove()
+		self.soul_linked = nil
+	end
+	return remove_ref(self)
+end
+
 -- Mostly taken from Aikoyori's Letter Wild Cards as a reference
 local cardhighlighthook = Card.highlight
 function Card:highlight(is_higlighted)
@@ -1286,6 +1313,29 @@ function Card:highlight(is_higlighted)
 			end
 			self.children.use_button = UIBox {
 				definition = G.UIDEF.payasaka_joker_use_buttons(self),
+				config = { align =
+					((self.area == G.jokers) or (self.area == G.consumeables)) and "cr" or
+					"bmi"
+				, offset =
+					((self.area == G.jokers) or (self.area == G.consumeables)) and { x = -0.5, y = 0 } or
+					{ x = 0, y = 0.65 },
+					parent = self }
+			}
+		elseif exists and self.children.use_button then
+			self.children.use_button:remove()
+			self.children.use_button = nil
+		end
+	end
+
+	-- Irisu technically has a "use" button but does not run the use_consumeable routine
+	if self.config.center.pta_custom_use and self.area and self.area ~= G.pack_cards then
+		if self.highlighted and self.area and self.area.config.type ~= 'shop' and (self.area == G.jokers or self.area == G.consumeables) then
+			if self.children.use_button then
+				self.children.use_button:remove()
+				self.children.use_button = nil
+			end
+			self.children.use_button = UIBox {
+				definition = G.UIDEF.payasaka_joker_use_buttons(self, self.config.center.pta_custom_use),
 				config = { align =
 					((self.area == G.jokers) or (self.area == G.consumeables)) and "cr" or
 					"bmi"

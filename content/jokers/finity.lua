@@ -32,16 +32,7 @@ SMODS.Joker {
 		local rets = {}
 		if context.setting_blind then
 			if not G["payasaka_cast_jokers_"..tostring(card.sort_id)] then
-				G["payasaka_cast_jokers_"..tostring(card.sort_id)] = CardArea(0, 0, G.CARD_W * 2, G.CARD_H,
-					{ card_limit = 2, type = 'joker', highlight_limit = 0 })
-				---@type CardArea
-				local dummy_area = G["payasaka_cast_jokers_"..tostring(card.sort_id)]
-				-- dont display you fuck
-				dummy_area.states.visible = false
-				dummy_area.states.collide.can = false
-				dummy_area.states.focus.can = false
-				dummy_area.states.click.can = false
-				dummy_area.config.joker_parent = card.sort_id
+				PTASaka.create_storage_area("payasaka_cast_jokers_"..tostring(card.sort_id), 2, card.sort_id)
 				-- Save this sort_id to the save
 				G.GAME.payasaka_cast_joker_ids[card.sort_id] = true
 			end
@@ -95,8 +86,8 @@ SMODS.Joker {
 				local joker = area.cards[i]
 				local ret = joker:calculate_joker(context)
 				if ret and type(ret) == "table" then
-					ret.message_card = card
-					ret.card = card
+					--ret.message_card = card
+					--ret.card = card
 					rets[#rets+1] = ret
 				end
 			end

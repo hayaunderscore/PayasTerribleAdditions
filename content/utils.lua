@@ -154,6 +154,28 @@ function Card:is_ahead()
 	return false
 end
 
+-- Creates a dummy card area for card storage<br>
+-- Used by LAB=01, Mr. Cast and Irisu....
+---@param id string String key to represent the card area, stored in G.
+---@param limit? number Max number of cards. Defaults to 1e300.
+---@param joker_id? number Joker sort id to represent card juice ups and messages. Defaults to -1.
+---@return CardArea
+function PTASaka.create_storage_area(id, limit, joker_id)
+	assert(id, "PTASaka.create_storage_area: id needs to be specified!")
+	limit = limit or 1e300
+
+	G[id] = CardArea(0, 0, G.CARD_W * math.min(limit, 100), G.CARD_H,
+		{ card_limit = limit, type = 'joker', highlight_limit = 0 })
+	local dummy_area = G[id]
+	-- dont display you fuck
+	dummy_area.states.visible = false
+	dummy_area.states.collide.can = false
+	dummy_area.states.focus.can = false
+	dummy_area.states.click.can = false
+	dummy_area.config.joker_parent = joker_id or -1
+	return dummy_area
+end
+
 function PTASaka.arrow(arrow, val1, val2, og_arrow)
 	-- Small compat with Entropy
 	if Entropy and G.GAME.hand_operator then

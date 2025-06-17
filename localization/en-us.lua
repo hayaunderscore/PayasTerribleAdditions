@@ -1095,7 +1095,10 @@ return {
 			j_payasaka_irisu = {
 				name = "Irisu",
 				text = {
-					"???",
+					"{C:red}Destroys{} a random Joker",
+					"and takes their {C:attention}abilities",
+					"upon setting the blind",
+					"{C:inactive,s:0.8}Eternal effects are applicable..."
 				}
 			},
 		},
