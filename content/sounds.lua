@@ -37,3 +37,6 @@ SMODS.Sound { key = 'echips', path = 'exponential_chips' .. ".wav" }
 
 -- Some boss blinds cannot be disabled!
 create_sound("loudbuzzer")
+
+-- Ask Madden
+SMODS.Sound { key = 'aeiou', path = 'aeiou' .. ".wav" }

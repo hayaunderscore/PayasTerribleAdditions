@@ -142,6 +142,7 @@ SMODS.DrawStep {
 	conditions = { vortex = false },
 }
 
+-- Highlighted play
 SMODS.DrawStep {
 	key = 'john_mark',
 	order = 1000,
@@ -163,8 +164,8 @@ SMODS.DrawStep {
 				layer.states.click.can = false
 				self.children.john_mark = layer
 			end
-			layer:draw_shader("dissolve", 0, nil, nil, self.children.center, 0.1, nil, nil, nil, nil, 0.6)
-			layer:draw_shader("dissolve", nil, nil, nil, self.children.center, 0.1)
+			layer:draw_shader("dissolve", 0, nil, nil, self.children.center, nil, nil, nil, nil, nil, 0.6)
+			layer:draw_shader("dissolve", nil, nil, nil, self.children.center, nil)
 		end
 	end,
 	conditions = { vortex = false, facing = 'front' },

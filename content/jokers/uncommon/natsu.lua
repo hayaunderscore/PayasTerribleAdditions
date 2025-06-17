@@ -7,9 +7,15 @@ SMODS.Joker {
 	soul_pos = { x = 4, y = 1 },
 	pta_front_pos = { x = 5, y = 1 },
 	cost = 6,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	demicoloncompat = true,
 	config = { extra = { odds = 3 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.hand and not context.end_of_round and pseudorandom('na-na-na-natsu') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds then
 			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, { message = 'Rock!' })
