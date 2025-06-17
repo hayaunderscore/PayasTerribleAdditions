@@ -337,6 +337,27 @@ SMODS.Back {
 	end
 }
 
+if PTASaka.Mod.config["Ahead"] then
+-- Start with a random Prismatic joker
+SMODS.Back {
+	key = 'prismatic',
+	atlas = "JOE_Decks",
+	pos = { x = 3, y = 0 },
+	unlocked = true,
+	apply = function(self, back)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local c = SMODS.add_card({ rarity = "payasaka_daeha", set = "Joker", area = G.jokers, skip_materialize = true })
+					c:start_materialize()
+					return true
+				end
+			end,
+		}))
+	end
+}
+end
+
 -- Fix for Bunco
 local create_blind_card = Card.create_blind_card
 function Card:create_blind_card()

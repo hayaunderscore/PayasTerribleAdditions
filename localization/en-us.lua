@@ -33,12 +33,12 @@ return {
 				}
 			},
 			b_payasaka_purgatory = {
-				name = "Purgatory Deck",
+				name = "Thrillseeker Deck",
 				text = {
 					"Only {C:red}Risk{} cards,",
 					"vouchers and Booster Packs",
 					"can {C:attention}appear{} in the shop",
-					"{C:inactive}(Heavy WIP!)"
+					"{C:inactive,s:0.8}Buffoon Packs are still permitted!"
 				}
 			},
 			b_payasaka_gacha = {
@@ -58,6 +58,13 @@ return {
 				text = {
 					"Playing cards' {C:attention}Rank{} and {C:attention}Suit{}",
 					"are randomized when drawn",
+				}
+			},
+			b_payasaka_prismatic = {
+				name = "Prismatic Deck",
+				text = {
+					"Start with a random",
+					"{X:payasaka_prismatic_gradient,C:white}Prismatic{} Joker",
 				}
 			},
 		},
