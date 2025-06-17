@@ -691,9 +691,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		card_eval_status_text(PTASaka.stop_you_are_violating_the_law, 'extra', nil, nil, nil, {
 			message = localize('k_nope_ex'),
 			colour = G.C.PURPLE,
-			extrafunc = function()
-				play_sound("payasaka_coolgong", 0.8 + percent * 0.2, 0.6)
-			end
+			sound = "payasaka_coolgong"
 		})
 		local rand = pseudorandom('aww_random_effect', 1, 3)
 		if rand == 1 and amount then
@@ -817,7 +815,7 @@ function eval_card(card, context, ...)
 		for k, v in ipairs(ret or {}) do
 			for _k, _v in pairs(v) do
 				for effect_key, effect_value in pairs(_v) do
-					if effect_key:match("chip") and not effect_key:match("message") and effect_value and _card.ability.set == "Joker" then
+					if effect_key:match("chip") and not effect_key:match("message") and effect_value and card.ability.set == "Joker" then
 						card.ability.payasaka_chip_joker = true
 					end
 				end
