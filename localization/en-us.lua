@@ -64,7 +64,16 @@ return {
 				name = "Prismatic Deck",
 				text = {
 					"Start with a random",
-					"{X:payasaka_prismatic_gradient,C:white}Prismatic{} Joker",
+					"{C:payasaka_prismatic_gradient}Prismatic{} Joker",
+				}
+			},
+			b_payasaka_sticker = {
+				name = "Sticker Deck",
+				text = {
+					"Start with an {C:attention,T:v_overstock_norm}#1#",
+					"Jokers can have {C:attention}stickers",
+					"Stakes {C:attention}increase{} chance for their",
+					"{C:attention}respective{} sticker"
 				}
 			},
 		},
@@ -2128,6 +2137,22 @@ return {
 					"in the {C:green}shop",
 					"Gacha weights are {C:dark_edition}nonexistent",
 				},
+			},
+			sleeve_payasaka_sticker = {
+				name = "Sticker Sleeve",
+				text = {
+					"Start with an {C:attention,T:v_overstock_norm}#1#",
+					"Jokers can have {C:attention}stickers",
+					"Stakes {C:attention}increase{} chance for their",
+					"{C:attention}respective{} sticker"
+				}
+			},
+			sleeve_payasaka_sticker_alt = {
+				name = "Sticker Sleeve",
+				text = {
+					"Start with an {C:attention,T:v_overstock_plus}#1#",
+					"{E:1,C:legendary}Any{} card can have a {C:attention}sticker",
+				}
 			},
 		},
 		Seal = {

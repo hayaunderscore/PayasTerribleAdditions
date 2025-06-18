@@ -358,6 +358,79 @@ SMODS.Back {
 }
 end
 
+local function get_compat(center, sticker)
+	if center[sticker.."_compat"] then
+		return true
+	end
+	if center[sticker.."_compat"] == nil and SMODS.Stickers[sticker].default_compat then
+		return true
+	end
+	return false
+end
+
+local function sticker_deck_nerf(rate, rate_2)
+	return G.GAME.modifiers.payasaka_sticker_deck and rate or rate_2
+end
+
+-- take_ownership sucks
+SMODS.Stickers["eternal"].should_apply = function(self, card, center, area, bypass_reroll)
+	local ret = true
+	if (card.ability.set == "Joker" and not get_compat(card.config.center, "eternal")) then ret = false end
+	if (card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve) and ((area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers)) then
+		G.GAME.payasaka_eternal_perishable_poll = pseudorandom((area == G.pack_cards and 'packetper' or 'etperpoll')..G.GAME.round_resets.ante)
+		G.GAME.payasaka_eternal_target_rate = G.GAME.modifiers.payasaka_sticker_deck and 0.8 or 1.3
+		if G.GAME.modifiers.enable_eternals_in_shop then G.GAME.payasaka_eternal_target_rate = G.GAME.payasaka_eternal_target_rate - sticker_deck_nerf(0.3, 0.6) end
+		if G.GAME.payasaka_eternal_perishable_poll > G.GAME.payasaka_eternal_target_rate then
+			return ret
+		end
+	end
+	return false
+end
+
+SMODS.Stickers["perishable"].should_apply = function(self, card, center, area, bypass_reroll)
+	local ret = true
+	if (card.ability.set == "Joker" and not get_compat(card.config.center, "perishable")) then ret = false end
+	if (card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve) and ((area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers)) then
+		G.GAME.payasaka_eternal_perishable_poll = G.GAME.payasaka_eternal_perishable_poll or pseudorandom((area == G.pack_cards and 'packetper' or 'etperpoll')..G.GAME.round_resets.ante)
+		local etr = (G.GAME.payasaka_eternal_target_rate or (G.GAME.modifiers.payasaka_sticker_deck and 0.8 or 1.3))
+		if (not G.GAME.payasaka_eternal_target_rate) and G.GAME.modifiers.enable_eternals_in_shop then etr = etr - sticker_deck_nerf(0.3, 0.6) end
+		local minimum_target_rate = G.GAME.modifiers.payasaka_sticker_deck and 1 or 1.3
+		if G.GAME.modifiers.enable_perishables_in_shop then minimum_target_rate = minimum_target_rate - 0.9 end
+		if ((G.GAME.payasaka_eternal_perishable_poll > minimum_target_rate) and (G.GAME.payasaka_eternal_perishable_poll <= etr)) then
+			return ret
+		end
+	end
+	return false
+end
+
+SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_reroll)
+	local ret = true
+	if (card.ability.set == "Joker" and not get_compat(card.config.center, "rental")) then ret = false end
+	if (card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve) and ((area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers)) then
+		local roll = pseudorandom((area == G.pack_cards and 'packssjr' or 'ssjr')..G.GAME.round_resets.ante)
+		local minimum_target_rate = (G.GAME.payasaka_eternal_target_rate or (G.GAME.modifiers.payasaka_sticker_deck and 0.8 or 1.3))
+		if G.GAME.modifiers.enable_rentals_in_shop then minimum_target_rate = minimum_target_rate - sticker_deck_nerf(0.3, 0.6) end
+		if roll > minimum_target_rate then
+			return ret
+		end
+	end
+	return false
+end
+
+SMODS.Back {
+	key = 'sticker',
+	atlas = "JOE_Decks",
+	pos = { x = 3, y = 1 },
+	unlocked = true,
+	config = { vouchers = { "v_overstock_norm" } },
+	apply = function(self, back)
+		G.GAME.modifiers.payasaka_sticker_deck = true
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { localize { type = 'name_text', key = self.config.vouchers[1], set = "Voucher" } } }
+	end
+}
+
 -- Fix for Bunco
 local create_blind_card = Card.create_blind_card
 function Card:create_blind_card()

@@ -336,3 +336,13 @@ for _, area in pairs(SMODS.get_card_areas('jokers', "end_of_round")) do
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''SMODS.calculate_context({using_consumeable = true, consumeable = card, area = card.from_area})'''
+position = 'before'
+payload = '''
+if card.ability.eternal then dont_dissolve = true; area = G.consumeables; draw_card(G.play, area, 1, 'up', true, card, nil, mute); end
+'''
+match_indent = true

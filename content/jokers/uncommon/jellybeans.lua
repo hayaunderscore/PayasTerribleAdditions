@@ -5,7 +5,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.cards } }
 	end,
 	atlas = "JOE_Jokers2",
-	pos = { x = 1, y = 3 },
+	pos = { x = 3, y = 4 },
 	rarity = 2,
 	blueprint_compat = true,
 	demicoloncompat = true,

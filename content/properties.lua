@@ -423,15 +423,6 @@ PTASaka.Property {
 	can_use = function(self, card)
 		return false
 	end,
-	calculate = function (self, card, context)
-		if context.end_of_round and not context.game_over and context.cardarea == G.jokers then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.gain
-			return {
-				message = localize('k_upgrade_ex'),
-				colour = G.C.MONEY
-			}
-		end
-	end,
 	use = function(self, card, area, copier) end,
 	loc_vars = function(self, info_queue, card)
 		return {

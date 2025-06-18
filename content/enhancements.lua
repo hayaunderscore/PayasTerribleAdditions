@@ -64,6 +64,16 @@ SMODS.Enhancement {
 	end
 }
 
+local function get_compat(center, sticker)
+	if center[sticker.."_compat"] then
+		return true
+	end
+	if center[sticker.."_compat"] == nil and SMODS.Stickers[sticker].default_compat then
+		return true
+	end
+	return false
+end
+
 -- This includes stickers as well, capiche.
 SMODS.Sticker {
 	key = 'sunset',
@@ -111,6 +121,17 @@ SMODS.Sticker {
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (G.GAME.probabilities.normal or 1), (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds } }
+	end,
+	should_apply = function(self, card, center, area, bypass_reroll)
+		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then
+			if (not get_compat(card.config.center, "payasaka_sunset")) or (card.ability.eternal or card.ability.perishable) then return false end
+			if G.GAME.modifiers.payasaka_sticker_deck and (area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers) then
+				if pseudorandom('packsunset') < (G.GAME.modifiers.enable_rentals_in_shop and 0.3 or 0.15) then
+					return true
+				end
+			end
+		end
+		return false
 	end
 }
 
@@ -124,4 +145,15 @@ SMODS.Sticker {
 		"Joker"
 	},
 	default_compat = true,
+	should_apply = function(self, card, center, area, bypass_reroll)
+		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then
+			if not get_compat(card.config.center, "payasaka_tired") then return false end
+			if G.GAME.modifiers.payasaka_sticker_deck and (area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers) then
+				if pseudorandom('packtired') < (G.GAME.modifiers.enable_perishables_in_shop and 0.3 or 0.15) then
+					return true
+				end
+			end
+		end
+		return false
+	end
 }
