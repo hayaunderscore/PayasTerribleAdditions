@@ -179,7 +179,7 @@ SMODS.Joker {
 		local irisu_area = G["payasaka_irisu_" .. tostring(card.sort_id)]
 		if context.setting_blind then
 			if not G["payasaka_irisu_" .. tostring(card.sort_id)] then
-				PTASaka.create_storage_area("payasaka_irisu_" .. tostring(card.sort_id), 1e300, card.sort_id)
+				irisu_area = PTASaka.create_storage_area("payasaka_irisu_" .. tostring(card.sort_id), 1e300, card.sort_id)
 				-- Save this sort_id to the save
 				G.GAME.payasaka_irisu_ids[card.sort_id] = true
 			end

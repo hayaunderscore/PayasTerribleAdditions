@@ -6,7 +6,7 @@ local enotsworrA_signs = {
 	["minus"] = {sign = "-", bgcolor = G.C.WHITE, color = G.C.CHIPS},
 	["equals"] = {sign = "=", bgcolor = G.C.DARK_EDITION, color = G.C.WHITE},
 	["exponent"] = {sign = "^", bgcolor = G.C.DARK_EDITION, color = G.C.WHITE},
-	["divide"] = {sign = "D", bgcolor = G.C.MULT, color = G.C.WHITE},
+	["divide"] = {sign = "÷", bgcolor = G.C.DARK_EDITION, color = G.C.WHITE},
 	["lsh"] = {sign = "<<", bgcolor = G.C.DARK_EDITION, color = G.C.WHITE}
 }
 

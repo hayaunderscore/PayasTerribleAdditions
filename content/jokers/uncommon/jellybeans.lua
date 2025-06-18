@@ -1,11 +1,11 @@
 SMODS.Joker {
 	key = 'jellybeans',
-	config = { extra = { cards = 20 } },
+	config = { extra = { cards = 10 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.cards } }
 	end,
 	atlas = "JOE_Jokers2",
-	pos = { x = 3, y = 4 },
+	pos = { x = 1, y = 3 },
 	rarity = 2,
 	blueprint_compat = true,
 	demicoloncompat = true,

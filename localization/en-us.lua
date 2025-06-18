@@ -548,7 +548,7 @@ return {
 				text = {
 					"       cards     ",
 					"           give",
-					"{B:1,V:2}#2##1#{} Chips            ",
+					"{B:1,V:2}#2##1#{} Chips?           ",
 				},
 			},
 			j_payasaka_canichat = {
