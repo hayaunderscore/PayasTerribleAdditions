@@ -4,7 +4,7 @@ local WHICH_LIGHT = 2
 SMODS.Joker {
 	name = "Flint and Steel 2",
 	key = 'flintnsteel2',
-	config = { extra = { mult = 10 }, dark_cards = 0, light_cards = 0 },
+	config = { extra = { mult = 2 }, dark_cards = 0, light_cards = 0 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult, math.min(card.ability.dark_cards, card.ability.light_cards) * card.ability.extra.mult } }
 	end,

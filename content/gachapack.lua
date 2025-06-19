@@ -423,6 +423,7 @@ G.FUNCS.gacha_select_card = function(e)
 			c1.area:remove_card(c1)
 			c1:add_to_deck()
 			discover_card(c1)
+			c1:set_sprites(G.P_CENTERS[c1.config.center])
 			if SMODS.OPENED_BOOSTER.config.center.kind == 'Gacha' and (not (SMODS.OPENED_BOOSTER.edition and SMODS.OPENED_BOOSTER.edition.negative)) then
 				c1:flip()
 			end
