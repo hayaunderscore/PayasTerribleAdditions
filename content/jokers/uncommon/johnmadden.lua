@@ -9,6 +9,16 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = false,
 	config = { extra = { chips = 30, mult = 5 } },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.hand_drawn and not context.blueprint_card then
 			G.E_MANAGER:add_event(Event{

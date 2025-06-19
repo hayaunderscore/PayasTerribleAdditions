@@ -49,6 +49,16 @@ SMODS.Enhancement {
 	atlas = "JOE_Enhancements",
 	pos = { x = 2, y = 0 },
 	config = { mult = 0 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if not context.end_of_round then
 			if context.main_scoring and context.cardarea == "unscored" then
@@ -70,6 +80,16 @@ SMODS.Enhancement {
 	atlas = "JOE_Enhancements",
 	pos = { x = 3, y = 0 },
 	config = { laser_balance = 0.05 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if not context.end_of_round then
 			if context.main_scoring and context.cardarea == G.play then

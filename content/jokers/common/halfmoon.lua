@@ -10,6 +10,16 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	pools = {["Joker"] = true, ["Food"] = true},
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.before then
 			SMODS.smart_level_up_hand(card, context.scoring_name, false, card.ability.extra.amount)

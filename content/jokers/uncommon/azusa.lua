@@ -9,6 +9,16 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	config = { extra = { xmult = 1, xmult_gain = 0.25 } },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint_card then
 			local seven, six, five = nil, nil, nil
