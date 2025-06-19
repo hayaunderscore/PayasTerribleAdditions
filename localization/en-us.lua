@@ -618,7 +618,7 @@ return {
 				text = {
 					{
 						"Copies the ability",
-						"of leftmost {C:attention}Joker(s)",
+						"of leftmost {C:attention}Joker",
 					},
 					{
 						"Number of times copied",
