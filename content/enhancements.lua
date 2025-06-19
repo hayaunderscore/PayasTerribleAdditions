@@ -8,7 +8,7 @@ SMODS.Enhancement {
 	calculate = function(self, card, context)
 		if context.final_scoring_step and context.cardarea == G.play then
 			if pseudorandom("payasaka_damp_card") < (G.GAME.probabilities.normal or 1) / card.ability.odds and not next(SMODS.find_card('j_payasaka_rainy')) then
-				G.E_MANAGER:add_event(Event{
+				G.E_MANAGER:add_event(Event {
 					delay = 0.2,
 					func = function()
 						card:set_ability(G.P_CENTERS.m_payasaka_wet)
@@ -21,7 +21,7 @@ SMODS.Enhancement {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = G.P_CENTERS.m_payasaka_wet
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_payasaka_wet
 		return {
 			vars = { card.ability.x_chips, card.ability.x_mult, (G.GAME.probabilities.normal or 1), card.ability.odds }
 		}
@@ -64,11 +64,71 @@ SMODS.Enhancement {
 	end
 }
 
+SMODS.Enhancement {
+	name = "pta-Laser",
+	key = 'laser',
+	atlas = "JOE_Enhancements",
+	pos = { x = 3, y = 0 },
+	config = { laser_balance = 0.05 },
+	calculate = function(self, card, context)
+		if not context.end_of_round then
+			if context.main_scoring and context.cardarea == G.play then
+				local balance_chips = mod_chips(hand_chips * card.ability.laser_balance)
+				local balance_mult = mod_mult(mult * card.ability.laser_balance)
+				local avg = (balance_chips + balance_mult) / 2
+				return {
+					pf_chips_mult = function(hc, m)
+						G.E_MANAGER:add_event(Event {
+							func = function()
+								ease_colour(G.C.UI_CHIPS, { 0.8, 0.45, 0.85, 1 })
+								ease_colour(G.C.UI_MULT, { 0.8, 0.45, 0.85, 1 })
+								G.E_MANAGER:add_event(Event({
+									trigger = 'after',
+									blockable = false,
+									blocking = false,
+									delay = 0.8,
+									func = (function()
+										ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.8)
+										ease_colour(G.C.UI_MULT, G.C.RED, 0.8)
+										return true
+									end)
+								}))
+								G.E_MANAGER:add_event(Event({
+									trigger = 'after',
+									blockable = false,
+									blocking = false,
+									no_delete = true,
+									delay = 1.3,
+									func = (function()
+										G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1],
+											G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]
+										G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1],
+											G.C.RED[2], G.C.RED[3], G.C.RED[4]
+										return true
+									end)
+								}))
+								return true
+							end
+						})
+						return hc + (avg - balance_chips), m + (avg - balance_mult)
+					end,
+					colour = { 0.8, 0.45, 0.85, 1 },
+					sound = 'gong',
+					message = localize('k_balanced'),
+				}
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.laser_balance * 100 } }
+	end
+}
+
 local function get_compat(center, sticker)
-	if center[sticker.."_compat"] then
+	if center[sticker .. "_compat"] then
 		return true
 	end
-	if center[sticker.."_compat"] == nil and SMODS.Stickers[sticker].default_compat then
+	if center[sticker .. "_compat"] == nil and SMODS.Stickers[sticker].default_compat then
 		return true
 	end
 	return false
@@ -88,7 +148,7 @@ SMODS.Sticker {
 	config = { payasaka_sunset_extra = { odds = 4 } },
 	calculate = function(self, card, context)
 		if G.GAME.current_round.hands_played > 1 and context.end_of_round and context.main_eval then
-			if pseudorandom('sunset_die') < (G.GAME.probabilities.normal or 1)/(card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds then
+			if pseudorandom('sunset_die') < (G.GAME.probabilities.normal or 1) / (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('tarot1')

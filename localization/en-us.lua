@@ -1224,6 +1224,13 @@ return {
 					"Gains {C:mult}+#2#{} Mult",
 					"if not scored",
 				}
+			},
+			m_payasaka_laser = {
+				name = "Laser Card",
+				text = {
+					"{C:legendary}Balance{} {C:attention}#1#%{} of",
+					"{C:chips}Chips{} and {C:mult}Mult{}",
+				}
 			}
 		},
 		DescriptionDummy = {
