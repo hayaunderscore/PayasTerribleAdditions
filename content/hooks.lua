@@ -803,6 +803,20 @@ function Card:can_use_consumeable(any, skip)
 	return ret
 end
 
+-- Deep find a key with the word "chip" on it for Fanhead to detect it is a chip joker
+local function find_chips_n_shit(ret)
+	for k, v in pairs(ret or {}) do
+		if v and type(v) == "table" then
+			return find_chips_n_shit(v)
+		else
+			if k and type(k) == "string" and k:match("chip") and (not k:match("message")) and v then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 -- Fanhead chip detection
 local old_eval_card = eval_card
 function eval_card(card, context, ...)
@@ -811,15 +825,9 @@ function eval_card(card, context, ...)
 		card.ability.payasaka_chip_joker = false
 	end
 	-- Set this as a chip joker
-	if next(ret) then
-		for k, v in ipairs(ret or {}) do
-			for _k, _v in pairs(v) do
-				for effect_key, effect_value in pairs(_v) do
-					if effect_key:match("chip") and not effect_key:match("message") and effect_value and card.ability.set == "Joker" then
-						card.ability.payasaka_chip_joker = true
-					end
-				end
-			end
+	if ret and type(ret) == "table" and next(ret) and card.ability.set == "Joker" then
+		if find_chips_n_shit(ret) then
+			card.ability.payasaka_chip_joker = true
 		end
 	end
 	return ret, post

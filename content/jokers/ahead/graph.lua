@@ -11,18 +11,20 @@ SMODS.Joker {
 	perishable_compat = false,
 	pos = { x = 0, y = 4 },
 	atlas = "JOE_Jokers",
-	config = { extra = { x_chips = 0.2, f_x_chips = 1 } },
+	config = { extra = { x_chips = 0.25, f_x_chips = 1.25 } },
 	pixel_size = { w = 71, h = 80 },
 	pools = {["Joker"] = true, ["Meme"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_chips, card.ability.extra.f_x_chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play and not context.blueprint_card_card then
+		if context.individual and context.cardarea == G.play and not context.blueprint_card then
 			if context.other_card:is_suit('Spades') then
-				card.ability.extra.f_x_chips = card.ability.extra.x_chips + card.ability.extra.f_x_chips
+				if context.other_card:is_face() then
+					card.ability.extra.f_x_chips = card.ability.extra.x_chips + card.ability.extra.f_x_chips
+				end
 				return {
-					message = localize("k_upgrade_ex"),
+					message = context.other_card:is_face() and localize("k_upgrade_ex") or nil,
 					extra = {
 						xchips = card.ability.extra.f_x_chips
 					}
@@ -30,12 +32,8 @@ SMODS.Joker {
 			end
 		end
 		if context.forcetrigger then
-			card.ability.extra.f_x_chips = card.ability.extra.x_chips + card.ability.extra.f_x_chips
 			return {
-				message = localize("k_upgrade_ex"),
-				extra = {
-					xchips = card.ability.extra.f_x_chips
-				}
+				xchips = card.ability.extra.f_x_chips
 			}
 		end
 	end

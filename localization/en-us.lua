@@ -390,11 +390,15 @@ return {
 			j_payasaka_arrowgraph = {
 				name = "Arrowgraph",
 				text = {
-					"Played {C:spades}Spade{} cards",
-					"add {X:chips,C:white}X#1#{} Chips",
-					"when {C:attention}scored",
-					"Scored card gives",
-					"{X:chips,C:white}X#2#{} Chips"
+					{
+						"Played {C:spades}Spade{} cards",
+						"give {X:chips,C:white}X#2#{} Chips",
+					},
+					{
+						"This Joker gains {X:chips,C:white}X#1#",
+						"Chips when a {C:attention}Face{} card",
+						"with {C:spades}Spade{} suit is {C:attention}scored"
+					}
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}look at this graph",
@@ -562,9 +566,8 @@ return {
 			j_payasaka_bahead = {
 				name = "Bahead",
 				text = {
-					"Each {C:attention}Queen{} of",
-					"{C:spades}Spades{} held in hand",
-					"gives {X:chips,C:white} X#1# {} Chips",
+					"Each {C:attention}Queen{} held in",
+					"hand gives {X:chips,C:white} X#1# {} Chips",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}baronness is back"
