@@ -13,7 +13,31 @@ SMODS.Joker {
 	atlas = "JOE_Jokers",
 	pools = {["Joker"] = true, ["Meme"] = true},
 	loc_vars = function(self, info_queue, card)
-        return {vars = {PTASaka.ahead_count or 0}}
+		local colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
+		local text = 'incompatible'
+		if G.jokers and G.jokers.cards[1].config.center.blueprint_compat then
+			colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+			text = 'compatible'
+		end
+		text = ' '..localize('k_'..text)..' x'..(PTASaka.ahead_count or 0)..' '
+        return {
+			vars = {PTASaka.ahead_count or 0},
+			main_end = (card.area and (card.area == G.jokers or card.area.config.joker_parent)) and {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = { ref_table = card, align = "m", colour = colour, r = 0.05, padding = 0.06 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = text, colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+							}
+						}
+					}
+				}
+			} or nil
+		}
     end,
 	calculate = function(self, card, context)
 		local ahead_amt = PTASaka.ahead_count or 0
