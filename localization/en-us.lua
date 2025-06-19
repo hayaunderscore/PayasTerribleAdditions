@@ -184,11 +184,16 @@ return {
 					"{C:edition,s:0.5}Arona"
 				},
 				text = {
-					"{X:chips,C:white}X#1#{} Chips {C:inactive,s:0.8}:<{}",
-					"unless {C:dark_edition,E:2}Plana{} is around",
-					"gives {X:chips,C:white}X#2#{} Chips instead",
-					"Gains {X:chips,C:white}X#3#{} for every",
-					"{C:diamonds}Diamonds{} or {C:hearts}Hearts{} scored",
+					{
+						"{C:inactive,s:0.8}If Plana is not around:",
+						"{X:chips,C:white}X#1#{} Chips {C:inactive,s:0.8}:<{}",
+					},
+					{
+						"{C:inactive,s:0.8}If Plana is around:",
+						"Gains {X:chips,C:white}X#3#{} Chips for every",
+						"{C:diamonds}Diamonds{} or {C:hearts}Hearts{} scored",
+						"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)"
+					},
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}stop stealing my fucking chips",
@@ -200,13 +205,18 @@ return {
 					"{C:edition,s:0.5}Plana"
 				},
 				text = {
-					"{C:green}#3# in #4#{} chance to",
-					"create a random {C:dark_edition}Negative",
-					"{C:spectral}Spectral{} card every round",
-					"Gives {X:mult,C:white}X#1#{} Mult",
-					"if {C:green,E:2}Arona{} is around",
-					"Gains {X:mult,C:white}X#2#{} for every",
-					"{C:spades}Spades{} or {C:clubs}Clubs{} scored",
+					{
+						"{C:inactive,s:0.8}Default effect:",
+						"{C:green}#3# in #4#{} chance to",
+						"create a random {C:dark_edition}Negative",
+						"{C:spectral}Spectral{} card every round",
+					},
+					{
+						"{C:inactive,s:0.8}If Arona is around:",
+						"Gains {X:mult,C:white}X#2#{} Mult for every",
+						"{C:spades}Spades{} or {C:clubs}Clubs{} scored",
+						"{C:inactive}(Currently {X:mult,C:white}X#1#{C:inactive} Mult)"
+					},
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}now THIS this is a good one",
@@ -215,10 +225,9 @@ return {
 			j_payasaka_flintnsteel2 = {
 				name = "Flint and Steel 2",
 				text = {
-					"If played hand contains a {C:attention}Pair{}",
-					"one {C:hearts}Hearts{} or {C:diamonds}Diamonds{} suit",
-					"and one {C:spades}Spades{} or {C:clubs}Clubs{} suit",
-					"give {C:mult}+#1#{} Mult",
+					"This Joker gains {C:mult}+#1#{} Mult for",
+					"each pair {C:attention}containing{} one {C:payasaka_suit_light}light{}",
+					"suit and one {C:payasaka_suit_dark}dark{} suit",
 					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 					"{C:inactive}(e.g. {C:hearts}H{C:inactive}+{C:spades}S{C:inactive}, \
 {C:diamonds}D{C:inactive}+{C:clubs}C{C:inactive}, \
@@ -590,11 +599,15 @@ return {
 			j_payasaka_printhead = {
 				name = "Printhead",
 				text = {
-					"Copies ability of",
-					"{C:attention}Joker(s){} to the right",
-					"Number of Jokers copied",
-					"is tied to {C:attention}currently owned{}",
-					"Ahead Joker count {C:inactive}[#1#]"
+					{
+						"Copies ability of",
+						"{C:attention}Joker(s){} to the right",
+					},
+					{
+						"Number of Jokers copied",
+						"is tied to {C:attention}currently owned{}",
+						"Ahead Joker count {C:inactive}[#1#]"
+					}
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}wtf"
@@ -603,11 +616,15 @@ return {
 			j_payasaka_aheadstorm = {
 				name = "Aheadstorm",
 				text = {
-					"Copies the ability",
-					"of leftmost {C:attention}Joker",
-					"Number of times copied",
-					"is tied to {C:attention}currently owned{}",
-					"Ahead Joker count {C:inactive}[#1#]"
+					{
+						"Copies the ability",
+						"of leftmost {C:attention}Joker(s)",
+					},
+					{
+						"Number of times copied",
+						"is tied to {C:attention}currently owned{}",
+						"Ahead Joker count {C:inactive}[#1#]"
+					}
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}wth"
