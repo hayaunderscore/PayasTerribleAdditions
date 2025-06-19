@@ -2212,9 +2212,15 @@ return {
 			ptaset_payasaka_ahead = {
 				name = "Ahead Jokers",
 				text = {
-					"Meme rarity that focuses on",
-					"{X:chips,C:white}XChips{}, {C:spades}Spades{} or both",
-					"{C:inactive,s:0.8}Intentionally unbalanced."
+					{
+						"Meme rarity that focuses on",
+						"{X:chips,C:white}XChips{}, {C:spades}Spades{} or both",
+						"{C:inactive,s:0.8}Intentionally unbalanced."
+					},
+					{
+						"Also includes {C:payasaka_prismatic_gradient}Prismatic",
+						"Jokers and other stuff."
+					}
 				}
 			},
 			ptaset_payasaka_property = {
@@ -2222,7 +2228,6 @@ return {
 				text = {
 					"Consumables that focus",
 					"on {C:money}econ{} generation",
-					"{C:inactive,s:0.8}Under construction."
 				}
 			},
 			ptaset_payasaka_risk = {
