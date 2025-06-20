@@ -1155,6 +1155,19 @@ return {
 					"{C:inactive,s:0.8}Eternal effects are applicable..."
 				}
 			},
+			j_payasaka_shinku = {
+				name = "Shonk",
+				text = {
+					{
+						"Creates temporary {C:attention}copies",
+						"of played cards after scoring",
+					},
+					{
+						"Copies are {C:attention}destroyed",
+						"at the end of round"
+					}
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {

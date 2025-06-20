@@ -181,21 +181,10 @@ times = 1
 [[patches]]
 [patches.pattern]
 target = 'functions/state_events.lua'
-pattern = "G.FUNCS.draw_from_play_to_discard = function(e)"
-position = "after"
-payload = '''
-local drop_targets = SMODS.find_card('j_payasaka_droptarget')
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
 pattern = '''draw_card(G.play,G.discard, it*100/play_count,'down', false, v)'''
 position = 'at'
 payload = '''
-if next(drop_targets) and not G.GAME.payasaka_prelude then
+if not G.GAME.payasaka_prelude then
 	local add = {}
 	SMODS.calculate_context({payasaka_play_to_discard = true, other_card = v}, add)
 	SMODS.trigger_effects(add)
