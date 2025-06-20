@@ -26,6 +26,7 @@ SMODS.Joker {
 	cost = 25,
 	config = { extra = { chips = 50 }, current_sign = "plus", odds = 4 },
 	demicoloncompat = true,
+	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.chips, enotsworrA_signs[card.ability.current_sign].sign, colours = { enotsworrA_signs[card.ability.current_sign].bgcolor, enotsworrA_signs[card.ability.current_sign].color } } }
 	end,
@@ -40,7 +41,7 @@ SMODS.Joker {
 				message = localize('k_payasaka_enotsworra_change')
 			}
 		end
-		if context.individual and (context.cardarea == G.play or context.cardarea == G.hand) and not context.end_of_round then
+		if context.individual and (context.cardarea == G.play or context.cardarea == G.hand) and not context.end_of_round and not context.blueprint_card then
 			local sign = card.ability.current_sign
 			local val = card.ability.extra.chips
 			return {

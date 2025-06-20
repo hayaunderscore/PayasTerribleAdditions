@@ -2329,7 +2329,16 @@ return {
 				name = "AirRice",
 				text = {
 					"Balatro theme MIDI",
-					"used for Property Cards"
+					"used for Property Cards",
+					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=dskn803flbA"
+				}
+			},
+			credit_kctm = {
+				name = "Kool Cat the Martian",
+				text = {
+					"\"THROWBACK\" Balatro theme",
+					"used for {C:payasaka_prismatic_gradient}Prismatic{} Jokers",
+					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=tZZu9HUf0-Y"
 				}
 			},
 			credit_canichat = {

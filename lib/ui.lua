@@ -323,6 +323,7 @@ local tabs = function() return
 									create_credit("credit_loggers"),
 									create_credit("credit_aikoyori"),
 									create_credit("credit_airrice"),
+									create_credit("credit_kctm"),
 								}
 							},
 							{

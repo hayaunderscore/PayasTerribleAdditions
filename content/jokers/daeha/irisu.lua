@@ -117,6 +117,7 @@ SMODS.Joker {
 	cost = 25,
 	no_doe = true, -- :]
 	demicoloncompat = false,
+	blueprint_compat = true,
 	unlocked = true,
 	discovered = true,
 	pta_custom_use = function(card)
@@ -177,6 +178,7 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		---@type CardArea
 		local irisu_area = G["payasaka_irisu_" .. tostring(card.sort_id)]
+		local rets = {}
 		if context.setting_blind then
 			if not G["payasaka_irisu_" .. tostring(card.sort_id)] then
 				irisu_area = PTASaka.create_storage_area("payasaka_irisu_" .. tostring(card.sort_id), 1e300, card.sort_id)
@@ -225,14 +227,13 @@ SMODS.Joker {
 						return true
 					end
 				}))
-				return {
+				rets[#rets+1] = {
 					message = localize('k_duplicated_ex'),
 					card = removed,
 				}
 			end
 		end
 		if irisu_area then
-			local rets = {}
 			for _, c in pairs(irisu_area.cards) do
 				---@type Card
 				local c = c
@@ -247,7 +248,7 @@ SMODS.Joker {
 					end
 				end
 			end
-			if next(rets) then return PTASaka.recursive_extra(rets, 1) end
 		end
+		if next(rets) then return PTASaka.recursive_extra(rets, 1) end
 	end,
 }

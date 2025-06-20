@@ -9,6 +9,7 @@ SMODS.Joker {
 	cost = 25,
 	no_doe = true, -- :]
 	demicoloncompat = false,
+	blueprint_compat = true,
 	config = { odds = 2, extra = { exponential_cnt = 0 } },
 	pta_credit = {
 		art = {
