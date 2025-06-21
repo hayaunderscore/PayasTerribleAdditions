@@ -880,14 +880,13 @@ end
 -- Accept dos card buy space
 local cfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
-	local ret = cfbs(card)
 	if card.ability.set == 'DOSCard' and not (#PTASaka.dos_cardarea.cards < PTASaka.dos_cardarea.config.card_limit + (card.edition and card.edition.card_limit or 0)) then
 		alert_no_space(card, PTASaka.dos_cardarea)
 		return false
 	elseif card.ability.set == 'DOSCard' then
 		return true
 	end
-	return ret
+	return cfbs(card)
 end
 
 local ssp = set_screen_positions
@@ -1011,6 +1010,9 @@ function G.FUNCS.can_buy(e)
 	if (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes and e.config.ref_table.config.center.pyroxenes > G.GAME.payasaka_pyroxenes) and (e.config.ref_table.config.center.pyroxenes > 0) then
 		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 		e.config.button = nil
+	elseif (e.config.ref_table.config and e.config.ref_table.config.center and e.config.ref_table.config.center.pyroxenes) then
+		e.config.colour = G.C.ORANGE
+		e.config.button = 'buy_from_shop'
 	end
 end
 
@@ -1361,7 +1363,7 @@ function Card:highlight(is_higlighted)
 		self.children.wild_use_button = nil
 	end
 
-	if (self.area and (self.area == PTASaka.dos_cardarea or (self.ability and self.ability.extra and type(self.ability.extra) == 'table' and self.ability.extra.payasaka_dos))) then
+	if (self.area and (self.area == PTASaka.dos_cardarea or (self.ability and self.ability.extra and type(self.ability.extra) == 'table' and (self.ability.extra.payasaka_dos or self.ability.payasaka_dos)))) then
 		if self.highlighted and self.area and self.area.config.type ~= 'shop' and (self.area ~= G.play or self.area ~= G.discard) and self.ability.payasaka_dos_wild then
 			self.children.use_button = UIBox {
 				definition = PTASaka.dos_wild_card_ui(self),

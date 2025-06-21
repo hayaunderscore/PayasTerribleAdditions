@@ -1,6 +1,6 @@
 SMODS.ConsumableType {
 	key = 'DOSCard',
-	collection_rows = { 5, 6 },
+	collection_rows = { 5 },
 	primary_colour = HEX('4f6368'),
 	secondary_colour = HEX('a1c5c4'),
 	shop_rate = 0.3,
@@ -15,6 +15,8 @@ SMODS.UndiscoveredSprite {
 	px = 71, py = 95,
 }
 
+---@class DOSCard: SMODS.Consumable
+---@overload fun(self: DOSCard): DOSCard
 PTASaka.DOSCard = SMODS.Consumable:extend {
 	set = 'DOSCard',
 	atlas = "JOE_DOS",
@@ -119,19 +121,10 @@ PTASaka.DOSCard {
 					--card:set_seal(copy.seal, true, true)
 					card:set_sprites(copy.config.center, copy.config.card)
 					card:flip()
-					G.E_MANAGER:add_event(Event {
-						trigger = 'before',
-						delay = 0.6,
-						func = function()
-							card:juice_up()
-							return true
-						end
-					})
 					return true
 				end
 			})
 			local text, disp_text, poker_hands = G.FUNCS.get_poker_hand_info(context.scoring_hand)
-			delay(0.8125)
 			update_hand_text({ delay = 0, modded = true },
 				{
 					handname = disp_text,
@@ -142,7 +135,9 @@ PTASaka.DOSCard {
 				})
 			mult = mod_mult(G.GAME.hands[text].mult)
 			hand_chips = mod_chips(G.GAME.hands[text].chips)
-			delay(0.4)
+			return {
+				message = "Copied!"
+			}
 		end
 	end
 }
@@ -177,14 +172,31 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 	end
 end
 
---[[
 PTASaka.DOSCard {
 	key = 'dos_three',
 	atlas = "JOE_DOS",
 	pos = { x = 3, y = 0 },
-	config = { extra = { payasaka_dos = true, payasaka_type = 3, } },
+	config = { extra = { payasaka_dos = true, payasaka_type = 3, levels = 2, name = nil } },
+	calculate = function(self, card, context)
+		if card == PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards] or card == PTASaka.dos_cardarea.cards[#PTASaka.dos_cardarea.cards-1] then
+			if context.payasaka_dos_before then
+				SMODS.smart_level_up_hand(card, context.scoring_name, false, card.ability.extra.levels)
+				card.ability.extra.name = context.scoring_name
+			end
+			if context.after and card.ability.extra.name then
+				level_up_hand(card, card.ability.extra.name, true, -card.ability.extra.levels)
+				card.ability.extra.name = nil
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.levels }
+		}
+	end
 }
 
+--[[
 PTASaka.DOSCard {
 	key = 'dos_four',
 	atlas = "JOE_DOS",
@@ -296,10 +308,12 @@ G.FUNCS.payasaka_open_deck = function(e)
 end
 
 G.FUNCS.payasaka_can_open_dos_cardarea = function(e)
-	if G.CONTROLLER.dos_area_lock then
-		e.states.button = nil
+	if G.CONTROLLER.dos_area_lock or G.CONTROLLER.lock_input or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0) or G.CONTROLLER.locked then
+		e.config.button = nil
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 	else
-		e.states.button = "payasaka_open_dos_cardarea"
+		e.config.button = "payasaka_open_dos_cardarea"
+		e.config.colour = G.C.UI.BACKGROUND_DARK
 	end
 end
 
@@ -367,7 +381,7 @@ function PTASaka.dos_card_hover_ui(card)
 				n = G.UIT.C,
 				config = { ref_table = card, align = "cr", padding = 0.1, r = 0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card' },
 				nodes = {
-					{ n = G.UIT.B, config = { w = 0.1, h = 0.6 } },
+					{ n = G.UIT.B, config = { w = 0.2, h = 0.6 } },
 					{
 						n = G.UIT.C,
 						config = { align = "tm" },

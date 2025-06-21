@@ -1342,8 +1342,8 @@ return {
 			c_payasaka_dos_three = {
 				name = "3",
 				text = {
-					"{C:inactive}Does nothing",
-					"{C:inactive}currently"
+					"Levels up played",
+					"hand by {C:attention}#1#"
 				}
 			},
 			c_payasaka_dos_four = {
