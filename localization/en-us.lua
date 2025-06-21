@@ -1280,7 +1280,7 @@ return {
 				name = "Risk Card",
 				text = {
 					"Effects are only applied",
-					"{C:attention}during{} the boss blind",
+					"{C:attention}during{} this ante's boss blind",
 					"{C:inactive,s:0.9}(Reward: {C:dark_edition,s:0.9}#1#{C:inactive,s:0.9})"
 				}
 			},
@@ -1343,7 +1343,8 @@ return {
 				name = "3",
 				text = {
 					"Levels up played",
-					"hand by {C:attention}#1#"
+					"hand by {C:attention}#1#",
+					"temporarily"
 				}
 			},
 			c_payasaka_dos_four = {
@@ -1751,6 +1752,13 @@ return {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:joker} {C:purple,E:1}Legendary{} {C:joker}Jokers{}",
 				},
+			},
+			c_payasaka_bloom = {
+				name = "Bloom",
+				text = {
+					"Creates {C:attention}#2# enhanced{} copies",
+					"of {C:attention}#1#{} selected card",
+				}
 			},
 		},
 		Rotarot = {

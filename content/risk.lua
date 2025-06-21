@@ -32,7 +32,7 @@ end
 
 SMODS.ConsumableType {
 	key = 'Risk',
-	collection_rows = { 8, 7, 4 },
+	collection_rows = { 9, 6, 4 },
 	primary_colour = HEX('c42430'),
 	secondary_colour = HEX('891e2b'),
 	shop_rate = 0,
@@ -425,6 +425,30 @@ PTASaka.Risk {
 
 PTASaka.Risk {
 	set = 'Risk',
+	key = 'perpetuate',
+	atlas = "JOE_Risk",
+	pos = { x = 4, y = 3 },
+	tier = 1,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	apply_risk = function(self, ability)
+		G.GAME.payasaka_perpetuate_active = true
+	end,
+	apply_reward = function(self, ability)
+		G.GAME.payasaka_perpetuate_active = nil
+	end,
+}
+
+PTASaka.Risk {
+	set = 'Risk',
 	key = 'crime',
 	atlas = "JOE_Risk",
 	pos = { x = 3, y = 0 },
@@ -576,30 +600,6 @@ PTASaka.Risk {
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
-	end,
-}
-
-PTASaka.Risk {
-	set = 'Risk',
-	key = 'perpetuate',
-	atlas = "JOE_Risk",
-	pos = { x = 4, y = 3 },
-	tier = 2,
-	pta_credit = {
-		art = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-		idea = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
-		},
-	},
-	apply_risk = function(self, ability)
-		G.GAME.payasaka_perpetuate_active = true
-	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_perpetuate_active = nil
 	end,
 }
 

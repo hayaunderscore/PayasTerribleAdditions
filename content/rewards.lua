@@ -1,6 +1,6 @@
 SMODS.ConsumableType {
 	key = 'Reward',
-	collection_rows = { 5, 6 },
+	collection_rows = { 6, 6 },
 	secondary_colour = HEX('7f8481'),
 	primary_colour = HEX('d7e0e0'),
 	shop_rate = 0,
@@ -195,6 +195,39 @@ PTASaka.Reward {
 	can_use = function(self, card)
 		return true
 	end
+}
+
+PTASaka.Reward {
+	key = 'bloom',
+	atlas = 'JOE_Risk',
+	pos = { x = 3, y = 2 },
+	config = { max_highlighted = 1, extra = 2 },
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				for i = 1, #G.hand.highlighted do
+					---@type Card
+					local c = G.hand.highlighted[i]
+					for j = 1, card.ability.extra do
+						SMODS.add_card { suit = c.base.suit, rank = c.base.value, set = 'Enhanced', area = G.hand }
+					end
+				end
+				play_sound('timpani')
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		delay(0.6)
+	end,
+	can_use = function(self, card)
+		return card.ability.max_highlighted >= #G.hand.highlighted and
+			#G.hand.highlighted >= (card.ability.min_highlighted or 1)
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.max_highlighted, card.ability.extra } }
+	end,
 }
 
 PTASaka.Reward {
@@ -461,7 +494,17 @@ PTASaka.Reward {
 	atlas = 'JOE_Risk',
 	pos = { x = 3, y = 1 },
 	use = function(self, card, area, copier)
-		add_tag(Tag(pseudorandom_element(G.P_CENTER_POOLS.Tag, pseudoseed('dreamsprint')).key))
+		local tag = Tag(pseudorandom_element(G.P_CENTER_POOLS.Tag, pseudoseed('dreamsprint')).key)
+		if tag.name == "Orbital Tag" then
+			local _poker_hands = {}
+			for k, v in pairs(G.GAME.hands) do
+				if v.visible then
+					_poker_hands[#_poker_hands + 1] = k
+				end
+			end
+			tag.ability.orbital_hand = pseudorandom_element(_poker_hands, "joy_orbital")
+		end
+		add_tag(tag)
 		card:juice_up()
 		delay(0.6)
 	end,
@@ -520,7 +563,7 @@ PTASaka.Reward {
 PTASaka.Reward {
 	key = 'mind',
 	atlas = 'JOE_Risk',
-	pos = { x = 1, y = 2 },
+	pos = { x = 0, y = 2 },
 	hidden = true,
 	soul_set = 'Reward',
 	config = { extra = 2, choose = 1 },
