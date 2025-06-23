@@ -30,6 +30,7 @@ PTASaka.MisprintizeForbidden = {
 --- Sanity checker for tables.
 --- @param tbl table|nil Table to set to val if nil.
 --- @param val table|nil Table to set `tbl` to if `tbl` is nil.
+--- @return table
 function PTASaka.sanitycheck(tbl, val)
 	if val == nil then val = {} end
 	if tbl == nil then tbl = val end
@@ -152,6 +153,29 @@ function Card:is_ahead()
 	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self.config.center.rarity == "payasaka_ahead" then return true end
 	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self.config.center.rarity == "payasaka_daeha" then return true end
 	return false
+end
+
+-- Food pool
+-- Already used by Cryptid, only here if Cryptid is not available....
+if not G.P_CENTER_POOLS["Food"] then
+	SMODS.ObjectType {
+		key = "Food",
+		default = "j_gros_michel",
+		cards = {},
+		inject = function(self)
+			SMODS.ObjectType.inject(self)
+			-- insert base game food jokers
+			self:inject_card(G.P_CENTERS.j_gros_michel)
+			self:inject_card(G.P_CENTERS.j_egg)
+			self:inject_card(G.P_CENTERS.j_ice_cream)
+			self:inject_card(G.P_CENTERS.j_cavendish)
+			self:inject_card(G.P_CENTERS.j_turtle_bean)
+			self:inject_card(G.P_CENTERS.j_diet_cola)
+			self:inject_card(G.P_CENTERS.j_popcorn)
+			self:inject_card(G.P_CENTERS.j_ramen)
+			self:inject_card(G.P_CENTERS.j_selzer)
+		end,
+	}
 end
 
 -- Creates a dummy card area for card storage<br>
