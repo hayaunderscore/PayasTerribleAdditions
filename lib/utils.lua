@@ -65,6 +65,16 @@ end
 
 -- Loosely based on https://github.com/balt-dev/Inkbleed/blob/trunk/modules/misprintize.lua
 -- Specifically for non random values
+---@param val any Value to be modified. Recursive.
+---@param amt? any Value to be used with `value`. See `func`. Defaults to 1.
+---@param reference? table Reference table to check previous values edited by this function. Defaults to an empty table.
+---@param key? any Key of the current table used, if `val` is a table. Defaults to "1".
+---@param func? fun(value: any, amount: any): any Function used to modify `val` with `amt`. Uses multiplication if not specified.
+---@param whitelist? table<any, boolean> Whitelisted keys for tables. If not specified, uses `blacklist`.
+---@param blacklist? table<any, boolean> Blacklisted keys for tables. If not specified, uses a default blacklist.
+---@param layer? number Layer of current table for recursive checking, if `val` is a table. Defaults to 0.
+---@param blacklist_key? fun(key: any, value: any, layer: number): boolean Additional blacklist function, taking in the key, value and layer as parameters. Defaults to a function for checking `x_mult` and `x_chips` for the ability table.
+---@return any val Value modified.
 function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist, layer, blacklist_key)
 	reference = reference or {}
 	key = key or "1"
@@ -101,8 +111,21 @@ function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blackli
 	return val
 end
 
--- The above, but with the parameters as a table instead
+---@class MisprintizeContext
+---@field val any Value to be modified. Recursive.
+---@field amt? any Value to be used with `value`. See `func`. Defaults to 1.
+---@field reference? table Reference table to check previous values edited by this function. Defaults to an empty table.
+---@field key? any Key of the current table used, if `val` is a table. Defaults to "1".
+---@field func? fun(value: any, amount: any): any Function used to modify `val` with `amt`. Uses multiplication if not specified.
+---@field whitelist? table<any, boolean> Whitelisted keys for tables. If not specified, uses `blacklist`.
+---@field blacklist? table<any, boolean> Blacklisted keys for tables. If not specified, uses a default blacklist.
+---@field layer? number Layer of current table for recursive checking, if `val` is a table. Defaults to 0.
+---@field blacklist_key? fun(key: any, value: any, layer: number): boolean Additional blacklist function, taking in the key, value and layer as parameters. Defaults to a function for checking `x_mult` and `x_chips` for the ability table.
+
+-- The above, but with the parameters as a table instead.
 -- In short, misprintizes values by multiplication or a specified `func` function.
+---@param t MisprintizeContext Misprintize parameters.
+---@return any val Return value.
 function PTASaka.Misprintize(t)
 	t = t or {}
 	assert(t.val, "PTASaka.Misprintize: Value not provided!")
@@ -111,6 +134,9 @@ function PTASaka.Misprintize(t)
 end
 
 -- Taken from Cryptid...
+---@param card Card
+---@param func fun(card: Card): any
+---@return any
 function PTASaka.with_deck_effects(card, func)
 	if not card.added_to_deck then
 		return func(card)
@@ -122,6 +148,11 @@ function PTASaka.with_deck_effects(card, func)
 	end
 end
 
+---Photocopy util function.
+---@param jkr Card
+---@param mult number
+---@param unphotocopy boolean
+---@param id number
 function PTASaka.Photocopy(jkr, mult, unphotocopy, id)
 	local mul = mult
 	if unphotocopy == true then mul = 1 / mult end
@@ -136,6 +167,7 @@ function PTASaka.Photocopy(jkr, mult, unphotocopy, id)
 end
 
 -- Load all files in a folder
+---@param path string Path to a folder.
 function PTASaka.RequireFolder(path)
 	local files = NFS.getDirectoryItemsInfo(PTASaka.Mod.path .. "/" .. path)
 	for i = 1, #files do
@@ -147,6 +179,7 @@ function PTASaka.RequireFolder(path)
 end
 
 -- Additional property for cards to be considered as 'Ahead'
+---@return boolean
 function Card:is_ahead()
 	if next(SMODS.find_card("j_payasaka_niveusterras")) then return true end
 	if self.ability.name == "Arrowhead" then return true end
@@ -200,6 +233,12 @@ function PTASaka.create_storage_area(id, limit, joker_id)
 	return dummy_area
 end
 
+--- Multipurpose arrow function for exponential stuff.
+---@param arrow number Number of arrows. 0 is Multiplication.
+---@param val1 number Value no. 1
+---@param val2 number Value no. 2
+---@param og_arrow number Original `arrow` during recursive calls.
+---@return number
 function PTASaka.arrow(arrow, val1, val2, og_arrow)
 	-- Small compat with Entropy
 	if Entropy and G.GAME.hand_operator then
@@ -220,6 +259,9 @@ function PTASaka.arrow(arrow, val1, val2, og_arrow)
 end
 
 -- Recursively create an extra table for each returned effect table
+---@param table_return_table table
+---@param index number
+---@return table
 function PTASaka.recursive_extra(table_return_table, index)
 	index = index or 1
 	local ret = table_return_table[index]
@@ -267,6 +309,7 @@ function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, 
 end
 
 -- Funny soul aura >:)))
+---@param c Card
 function PTASaka.create_soul_aura_for_card(c)
 	if not c.pta_trick_sprite then
 		c.pta_trick_sprite_args = c.pta_trick_sprite_args or {
@@ -300,6 +343,9 @@ function PTASaka.create_soul_aura_for_card(c)
 	end
 end
 
+--- Creates an alias table for a table.
+---@param val table<number, any>[]
+---@return table
 function PTASaka.create_alias_table(val)
 	local total = 0
 	for k, v in ipairs(val) do
@@ -493,6 +539,9 @@ end
 -- Most of this is mostly taken from Cryptid
 -- https://github.com/SpectralPack/Cryptid/blob/main/lib/forcetrigger.lua
 -- Returns a result table usable by SMODS.trigger_effects
+---@param card Card
+---@param context CalcContext
+---@return table
 function PTASaka.forcetrigger(card, context)
 	if card.ability.set ~= "Joker" then return {}, {} end
 	local results, post = {}, {}
