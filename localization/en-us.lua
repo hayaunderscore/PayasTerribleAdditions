@@ -1167,6 +1167,14 @@ return {
 						"at the end of round"
 					}
 				}
+			},
+			j_payasaka_sheena = {
+				name = "Apple of Universal Gravity",
+				text = {
+					"Held cards forming a {C:attention}Straight{} from",
+					"{C:attention}scored cards{} each give {X:mult,C:white}X#1#{} Mult",
+					"{C:inactive,s:0.8}Played cards must already form a Straight{}"
+				}
 			}
 		},
 		Blind = {

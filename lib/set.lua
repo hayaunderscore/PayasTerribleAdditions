@@ -85,11 +85,12 @@ PTASaka.SetToggle {
 
 local cardClick = Card.click
 function Card:click()
-	cardClick(self)
 	if self.ability.set == "PTASet" then
 		PTASaka.Mod.config[self.config.center.pta_associated_config] = not PTASaka.Mod.config[self.config.center.pta_associated_config]
 		self.debuff = not PTASaka.Mod.config[self.config.center.pta_associated_config]
-		self:juice_up()
+		self:juice_up(0.7)
 		play_sound('tarot2')
+	else
+		cardClick(self)
 	end
 end
