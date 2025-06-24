@@ -55,6 +55,8 @@ SMODS.Atlas { key = "JOE_Colours", path = "mf/colours.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Sleeves", path = "sleeves.png", px = 73, py = 95 }
 SMODS.Atlas { key = "REVO_JOE_Printers", path = "revo/printers.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Exotic", path = "cryptid/exotics.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_TOGA", path = "toga.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_TOGA_warrior_soul", path = "toga.png", px = 90, py = 95 }
 
 -- Icon lmao
 SMODS.Atlas { key = "modicon", path = "icon.png", px = 34, py = 34 }
@@ -184,6 +186,11 @@ end
 -- Cross mod content: MoreFluff
 if next(SMODS.find_mod('MoreFluff')) and conf["Cross Mod Content"] then
 assert(SMODS.load_file("content/cross-consum/colour.lua"))()
+end
+
+-- Cross mod content: TOGA's Stuff
+if togabalatro and conf["Cross Mod Content"] then
+assert(SMODS.load_file("content/toga.lua"))()
 end
 
 -- Pyroxenes

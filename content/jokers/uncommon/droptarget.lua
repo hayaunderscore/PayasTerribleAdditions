@@ -1,13 +1,3 @@
-
-
-local function predict_pseudoseed(key, pseed)
-	if key == 'seed' then return math.random() end
-
-	local _pseed = pseed or G.GAME.pseudorandom[key] or pseudohash(key .. (G.GAME.pseudorandom.seed or ''))
-	_pseed = math.abs(tonumber(string.format("%.13f", (2.134453429141 + _pseed * 1.72431234) % 1)))
-	return (_pseed + (G.GAME.pseudorandom.hashed_seed or 0))/2
-end
-
 SMODS.Joker {
 	name = "Drop Target",
 	key = "droptarget",
@@ -18,6 +8,16 @@ SMODS.Joker {
 	blueprint_compat = false,
 	demicoloncompat = false,
 	config = { extra = { odds = 6, chips = 21, chips_add = 14 }, immutable = { sprite_state = 0, random_values = nil } },
+	pta_credit = {
+		idea = {
+			credit = 'Mr. Logan',
+			colour = HEX('c1410e')
+		},
+		art = {
+			credit = 'Mr. Logan',
+			colour = HEX('c1410e')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.payasaka_play_to_discard then
 			if not card.ability.immutable.random_values then

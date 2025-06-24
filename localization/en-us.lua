@@ -1175,6 +1175,21 @@ return {
 					"{C:attention}scored cards{} each give {X:mult,C:white}X#1#{} Mult",
 					"{C:inactive,s:0.8}Played cards must already form a Straight{}"
 				}
+			},
+			j_payasaka_toga_warrior = {
+				name = "warrior",
+				text = {
+					"{C:chips}+#1#{} Chips"
+				}
+			},
+			j_payasaka_toga_soundtracker = {
+				name = "Soundtracker",
+				text = {
+					"Gives {X:mult,C:white}X#1#{} of poker",
+					"hand {C:attention}mult{} as {C:attention}XMult",
+					"{C:inactive,s:0.8}(Minimum of 1.)",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				}
 			}
 		},
 		Blind = {

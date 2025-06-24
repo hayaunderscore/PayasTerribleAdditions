@@ -15,7 +15,7 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		local colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
 		local text = 'incompatible'
-		if G.jokers and G.jokers.cards[1].config.center.blueprint_compat then
+		if G.jokers and G.jokers.cards[1] and G.jokers.cards[1].config.center.blueprint_compat then
 			colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
 			text = 'compatible'
 		end
