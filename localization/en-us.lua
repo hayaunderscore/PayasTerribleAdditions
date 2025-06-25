@@ -2161,6 +2161,12 @@ return {
 					"{C:attention}first hand{} of round",
 				}
 			},
+			payasaka_giant = {
+				name = "Giant",
+				text = {
+					"{C:dark_edition}-#1#{} Joker slot",
+				}
+			},
 			payasaka_randomeffects = {
 				name = "Effects:",
 				text = {
@@ -2496,6 +2502,7 @@ return {
 			payasaka_random_seal = "Random Stamp",
 			payasaka_sunset = "Sunset",
 			payasaka_tired = "Tired",
+			payasaka_giant = "Giant",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
 		},

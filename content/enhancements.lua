@@ -216,6 +216,68 @@ SMODS.Sticker {
 }
 
 SMODS.Sticker {
+	key = 'giant',
+	atlas = "JOE_Enhancements",
+	pos = { x = 2, y = 2 },
+	badge_colour = HEX('48d775'),
+	rate = 0,
+	sets = {
+		"Joker"
+	},
+	config = { payasaka_giant_extra = { slot = 1 } },
+	default_compat = true,
+	should_apply = function(self, card, center, area, bypass_reroll)
+		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then
+			if not get_compat(card.config.center, "payasaka_giant") then return false end
+			if G.GAME.modifiers.payasaka_sticker_deck and (area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers) then
+				if pseudorandom('packgiant') < (G.GAME.modifiers.enable_perishables_in_shop and 0.3 or 0.15) and not card.ability.perishable then
+					return true
+				end
+			end
+		end
+		return false
+	end,
+	apply = function (self, card, val)
+		card.ability.payasaka_giant_extra = copy_table(self.config.payasaka_giant_extra)
+		card.ability.payasaka_giant = val
+		if (card.area == G.jokers) or (card.area == G.consumeables) then
+			if card.ability.set == "Joker" and G.jokers then
+				G.jokers.config.card_limit = G.jokers.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot * (val and 1 or -1)
+			elseif card.ability.set ~= "Joker" and G.consumeables then
+				G.consumeables.config.card_limit = G.consumeables.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot * (val and 1 or -1)
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.payasaka_giant_extra and card.ability.payasaka_giant_extra.slot or self.config.payasaka_giant_extra.slot } }
+	end
+}
+
+local emplace_ref = CardArea.emplace
+function CardArea:emplace(card, location, stay_flipped, ...)
+	if card and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
+		if card.ability.set == "Joker" and G.jokers then
+			G.jokers.config.card_limit = G.jokers.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
+		elseif card.ability.set ~= "Joker" and G.consumeables then
+			G.consumeables.config.card_limit = G.consumeables.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
+		end
+	end
+	return emplace_ref(self, card, location, stay_flipped, ...)
+end
+
+local remove_card_ref = CardArea.remove_card
+function CardArea:remove_card(card, discarded_only, ...)
+	if card and (not card.ability.akyrs_sigma) and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
+		if card.ability.set == "Joker" and G.jokers then
+			G.jokers.config.card_limit = G.jokers.config.card_limit + (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
+		elseif card.ability.set ~= "Joker" and G.consumeables then
+			G.consumeables.config.card_limit = G.consumeables.config.card_limit + (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
+		end
+	end
+	return remove_card_ref(self, card, discarded_only, ...)
+end
+
+SMODS.Sticker {
 	key = 'tired',
 	atlas = "JOE_Enhancements",
 	pos = { x = 1, y = 2 },
