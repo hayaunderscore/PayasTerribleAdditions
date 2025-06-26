@@ -1344,6 +1344,11 @@ return {
 				text = {
 					"Max of {X:mult,C:white}X#1#",
 				}
+			},
+			dd_payasaka_dummy = {
+				text = {
+					"???"
+				}
 			}
 		},
 		DOSCard = {
@@ -2308,6 +2313,9 @@ return {
 					"(mostly Jokers)"
 				}
 			}
+		},
+		PTADummy = {
+
 		},
 		PTASet = {
 			ptaset_payasaka_ahead = {
