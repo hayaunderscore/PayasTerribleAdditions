@@ -10,6 +10,12 @@ SMODS.Joker {
 	cost = 8,
 	blueprint_compat = true,
 	demicoloncompat = true,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		local extra = card.ability.extra
 		if (context.payasaka_debuff_individual) or (context.other_joker or context.other_consumeable) then

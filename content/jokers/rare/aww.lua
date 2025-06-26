@@ -6,4 +6,10 @@ SMODS.Joker {
 	cost = 6,
 	blueprint_compat = false,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }

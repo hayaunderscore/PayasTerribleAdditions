@@ -9,6 +9,12 @@ SMODS.Joker {
 	rarity = 3,
 	atlas = "JOE_TOGA",
 	pos = { x = 1, y = 0 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	soul_pos = { x = 0, y = 1, draw = function(card, scale_mod, rotate_mod)
 		---@type Sprite
 		local soul = card.children.floating_sprite

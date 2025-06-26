@@ -49,3 +49,12 @@ CardSleeves.Sleeve {
 		return { key = key, vars = { localize { type = 'name_text', key = voucher, set = "Voucher" } } }
 	end,
 }
+
+CardSleeves.Sleeve {
+	key = 'back',
+	atlas = "JOE_Sleeves",
+	pos = { x = 2, y = 0 },
+	apply = function(self, sleeve)
+		G.GAME.payasaka_sleeve_rate = 0.75
+	end,
+}

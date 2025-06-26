@@ -44,6 +44,12 @@ SMODS.Joker {
 	demicoloncompat = true,
 	config = { extra = { mult = 10, joker_slot = 0.5 } },
 	no_doe = true,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {

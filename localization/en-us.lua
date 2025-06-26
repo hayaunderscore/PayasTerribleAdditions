@@ -76,6 +76,14 @@ return {
 					"{C:attention}respective{} sticker"
 				}
 			},
+			b_payasaka_back = {
+				name = "Deck in a Deck in a Deck",
+				text = {
+					"{C:attention}Decks{} are {C:attention}available",
+					"in the shop",
+					"{C:inactive}Isn't this just Parakmi?"
+				}
+			},
 		},
 		Joker = {
 			j_payasaka_buruakacard = {
@@ -2229,6 +2237,22 @@ return {
 				text = {
 					"Start with an {C:attention,T:v_overstock_plus}#1#",
 					"{E:1,C:legendary}Any{} card can have a {C:attention}sticker",
+				}
+			},
+			sleeve_payasaka_back = {
+				name = "Sleeve in a Sleeve in a Sleeve",
+				text = {
+					"{C:attention}Sleeves{} are {C:attention}available",
+					"in the shop",
+					"{C:inactive}Isn't this just Parakmi?"
+				}
+			},
+			sleeve_payasaka_deck_alt = {
+				name = "Super Probably Sleeve",
+				text = {
+					"{C:attention}Decks{} and {C:attention}Sleeves{} are",
+					"{C:attention}available{} in the shop",
+					"{C:inactive}Get Smooshed!"
 				}
 			},
 		},

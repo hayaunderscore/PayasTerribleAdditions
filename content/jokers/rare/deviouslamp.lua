@@ -9,6 +9,12 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = false,
 	config = { extra = { xvalue = 1.5 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.after and (G.GAME.chips + PTASaka.arrow(G.GAME.payasaka_exponential_count, hand_chips, mult)) >= G.GAME.blind.chips then
 			local juice = context.blueprint_card or card

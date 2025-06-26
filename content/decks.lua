@@ -431,6 +431,16 @@ SMODS.Back {
 	end
 }
 
+SMODS.Back {
+	key = 'back',
+	atlas = "JOE_Decks",
+	pos = { x = 3, y = 2 },
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.payasaka_deck_rate = 0.75
+	end
+}
+
 -- Fix for Bunco
 local create_blind_card = Card.create_blind_card
 function Card:create_blind_card()

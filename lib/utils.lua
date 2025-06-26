@@ -237,7 +237,7 @@ end
 ---@param arrow number Number of arrows. 0 is Multiplication.
 ---@param val1 number Value no. 1
 ---@param val2 number Value no. 2
----@param og_arrow number Original `arrow` during recursive calls.
+---@param og_arrow? number Original `arrow` during recursive calls.
 ---@return number
 function PTASaka.arrow(arrow, val1, val2, og_arrow)
 	-- Small compat with Entropy

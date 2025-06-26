@@ -259,6 +259,7 @@ local old_trigger = Back.trigger_effect
 function Back:trigger_effect(args)
 	local o = { old_trigger(self, args) }
 	if not args then return o and unpack(o) or nil end
+
 	if G.GAME.used_vouchers["b_anaglyph"] and args.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss then
 		G.E_MANAGER:add_event(Event({
 			func = (function()
@@ -320,7 +321,8 @@ function Back:trigger_effect(args)
 
 		delay(0.6)
 	end
-	-- Handle multiple deck calculates
+
+	-- Handle multiple deck calculates for back specific trigger effects
 	-- Code mostly taken from CardSleeves (https://github.com/larswijn/CardSleeves/blob/main/CardSleeves.lua#L1853)
 	if G.GAME.payasaka_used_decks then
 		for back, _ in pairs(G.GAME.payasaka_used_decks) do
@@ -336,33 +338,11 @@ function Back:trigger_effect(args)
 					new_chips, new_mult = obj:trigger_effect(args)
 				end
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
-			end
-			if type(obj.calculate) == "function" and args.context ~= "final_scoring_step" then
-				local context = type(args.context) == "table" and args.context or
-				args                                                       -- bit hacky, though this shouldn't even have to be used?
-				if context.repetition or context.retrigger_joker_check then
-					-- handle this by hooking SMODS.calculate_repetitions or SMODS.calculate_retriggers
-				elseif context.destroy_card or context.modify_scoring_hand then
-					-- handle very specific contexts that cannot be triggered through SMODS.calculate_effect
-					-- TODO lovely patch this instead when lovely patching other mods works on mac (see https://github.com/larswijn/CardSleeves/commit/e2b376d6d914e0bd929e68d865f15935bb1f6040)
-					local effect = obj:calculate(obj, context)
-					if effect then
-						-- janky hack mate
-						if not o[1] then
-							o[1] = effect
-						else
-							local index = o[1]
-							while index.extra do
-								index = index.extra
-							end
-							index.extra = effect
-						end
-					end
-				else
-					local effect = obj:calculate(obj, context)
-					if effect and type(effect) == "table" then
-						SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
-					end
+			elseif type(obj.calculate) == "function" and type(args.context) == "string" then
+				local context = type(args.context) == "table" and args.context or args  -- bit hacky, though this shouldn't even have to be used?
+				local effect = obj:calculate(obj, context)
+				if effect then
+					SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
 				end
 			elseif obj.trigger_effect and type(obj.trigger_effect) == "function" then
 				-- support old deprecated trigger_effect
@@ -384,33 +364,11 @@ function Back:trigger_effect(args)
 					new_chips, new_mult = obj:trigger_effect(args)
 				end
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
-			end
-			if type(obj.calculate) == "function" and args.context ~= "final_scoring_step" then
-				local context = type(args.context) == "table" and args.context or
-				args                                                       -- bit hacky, though this shouldn't even have to be used?
-				if context.repetition or context.retrigger_joker_check then
-					-- handle this by hooking SMODS.calculate_repetitions or SMODS.calculate_retriggers
-				elseif context.destroy_card or context.modify_scoring_hand then
-					-- handle very specific contexts that cannot be triggered through SMODS.calculate_effect
-					-- TODO lovely patch this instead when lovely patching other mods works on mac (see https://github.com/larswijn/CardSleeves/commit/e2b376d6d914e0bd929e68d865f15935bb1f6040)
-					local effect = obj:calculate(obj, context)
-					if effect then
-						-- janky hack mate
-						if not o[1] then
-							o[1] = effect
-						else
-							local index = o[1]
-							while index.extra do
-								index = index.extra
-							end
-							index.extra = effect
-						end
-					end
-				else
-					local effect = obj:calculate(obj, context)
-					if effect and type(effect) == "table" then
-						SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
-					end
+			elseif type(obj.calculate) == "function" and type(args.context) == "string" then
+				local context = type(args.context) == "table" and args.context or args  -- bit hacky, though this shouldn't even have to be used?
+				local effect = obj:calculate(obj, context)
+				if effect then
+					SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
 				end
 			elseif obj.trigger_effect and type(obj.trigger_effect) == "function" then
 				-- support old deprecated trigger_effect
@@ -422,6 +380,49 @@ function Back:trigger_effect(args)
 		return args.chips, args.mult
 	end
 	return unpack(o)
+end
+
+local g_c_a_ref = SMODS.get_card_areas
+function SMODS.get_card_areas(_type, context)
+	local ret = g_c_a_ref(_type, context)
+
+	if _type == "individual" then
+		for back, _ in pairs(G.GAME.payasaka_used_decks or {}) do
+			local fake_back = setmetatable({}, {
+				__index = G.P_CENTERS[back]
+			})
+			function fake_back:calculate(c)
+				G.P_CENTERS[back].center = G.P_CENTERS[back]
+				local fake = {name = G.P_CENTERS[back].name, effect = G.P_CENTERS[back]}
+				return Back.trigger_effect(fake, c)
+			end
+			-- Very annoying.
+			---@diagnostic disable-next-line: missing-fields
+			ret[#ret+1] = {
+				object = fake_back,
+				scored_card = G.deck.cards[1] or G.deck
+			}
+		end
+		for sleeve, _ in pairs(G.GAME.payasaka_used_sleeves or {}) do
+			local center = G.P_CENTERS[sleeve]
+			if center and center.calculate and type(center.calculate) == "function" then
+				local fake_sleeve = setmetatable({}, {
+					__index = center
+				})
+				function fake_sleeve:calculate(c)
+					return center:calculate(center, c)
+				end
+				-- Very annoying.
+				---@diagnostic disable-next-line: missing-fields
+				ret[#ret+1] = {
+					object = fake_sleeve,
+					scored_card = G.deck.cards[1] or G.deck
+				}
+			end
+		end
+	end
+
+	return ret
 end
 
 local dc = discover_card
@@ -438,18 +439,15 @@ function discover_card(card)
 	end
 end
 
--- Make Ahead cards ALWAYS foil
+-- Make Ahead cards ALWAYS foil + other stuff
 local old_create_card = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+	if _type == "Back" or _type == "Sleeve" then
+		forced_key = pseudorandom_element(G.P_CENTER_POOLS[_type], "ptadeckshit_"..key_append).key
+	end
 	local card = old_create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if card and card.config.center.rarity == "payasaka_ahead" and card.config.center.key ~= "j_payasaka_nil" then
 		card:set_edition("e_foil", true, nil)
-	end
-	-- Somehow????
-	if card.config.center.key == "c_payasaka_dummy_centersleeve" and card.ability and not card.ability.set_deck then
-		card.ability.dummy_set = "Back"
-		card.ability.set_deck = G.P_CENTERS.b_red
-		card:set_sprites(G.P_CENTERS[card.ability.set_deck])
 	end
 	return card
 end

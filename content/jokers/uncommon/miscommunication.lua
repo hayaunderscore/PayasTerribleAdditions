@@ -8,6 +8,12 @@ SMODS.Joker {
 	blueprint_compat = false,
 	demicoloncompat = false,
 	config = { extra = { odds = 5 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.setting_blind then
 			if pseudorandom('miscommunication') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds then
