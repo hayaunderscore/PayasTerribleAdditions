@@ -23,7 +23,7 @@ SMODS.Joker {
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
-		if context.payasaka_level_up_after and context.scoring_name ~= "High Card" then
+		if (context.payasaka_level_up_after and context.scoring_name ~= "High Card") or context.forcetrigger then
 			if not context.instant then
 				card_eval_status_text(card, 'extra', nil, nil, nil, { message = "One Piece!" })
 			end

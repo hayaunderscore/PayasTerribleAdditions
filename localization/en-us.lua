@@ -175,7 +175,7 @@ return {
 				}
 			},
 			j_payasaka_phil = {
-				name = "Phil {s:0.5}& Shirt{}",
+				name = "Nostalgic Phil",
 				text = {
 					"{X:red,C:white}X#1#{} Mult",
 					"{C:green}#2# in #3#{} chance of",
@@ -1205,6 +1205,28 @@ return {
 					"{C:green}#1# in #2#{} chance of leveling up",
 					"{C:attention}High Card{} if any other",
 					"poker hand is leveled up"
+				}
+			},
+			j_payasaka_phil2 = {
+				name = "Phil and Shirt",
+				text = {
+					{
+						"Saves up to {C:attention}#1#{}",
+						"selected cards when {C:attention}used",
+					},
+					{
+						"{C:attention}Restores{} saved cards",
+						"when {C:attention}used{} again"
+					}
+				}
+			},
+			j_payasaka_sunglasses = {
+				name = "Sunglasses",
+				text = {
+					"{C:green}#2# in #3#{} chance of",
+					"creating {C:attention}#1#{} when a",
+					"glass card is {C:attention}scored",
+					"{C:inactive}(Must have room)"
 				}
 			}
 		},

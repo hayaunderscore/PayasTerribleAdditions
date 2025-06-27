@@ -443,7 +443,7 @@ end
 local old_create_card = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if _type == "Back" or _type == "Sleeve" then
-		forced_key = pseudorandom_element(G.P_CENTER_POOLS[_type], "ptadeckshit_"..key_append).key
+		forced_key = pseudorandom_element(G.P_CENTER_POOLS[_type], "ptadeckshit_"..(key_append or "")).key
 	end
 	local card = old_create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if card and card.config.center.rarity == "payasaka_ahead" and card.config.center.key ~= "j_payasaka_nil" then

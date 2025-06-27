@@ -215,7 +215,7 @@ create_dummy("vash", { x = 2, y = 5 }, "JOE_Jokers2")
 
 local joker_listing = {
 	-- "Friend" Jokers
-	{ "dd_payasaka_virtue1_dummy", "j_payasaka_suittaker",    "dd_payasaka_haya_dummy",  "dd_payasaka_phil_dummy", "dd_payasaka_vash_dummy" },
+	{ "dd_payasaka_virtue1_dummy", "j_payasaka_suittaker",    "dd_payasaka_haya_dummy",  "j_payasaka_phil2", "dd_payasaka_vash_dummy" },
 	-- Meme Jokers
 	{ "j_payasaka_joyousspring",   "j_payasaka_no_retrigger", "j_payasaka_flintnsteel2", "j_payasaka_tentens",     "j_payasaka_deviouslamp" },
 	-- Ahead (if available)
