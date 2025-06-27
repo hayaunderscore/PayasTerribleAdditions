@@ -838,23 +838,28 @@ local oldluh = level_up_hand
 ---@param instant boolean|nil
 ---@param amount number
 function level_up_hand(card, hand, instant, amount, ...)
+	local ret = {}
 	SMODS.calculate_context({
 		payasaka_level_up_before = true,
 		other_card = card,
 		scoring_name = hand,
 		poker_hand = G
 			.GAME.hands[hand],
-		instant = instant
-	})
-	oldluh(card, hand, instant, amount, ...)
+		instant = instant,
+		level_amount = amount,
+	}, ret)
+	if next(ret) then SMODS.trigger_effects(ret, card) end
+	oldluh(card, hand, instant, amount, ...); ret = {}
 	SMODS.calculate_context({
 		payasaka_level_up_after = true,
 		other_card = card,
 		scoring_name = hand,
 		poker_hand = G
 			.GAME.hands[hand],
-		instant = instant
-	})
+		instant = instant,
+		level_amount = amount,
+	}, ret)
+	if next(ret) then SMODS.trigger_effects(ret, card) end
 end
 
 -- Deep Deck Diver's discard effects

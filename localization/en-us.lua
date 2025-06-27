@@ -1198,6 +1198,14 @@ return {
 					"{C:inactive,s:0.8}(Minimum of 1.)",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
 				}
+			},
+			j_payasaka_onepiece = {
+				name = "Sole Piece",
+				text = {
+					"{C:green}#1# in #2#{} chance of leveling up",
+					"{C:attention}High Card{} if any other",
+					"poker hand is leveled up"
+				}
 			}
 		},
 		Blind = {
