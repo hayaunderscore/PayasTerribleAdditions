@@ -34,6 +34,7 @@ SMODS.Joker {
 						_card.T.r = -0.2
 						_card:juice_up(0.3, 0.4)
 						_card.states.drag.is = true
+						PTASaka.VashDestroy(_card)
 						_card.children.center.pinch.x = true
 						-- This part destroys the card.
 						G.E_MANAGER:add_event(Event({

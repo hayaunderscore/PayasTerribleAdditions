@@ -1299,13 +1299,14 @@ function G.UIDEF.payasaka_joker_use_buttons(card, use_button)
 	return t
 end
 
--- Use soul_linked parameter if applicable
+-- Use soul_linked parameter if applicable + Vash
 local remove_ref = Card.remove
 function Card:remove()
 	if self.soul_linked and not self.ability.akyrs_sigma then
 		self.soul_linked:remove()
 		self.soul_linked = nil
 	end
+	--PTASaka.VashDestroy(self, self.check_vash)
 	return remove_ref(self)
 end
 
@@ -1435,6 +1436,7 @@ function Card:start_dissolve(c, s, t, j)
 		draw_card(G.play, G.consumeables, 1, 'up', true, self, nil, true)
 		return
 	end
+	PTASaka.VashDestroy(self)
 	return old_start_dissolve(self, c, s, t, j)
 end
 

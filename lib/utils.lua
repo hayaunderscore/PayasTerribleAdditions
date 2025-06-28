@@ -63,6 +63,68 @@ function PTASaka.shallow_copy(t)
 	return t2
 end
 
+-- Vash destroy contexts
+---@param card Card
+---@return boolean
+function PTASaka.VashDestroyable(card)
+	-- Sold card, proceed with destruction
+	if G.CONTROLLER.locks.selling_card then return false end
+	-- Food joker
+	if card.config.center.pools and card.config.center.pools["Food"] then return false end
+	-- Food joker not in the Food pool, just in case
+	if card.children.center.pinch.x then return false end
+	-- Otherwise...
+	return card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or (card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT))
+end
+
+-- Check if Vash should destroy a Joker
+---@param card Card
+---@param no_dissolve? boolean
+---@return boolean
+function PTASaka.VashDestroy(card, no_dissolve)
+	local stop_removal = false
+	-- Check for Vash
+	if next(SMODS.find_card('j_payasaka_vash')) and card.config.center_key ~= "j_payasaka_vash" and PTASaka.VashDestroyable(card) and not no_dissolve then
+		local ret = {}
+		SMODS.calculate_context({payasaka_card_removed = true, card = card}, ret); SMODS.trigger_effects(ret)
+		for k, v in ipairs(ret) do
+			for _k, _v in pairs(v) do
+				stop_removal = _v.prevent_remove or stop_removal
+			end
+		end
+		if stop_removal then
+			-- recreate the card at the same exact spot
+			---@type Card
+			local copy = copy_card(card, nil, 1, G.playing_card)
+			copy.sort_id = card.sort_id
+			if card.area then
+				card.area:emplace(copy)
+			end
+			-- Place it in the right spot
+			local pos = 0
+			local copy_pos = 0
+			for i = 1, #card.area.cards do
+				if card.area.cards[i] == card then
+					pos = i
+				end
+				if card.area.cards[i] == copy then
+					copy_pos = i
+				end
+			end
+			table.remove(card.area.cards, copy_pos)
+			for i = 1, #card.area.cards do
+				if card.area.cards[i] == card then
+					pos = i
+				end
+			end
+			table.insert(card.area.cards, pos, copy)
+			copy:juice_up(0.7)
+			--card:remove_from_area()
+		end
+	end
+	return stop_removal
+end
+
 -- Loosely based on https://github.com/balt-dev/Inkbleed/blob/trunk/modules/misprintize.lua
 -- Specifically for non random values
 ---@param val any Value to be modified. Recursive.
