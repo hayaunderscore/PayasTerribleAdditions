@@ -210,14 +210,12 @@ end
 
 create_dummy("virtue1", { x = 6, y = 5 }, "JOE_Jokers")
 create_dummy("haya", { x = 8, y = 5 }, "JOE_Jokers")
-create_dummy("phil", { x = 8, y = 4 }, "JOE_Jokers")
-create_dummy("vash", { x = 2, y = 5 }, "JOE_Jokers2")
 
 local joker_listing = {
 	-- "Friend" Jokers
-	{ "dd_payasaka_virtue1_dummy", "j_payasaka_suittaker",    "dd_payasaka_haya_dummy",  "j_payasaka_phil2", "dd_payasaka_vash_dummy" },
+	{ "j_payasaka_azusa",        "j_payasaka_suittaker",    "dd_payasaka_haya_dummy",  "j_payasaka_phil2",   "j_payasaka_vash" },
 	-- Meme Jokers
-	{ "j_payasaka_joyousspring",   "j_payasaka_no_retrigger", "j_payasaka_flintnsteel2", "j_payasaka_tentens",     "j_payasaka_deviouslamp" },
+	{ "j_payasaka_joyousspring", "j_payasaka_no_retrigger", "j_payasaka_flintnsteel2", "j_payasaka_tentens", "j_payasaka_deviouslamp" },
 	-- Ahead (if available)
 	PTASaka.Mod.config["Ahead"] and
 	{ "j_payasaka_printhead", "j_payasaka_arrowgraph", "j_payasaka_canichat", "j_payasaka_fanhead",
@@ -236,6 +234,17 @@ local joker_listing = {
 		"j_payasaka_irisu" } or nil,
 }
 
+local set_names = {
+	"Friends of Paya",
+	"MMMM... THE MEMES...",
+	PTASaka.Mod.config["Ahead"] and "Full speed ahead!" or nil,
+	"The Archive of Blue",
+	"How hungry?",
+	"Ari Tax Takeover",
+	"Race as a Ring!",
+	PTASaka.Mod.config["Ahead"] and "Exotics but not really" or nil,
+}
+
 -- Modify main page
 PTASaka.Mod.custom_ui = function(mod_nodes)
 	PTASaka.current_mod_page_set = (PTASaka.current_mod_page_set or 0) + 1
@@ -243,6 +252,7 @@ PTASaka.Mod.custom_ui = function(mod_nodes)
 	local len = 0; for _, _ in pairs(joker_listing) do len = len + 1 end
 	if PTASaka.current_mod_page_set > len then PTASaka.current_mod_page_set = 1 end
 	local set = joker_listing[PTASaka.current_mod_page_set] or {}
+	local set_name = set_names[PTASaka.current_mod_page_set] or nil
 	G.pta_main_jokers_list = CardArea(
 		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
 		5.25 * G.CARD_W,
@@ -300,7 +310,7 @@ PTASaka.Mod.custom_ui = function(mod_nodes)
 		n = G.UIT.R,
 		nodes = {
 			{
-				n = G.UIT.R,
+				n = G.UIT.C,
 				config = { align = "cm", padding = 0.5, colour = darken(G.C.BLACK, 0.2), emboss = 0.05, r = 0.1 },
 				nodes = {
 					{
@@ -310,6 +320,32 @@ PTASaka.Mod.custom_ui = function(mod_nodes)
 							{ n = G.UIT.O, config = { object = G.pta_main_jokers_list } },
 						}
 					},
+					{
+						n = G.UIT.R,
+						config = { align = "cm", padding = -0.25 },
+						nodes = {
+							{
+								n = G.UIT.C,
+								nodes = {
+									{
+										n = G.UIT.O,
+										config = {
+											object = DynaText {
+												string = set_name or "???",
+												float = true,
+												pop_in = 1,
+												pop_in_rate = 4,
+												--silent = true,
+												shadow = true,
+												scale = 0.4,
+												colours = { G.C.EDITION }
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			},
 		}
