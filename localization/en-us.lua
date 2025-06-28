@@ -1200,7 +1200,7 @@ return {
 				}
 			},
 			j_payasaka_onepiece = {
-				name = "Sole Piece",
+				name = "Five Star Edward Newgate",
 				text = {
 					"{C:green}#1# in #2#{} chance of leveling up",
 					"{C:attention}High Card{} if any other",
