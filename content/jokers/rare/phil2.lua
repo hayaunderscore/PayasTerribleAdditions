@@ -117,7 +117,13 @@ SMODS.Joker {
 	},
 	config = { saved_cards = {}, extra = { max_selection = 5 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.max_selection } }
+		---@type PseudoCard[]
+		local saved = card.ability.saved_cards
+		local arr = {}
+		for _, v in pairs(saved) do
+			arr[#arr+1] = (SMODS.Ranks[v.value] or {card_key = '?'}).card_key..(SMODS.Suits[v.suit] or {card_key = '?'}).card_key
+		end
+		return { vars = { card.ability.extra.max_selection, next(arr) and table.concat(arr, ", ") or "Inactive!" } }
 	end,
 	pta_custom_use = function(card)
 		return {

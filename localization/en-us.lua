@@ -1216,7 +1216,8 @@ return {
 					},
 					{
 						"{C:attention}Restores{} saved cards",
-						"when {C:attention}used{} again"
+						"when {C:attention}used{} again",
+						"{C:inactive,s:0.8}(#2#)"
 					}
 				}
 			},
