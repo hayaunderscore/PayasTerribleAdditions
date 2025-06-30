@@ -408,7 +408,7 @@ SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypas
 	if (card.ability.set == "Joker" and not get_compat(card.config.center, "rental")) then ret = false end
 	if (card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve) and ((area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers)) then
 		local roll = pseudorandom((area == G.pack_cards and 'packssjr' or 'ssjr')..G.GAME.round_resets.ante)
-		local minimum_target_rate = (G.GAME.payasaka_eternal_target_rate or (G.GAME.modifiers.payasaka_sticker_deck and 0.8 or 1.3))
+		local minimum_target_rate = (G.GAME.modifiers.payasaka_sticker_deck and 0.8 or 1.3)
 		if G.GAME.modifiers.enable_rentals_in_shop then minimum_target_rate = minimum_target_rate - sticker_deck_nerf(0.3, 0.6) end
 		if roll > minimum_target_rate then
 			return ret
