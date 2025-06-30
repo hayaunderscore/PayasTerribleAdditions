@@ -1115,8 +1115,8 @@ return {
 					"Joker during scoring"
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}They said a {C:red,s:0.8}manipulator",
-					"{C:inactive,s:0.8}made an {C:red,s:0.8}impossible move{C:inactive,s:0.8}..."
+					"{C:inactive,s:0.8}They said a {C:red,s:0.8,E:2}manipulator",
+					"{C:inactive,s:0.8}made an {C:red,s:0.8,E:1}impossible move{C:inactive,s:0.8}..."
 				}
 			},
 			j_payasaka_iroyokia = {
