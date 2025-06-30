@@ -3,7 +3,10 @@ PTASaka = {}
 PTASaka.Mod = SMODS.current_mod
 local conf = PTASaka.Mod.config
 
-local nil_sane = function(val, def) if val == nil then val = def end return val end
+local nil_sane = function(val, def)
+	if val == nil then val = def end
+	return val
+end
 
 -- Config values
 conf["Balanced-ish"] = nil_sane(conf["Balanced-ish"], false) -- currently does nothing :P
@@ -71,10 +74,10 @@ if PTASaka.Font then
 		key = "pokemon",
 		path = "pokemon-font.ttf",
 		render_scale = 200,
-		TEXT_HEIGHT_SCALE = 0.9, 
-		TEXT_OFFSET = {x=12,y=-24}, 
+		TEXT_HEIGHT_SCALE = 0.9,
+		TEXT_OFFSET = { x = 12, y = -24 },
 		FONTSCALE = 0.06,
-		squish = 1, 
+		squish = 1,
 		DESCSCALE = 1.25
 	}
 
@@ -82,9 +85,20 @@ if PTASaka.Font then
 		key = "reversed",
 		path = "11x6m.ttf",
 		render_scale = 200,
-		TEXT_HEIGHT_SCALE = 0.83, 
-		TEXT_OFFSET = {x=10,y=0}, 
+		TEXT_HEIGHT_SCALE = 0.83,
+		TEXT_OFFSET = { x = 10, y = 0 },
 		FONTSCALE = 0.1,
+		squish = 1,
+		DESCSCALE = 1
+	}
+
+	SMODS.Font {
+		key = "NotoEmoji",
+		path = "NotoEmoji-Bold.ttf",
+		render_scale = 140,
+		TEXT_HEIGHT_SCALE = 0.65,
+		TEXT_OFFSET = { x = 0, y = 0 },
+		FONTSCALE = 0.12,
 		squish = 1,
 		DESCSCALE = 1
 	}
@@ -165,32 +179,32 @@ assert(SMODS.load_file("content/sleeve.lua"))()
 
 -- Cross mod content: Revo's Vault
 if RevosVault and conf["Cross Mod Content"] then
-assert(SMODS.load_file("content/jokers/printers.lua"))()
+	assert(SMODS.load_file("content/jokers/printers.lua"))()
 end
 
 -- Cross mod content: Cryptid
 if Cryptid and conf["Cross Mod Content"] then
-assert(SMODS.load_file("content/jokers/exotic.lua"))()
+	assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
 
 -- Cross mod content: Ortalab
 if Ortalab and conf["Cross Mod Content"] then
-assert(SMODS.load_file("content/jokers/ortalab.lua"))()
+	assert(SMODS.load_file("content/jokers/ortalab.lua"))()
 end
 
 -- Cross mod content: Finity
 if next(SMODS.find_mod('finity')) and conf["Cross Mod Content"] then
-assert(SMODS.load_file("content/jokers/finity.lua"))()
+	assert(SMODS.load_file("content/jokers/finity.lua"))()
 end
 
 -- Cross mod content: MoreFluff
 if next(SMODS.find_mod('MoreFluff')) and conf["Cross Mod Content"] then
-assert(SMODS.load_file("content/cross-consum/colour.lua"))()
+	assert(SMODS.load_file("content/cross-consum/colour.lua"))()
 end
 
 -- Cross mod content: TOGA's Stuff
 if togabalatro and conf["Cross Mod Content"] then
-assert(SMODS.load_file("content/toga.lua"))()
+	assert(SMODS.load_file("content/toga.lua"))()
 end
 
 -- Pyroxenes

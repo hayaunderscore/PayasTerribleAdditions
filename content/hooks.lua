@@ -1607,7 +1607,7 @@ function localize(args, misc_cat)
 	end
 
 	local loc_target = nil
-	if args.type == 'payasaka_comment' then
+	if args and (type(args) == 'table') and args.type == 'payasaka_comment' then
 		loc_target = G.localization.descriptions[(args.set or args.node.config.center.set)]
 			[args.key or args.node.config.center.key]
 
@@ -1620,7 +1620,7 @@ function localize(args, misc_cat)
 						assembled_string = assembled_string ..
 							(type(subpart) == 'string' and subpart or args.vars[tonumber(subpart[1])] or 'ERROR')
 					end
-					local desc_scale = G.LANG.font.DESCSCALE
+					local desc_scale = (SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)] or G.LANG.font).DESCSCALE
 					if G.F_MOBILE_UI then desc_scale = desc_scale * 1.5 end
 					if args.type == 'name' then
 						final_line[#final_line + 1] = {
@@ -1637,6 +1637,7 @@ function localize(args, misc_cat)
 									shadow = true,
 									y_offset = -0.6,
 									spacing = math.max(0, 0.32 * (17 - #assembled_string)),
+									font = SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)],
 									scale = (0.55 - 0.004 * #assembled_string) *
 										(part.control.s and tonumber(part.control.s) or 1)
 								})
@@ -1660,6 +1661,7 @@ function localize(args, misc_cat)
 									pop_in = _pop_in,
 									bump = _bump,
 									spacing = _spacing,
+									font = SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)],
 									scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale
 								})
 							}
@@ -1689,6 +1691,7 @@ function localize(args, misc_cat)
 								shadow = args.shadow,
 								colour = part.control.V and args.vars.colours[tonumber(part.control.V)] or
 									loc_colour(part.control.C or nil, args.default_col),
+								font = SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)],
 								scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale
 							},
 						}

@@ -748,6 +748,9 @@ return {
 					"Jokers and consumables",
 					"each give {X:mult,C:white}X#1#{} Mult"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}She's playable now atleast"
+				}
 			},
 			j_payasaka_cartridge = {
 				name = 'Cartridge Joker',
@@ -756,6 +759,9 @@ return {
 					"{C:green}#2# in #3#{} chance of {C:attention}debuffing",
 					"itself for an entire round"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}That's right we're gonna cheat"
+				}
 			},
 			j_payasaka_no_retrigger = {
 				name = 'Aww! No Retriggers',
@@ -764,6 +770,9 @@ return {
 					"replaces them with XMult,",
 					"XChips, or money {C:attention}corresponding{}",
 					"to its repetition {C:attention}value{}",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}For Canvas scaling."
 				}
 			},
 			j_payasaka_joker_lua = {
@@ -772,6 +781,10 @@ return {
 					"{X:mult,C:white}X#1#{} Mult for every",
 					"lua file {C:attention}required/loaded",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}How many mods you got",
+					"{C:inactive,s:0.8}loaded bud????"
 				}
 			},
 			j_payasaka_recuperare = {
@@ -782,6 +795,9 @@ return {
 					"then {C:attention}returns{} saved values",
 					"one {C:attention}level{} higher",
 					"{C:inactive}(e.g. +Mult -> XMult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Im recuperaring it"
 				}
 			},
 			j_payasaka_fanhead = {
@@ -790,6 +806,10 @@ return {
 					"Other {C:chips}Chip{} or {C:chips}Ahead{} Jokers",
 					"each give {X:dark_edition,C:white}^(#1#*n)+1{} Chips",
 					"{C:attention}n{} is Ahead count {C:inactive}[#2#]",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}the only zzz reference",
+					"{C:inactive,s:0.8}im ever adding"
 				}
 			},
 			j_payasaka_scrapped = {
@@ -798,6 +818,9 @@ return {
 					"Held cards {C:attention}later",
 					"give {X:chips,C:white}X#1#{} Chips",
 					"when {C:attention}played"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}She still is..."
 				}
 			},
 			j_payasaka_missingno = {
@@ -808,6 +831,10 @@ return {
 					"in the {C:attention}Balatro Discord{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 					"{C:blue,s:0.7}https://discord.gg/balatro{}",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}You should play Finity",
+					"{C:inactive,s:0.8}Not sponsored"
 				}
 			},
 			j_payasaka_bajablast = {
@@ -818,6 +845,9 @@ return {
 					"for every {C:spades}Spade",
 					"or {C:clubs}Club{} card played",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Operation Soda Steal"
+				}
 			},
 			j_payasaka_photobinder = {
 				name = "Photobinder",
@@ -827,7 +857,7 @@ return {
 					"Jokers by {X:attention,C:white}X#1#",
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}Does not affect other Photocopier{}",
+					"{C:inactive,s:0.8}Does not affect other Photobinder{}",
 					"{C:inactive,s:0.8}If it did, that would be silly.{}"
 				}
 			},
@@ -840,7 +870,7 @@ return {
 					"{X:chips,C:white}X#3#{} Chips",
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}:drool:",
+					"{C:inactive,s:0.8}:sob:",
 				}
 			},
 			j_payasaka_smoker = {
@@ -848,6 +878,9 @@ return {
 				text = {
 					"Discarding {C:attention}#1#{} cards",
 					"draws {C:attention}#2#{} more"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Smoke break..."
 				}
 			},
 			j_payasaka_suittaker = {
@@ -858,6 +891,10 @@ return {
 					"debuffed cards each",
 					"give {X:mult,C:white}X#1#{} Mult",
 					"{C:inactive,s:0.8}Suit changes every round"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Debuff synergy?",
+					"{C:inactive,s:0.8}Debuff synergy."
 				}
 			},
 			j_payasaka_catcher = {
@@ -868,6 +905,9 @@ return {
 					"consumable at the",
 					"end of round",
 					"{C:inactive}(Must have room)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}AAAAAAAAAAAAAAAAAAAA"
 				}
 			},
 			j_payasaka_patrick = {
@@ -879,6 +919,10 @@ return {
 					"{C:attention}#2#{} {C:risk}Risk{} card at",
 					"the end of an {C:attention}ante",
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Why she smiling at me",
+					"{C:inactive,s:0.8}like that"
 				}
 			},
 			j_payasaka_jackpot = {
@@ -888,6 +932,9 @@ return {
 					"{C:attention}3s{} and {C:attention}2s{} give {X:attention,C:white}X#1#{}",
 					"their {C:attention}chip value{} as money",
 					"{C:inactive}(Max of {C:money}$#2#{C:inactive})"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Drats! Foiled again"
 				}
 			},
 			j_payasaka_miscommunication = {
@@ -897,6 +944,10 @@ return {
 					"{C:green}#1# in #2#{} chance of",
 					"guaranteeing any {C:attention}probability",
 					"until end of round"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8,f:5}なんか楽しくなってきた",
+					"{C:inactive,s:0.8,f:5}なんか楽しくなっちゃった"
 				}
 			},
 			j_payasaka_lab01 = {
@@ -909,6 +960,10 @@ return {
 					"until end of round",
 					"{C:inactive}[1]: #1#",
 					"{C:inactive}[2]: #2#",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8,f:5}磁力の父はゆーつか ゆーつか",
+					"{C:inactive,s:0.8,f:5}非力の母はミューズか？ミューズか？"
 				}
 			},
 			j_payasaka_droptarget = {
@@ -919,6 +974,10 @@ return {
 					"a {C:green}#2# in #3#{} chance to be",
 					"sent back to the deck",
 					"{C:inactive}(Currently {C:blue}+#4#{C:inactive} Chips)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Boo!",
+					"{C:inactive,s:0.8}Did I scare you?"
 				}
 			},
 			j_payasaka_butcher = {
@@ -931,6 +990,10 @@ return {
 					"are no Food Jokers",
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}The slaughter's on",
+					"{C:inactive,s:0.8}I'd love to see you come undone"
+				}
 			},
 			j_payasaka_diver = {
 				name = "Deep Deck Diver",
@@ -941,6 +1004,9 @@ return {
 					"Cost {C:attention}doubles{} for every",
 					"discard done this way",
 					"{C:inactive}Resets at the end of ante"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Im diving it",
 				}
 			},
 			j_payasaka_livefast = {
@@ -951,6 +1017,9 @@ return {
 					"{C:attention}#2#{} Risk cards",
 					"when selecting a",
 					"boss blind"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Quite a buckshot, ain't it?",
 				}
 			},
 			j_payasaka_freetoplay = {
@@ -964,6 +1033,9 @@ return {
 					"end of round",
 					"{C:inactive,s:0.8}Can spawn Duds in Gacha cards",
 					"{C:inactive}(Currently {X:mult,C:white}X#4#{C:inactive} Mult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Free Jokers! Or so it seems",
 				}
 			},
 			j_payasaka_dud = {
@@ -975,6 +1047,9 @@ return {
 					"{C:mult}+#1#{} Mult",
 					"{C:dark_edition}+#2#{} Joker slot",
 					"{C:inactive,s:0.8,f:5}あなたは不発弾を手に入れた！"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}What a fool.",
 				}
 			},
 			j_payasaka_cast = {
@@ -986,6 +1061,9 @@ return {
 					"{C:inactive}Joker values are kept",
 					"{C:inactive}[1]: #1#",
 					"{C:inactive}[2]: #2#",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}I'm casting it....",
 				}
 			},
 			j_payasaka_4byte = {
@@ -995,6 +1073,10 @@ return {
 					"for each {C:attention}unique{} {C:enhanced}Food{} Joker",
 					"taken in this run",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Pristine restoration",
+					"{C:inactive,s:0.8}We got here"
 				}
 			},
 			j_payasaka_desperado = {
@@ -1002,6 +1084,9 @@ return {
 				text = {
 					"Shop has an {C:attention}additional",
 					"{C:risk}Risk{} Pack for half the price",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}I can't think of a joke",
 				}
 			},
 			j_payasaka_sissel = {
@@ -1009,6 +1094,10 @@ return {
 				text = {
 					"{C:attention}Triggers{} a random scored",
 					"card during scoring"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}ghost trick !?",
+					"{C:inactive,s:0.8}powers of the dead !?"
 				}
 			},
 			j_payasaka_prosopagnosia = {
@@ -1016,6 +1105,9 @@ return {
 				text = {
 					"{C:attention}Aces{} also count as",
 					"{C:attention}all{} face cards"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Yes this mod has quantum ranks",
 				}
 			},
 			j_payasaka_yomiel = {
@@ -1023,6 +1115,10 @@ return {
 				text = {
 					"{C:attention}Triggers{} a random",
 					"Joker during scoring"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}They said a {C:red,s:0.8}manipulator",
+					"{C:inactive,s:0.8}made an {C:red,s:0.8}impossible move{C:inactive,s:0.8}..."
 				}
 			},
 			j_payasaka_iroyokia = {
@@ -1037,6 +1133,10 @@ return {
 						"Mimics {C:dark_edition}Aikoyori{} if",
 						"it is present"
 					}
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Well this is certainly",
+					"{C:inactive,s:0.8}a playbook"
 				}
 			},
 			j_payasaka_documentation = {
@@ -1045,6 +1145,10 @@ return {
 					"{X:mult,C:white}X#1#{} Mult",
 					"Only the first line of",
 					"any description is shown"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}0/10 Documentation",
+					"{C:inactive,s:0.8}come back later"
 				}
 			},
 			j_payasaka_tablecount = {
@@ -1055,6 +1159,8 @@ return {
 					"{C:inactive}#3#{} cards",
 					"{C:inactive,s:0.8}The count value, that is.",
 					"{C:inactive,s:0.8}Values are randomized each round",
+				},
+				payasaka_comment = {
 					"{C:inactive,s:0.8}Figure it out :]",
 				}
 			},
@@ -1062,6 +1168,9 @@ return {
 				name = "Upgraded Joker",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Witty comment? For this?",
 				}
 			},
 			j_payasaka_sweetrock = {
@@ -1071,6 +1180,9 @@ return {
 					"scoring a {C:attention}random{}",
 					"card held in hand",
 					"{C:inactive}THIS... IS ROCK."
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Rock indeed.",
 				}
 			},
 			j_payasaka_EVILgarb = {
@@ -1079,6 +1191,9 @@ return {
 					"On {C:attention}first hand{} of round,",
 					"all listed probabilities are",
 					"{C:red}nullified"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}shes EVIL.....",
 				}
 			},
 			j_payasaka_johnmadden = {
@@ -1090,6 +1205,9 @@ return {
 					"this card gives {C:chips}+#1#{} Chips",
 					"and {C:mult}+#2#{} Mult",
 					"{C:inactive}This uses DECTalk!{}"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Football!",
 				}
 			},
 			j_payasaka_manifold_mayhem = {
@@ -1099,6 +1217,9 @@ return {
 					"on {C:attention}collective{} Small and Big",
 					"Blind score {C:attention}surplus ratio{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#1#{C:inactive} Mult)",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Big ass multiplier",
 				}
 			},
 			j_payasaka_sweet_sleep = {
@@ -1122,6 +1243,10 @@ return {
 					"Levels up the played",
 					"hand by {C:attention}#1#{} for the",
 					"next {C:attention}#2#{} hands",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}YOUR DAYS ARE NUMBERED",
+					"{C:inactive,s:0.8}THEYRE NUMBERED MY FRIEND",
 				}
 			},
 			j_payasaka_jellybeans = {
@@ -1129,6 +1254,9 @@ return {
 				text = {
 					"The next {C:attention}#1#{} played cards",
 					"get a {C:attention}random{} edition",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Limited ..... Edition.....",
 				}
 			},
 			j_payasaka_deviouslamp = {
@@ -1137,6 +1265,9 @@ return {
 					"Scored cards' values are",
 					"{C:attention}multiplied{} by {X:attention,C:white}X#1#{} for the",
 					"{C:attention}winning hand{} of the blind"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Good Game Design",
 				}
 			},
 			j_payasaka_azusa = {
@@ -1149,6 +1280,9 @@ return {
 					"if scored hand {C:attention}contains{}",
 					"a {C:attention}7{}, {C:attention}6{} and {C:attention}5{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}'765' is 'NAMCO' btw",
 				}
 			},
 			j_payasaka_irisu = {
@@ -1161,6 +1295,10 @@ return {
 					"and takes their {C:attention}abilities",
 					"upon setting the blind",
 					"{C:inactive,s:0.8}Eternal effects are applicable..."
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Here comes Irisu",
+					"{C:inactive,s:0.8}with the nailed bat",
 				}
 			},
 			j_payasaka_shinku = {
@@ -1174,6 +1312,9 @@ return {
 						"Copies are {C:attention}destroyed",
 						"at the end of round"
 					}
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Ortalab tomorrow",
 				}
 			},
 			j_payasaka_sheena = {
@@ -1182,6 +1323,9 @@ return {
 					"Held cards forming a {C:attention}Straight{} from",
 					"{C:attention}scored cards{} each give {X:mult,C:white}X#1#{} Mult",
 					"{C:inactive,s:0.8}Played cards must already form a Straight{}"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Vogue reference",
 				}
 			},
 			j_payasaka_toga_warrior = {
@@ -1189,6 +1333,7 @@ return {
 				text = {
 					"{C:chips}+#1#{} Chips"
 				}
+				-- This is intentionally left without a comment.
 			},
 			j_payasaka_toga_soundtracker = {
 				name = "Soundtracker",
@@ -1197,6 +1342,9 @@ return {
 					"hand {C:attention}mult{} as {C:attention}XMult",
 					"{C:inactive,s:0.8}(Minimum of 1.)",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Keep on trackin'",
 				}
 			},
 			j_payasaka_onepiece = {
@@ -1205,6 +1353,10 @@ return {
 					"{C:green}#1# in #2#{} chance of leveling up",
 					"{C:attention}High Card{} if any other",
 					"poker hand is leveled up"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}THE ONE PIECEEEEE",
+					"{C:inactive,s:0.8}THE ONE PIECE IS REALLLL",
 				}
 			},
 			j_payasaka_phil2 = {
@@ -1219,6 +1371,10 @@ return {
 						"when {C:attention}used{} again",
 						"{C:inactive,s:0.8}(#2#)"
 					}
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}when your {X:black,C:white,s:0.8}artist",
+					"{C:inactive,s:0.8}is a geek :laugh:",
 				}
 			},
 			j_payasaka_sunglasses = {
@@ -1228,6 +1384,10 @@ return {
 					"creating {C:attention}#1#{} when a",
 					"glass card is {C:attention}scored",
 					"{C:inactive}(Must have room)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}This doesnt make sense",
+					"{C:inactive,s:0.8}much outside of the pun",
 				}
 			},
 			j_payasaka_vash = {
@@ -1239,6 +1399,9 @@ return {
 					"{C:red,E:1}Prevents card destruction",
 					"{C:inactive,s:0.8}(Except food, selling, consumables and itself)",
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult and {C:chips}+#4#{C:inactive} Chips)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Pseudo eternals....",
 				}
 			},
 			j_payasaka_mixnmingle = {
@@ -1254,6 +1417,10 @@ return {
 						"per card from its original {C:attention}position{}",
 						"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
 					}
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}MIX.",
+					"{C:inactive,s:0.8}MINGLE.",
 				}
 			},
 			j_payasaka_goldship = {
@@ -1262,6 +1429,10 @@ return {
 					"{C:attention}Retriggers{} scored card",
 					"if the card before it",
 					"has a lower {C:attention}rank"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Type 'affirm' to",
+					"{C:inactive,s:0.8}claim 1000 {f:payasaka_NotoEmoji,C:inactive,s:0.8}🥕",
 				}
 			}
 		},
