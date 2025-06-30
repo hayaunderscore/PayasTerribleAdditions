@@ -1237,7 +1237,7 @@ return {
 					"or {C:chips}+#2#{} Chips for every",
 					"Joker or other card {C:red}destroyed",
 					"{C:red,E:1}Prevents card destruction",
-					"{C:inactive,s:0.8}(Except food jokers and selling)",
+					"{C:inactive,s:0.8}(Except food, selling, consumables and itself)",
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult and {C:chips}+#4#{C:inactive} Chips)"
 				}
 			},
