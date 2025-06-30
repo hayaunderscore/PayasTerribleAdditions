@@ -20,9 +20,9 @@ SMODS.Joker {
 	demicoloncompat = true,
 	pta_credit = {
 		art = {
-			credit = "Aikoyori",
-			colour = HEX('65a49e')
-		}
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
 	},
 	calculate = function(self, card, context)
 		if (next(SMODS.find_card("j_payasaka_plana")) and context.individual and context.cardarea == G.play and not context.end_of_round) and not context.blueprint_card then
