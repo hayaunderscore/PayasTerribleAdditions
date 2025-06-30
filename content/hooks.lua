@@ -1315,6 +1315,13 @@ function Card:remove()
 	return remove_ref(self)
 end
 
+local delete_run_ref = Game.delete_run
+function Game:delete_run()
+	G.PAYASAKA_IGNORE_VASH_SENTIMENT = true
+	delete_run_ref(self)
+	G.PAYASAKA_IGNORE_VASH_SENTIMENT = nil
+end
+
 -- Mostly taken from Aikoyori's Letter Wild Cards as a reference
 local cardhighlighthook = Card.highlight
 function Card:highlight(is_higlighted)

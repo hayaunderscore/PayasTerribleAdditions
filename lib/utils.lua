@@ -67,6 +67,8 @@ end
 ---@param card Card
 ---@return boolean
 function PTASaka.VashDestroyable(card)
+	-- No.
+	if G.PAYASAKA_IGNORE_VASH_SENTIMENT then return false end
 	-- Sold card, proceed with destruction
 	if G.CONTROLLER.locks.selling_card then return false end
 	-- Food joker
