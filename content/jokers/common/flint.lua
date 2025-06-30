@@ -41,6 +41,12 @@ SMODS.Joker {
 	cost = 3,
 	blueprint_compat = true,
 	demicoloncompat = true,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if not context.blueprint_card then
 			if context.before then

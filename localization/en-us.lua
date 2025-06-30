@@ -953,11 +953,10 @@ return {
 			j_payasaka_lab01 = {
 				name = "LAB=01",
 				text = {
-					"Mimics {C:attention}2{} random",
-					"{C:blue}Common{} or {C:green}Uncommon",
-					"Jokers upon setting",
-					"a blind, lasts",
-					"until end of round",
+					"Mimics {C:attention}2{} random {C:blue}Common{}",
+					"or {C:green}Uncommon{} Jokers upon",
+					"setting a blind, lasts until",
+					"the end of round",
 					"{C:inactive}[1]: #1#",
 					"{C:inactive}[2]: #2#",
 				},
@@ -1013,10 +1012,9 @@ return {
 				name = "Live Fast",
 				text = {
 					"{C:mult}+#1#{} Mult",
-					"Creates and uses",
-					"{C:attention}#2#{} Risk cards",
-					"when selecting a",
-					"boss blind"
+					"Creates and uses {C:attention}#2#{} {C:risk}Risk",
+					"Cards when {C:attention}selecting",
+					"a boss blind"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Quite a buckshot, ain't it?",

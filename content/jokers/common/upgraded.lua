@@ -10,6 +10,16 @@ SMODS.Joker {
 	cost = 3,
 	blueprint_compat = true,
 	demicoloncompat = true,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {

@@ -12,6 +12,16 @@ SMODS.Joker {
 	cost = 3,
 	blueprint_compat = true,
 	demicoloncompat = true,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.payasaka_pre_setting_blind and G.GAME.blind_on_deck == 'Boss' then
 			G.GAME.risk_cards_risks = G.GAME.risk_cards_risks or {}
