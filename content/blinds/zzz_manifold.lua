@@ -19,7 +19,7 @@ SMODS.Blind {
 		G.GAME.payasaka_old_manifest_chips = G.GAME.blind.chips
 		local mult = math.max(3 * ((G.GAME.payasaka_small_blind_surplus or 2)*(G.GAME.payasaka_big_blind_surplus or 2)), 12)
 		-- Cryptid bros dont get no nerf
-		if mult > 100 and not Cryptid then mult = 100 end
+		if to_big(mult) > to_big(100) and not Cryptid then mult = to_big(100) end
 		mult = math.floor(mult)
 		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*mult*G.GAME.starting_params.ante_scaling
 		self.mult = mult

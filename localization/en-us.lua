@@ -1240,6 +1240,29 @@ return {
 					"{C:inactive,s:0.8}(Except food jokers and selling)",
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult and {C:chips}+#4#{C:inactive} Chips)"
 				}
+			},
+			j_payasaka_mixnmingle = {
+				name = "Mix and Mingle Machine",
+				text = {
+					{
+						"{C:attention}Shuffles{} played cards",
+						"before scoring",
+					},
+					{
+						"This Joker gains {X:mult,C:white}X#1#{} Mult",
+						"times the amount of steps {C:attention}deviated",
+						"per card from its original {C:attention}position{}",
+						"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+					}
+				}
+			},
+			j_payasaka_goldship = {
+				name = "Gold Ship",
+				text = {
+					"{C:attention}Retriggers{} scored card",
+					"if the card before it",
+					"has a lower {C:attention}rank"
+				}
 			}
 		},
 		Blind = {

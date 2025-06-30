@@ -144,14 +144,6 @@ SMODS.Blind {
 					return true end })) 
 				end
 			end
-		
-			--add new debuffs
-			for _, _v in ipairs(G.playing_cards) do
-				G.GAME.blind:debuff_card(_v)
-			end
-			for _, _v in ipairs(G.jokers.cards) do
-				G.GAME.blind:debuff_card(_v, true)
-			end
 		end
 	end,
 	disable = function(self)
