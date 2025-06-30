@@ -1306,7 +1306,12 @@ function Card:remove()
 		self.soul_linked:remove()
 		self.soul_linked = nil
 	end
-	--PTASaka.VashDestroy(self, self.check_vash)
+	if PTASaka.VashDestroy(self) then
+		self.getting_sliced = nil
+		self.shattered = false
+		self.destroyed = false
+		return
+	end
 	return remove_ref(self)
 end
 
@@ -1436,7 +1441,12 @@ function Card:start_dissolve(c, s, t, j)
 		draw_card(G.play, G.consumeables, 1, 'up', true, self, nil, true)
 		return
 	end
-	PTASaka.VashDestroy(self)
+	if PTASaka.VashDestroy(self) then
+		self.getting_sliced = nil
+		self.shattered = false
+		self.destroyed = false
+		return
+	end
 	return old_start_dissolve(self, c, s, t, j)
 end
 
