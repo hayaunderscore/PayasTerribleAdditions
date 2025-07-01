@@ -1,3 +1,5 @@
+SMODS.calculation_keys[#SMODS.calculation_keys+1] = 'prevent_remove'
+
 -- Vash the Stampede
 SMODS.Joker {
 	name = "pta-vash",
@@ -7,7 +9,7 @@ SMODS.Joker {
 	pos = { x = 2, y = 5 },
 	cost = 8,
 	blueprint_compat = true,
-	demicoloncompat = true,
+	demicoloncompat = false,
 	pta_credit = {
 		idea = {
 			credit = 'ariyi',
@@ -23,7 +25,7 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.chip_mod, card.ability.extra.xmult, card.ability.extra.chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.payasaka_card_removed then
+		if (context.payasaka_card_removed or context.payasaka_prevent_destroy_card) and not context.blueprint_card then
 			if context.card then
 				if context.card.ability.set == "Joker" then
 					card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
@@ -34,7 +36,11 @@ SMODS.Joker {
 			return {
 				message = "Prevented!",
 				prevent_remove = true,
-				instant = true,
+				delay = 0.1,
+				message_card = context.payasaka_prevent_destroy_card or context.card or card,
+				card = card,
+				--juice_card = card,
+				remove = false,
 			}
 		end
 		if context.joker_main then

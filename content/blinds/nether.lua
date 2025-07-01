@@ -17,43 +17,25 @@ SMODS.Blind {
 		G.GAME.payasaka_nether_destroycards = false
 	end,
 	calculate = function(self, blind, context)
-		if context.after and G.GAME.payasaka_nether_destroycards then
-			local destroy = {}
-			for _, v in ipairs(G.play.cards) do
-				destroy[#destroy+1] = v
-			end
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					for _, v in ipairs(destroy) do
-						if SMODS.shatters(v) then
-							v:shatter()
-						else
-							v:start_dissolve()
-						end
-					end
-
-					play_sound("payasaka_flint")
-
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							SMODS.calculate_context({
-								remove_playing_cards = true,
-								removed = destroy
+		if G.GAME.payasaka_nether_destroycards then
+			if context.destroy_card and (context.cardarea == G.play or context.cardarea == 'unscored') then
+				return {
+					remove = true,
+					func = function()
+						if not G.GAME.blind.silent then
+							G.E_MANAGER:add_event(Event{
+								func = function()
+									play_sound("payasaka_flint")
+									return true
+								end
 							})
-							return true
-						end,
-					}))
-
-					return true
-				end,
-			}))
-
-			for _, v in ipairs(destroy) do
-				if SMODS.shatters(v) then
-					v.shattered = true
-				else
-					v.destroyed = true
-				end
+						end
+						G.GAME.blind.silent = true
+					end
+				}
+			end
+			if context.after then
+				G.GAME.blind.silent = nil
 			end
 		end
 	end

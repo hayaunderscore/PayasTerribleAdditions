@@ -1308,8 +1308,8 @@ function Card:remove()
 	end
 	if PTASaka.VashDestroy(self) then
 		self.getting_sliced = nil
-		self.shattered = false
-		self.destroyed = false
+		self.shattered = nil
+		self.destroyed = nil
 		return
 	end
 	return remove_ref(self)
@@ -1450,8 +1450,8 @@ function Card:start_dissolve(c, s, t, j)
 	end
 	if PTASaka.VashDestroy(self) then
 		self.getting_sliced = nil
-		self.shattered = false
-		self.destroyed = false
+		self.shattered = nil
+		self.destroyed = nil
 		return
 	end
 	return old_start_dissolve(self, c, s, t, j)
