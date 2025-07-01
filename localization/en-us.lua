@@ -940,9 +940,8 @@ return {
 			j_payasaka_miscommunication = {
 				name = "Miscommunication",
 				text = {
-					"When entering a blind,",
 					"{C:green}#1# in #2#{} chance of",
-					"guaranteeing any {C:attention}probability",
+					"maxing out {C:green,E:1}probabilities",
 					"until end of round"
 				},
 				payasaka_comment = {
