@@ -16,30 +16,10 @@ SMODS.Joker {
 	},
 	calculate = function(self, card, context)
 		if not context.blueprint_card then
-			if context.first_hand_drawn and G.GAME.current_round.hands_played == 0 then
-				for k, prob in pairs(G.GAME.probabilities) do
-					G.GAME.pta_old_prob = G.GAME.pta_old_prob or {}
-					G.GAME.pta_old_prob[k] = (G.GAME.pta_old_prob[k] ~= nil and G.GAME.pta_old_prob[k]) or prob
-					G.GAME.probabilities[k] = 0
-				end
-			end
-			if context.end_of_round or context.after then
-				for k, prob in pairs(G.GAME.probabilities) do
-					if G.GAME.pta_old_prob[k] then
-						G.GAME.probabilities[k] = G.GAME.pta_old_prob[k]
-					end
-					G.GAME.pta_old_prob[k] = nil
-				end
-			end
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		if G.GAME.pta_old_prob and next(G.GAME.pta_old_prob) then
-			for k, prob in pairs(G.GAME.probabilities) do
-				if G.GAME.pta_old_prob[k] then
-					G.GAME.probabilities[k] = G.GAME.pta_old_prob[k]
-				end
-				G.GAME.pta_old_prob[k] = nil
+			if context.fix_probability and G.GAME and G.GAME.current_round and G.GAME.current_round.hands_played == 0 then
+				return {
+					numerator = 0
+				}
 			end
 		end
 	end

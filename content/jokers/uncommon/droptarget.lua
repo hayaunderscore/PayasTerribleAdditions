@@ -26,7 +26,8 @@ SMODS.Joker {
 					card.ability.immutable.random_values[i] = pseudorandom('drop_target')
 				end
 			end
-			if card.ability.immutable.random_values[1] < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds then
+			local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+			if card.ability.immutable.random_values[1] < num / den then
 				local o = context.other_card
 				G.E_MANAGER:add_event(Event{
 					trigger = 'after',
@@ -49,7 +50,7 @@ SMODS.Joker {
 					target = G.deck
 				}
 			end
-			if card.ability.immutable.random_values[3] < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds then
+			if card.ability.immutable.random_values[3] < num / den then
 				G.E_MANAGER:add_event(Event{
 					trigger = 'after',
 					delay = 0.05,
@@ -64,7 +65,7 @@ SMODS.Joker {
 					end
 				})
 			end
-			if card.ability.immutable.random_values[2] < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds then
+			if card.ability.immutable.random_values[2] < num / den then
 				G.E_MANAGER:add_event(Event{
 					trigger = 'after',
 					delay = 0.05,
@@ -96,8 +97,9 @@ SMODS.Joker {
 		spr:set_sprite_pos({ x = self.pos.x + ((card.ability or self.config).immutable or { sprite_state = 0 }).sprite_state, y = self.pos.y })
 	end,
 	loc_vars = function(self, info_queue, card)
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
 		return {
-			vars = { card.ability.extra.chips_add, (G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.chips }
+			vars = { card.ability.extra.chips_add, num, den, card.ability.extra.chips }
 		}
 	end
 }

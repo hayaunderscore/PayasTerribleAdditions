@@ -83,8 +83,9 @@ SMODS.Joker {
 		local arona = G.P_CENTERS.j_payasaka_arona.config
 		--info_queue[#info_queue+1] = { key = "j_payasaka_arona", set = "Joker", specific_vars = { arona.extra.divchips, arona.extra.givechips, arona.extra.incchips } }
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.odds)
 		return {
-			vars = { card.ability.extra.givemult, card.ability.extra.incmult, card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds }
+			vars = { card.ability.extra.givemult, card.ability.extra.incmult, card.ability.cry_rigged and den or num, den }
 		}
 	end,
 	rarity = 3,
@@ -129,7 +130,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.end_of_round and context.main_eval and ((pseudorandom('plana_gift_card') < (G.GAME.probabilities.normal or 1)/card.ability.odds)) then
+		if context.end_of_round and context.main_eval and SMODS.pseudorandom_probability(card, 'plana_gift_card', 1, card.ability.odds) then
 			local _card = SMODS.add_card({ key = pseudorandom_element(G.P_CENTER_POOLS.Spectral,
 				pseudoseed("payasaka_plana")).key })
 			_card:set_edition('e_negative', true)

@@ -16,22 +16,26 @@ SMODS.Joker {
 	},
 	calculate = function(self, card, context)
 		if context.setting_blind then
-			if pseudorandom('miscommunication') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds then
-				G.GAME.payasaka_old_probability = G.GAME.probabilities.normal or 1
-				G.GAME.probabilities.normal = 1e9
+			if SMODS.pseudorandom_probability(card, 'miscom', 1, card.ability.extra.odds) then
+				card.ability.extra.triggered = true
 				return {
 					message = "Woo!"
 				}
 			end
 		end
-		if context.end_of_round and G.GAME.payasaka_old_probability then
-			G.GAME.probabilities.normal = G.GAME.payasaka_old_probability
-			G.GAME.payasaka_old_probability = nil
+		if context.end_of_round and card.ability.extra.triggered then
+			card.ability.extra.triggered = nil
+		end
+		if context.fix_probability and card.ability.extra.triggered then
+			return {
+				numerator = context.denominator or 1e9
+			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
 		return {
-			vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds }
+			vars = { num, den }
 		}
 	end
 }

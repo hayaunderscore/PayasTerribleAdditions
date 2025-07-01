@@ -17,7 +17,7 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.hand and not context.end_of_round and pseudorandom('na-na-na-natsu') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds then
+		if context.individual and context.cardarea == G.hand and not context.end_of_round and SMODS.pseudorandom_probability(card, 'na-na-na-natsu', 1, card.ability.extra.odds) then
 			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, { message = 'Rock!' })
 			local other = context.other_card
 			G.E_MANAGER:add_event(Event{
@@ -52,6 +52,7 @@ SMODS.Joker {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		return { vars = { num, den } }
 	end
 }

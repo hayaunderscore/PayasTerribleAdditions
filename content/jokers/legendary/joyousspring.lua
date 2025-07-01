@@ -58,10 +58,11 @@ SMODS.Joker {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
 		return { 
 			key = JoyousSpring and "j_payasaka_joyousspring_alt" or "j_payasaka_joyousspring",
 			set = "Joker",
-			vars = { card.ability.extra.joyous_mult, card.ability.extra.joyous_amt * card.ability.extra.joyous_mult, G.GAME.probabilities.normal or 1, card.ability.extra.odds, card.ability.extra.base_xmult } 
+			vars = { card.ability.extra.joyous_mult, card.ability.extra.joyous_amt * card.ability.extra.joyous_mult, num, den, card.ability.extra.base_xmult } 
 		}
 	end
 }

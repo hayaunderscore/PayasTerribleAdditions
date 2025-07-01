@@ -6,10 +6,11 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_sun
 		info_queue[#info_queue+1] = G.P_CENTERS.m_glass
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
 		return {
 			vars = {
 				localize { type = 'name_text', set = 'Tarot', key = 'c_sun' },
-				G.GAME.probabilities.normal or 1, card.ability.extra.odds
+				num, den
 			}
 		}
 	end,
@@ -32,7 +33,7 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and context.other_card and not context.other_card.debuff and not context.end_of_round then
 			if SMODS.has_enhancement(context.other_card, "m_glass")
-				and pseudorandom('sung_proc') < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds
+				and SMODS.pseudorandom_probability(card, 'sung_proc', 1, card.ability.extra.odds)
 				and #G.consumeables.cards < G.consumeables.config.card_limit
 			then
 				return {

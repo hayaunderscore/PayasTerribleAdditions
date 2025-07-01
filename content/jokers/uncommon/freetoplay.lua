@@ -20,7 +20,7 @@ SMODS.Joker {
 				x_mult = card.ability.extra.x_mult
 			}
 		end
-		if context.end_of_round and context.main_eval and ((pseudorandom('f2p_model') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds)) then
+		if context.end_of_round and context.main_eval and SMODS.pseudorandom_probability(card, 'f2p_model', 1, card.ability.extra.odds) then
 			local _card = SMODS.add_card({ key = "c_payasaka_gacha" })
 			card:juice_up()
 			_card:juice_up()
@@ -29,7 +29,8 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS.j_payasaka_dud
 		info_queue[#info_queue+1] = G.P_CENTERS.c_payasaka_gacha
-		return { vars = { card.ability.extra.x_gain, (G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.x_mult } }
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		return { vars = { card.ability.extra.x_gain, num, den, card.ability.extra.x_mult } }
 	end
 }
 

@@ -570,7 +570,7 @@ PTASaka.Risk {
 		if context.payasaka_dos_before then
 			for i = 1, #G.play.cards do
 				local card = G.play.cards[i]
-				if pseudorandom('ham_slice') < (G.GAME.probabilities.normal or 1)/risk.ability.extra.chance and card.ability.set == 'Enhanced' then
+				if SMODS.pseudorandom_probability(card, 'ham_slice', 1, risk.ability.extra.chance) and card.ability.set == 'Enhanced' then
 					card.ability.set = 'Default'
 					card.ability.payasaka_old_effect = card.ability.effect
 					card.ability.payasaka_old_ee = card.ability.extra_enhancement
@@ -599,7 +599,8 @@ PTASaka.Risk {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.chance)
+		return { vars = { num, den } }
 	end,
 }
 
@@ -627,13 +628,14 @@ PTASaka.Risk {
 		G.GAME.payasaka_backfire_active = nil
 	end,
 	risk_calculate = function(self, risk, context)
-		if context.press_play and pseudorandom('backfire_shit') < (G.GAME.probabilities.normal or 1)/risk.ability.extra.chance then
+		if context.press_play and SMODS.pseudorandom_probability(risk, 'backfire_shit', 1, risk.ability.extra.chance) then
 			table.sort(G.jokers.cards, function(x, y) return x.sort_id > y.sort_id end)
 			G.jokers:set_ranks()
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.chance } }
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.chance)
+		return { vars = { num, den } }
 	end,
 }
 

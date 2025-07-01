@@ -1186,8 +1186,8 @@ return {
 				name = "EVIL garb,,,",
 				text = {
 					"On {C:attention}first hand{} of round,",
-					"all listed probabilities are",
-					"{C:red}nullified"
+					"all listed probabilities",
+					"are {C:red,E:1}nullified"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}shes EVIL.....",

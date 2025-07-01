@@ -11,11 +11,10 @@ pattern = "mult = mod_mult(mult + amount)"
 position = "before"
 payload = '''
 local marketpliers = SMODS.find_card("j_payasaka_markiplier_punch_gif")
-local prob = G.GAME and G.GAME.probabilities.normal or 1
 if G and G.GAME then
 	for i = 1, #marketpliers do
 		local m = marketpliers[i]
-		if (pseudorandom("payasaka_multiplier_xmult") < prob/m.ability.extra.xmult_odds) or m.ability.cry_rigged then
+		if SMODS.pseudorandom_probability(m, "payasaka_multiplier_xmult", 1, m.ability.extra.xmult_odds) then
 			mult = mod_mult(mult * amount)
 			key = 'xmult'
 			update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
@@ -50,11 +49,10 @@ pattern = "hand_chips = mod_chips(hand_chips + amount)"
 position = "before"
 payload = '''
 local marketpliers = SMODS.find_card("j_payasaka_markiplier_punch_gif")
-local prob = G.GAME and G.GAME.probabilities.normal or 1
 if G and G.GAME then
 	for i = 1, #marketpliers do
 		local m = marketpliers[i]
-		if (pseudorandom("payasaka_multiplier_xchips") < prob/m.ability.extra.xchips_odds) or m.ability.cry_rigged then
+		if SMODS.pseudorandom_probability(m, "payasaka_multiplier_xchips", 1, m.ability.extra.xchips_odds) then
 			hand_chips = mod_chips(hand_chips * amount)
 			key = 'xchips'
 			update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})

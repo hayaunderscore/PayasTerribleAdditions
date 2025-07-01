@@ -19,8 +19,9 @@ SMODS.Joker {
 	},
 	loc_vars = function(self, info_queue, card)
 		local str = localize('k_payasaka_' .. (card.ability.extra.exponential_cnt > 0 and "active" or "inactive"))
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.odds)
 		return {
-			vars = { card.ability.cry_rigged and card.ability.odds or (G.GAME.probabilities.normal or 1), card.ability.odds },
+			vars = { card.ability.cry_rigged and den or num, den },
 			main_end = {
 				(G.GAME and card.area and (card.area == G.jokers)) and {
 					n = G.UIT.C,
@@ -39,7 +40,7 @@ SMODS.Joker {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.setting_blind and ((pseudorandom('paya_hell') < (G.GAME.probabilities.normal or 1) / card.ability.odds) or card.ability.cry_rigged) then
+		if context.setting_blind and SMODS.pseudorandom_probability(card, 'payasaka', 1, card.ability.odds) then
 			card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt + 1
 			G.E_MANAGER:add_event(Event {
 				func = function()

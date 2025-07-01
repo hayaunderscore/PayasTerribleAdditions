@@ -20,10 +20,11 @@ SMODS.Joker {
 	},
 	config = { extra = { odds = 2 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds } }
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		return { vars = { num, den } }
 	end,
 	calculate = function(self, card, context)
-		if (context.payasaka_level_up_after and context.scoring_name ~= "High Card") or context.forcetrigger then
+		if (context.payasaka_level_up_after and context.scoring_name ~= "High Card" and SMODS.pseudorandom_probability(card, 'ONEPIECE', 1, card.ability.extra.odds)) or context.forcetrigger then
 			if not context.instant then
 				card_eval_status_text(card, 'extra', nil, nil, nil, { message = "One Piece!" })
 			end

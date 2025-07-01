@@ -15,7 +15,7 @@ SMODS.Joker {
 	config = {odds = 4, x_chips = 1, x_chips_add = 0.5},
 	calculate = function(self, card, context)
 		if (context.end_of_round and context.main_eval and not (context.game_over)) or context.forcetrigger then
-			if pseudorandom('payasaka_envelope') < (G.GAME.probabilities.normal or 1)/card.ability.odds then
+			if SMODS.pseudorandom_probability(card, '2starpull', 1, card.ability.odds) then
 				G.E_MANAGER:add_event(Event{
 					func = function()
 						-- Create a completely random consumable
@@ -45,10 +45,11 @@ SMODS.Joker {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.odds)
 		return {
 			vars = {
-				card.ability.cry_rigged and card.ability.odds or G.GAME.probabilities.normal or 1,
-				card.ability.odds,
+				card.ability.cry_rigged and den or num,
+				den,
 				card.ability.x_chips_add,
 				card.ability.x_chips
 			}

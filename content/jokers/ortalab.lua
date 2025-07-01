@@ -245,12 +245,13 @@ SMODS.Joker {
 	pools = {["Joker"] = true, ["Meme"] = true},
 	dependencies = dep,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds, card.ability.extra.x_chips } }
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		return { vars = { num, den, card.ability.extra.x_chips } }
 	end,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.hand and not context.end_of_round then
 			local _c = context.other_card
-			if _c and _c:is_suit('Clubs') and pseudorandom('payasaka_clubcleaver') < (G.GAME.probabilities.normal or 1)/card.ability.extra.odds then
+			if _c and _c:is_suit('Clubs') and SMODS.pseudorandom_probability(card, 'club_cleaver', 1, card.ability.extra.odds) then
 				return {
 					x_chips = card.ability.extra.x_chips
 				}
@@ -291,7 +292,7 @@ SMODS.Joker {
 			}
 		end
 		if (not context.blueprint_card) and finity_exists and context.end_of_round and context.main_eval and #G.jokers.cards < G.jokers.config.card_limit then
-			if (pseudorandom('finity_funny') < (G.GAME.probabilities.normal or 1)/extra.finity_odds) or card.ability.cry_rigged then
+			if SMODS.pseudorandom_probability(card, 'finity_funny', 1, card.ability.extra.finity_odds) then
 				G.E_MANAGER:add_event(Event{
 					func = function()
 						-- create a random finity joker
@@ -321,7 +322,8 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		local extra = card.ability.extra
 		local dd = PTASaka.DescriptionDummies["dd_payasaka_missingno_finity"]
-		dd.vars = { card.ability.cry_rigged and extra.finity_odds or (G.GAME.probabilities.normal or 1), extra.finity_odds }
+		local num, den = SMODS.get_probability_vars(card, 1, extra.finity_odds)
+		dd.vars = { card.ability.cry_rigged and den or num, den }
 		info_queue[#info_queue+1] = dd
 		return {
 			vars = { extra.finity_mult, extra.finity_count }

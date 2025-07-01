@@ -373,26 +373,26 @@ SMODS.Seal {
 		if context.main_scoring and context.cardarea == G.play then
 			--print("please")
 			return {
-				x_mult = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.x_mult or nil,
+				x_mult = SMODS.pseudorandom_probability(card, 'payasaka_random', 1, odds) and s.x_mult or nil,
 				xmult_message = {
 					message = localize { type = "variable", key = "a_xmult", vars = { s.x_mult } },
 					colour =
 						G.C.MULT,
 					sound = "multhit2"
 				} or nil,
-				x_chips = pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds and s.x_chips or nil,
+				x_chips = SMODS.pseudorandom_probability(card, 'payasaka_random', 1, odds) and s.x_chips or nil,
 				xchips_message = {
 					message = localize { type = "variable", key = "a_xchips", vars = { s.x_chips } },
 					colour =
 						G.C.CHIPS,
 					sound = "xchips"
 				} or nil,
-				e_mult = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and s
+				e_mult = (Talisman and SMODS.pseudorandom_probability(card, 'payasaka_random', 1, odds)) and s
 				.e_mult or nil,
 				emult_message = Talisman and
 					{ message = ("^%d Mult"):format(s.e_mult), colour = G.C.DARK_EDITION, sound = "talisman_emult" } or
 					nil,
-				e_chips = (Talisman and pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds) and
+				e_chips = (Talisman and SMODS.pseudorandom_probability(card, 'payasaka_random', 1, odds)) and
 				s.e_chips or nil,
 				echip_message = Talisman and
 					{ message = ("^%d Chips"):format(s.e_chips), colour = G.C.DARK_EDITION, sound = "talisman_echip" } or
@@ -402,19 +402,18 @@ SMODS.Seal {
 	end,
 	loc_vars = function(self, info_queue, card)
 		local s = card.ability.seal
-		local odds = card.ability.cry_rigged and 0.9 or s.extra.odds
+		local num, odds = SMODS.get_probability_vars(card, 1, s.extra.odds)
 		info_queue[#info_queue + 1] = {
 			key = Talisman and "payasaka_randomeffects_talisman" or "payasaka_randomeffects",
 			set =
 			"Other",
 			vars = { s.dollars, s.x_chips, s.x_mult, s.e_chips, s.e_mult }
 		}
-		return { vars = { G.GAME.probabilities.normal, odds } }
+		return { vars = { num, odds } }
 	end,
 	get_p_dollars = function(self, card)
 		local s = card.ability.seal
-		local odds = card.ability.cry_rigged and 0.9 or s.extra.odds
-		if pseudorandom("payasaka_random") < G.GAME.probabilities.normal / odds then
+		if SMODS.pseudorandom_probability(card, 'payasaka_random', 1, s.extra.odds) then
 			return s.dollars
 		end
 		return 0

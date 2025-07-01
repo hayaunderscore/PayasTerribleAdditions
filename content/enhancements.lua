@@ -7,7 +7,7 @@ SMODS.Enhancement {
 	always_scores = true,
 	calculate = function(self, card, context)
 		if context.final_scoring_step and context.cardarea == G.play then
-			if pseudorandom("payasaka_damp_card") < (G.GAME.probabilities.normal or 1) / card.ability.odds and not next(SMODS.find_card('j_payasaka_rainy')) then
+			if SMODS.pseudorandom_probability(card, "payasaka_damp_card", 1, card.ability.odds) and not next(SMODS.find_card('j_payasaka_rainy')) then
 				G.E_MANAGER:add_event(Event {
 					delay = 0.2,
 					func = function()
@@ -22,8 +22,9 @@ SMODS.Enhancement {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_payasaka_wet
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.odds)
 		return {
-			vars = { card.ability.x_chips, card.ability.x_mult, (G.GAME.probabilities.normal or 1), card.ability.odds }
+			vars = { card.ability.x_chips, card.ability.x_mult, num, den }
 		}
 	end
 }
@@ -168,7 +169,7 @@ SMODS.Sticker {
 	config = { payasaka_sunset_extra = { odds = 4 } },
 	calculate = function(self, card, context)
 		if G.GAME.current_round.hands_played > 1 and context.end_of_round and context.main_eval then
-			if pseudorandom('sunset_die') < (G.GAME.probabilities.normal or 1) / (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds then
+			if SMODS.pseudorandom_probability(card, 'sunset_die', 1, (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds) then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('tarot1')
@@ -200,7 +201,8 @@ SMODS.Sticker {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { (G.GAME.probabilities.normal or 1), (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds } }
+		local num, den = SMODS.get_probability_vars(card, 1, (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds)
+		return { vars = { num, den } }
 	end,
 	should_apply = function(self, card, center, area, bypass_reroll)
 		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then

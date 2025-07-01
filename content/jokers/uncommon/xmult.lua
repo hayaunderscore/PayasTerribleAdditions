@@ -33,8 +33,9 @@ SMODS.Joker {
 	config = { extra = { xmult_odds = 4, xchips_odds = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local r = card.ability.cry_rigged
-		local oddmult = G.GAME.probabilities.normal or 1
-		return { vars = { r and card.ability.extra.xmult_odds or oddmult, card.ability.extra.xmult_odds, r and card.ability.extra.xchips_odds or oddmult, card.ability.extra.xchips_odds } }
+		local m_num, m_den = SMODS.get_probability_vars(card, 1, card.ability.extra.xmult_odds)
+		local c_num, c_den = SMODS.get_probability_vars(card, 1, card.ability.extra.xchips_odds)
+		return { vars = { r and m_den or m_num, m_den, r and c_den or c_num, c_den } }
 	end,
 	rarity = 2,
 	atlas = "JOE_Jokers",

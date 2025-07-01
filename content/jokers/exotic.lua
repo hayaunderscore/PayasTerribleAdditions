@@ -16,7 +16,8 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = { key = "payasaka_doodlekosmos_evolution", set = "Other" }
 		local prefix = ((card.ability.immutable.level > 5 and ('{' .. card.ability.immutable.level .. '}') or string.rep('^', card.ability.immutable.level))).."%s"
-		return { vars = { prefix:format(number_format(card.ability.extra.ee_mult)), prefix:format(number_format(card.ability.extra.ee_mult_add)), card.ability.cry_rigged and card.ability.extra.odds or (G.GAME.probabilities.normal or 1), card.ability.extra.odds },
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		return { vars = { prefix:format(number_format(card.ability.extra.ee_mult)), prefix:format(number_format(card.ability.extra.ee_mult_add)), card.ability.cry_rigged and den or num, den },
 		key = "j_payasaka_doodlekosmos"..(card.ability.immutable.level > 2 and "_alt" or "") }
 	end,
 	blueprint_compat = true,
@@ -52,8 +53,7 @@ SMODS.Joker {
 			}
 		end
 		if context.end_of_round and context.main_eval then
-			local rng = pseudorandom("payasaka_doodlekosmos")
-			if rng < (G.GAME.probabilities.normal or 1) / card.ability.extra.odds or card.ability.cry_rigged then
+			if SMODS.pseudorandom_probability(card, 'mfkaa', 1, card.ability.extra.odds) or card.ability.cry_rigged then
 				G.E_MANAGER:add_event(Event{
 					trigger = 'before',
 					delay = 0.8125,

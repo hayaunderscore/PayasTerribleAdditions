@@ -33,7 +33,7 @@ SMODS.Edition {
 		end
 		if context.end_of_round and not context.game_over then
 			local thunk = card.ability.scored
-			if thunk and pseudorandom('payasaka_jpeg') < ((G.GAME.probabilities.normal or 1) / card.edition.extra.odds) then
+			if thunk and SMODS.pseudorandom_probability(card, 'payasaka_jpeg', 1, card.edition.extra.odds) then
 				local coin = pseudorandom('payasaka_jpeg') >= 0.5
 				if coin or card:get_id() > 1 then
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Editioned!" })
@@ -50,9 +50,10 @@ SMODS.Edition {
 	end,
 	loc_vars = function(self, info_queue, card)
 		local conf = card and card.edition and card.edition or self.config or { extra = {} }
+		local num, den = SMODS.get_probability_vars(card, 1, conf.extra.odds)
 		return {
 			vars = {
-				conf.extra.x_chips, conf.extra.x_mult, G.GAME.probabilities.normal or 1, conf.extra.odds
+				conf.extra.x_chips, conf.extra.x_mult, num, den
 			}
 		}
 	end
