@@ -149,6 +149,8 @@ if conf["Ahead"] then
 	-- daehA
 	PTASaka.RequireFolder("content/jokers/daeha/")
 end
+-- Thunderstruck
+PTASaka.RequireFolder("content/jokers/hidden/")
 
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/tarots.lua"))()

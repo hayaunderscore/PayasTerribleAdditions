@@ -12,6 +12,13 @@ SMODS.Gradient {
 	interpolation = 'linear'
 }
 
+SMODS.Rarity {
+	key = "thunderstruck",
+	badge_colour = HEX('344245'),
+	pools = { ["Joker"] = true },
+	default_weight = 0,
+}
+
 -- Exotic but also not exotic but also exotic :grin:
 SMODS.Rarity {
 	key = "daeha",

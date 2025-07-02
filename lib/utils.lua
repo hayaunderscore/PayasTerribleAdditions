@@ -1117,9 +1117,15 @@ function PTASaka.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Luchador" then
-			if G.GAME.blind and ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == "Boss")) then
-				G.GAME.blind:disable()
-			end
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					if G.GAME.blind and ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == "Boss")) then
+						G.GAME.blind:disable()
+					end
+					return true
+				end
+			})
+			card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('ph_boss_disabled') })
 		end
 		if card.ability.name == "Photograph" then
 			results = { jokers = { Xmult_mod = card.ability.extra, card = card } }
@@ -1434,9 +1440,15 @@ function PTASaka.forcetrigger(card, context)
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "Chicot" then
-			if G.GAME.blind and G.GAME.blind:get_type() == "Boss" then
-				G.GAME.blind:disable()
-			end
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					if G.GAME.blind and G.GAME.blind.boss then
+						G.GAME.blind:disable()
+					end
+					return true
+				end
+			})
+			card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('ph_boss_disabled') })
 		end
 		if card.ability.name == "Perkeo" then
 			local eligibleJokers = {}

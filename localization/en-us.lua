@@ -1431,7 +1431,17 @@ return {
 					"{C:inactive,s:0.8}Type 'affirm' to",
 					"{C:inactive,s:0.8}claim 1000 {f:payasaka_NotoEmoji,C:inactive,s:0.8}🥕",
 				}
-			}
+			},
+			j_payasaka_chicot = {
+				name = "Chicot",
+				text = {
+					"{C:attention}Retrigger{} each card",
+					"based on the {C:attention}amount{} of",
+					"{C:risk}Risk{} cards currently {C:attention}active",
+					"{C:inactive}(Currently {C:attention}#1#.{C:inactive})"
+				},
+				-- These guys don't have comments
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {
@@ -2727,6 +2737,7 @@ return {
 			k_payasaka_comment = "Paya's comment:",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
+			k_payasaka_thunderstruck = "Thunderstruck",
 			k_payasaka_dud = "Dud",
 			k_payasaka_pyroxene_bonus = "Pyroxene drop",
 			b_payasaka_dos_switch = "SWITCH",
@@ -2770,6 +2781,7 @@ return {
 			payasaka_giant = "Giant",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
+			k_payasaka_thunderstruck = "Thunderstruck",
 		},
 		challenge_names = {
 			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place",
