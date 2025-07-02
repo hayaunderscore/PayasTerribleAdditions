@@ -397,3 +397,49 @@ if next(SMODS.find_card('j_payasaka_vash')) then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''-- TARGET: main scoring on played cards'''
+position = 'after'
+payload = '''
+if not Talisman then
+	local e_chips = card:get_pta_e_chips()
+	if e_chips > 0 then
+		ret.playing_card.e_chips = e_chips
+	end
+
+	local e_mult = card:get_pta_e_mult()
+	if e_mult > 0 then
+		ret.playing_card.e_mult = e_mult
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''bonus_chips = bonus_chips ~= 0 and bonus_chips or nil,'''
+position = 'after'
+payload = '''
+bonus_e_chips = (self.ability.perma_e_chips ~= 0 and self.ability.perma_e_chips ~= nil) and (self.ability.perma_e_chips + 1) or nil,
+bonus_e_mult = (self.ability.perma_e_mult ~= 0 and self.ability.perma_e_mult ~= nil) and (self.ability.perma_e_mult + 1) or nil,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''if specific_vars and specific_vars.bonus_p_dollars then'''
+position = 'before'
+payload = '''
+if specific_vars and specific_vars.bonus_e_chips then
+	localize{type = 'other', key = 'card_extra_e_chips', nodes = desc_nodes, vars = {specific_vars.bonus_e_chips}}
+end
+if specific_vars and specific_vars.bonus_e_mult then
+	localize{type = 'other', key = 'card_extra_e_mult', nodes = desc_nodes, vars = {specific_vars.bonus_e_mult}}
+end
+'''
+match_indent = true

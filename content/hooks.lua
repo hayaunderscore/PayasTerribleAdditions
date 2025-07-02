@@ -339,7 +339,8 @@ function Back:trigger_effect(args)
 				end
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
 			elseif type(obj.calculate) == "function" and type(args.context) == "string" then
-				local context = type(args.context) == "table" and args.context or args  -- bit hacky, though this shouldn't even have to be used?
+				local context = type(args.context) == "table" and args.context or
+				args                                                       -- bit hacky, though this shouldn't even have to be used?
 				local effect = obj:calculate(obj, context)
 				if effect then
 					SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
@@ -365,7 +366,8 @@ function Back:trigger_effect(args)
 				end
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
 			elseif type(obj.calculate) == "function" and type(args.context) == "string" then
-				local context = type(args.context) == "table" and args.context or args  -- bit hacky, though this shouldn't even have to be used?
+				local context = type(args.context) == "table" and args.context or
+				args                                                       -- bit hacky, though this shouldn't even have to be used?
 				local effect = obj:calculate(obj, context)
 				if effect then
 					SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
@@ -393,12 +395,13 @@ function SMODS.get_card_areas(_type, context)
 			})
 			function fake_back:calculate(c)
 				G.P_CENTERS[back].center = G.P_CENTERS[back]
-				local fake = {name = G.P_CENTERS[back].name, effect = G.P_CENTERS[back]}
+				local fake = { name = G.P_CENTERS[back].name, effect = G.P_CENTERS[back] }
 				return Back.trigger_effect(fake, c)
 			end
+
 			-- Very annoying.
 			---@diagnostic disable-next-line: missing-fields
-			ret[#ret+1] = {
+			ret[#ret + 1] = {
 				object = fake_back,
 				scored_card = G.deck.cards[1] or G.deck
 			}
@@ -412,9 +415,10 @@ function SMODS.get_card_areas(_type, context)
 				function fake_sleeve:calculate(c)
 					return center:calculate(center, c)
 				end
+
 				-- Very annoying.
 				---@diagnostic disable-next-line: missing-fields
-				ret[#ret+1] = {
+				ret[#ret + 1] = {
 					object = fake_sleeve,
 					scored_card = G.deck.cards[1] or G.deck
 				}
@@ -443,7 +447,7 @@ end
 local old_create_card = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if _type == "Back" or _type == "Sleeve" then
-		forced_key = pseudorandom_element(G.P_CENTER_POOLS[_type], "ptadeckshit_"..(key_append or "")).key
+		forced_key = pseudorandom_element(G.P_CENTER_POOLS[_type], "ptadeckshit_" .. (key_append or "")).key
 	end
 	local card = old_create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if card and card.config.center.rarity == "payasaka_ahead" and card.config.center.key ~= "j_payasaka_nil" then
@@ -681,6 +685,9 @@ table.insert(SMODS.calculation_keys, 1, "pfchips")
 table.insert(SMODS.calculation_keys, 1, "pf_mult")
 table.insert(SMODS.calculation_keys, 1, "pfmult")
 table.insert(SMODS.calculation_keys, 1, "pf_chips_mult")
+-- exponential stuff for paya
+SMODS.calculation_keys[#SMODS.calculation_keys+1] = "e_chips"
+SMODS.calculation_keys[#SMODS.calculation_keys+1] = "e_mult"
 
 local calculate_individual_effect_hook = SMODS.calculate_individual_effect
 function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
@@ -709,6 +716,54 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			ease_dollars(amount)
 			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus,
 				'dollars', amount, percent)
+		end
+		return true
+	end
+
+	if (key == 'e_chips') and amount ~= 1 and not Talisman then
+		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+		hand_chips = mod_chips(hand_chips ^ amount)
+		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+		if not effect.remove_default_message then
+			if from_edition then
+				card_eval_status_text(scored_card, 'jokers', nil, percent, nil,
+					{ message = ('^%s Chips'):format(number_format(amount)), colour = G.C.DARK_EDITION, edition = true })
+			else
+				if effect.echip_message then
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil, effect.echip_message)
+				else
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil,
+						{ message = ('^%s Chips'):format(number_format(amount)), sound = "payasaka_echips", colour = G.C.DARK_EDITION })
+				end
+			end
+		end
+		return true
+	end
+
+	if (key == 'e_mult') and amount ~= 1 and not Talisman then
+		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+		mult = mod_mult(mult ^ amount)
+		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+		if not effect.remove_default_message then
+			if from_edition then
+				card_eval_status_text(scored_card, 'jokers', nil, percent, nil,
+					{ message = ('^%s Mult'):format(number_format(amount)), colour = G.C.DARK_EDITION, edition = true })
+			else
+				if effect.emult_message then
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil, effect.emult_message)
+				else
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil,
+						{ message = ('^%s Mult'):format(number_format(amount)), sound = "payasaka_emult", colour = G.C.DARK_EDITION })
+				end
+			end
 		end
 		return true
 	end
@@ -1475,7 +1530,8 @@ end
 
 local oldcb = Card.get_chip_bonus
 function Card:get_chip_bonus()
-	if self.ability.payasaka_stunted then return (self.base.nominal + (self.ability.perma_bonus or 0)) / (G.GAME.payasaka_shrink_active and 2 or 1) end
+	if self.ability.payasaka_stunted then return (self.base.nominal + (self.ability.perma_bonus or 0)) /
+		(G.GAME.payasaka_shrink_active and 2 or 1) end
 	return (oldcb(self) or 0) / (G.GAME.payasaka_shrink_active and 2 or 1)
 end
 
@@ -1620,7 +1676,8 @@ function localize(args, misc_cat)
 						assembled_string = assembled_string ..
 							(type(subpart) == 'string' and subpart or args.vars[tonumber(subpart[1])] or 'ERROR')
 					end
-					local desc_scale = (SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)] or G.LANG.font).DESCSCALE
+					local desc_scale = (SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)] or G.LANG.font)
+					.DESCSCALE
 					if G.F_MOBILE_UI then desc_scale = desc_scale * 1.5 end
 					if args.type == 'name' then
 						final_line[#final_line + 1] = {

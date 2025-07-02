@@ -208,12 +208,9 @@ local function create_dummy(name, pos, atlas)
 	}
 end
 
-create_dummy("virtue1", { x = 6, y = 5 }, "JOE_Jokers")
-create_dummy("haya", { x = 8, y = 5 }, "JOE_Jokers")
-
 local joker_listing = {
 	-- "Friend" Jokers
-	{ "j_payasaka_azusa",        "j_payasaka_suittaker",    "dd_payasaka_haya_dummy",  "j_payasaka_phil2",   "j_payasaka_vash" },
+	{ "j_payasaka_azusa",        "j_payasaka_suittaker",    "j_payasaka_paya_friend",  "j_payasaka_phil2",   "j_payasaka_vash" },
 	-- Meme Jokers
 	{ "j_payasaka_joyousspring", "j_payasaka_no_retrigger", "j_payasaka_flintnsteel2", "j_payasaka_tentens", "j_payasaka_deviouslamp" },
 	-- Ahead (if available)

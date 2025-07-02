@@ -1167,7 +1167,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult"
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}Witty comment? For this?",
+					"{C:inactive,s:0.8}We have the technology.",
 				}
 			},
 			j_payasaka_sweetrock = {
@@ -1242,8 +1242,7 @@ return {
 					"next {C:attention}#2#{} hands",
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}YOUR DAYS ARE NUMBERED",
-					"{C:inactive,s:0.8}THEYRE NUMBERED MY FRIEND",
+					"{C:inactive,s:0.8}My favorite treat",
 				}
 			},
 			j_payasaka_jellybeans = {
@@ -1322,7 +1321,7 @@ return {
 					"{C:inactive,s:0.8}Played cards must already form a Straight{}"
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}Vogue reference",
+					"{C:inactive,s:0.8}Hopefully they don't sue {C:inactive,s:0.8,f:payasaka_NotoEmoji}🙏",
 				}
 			},
 			j_payasaka_toga_warrior = {
@@ -1352,8 +1351,8 @@ return {
 					"poker hand is leveled up"
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}THE ONE PIECEEEEE",
-					"{C:inactive,s:0.8}THE ONE PIECE IS REALLLL",
+					"{C:inactive,s:0.8}Did you only have",
+					"{C:inactive,s:0.8}an Edward Newgate?",
 				}
 			},
 			j_payasaka_phil2 = {
@@ -1385,6 +1384,7 @@ return {
 				payasaka_comment = {
 					"{C:inactive,s:0.8}This doesnt make sense",
 					"{C:inactive,s:0.8}much outside of the pun",
+					"{C:inactive,s:0.8}But that winning smile...!",
 				}
 			},
 			j_payasaka_vash = {
@@ -1398,7 +1398,7 @@ return {
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult and {C:chips}+#4#{C:inactive} Chips)"
 				},
 				payasaka_comment = {
-					"{C:inactive,s:0.8}Pseudo eternals....",
+					"{C:inactive,s:0.8}LOVE AND PEACE!",
 				}
 			},
 			j_payasaka_mixnmingle = {
@@ -1430,6 +1430,23 @@ return {
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Type 'affirm' to",
 					"{C:inactive,s:0.8}claim 1000 {f:payasaka_NotoEmoji,C:inactive,s:0.8}🥕",
+				}
+			},
+			j_payasaka_flushtuah = {
+				name = "Flush Tuah",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult if played",
+					"hand contains a {C:attention}Pair{}",
+					"with {C:attention}matching{} suits"
+				}
+			},
+			j_payasaka_paya_friend = {
+				name = "Paya",
+				text = {
+					"Every played {C:attention}card{}",
+                    "permanently gains",
+                    "{C:attention}any{} of the values",
+					"listed when scored"
 				}
 			},
 			j_payasaka_chicot = {
@@ -1600,6 +1617,14 @@ return {
 				name = "No Cryptid?",
 				text = {
 					"Max of {X:mult,C:white}X#1#",
+				}
+			},
+			dd_payasaka_paya_variables = {
+				name = "Permanent upgrades",
+				text = {
+					"{C:chips}+#1#{} Chips, {C:mult}+#2#{} Mult,",
+					"{X:chips,C:white}X#3#{} Chips, {X:mult,C:white}X#4#{} Mult,",
+					"{X:dark_edition,C:white}^#5#{} Chips, {X:dark_edition,C:white}^#6#{} Mult",
 				}
 			},
 			dd_payasaka_dummy = {
@@ -2251,6 +2276,16 @@ return {
 			},
 		},
 		Other = {
+			card_extra_e_chips = {
+				text = {
+					"{X:dark_edition,C:white}^#1#{} extra chips"
+				}
+			},
+			card_extra_e_mult = {
+				text = {
+					"{X:dark_edition,C:white}^#1#{} extra Mult"
+				}
+			},
 			undiscovered_property = {
 				name = "Not Discovered",
 				text = {

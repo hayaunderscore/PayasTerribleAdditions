@@ -33,6 +33,7 @@ create_sound("coolgong")
 create_sound("drop_target")
 
 -- Fanhead
+SMODS.Sound { key = 'emult', path = 'exponential_mult' .. ".wav" }
 SMODS.Sound { key = 'echips', path = 'exponential_chips' .. ".wav" }
 
 -- Some boss blinds cannot be disabled!
