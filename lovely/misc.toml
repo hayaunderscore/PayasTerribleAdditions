@@ -357,3 +357,39 @@ if G.GAME.payasaka_sleeve_rate then
 end
 '''
 match_indent = true
+
+# Add hologram shader for mimic cards
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''self.children.center:draw_shader('dissolve')'''
+position = 'at'
+payload = '''
+if self.ability.mimic_card then
+	--self.children.center:draw_shader('dissolve')
+	self.hover_tilt = self.hover_tilt*1.5
+	self.children.center:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
+	self.hover_tilt = self.hover_tilt/1.5
+else
+	self.children.center:draw_shader('dissolve')
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''self.children.front:draw_shader('dissolve')'''
+position = 'at'
+payload = '''
+if self.ability.mimic_card then
+	--self.children.front:draw_shader('dissolve')
+	self.hover_tilt = self.hover_tilt*1.5
+	self.children.front:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
+	self.hover_tilt = self.hover_tilt/1.5
+else
+	self.children.front:draw_shader('dissolve')
+end
+'''
+match_indent = true
+

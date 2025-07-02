@@ -145,6 +145,83 @@ SMODS.Enhancement {
 	end
 }
 
+SMODS.Enhancement {
+	name = "pta-True",
+	key = 'true',
+	atlas = "JOE_Enhancements",
+	pos = { x = 4, y = 0 },
+	config = { true_reduce = 0.01 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	calculate = function(self, card, context)
+		if not context.end_of_round then
+			if context.main_scoring and context.cardarea == G.play then
+				return {
+					message = "Reduced!",
+					extrafunc = function()
+						G.GAME.blind.chips = G.GAME.blind.chips - G.GAME.blind.chips * card.ability.true_reduce
+						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+						G.HUD_blind:get_UIE_by_ID("HUD_blind_count"):juice_up()
+					end
+				}
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.true_reduce * 100 } }
+	end
+}
+
+-- Edited version of the hologram shader for Mimic
+SMODS.Shader {
+	key = 'hologram',
+	path = 'hologram.fs'
+}
+
+SMODS.Enhancement {
+	name = "pta-Mimic",
+	key = 'mimic',
+	atlas = "JOE_Enhancements",
+	pos = { x = 5, y = 0 },
+	config = { mimic_card = true },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	calculate = function(self, card, context)
+		if context.before and card.area ~= G.deck then
+			-- Get left card and copy its ability
+			local left = nil
+			for i = 1, #card.area.cards do
+				if card.area.cards[i] == card then
+					left = card.area.cards[i-1]
+				end
+			end
+			if left and left.config.center_key ~= "m_payasaka_mimic" then
+				card:set_ability(left.config.center_key, false, true)
+				card.ability.mimic_card = true
+				return {
+					message = "Copied!"
+				}
+			end
+		end
+	end
+}
+
 local function get_compat(center, sticker)
 	if center[sticker .. "_compat"] then
 		return true
@@ -257,6 +334,11 @@ SMODS.Sticker {
 
 local emplace_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped, ...)
+	if self ~= G.play then
+		if card and card.ability.mimic_card and card.config.center_key ~= "m_payasaka_mimic" then
+			card:set_ability("m_payasaka_mimic", false, true)
+		end
+	end
 	if card and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
 		if card.ability.set == "Joker" and G.jokers then
 			G.jokers.config.card_limit = G.jokers.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot

@@ -1538,7 +1538,21 @@ return {
 					"{C:legendary}Balance{} {C:attention}#1#%{} of",
 					"{C:chips}Chips{} and {C:mult}Mult{}",
 				}
-			}
+			},
+			m_payasaka_true = {
+				name = "True Card",
+				text = {
+					"{C:attention}Reduces{} score",
+					"req. by {C:attention}#1#{}%",
+				}
+			},
+			m_payasaka_mimic = {
+				name = "Mimic Card",
+				text = {
+					"{C:attention}Mimics{} the ability of",
+					"the card to the left",
+				}
+			},
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },

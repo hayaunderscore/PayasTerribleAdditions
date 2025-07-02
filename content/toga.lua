@@ -42,7 +42,7 @@ SMODS.Joker {
 	key = 'toga_soundtracker',
 	config = { extra = { stored_xmult = 1, multiplier = 0.25 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.multiplier, SMODS.displaying_scoring and card.ability.extra.stored_xmult or (G.GAME.current_round.current_hand and math.max(1, G.GAME.current_round.current_hand.mult*card.ability.extra.multiplier) or 1) } }
+		return { vars = { card.ability.extra.multiplier, G.STATE == G.STATES.HAND_PLAYED and card.ability.extra.stored_xmult or (G.GAME.current_round.current_hand and math.max(1, G.GAME.current_round.current_hand.mult*card.ability.extra.multiplier) or 1) } }
 	end,
 	unlocked = true,
 	discovered = true,
