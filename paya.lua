@@ -37,6 +37,7 @@ SMODS.Atlas { key = "JOE_Tarots_Adjust", path = "tarots.png", px = 85, py = 95 }
 -- Property atlas(es)
 SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
 SMODS.Atlas { key = "JOE_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_UltraBoosters", path = "ultra.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_DOS", path = "dos.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Risk", path = "risk.png", px = 71, py = 95 }
 
@@ -130,6 +131,9 @@ assert(SMODS.load_file("content/challenges.lua"))()
 
 -- Tags
 assert(SMODS.load_file("content/tags.lua"))()
+
+-- Boosters
+assert(SMODS.load_file("content/boosters.lua"))()
 
 -- Load all jokers
 

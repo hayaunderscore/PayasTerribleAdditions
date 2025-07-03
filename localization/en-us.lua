@@ -1444,8 +1444,8 @@ return {
 				name = "Paya",
 				text = {
 					"Every played {C:attention}card{}",
-                    "permanently gains",
-                    "{C:attention}any{} of the values",
+					"permanently gains",
+					"{C:attention}any{} of the values",
 					"listed when scored"
 				}
 			},
@@ -1748,7 +1748,7 @@ return {
 				name = "Property Tag",
 				text = {
 					"Gives a free",
-					"{C:property}Mega Property Pack",
+					"{C:property}Mega Real Estate Pack",
 				},
 			},
 			tag_payasaka_nil = {
@@ -2008,8 +2008,8 @@ return {
 			c_payasaka_hone = {
 				name = "Align",
 				text = {
-					"Levels up the {C:purple,E:1}most played",
-					"poker hand by {C:attention}#1#",
+					"Levels up the 2 {C:purple,E:1}most played",
+					"poker hands by {C:attention}#1#",
 				}
 			},
 			c_payasaka_metalicize = {
@@ -2076,6 +2076,14 @@ return {
 				text = {
 					"Creates {C:attention}#2# enhanced{} copies",
 					"of {C:attention}#1#{} selected card",
+				}
+			},
+			c_payasaka_spirit = {
+				name = "Spirit",
+				text = {
+					"Enhances {C:attention}#1#",
+                    "selected cards to",
+                    "{C:attention}#2#s",
 				}
 			},
 		},
@@ -2323,7 +2331,7 @@ return {
 				}
 			},
 			p_payasaka_property_normal_1 = {
-				name = "Property Pack",
+				name = "Real Estate Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
@@ -2331,7 +2339,7 @@ return {
 				}
 			},
 			p_payasaka_property_normal_2 = {
-				name = "Property Pack",
+				name = "Real Estate Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
@@ -2339,7 +2347,7 @@ return {
 				}
 			},
 			p_payasaka_property_mega_1 = {
-				name = "Mega Property Pack",
+				name = "Mega Real Estate Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
@@ -2347,7 +2355,7 @@ return {
 				}
 			},
 			p_payasaka_property_mega_2 = {
-				name = "Mega Property Pack",
+				name = "Mega Real Estate Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
@@ -2355,7 +2363,7 @@ return {
 				}
 			},
 			p_payasaka_property_jumbo_1 = {
-				name = "Jumbo Property Pack",
+				name = "Jumbo Real Estate Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
@@ -2363,7 +2371,7 @@ return {
 				}
 			},
 			p_payasaka_property_jumbo_2 = {
-				name = "Jumbo Property Pack",
+				name = "Jumbo Real Estate Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:property} Property{} cards to",
@@ -2440,6 +2448,45 @@ return {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:joker} {C:purple,E:1}Legendary{} {C:joker}Jokers{}",
 				}
+			},
+			p_payasaka_arcana_ultra = {
+				name = "Ultra Arcana Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:tarot} Tarot{} cards to",
+					"be used immediately",
+				}
+			},
+			p_payasaka_celestial_ultra = {
+				name = "Ultra Celestial Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:planet} Planet{} cards to",
+					"be used immediately",
+				}
+			},
+			p_payasaka_spectral_ultra = {
+				name = "Ultra Spectral Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:spectral} Spectral{} cards to",
+					"be used immediately",
+				}
+			},
+			p_payasaka_standard_ultra = {
+				name = "Ultra Standard Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:attention} Playing{} cards to",
+					"add to your deck",
+				}
+			},
+			p_payasaka_buffoon_ultra = {
+				name = "Ultra Buffoon Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} Joker{} cards",
+				},
 			},
 			payasaka_random_seal = {
 				name = "Random Stamp",
@@ -2777,7 +2824,7 @@ return {
 			b_risk_cards = "Risk Cards",
 			k_reward = "Reward",
 			b_reward_cards = "Reward Cards",
-			k_property_pack = "Property Pack",
+			k_property_pack = "Real Estate Pack",
 			k_moji_pack = "Reward Pack",
 			k_risk_pack = "Risk Pack",
 			k_gacha_pack = "Gacha Pack",

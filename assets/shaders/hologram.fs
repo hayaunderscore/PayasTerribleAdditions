@@ -62,7 +62,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
      for (int i = -glow_samples; i <= glow_samples; ++i){
             for (int j = -glow_samples; j <= glow_samples; ++j){
-                _a = (Texel( texture, texture_coords + (glow_dist)*vec2(float(i), float(j))).a) * 0.85;
+                _a = (Texel( texture, texture_coords + (glow_dist)*vec2(float(i), float(j))).a) * 0.75;
                 actual_glow_samples += 1;
                 glow = glow + _a;
             }

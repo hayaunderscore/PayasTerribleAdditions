@@ -367,9 +367,7 @@ position = 'at'
 payload = '''
 if self.ability.mimic_card then
 	--self.children.center:draw_shader('dissolve')
-	self.hover_tilt = self.hover_tilt*1.5
 	self.children.center:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
-	self.hover_tilt = self.hover_tilt/1.5
 else
 	self.children.center:draw_shader('dissolve')
 end
@@ -384,9 +382,7 @@ position = 'at'
 payload = '''
 if self.ability.mimic_card then
 	--self.children.front:draw_shader('dissolve')
-	self.hover_tilt = self.hover_tilt*1.5
 	self.children.front:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
-	self.hover_tilt = self.hover_tilt/1.5
 else
 	self.children.front:draw_shader('dissolve')
 end

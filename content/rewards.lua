@@ -23,6 +23,8 @@ SMODS.UndiscoveredSprite {
 G.C.SET.Reward = HEX('7f8481')
 G.C.SECONDARY_SET.Reward = HEX('d7e0e0')
 
+---@class Reward: SMODS.Consumable
+---@overload fun(self: Reward): Reward
 PTASaka.Reward = SMODS.Consumable:extend {
 	set = 'Reward',
 	atlas = 'JOE_Risk',
@@ -42,8 +44,10 @@ PTASaka.Reward = SMODS.Consumable:extend {
 		return true
 	end,
 	register = function(self)
-		self.pos.x = self.pos.x + offs.x
-		self.pos.y = self.pos.y + offs.y
+		if self.atlas == 'payasaka_JOE_Risk' then
+			self.pos.x = self.pos.x + offs.x
+			self.pos.y = self.pos.y + offs.y
+		end
 		SMODS.Consumable.register(self)
 	end,
 	draw = function(self, card, layer)
@@ -144,6 +148,7 @@ PTASaka.Reward {
 				---@type Card
 				local j = pseudorandom_element(G.jokers.cards, pseudoseed('chance_yeayeyayeaed'))
 				if j then
+					j:juice_up(0.7)
 					ease_dollars(j.sell_cost * card.ability.extra.mul, true)
 				end
 				return true
@@ -681,6 +686,78 @@ G.FUNCS.pta_can_select_consumable = function(e)
 		e.config.button = nil
 	end
 end
+
+-- These are tarots technically
+PTASaka.Reward {
+	key = 'spirit',
+	atlas = 'JOE_Risk',
+	pos = { x = 4, y = 3 },
+	config = { extra = { max_highlighted = 2, min_highlighted = 1, ability = "m_payasaka_mimic" } },
+	pools = { ["Reward"] = true, ["Tarot"] = true },
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		for i = 1, #G.hand.highlighted do
+			local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3, 0.3); return true
+				end
+			}))
+		end
+		delay(0.2)
+		for i = 1, #G.hand.highlighted do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					---@type Card
+					local _c = G.hand.highlighted[i]
+					_c:set_ability(card.ability.extra.ability)
+					return true
+				end
+			}))
+		end
+		for i = 1, #G.hand.highlighted do
+			local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(0.3,
+						0.3); return true
+				end
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.hand:unhighlight_all(); return true
+			end
+		}))
+		delay(0.5)
+	end,
+	can_use = function(self, card)
+		return card.ability.extra.max_highlighted >= #G.hand.highlighted and
+			#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
+	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS[card.ability.extra.ability]
+		return {
+			vars = { card.ability.extra.max_highlighted, localize { type = 'name_text', key = card.ability.extra.ability, set = "Enhanced" } }
+		}
+	end
+}
 
 PTASaka.make_boosters('moji',
 	{
