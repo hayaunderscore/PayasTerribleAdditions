@@ -12,10 +12,9 @@ Requires latest Steamodded.
 
 ## The 'Additions' in question
 
-- Atleast 30+ new Jokers!
+- 80+ new Jokers!
 - New consumables, both old and new types!
 - New mechanics! (If you call new currency a mechanic)
-- Probably relies too much on Cryptid
 - An acceptable amount of cross-mod content
 - Not compatible with The Mod Formerly Known As Jen's Almanac
 
