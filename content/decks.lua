@@ -437,7 +437,7 @@ SMODS.Back {
 	pos = { x = 3, y = 2 },
 	unlocked = true,
 	apply = function(self, back)
-		G.GAME.payasaka_deck_rate = 0.75
+		G.GAME.payasaka_deck_rate = 1.75
 	end
 }
 

@@ -55,6 +55,6 @@ CardSleeves.Sleeve {
 	atlas = "JOE_Sleeves",
 	pos = { x = 2, y = 0 },
 	apply = function(self, sleeve)
-		G.GAME.payasaka_sleeve_rate = 0.75
+		G.GAME.payasaka_sleeve_rate = 1.75
 	end,
 }
