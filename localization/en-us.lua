@@ -2488,6 +2488,34 @@ return {
 					"{C:attention}#2#{C:joker} Joker{} cards",
 				},
 			},
+			p_payasaka_friend_normal_1 = {
+				name = "Friend Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} Friend{} Jokers",
+				},
+			},
+			p_payasaka_friend_normal_2 = {
+				name = "Friend Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} Friend{} Jokers",
+				},
+			},
+			p_payasaka_friend_jumbo_1 = {
+				name = "Jumbo Friend Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} Friend{} Jokers",
+				},
+			},
+			p_payasaka_friend_mega_1 = {
+				name = "Mega Friend Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:joker} Friend{} Jokers",
+				},
+			},
 			payasaka_random_seal = {
 				name = "Random Stamp",
 				text = {
@@ -2825,6 +2853,7 @@ return {
 			k_reward = "Reward",
 			b_reward_cards = "Reward Cards",
 			k_property_pack = "Real Estate Pack",
+			k_friend_pack = "Friend Pack",
 			k_moji_pack = "Reward Pack",
 			k_risk_pack = "Risk Pack",
 			k_gacha_pack = "Gacha Pack",

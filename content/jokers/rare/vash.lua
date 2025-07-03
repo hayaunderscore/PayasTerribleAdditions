@@ -21,6 +21,7 @@ SMODS.Joker {
 		},
 	},
 	config = { extra = { xmult = 1, chips = 0, xmult_mod = 0.25, chip_mod = 15 } },
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	loc_vars = function (self, info_queue, card)
 		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.chip_mod, card.ability.extra.xmult, card.ability.extra.chips } }
 	end,

@@ -115,6 +115,7 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	config = { saved_cards = {}, extra = { max_selection = 5 } },
 	loc_vars = function(self, info_queue, card)
 		---@type PseudoCard[]

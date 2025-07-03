@@ -10,7 +10,7 @@ SMODS.Joker {
 	perishable_compat = false,
 	pos = { x = 10, y = 6 },
 	atlas = "JOE_Jokers",
-	pools = { ["Joker"] = true, ["Meme"] = true },
+	pools = { ["Joker"] = true, ["Meme"] = true, ["Friend"] = true },
 	config = { extra = { e_chips = 0.04 } },
 	pta_credit = {
 		art = {

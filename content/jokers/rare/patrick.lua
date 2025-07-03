@@ -18,6 +18,7 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == "Risk" and not context.blueprint_card then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_mod

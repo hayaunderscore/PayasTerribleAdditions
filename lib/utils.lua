@@ -76,7 +76,9 @@ function PTASaka.VashDestroyable(card)
 	-- Food joker not in the Food pool, just in case
 	if card.children.center.pinch.x then return false end
 	-- Otherwise...
-	return card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or (card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT)) or (card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
+	return card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or
+	(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT)) or
+	(card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
 end
 
 -- Check if Vash should destroy a Joker
@@ -88,7 +90,7 @@ function PTASaka.VashDestroy(card, no_dissolve)
 	-- Check for Vash
 	if next(SMODS.find_card('j_payasaka_vash')) and card.config.center_key ~= "j_payasaka_vash" and PTASaka.VashDestroyable(card) and not no_dissolve then
 		local ret = {}
-		SMODS.calculate_context({payasaka_card_removed = true, card = card}, ret); SMODS.trigger_effects(ret)
+		SMODS.calculate_context({ payasaka_card_removed = true, card = card }, ret); SMODS.trigger_effects(ret)
 		for k, v in ipairs(ret) do
 			for _k, _v in pairs(v) do
 				stop_removal = _v.prevent_remove or stop_removal
@@ -138,7 +140,8 @@ function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blackli
 		elseif t == "table" then
 			local k, v = next(val, nil)
 			while k ~= nil do
-				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist, layer + 1, blacklist_key)
+				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist, layer + 1,
+					blacklist_key)
 				k, v = next(val, k)
 			end
 		end
@@ -165,7 +168,8 @@ function PTASaka.Misprintize(t)
 	t = t or {}
 	assert(t.val, "PTASaka.Misprintize: Value not provided!")
 	assert(t.amt, "PTASaka.Misprintize: Amount not provided!")
-	return PTASaka.MMisprintize(t.val, t.amt, t.reference, t.key, t.func, t.whitelist, t.blacklist, t.layer, t.blacklist_key)
+	return PTASaka.MMisprintize(t.val, t.amt, t.reference, t.key, t.func, t.whitelist, t.blacklist, t.layer,
+		t.blacklist_key)
 end
 
 -- Taken from Cryptid...
@@ -245,6 +249,13 @@ if not G.P_CENTER_POOLS["Food"] then
 		end,
 	}
 end
+
+-- Friend pool
+SMODS.ObjectType {
+	key = "Friend",
+	default = "j_payasaka_suittaker",
+	cards = {},
+}
 
 -- Creates a dummy card area for card storage<br>
 -- Used by LAB=01, Mr. Cast and Irisu....
@@ -1117,7 +1128,7 @@ function PTASaka.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Luchador" then
-			G.E_MANAGER:add_event(Event{
+			G.E_MANAGER:add_event(Event {
 				func = function()
 					if G.GAME.blind and ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == "Boss")) then
 						G.GAME.blind:disable()
@@ -1440,7 +1451,7 @@ function PTASaka.forcetrigger(card, context)
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "Chicot" then
-			G.E_MANAGER:add_event(Event{
+			G.E_MANAGER:add_event(Event {
 				func = function()
 					if G.GAME.blind and G.GAME.blind.boss then
 						G.GAME.blind:disable()

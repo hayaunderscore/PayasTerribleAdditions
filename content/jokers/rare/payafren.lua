@@ -45,6 +45,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicolon_compat = true,
 	config = { extra = { perma_bonus = 5, perma_mult = 5, perma_x_chips = 0.1, perma_x_mult = 0.1, perma_e_chips = 0.01, perma_e_mult = 0.01 } },
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not context.end_of_round then
 			local bonus = pseudorandom_element(perma_bonuses, 'paya')

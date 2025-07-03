@@ -15,6 +15,7 @@ SMODS.Joker {
 		},
 	},
 	]]
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			local last_card = nil

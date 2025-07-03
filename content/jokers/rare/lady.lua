@@ -17,8 +17,7 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
-	update = function(self, card, dt)
-	end,
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.hand_drawn and not context.blueprint_card then
 			local count = 0

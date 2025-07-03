@@ -19,6 +19,7 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint_card then
 			local seven, six, five = nil, nil, nil

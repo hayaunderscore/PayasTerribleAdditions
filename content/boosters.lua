@@ -1,5 +1,44 @@
 -- Miscellaneous Boosters
 
+--#region Friend Packs
+
+PTASaka.make_boosters('friend',
+	{
+		{ x = 1, y = 5 },
+		{ x = 2, y = 5 },
+	},
+	{
+		{ x = 3, y = 5 }
+	},
+	{
+		{ x = 4, y = 5 }
+	},
+	{
+		atlas = "JOE_Risk",
+		kind = 'Friend',
+		weight = 0.4,
+		select_card = 'jokers',
+		create_card = function(self, card, i)
+			return {
+				set = "Friend",
+				area = G.pack_cards,
+				skip_materialize = true,
+				soulable = true,
+				key_append = "fren"
+			}
+		end,
+		group_key = 'k_friend_pack',
+		ease_background_colour = function(self)
+			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Property)
+			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Property, special_colour = G.C.SET.Property, contrast = 2 })
+		end,
+	}
+)
+
+--#endregion
+
+--#region Ultra Booster Packs
+
 ---@class UltraParams
 ---@field key string Key of the booster pack.
 ---@field atlas? string Atlas key for the booster pack. Defaults to the default Ultra Booster Pack atlas.
@@ -225,3 +264,5 @@ local buffoon = PTASaka.UltraPack {
 	f_size = 6, f_choose = 3,
 }
 buffoon.ease_background_colour = function(self) ease_background_colour_blind(G.STATES.BUFFOON_PACK) end
+
+--#endregion
