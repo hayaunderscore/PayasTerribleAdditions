@@ -1100,6 +1100,21 @@ PTASaka.make_boosters('risk',
 			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Risk)
 			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Risk, special_colour = G.C.SET.Risk, contrast = 4 })
 		end,
+		particles = function(self)
+			G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
+				timer = 0.015,
+				scale = 0.2,
+				initialize = true,
+				lifespan = 1,
+				speed = 1.1,
+				padding = -1,
+				attach = G.ROOM_ATTACH,
+				colours = { G.C.WHITE, HEX('ea7d48'), HEX('f04a6e'), HEX('fffdac') },
+				fill = true
+			})
+			G.booster_pack_sparkles.fade_alpha = 1
+			G.booster_pack_sparkles:fade(1, 0)
+		end
 	}
 )
 

@@ -788,6 +788,21 @@ PTASaka.make_boosters('moji',
 			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Reward)
 			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Reward, special_colour = G.C.SET.Reward, contrast = 4 })
 		end,
+		particles = function(self)
+			G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
+				timer = 0.015,
+				scale = 0.2,
+				initialize = true,
+				lifespan = 1,
+				speed = 1.1,
+				padding = -1,
+				attach = G.ROOM_ATTACH,
+				colours = { G.C.WHITE, HEX('ff9ee3'), HEX('57d5ff'), HEX('6689a4') },
+				fill = true
+			})
+			G.booster_pack_sparkles.fade_alpha = 1
+			G.booster_pack_sparkles:fade(1, 0)
+		end
 	}, 2
 )
 
