@@ -102,7 +102,7 @@ if PTASaka.Mod.config["Property Cards"] then
 	}
 
 	-- Rotarot version of above, for More Fluff
-	if next(SMODS.find_mod("MoreFluff")) and PTASaka.Mod.config["Cross Mod Content"] then
+	if next(SMODS.find_mod("MoreFluff")) and (SMODS.find_mod("MoreFluff")[1].config["45 Degree Rotated Tarot Cards"] == true) and PTASaka.Mod.config["Cross Mod Content"] then
 		SMODS.Consumable {
 			set = "Rotarot",
 			name = "rot_Avarice",
@@ -257,7 +257,7 @@ SMODS.Consumable {
 }
 
 -- Rotarot version of above, for More Fluff
-if next(SMODS.find_mod("MoreFluff")) and PTASaka.Mod.config["Cross Mod Content"] then
+if next(SMODS.find_mod("MoreFluff")) and (SMODS.find_mod("MoreFluff")[1].config["45 Degree Rotated Tarot Cards"] == true) and PTASaka.Mod.config["Cross Mod Content"] then
 	SMODS.Consumable {
 		set = "Rotarot",
 		name = "rot_Stamp",
