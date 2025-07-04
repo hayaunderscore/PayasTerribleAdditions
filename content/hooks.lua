@@ -148,9 +148,7 @@ function Game:start_run(args)
 		PTASaka.food_jokers[v.key] = v
 	end
 
-	-- No.
-	SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
-	SMODS.remove_pool(G.P_CENTER_POOLS["Reward"], G.P_CENTERS.c_payasaka_dummy_centersleeve)
+	G.GAME.payasaka_reward_tarot_rate = G.GAME.payasaka_reward_tarot_rate or 0.025
 end
 
 -- Custom G.GAME stuff
@@ -175,6 +173,7 @@ function Game:init_game_object()
 
 	-- Custom Modded pool stuff
 	ret.payasaka_modded_rate = 0
+	ret.payasaka_reward_tarot_rate = 0.025
 
 	if G and G.STAGE == G.STAGES.RUN then
 		-- -- Shuffle gacha table
@@ -449,9 +448,27 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if _type == "Back" or _type == "Sleeve" then
 		forced_key = pseudorandom_element(G.P_CENTER_POOLS[_type], "ptadeckshit_" .. (key_append or "")).key
 	end
+	local spawned_via_hidden = false
+	if not forced_key and soulable then
+		for _, v in ipairs(PTASaka.Reward.pseudo_legendaries) do
+			if (_type == v.pta_hidden_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+				if pseudorandom('hidden_'..v.key.._type..G.GAME.round_resets.ante) < (G.GAME["payasaka_reward_"..string.lower(v.pta_hidden_set).."_rate"] or 0) then
+					forced_key = v.key
+					spawned_via_hidden = true
+				end
+			end
+		end
+	end
+	---@type Card
 	local card = old_create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	if card and card.config.center.rarity == "payasaka_ahead" and card.config.center.key ~= "j_payasaka_nil" then
 		card:set_edition("e_foil", true, nil)
+	end
+	if card and card.config.center.pta_hidden_pos and spawned_via_hidden and card.ability then
+		card.ability.pta_hidden_spawned = true
+		--print("reset sprites")
+		card:set_sprites(card.config.center)
+		--card.ability.pta_hidden_spawned = nil
 	end
 	return card
 end
@@ -838,6 +855,9 @@ function Card:set_sprites(center, front)
 		self.children.property_houses.role.draw_major = self
 		self.children.property_houses.states.hover.can = false
 		self.children.property_houses.states.click.can = false
+	end
+	if self and self.ability and self.ability.pta_hidden_spawned and center and center.pta_hidden_pos and self.children.center then
+		self.children.center:set_sprite_pos(center.pta_hidden_pos)
 	end
 end
 

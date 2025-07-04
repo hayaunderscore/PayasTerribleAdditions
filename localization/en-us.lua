@@ -1544,9 +1544,8 @@ return {
 			m_payasaka_volatile = {
 				name = "Volatile Card",
 				text = {
-					"{C:mult}+#1#{} Mult",
-					"Gains {C:mult}+#2#{} Mult",
-					"if not scored",
+					"{X:mult,C:white}X#1#{} Mult if",
+					"played but unscored",
 				}
 			},
 			m_payasaka_laser = {
@@ -2079,11 +2078,35 @@ return {
 				}
 			},
 			c_payasaka_spirit = {
-				name = "Spirit",
+				name = "Bountiful Spirit",
 				text = {
 					"Enhances {C:attention}#1#",
-                    "selected cards to",
-                    "{C:attention}#2#s",
+					"selected cards to",
+					"{C:attention}#2#s",
+				}
+			},
+			c_payasaka_truth = {
+				name = "Highest Truth",
+				text = {
+					"Enhances {C:attention}#1#",
+					"selected cards to",
+					"{C:attention}#2#s",
+				}
+			},
+			c_payasaka_righteousmind = {
+				name = "Righteous Mind",
+				text = {
+					"Enhances {C:attention}#1#",
+					"selected cards to",
+					"{C:attention}#2#s",
+				}
+			},
+			c_payasaka_health = {
+				name = "Perfect Health",
+				text = {
+					"Enhances {C:attention}#1#",
+					"selected cards to",
+					"{C:attention}#2#s",
 				}
 			},
 		},

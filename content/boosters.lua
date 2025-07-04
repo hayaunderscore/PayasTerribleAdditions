@@ -29,8 +29,8 @@ PTASaka.make_boosters('friend',
 		end,
 		group_key = 'k_friend_pack',
 		ease_background_colour = function(self)
-			ease_colour(G.C.DYN_UI.MAIN, G.C.SECONDARY_SET.Property)
-			ease_background_colour({ new_colour = G.C.SECONDARY_SET.Property, special_colour = G.C.SET.Property, contrast = 2 })
+			ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
+			ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
 		end,
 	}
 )

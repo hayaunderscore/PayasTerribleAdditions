@@ -49,7 +49,7 @@ SMODS.Enhancement {
 	key = 'volatile',
 	atlas = "JOE_Enhancements",
 	pos = { x = 2, y = 0 },
-	config = { mult = 0 },
+	config = { extra = { xmult = 2 } },
 	pta_credit = {
 		idea = {
 			credit = 'ariyi',
@@ -63,15 +63,14 @@ SMODS.Enhancement {
 	calculate = function(self, card, context)
 		if not context.end_of_round then
 			if context.main_scoring and context.cardarea == "unscored" then
-				card.ability.mult = card.ability.mult + card:get_chip_bonus()
 				return {
-					message = localize('k_upgrade_ex')
+					x_mult = card.ability.extra.xmult
 				}
 			end
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.mult, card:get_chip_bonus() or "??" } }
+		return { vars = { card.ability.extra.xmult } }
 	end
 }
 

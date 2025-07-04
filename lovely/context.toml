@@ -270,10 +270,35 @@ if card.debuff then
 		if in_scoring then context.cardarea = G.play else context.cardarea = 'unscored' end
 	end
 
-	local effects = {}
-	SMODS.calculate_context({payasaka_debuff_individual = true, card = card, cardarea = context.cardarea}, effects)
+	local reps = { 1 }
+    local j = 1
+    while j <= #reps do
+        if reps[j] ~= 1 then
+            local _, eff = next(reps[j])
+            while eff.retrigger_flag do 
+                SMODS.calculate_effect(eff, eff.card); j = j+1; _, eff = next(reps[j]) 
+            end
+            SMODS.calculate_effect(eff, eff.card)
+            percent = (percent or 0) + (percent_delta or 0.08)
+        end
 
-	local flags = SMODS.trigger_effects(effects, card)
+		local effects = {}
+		SMODS.calculate_context({payasaka_debuff_individual = true, card = card, cardarea = context.cardarea}, effects)
+
+		local flags = SMODS.trigger_effects(effects, card)
+        if reps[j] == 1 and flags.calculated then
+            context.repetition = true
+            context.card_effects = effects
+			context.ignore_debuff = true
+			context.other_card = card
+            SMODS.calculate_repetitions(card, context, reps)
+			context.ignore_debuff = nil
+            context.repetition = nil
+            context.card_effects = nil
+        end
+        j = j + (flags.calculated and 1 or #reps)
+		context.other_card = nil
+	end
 end
 '''
 match_indent = true

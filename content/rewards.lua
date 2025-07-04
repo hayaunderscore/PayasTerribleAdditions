@@ -24,6 +24,9 @@ G.C.SET.Reward = HEX('7f8481')
 G.C.SECONDARY_SET.Reward = HEX('d7e0e0')
 
 ---@class Reward: SMODS.Consumable
+---@field pseudo_legendaries? (Reward|table)[]
+---@field pta_hidden_set? string
+---@field pta_hidden_pos? table|{x: number, y: number}
 ---@overload fun(self: Reward): Reward
 PTASaka.Reward = SMODS.Consumable:extend {
 	set = 'Reward',
@@ -40,6 +43,7 @@ PTASaka.Reward = SMODS.Consumable:extend {
 			colour = HEX('09d707')
 		},
 	},
+	pseudo_legendaries = {},
 	in_pool = function(self, args)
 		return true
 	end,
@@ -47,8 +51,18 @@ PTASaka.Reward = SMODS.Consumable:extend {
 		if self.atlas == 'payasaka_JOE_Risk' then
 			self.pos.x = self.pos.x + offs.x
 			self.pos.y = self.pos.y + offs.y
+			if self.pta_hidden_pos then
+				self.pta_hidden_pos.x = self.pta_hidden_pos.x + offs.x
+				self.pta_hidden_pos.y = self.pta_hidden_pos.y + offs.y
+			end
 		end
 		SMODS.Consumable.register(self)
+	end,
+	inject = function(self, i)
+		if self.pta_hidden_set then
+			table.insert(self.pseudo_legendaries, self)
+		end
+		SMODS.Consumable.inject(self, i)
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
@@ -687,77 +701,90 @@ G.FUNCS.pta_can_select_consumable = function(e)
 	end
 end
 
--- These are tarots technically
-PTASaka.Reward {
-	key = 'spirit',
-	atlas = 'JOE_Risk',
-	pos = { x = 4, y = 3 },
-	config = { extra = { max_highlighted = 2, min_highlighted = 1, ability = "m_payasaka_mimic" } },
-	pools = { ["Reward"] = true, ["Tarot"] = true },
-	use = function(self, card, area, copier)
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			delay = 0.4,
-			func = function()
-				play_sound('tarot1')
-				card:juice_up(0.3, 0.5)
-				return true
-			end
-		}))
-		for i = 1, #G.hand.highlighted do
-			local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, max)
+	return PTASaka.Reward {
+		key = key,
+		atlas = 'JOE_Risk',
+		pos = pos,
+		config = { extra = { max_highlighted = max or 2, min_highlighted = 1, ability = center } },
+		pta_hidden_set = hidden_set or "Tarot",
+		pta_hidden_pos = hidden_pos or pos,
+		use = function(self, card, area, copier)
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
-				delay = 0.15,
+				delay = 0.4,
 				func = function()
-					G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3, 0.3); return true
-				end
-			}))
-		end
-		delay(0.2)
-		for i = 1, #G.hand.highlighted do
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.1,
-				func = function()
-					---@type Card
-					local _c = G.hand.highlighted[i]
-					_c:set_ability(card.ability.extra.ability)
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
 					return true
 				end
 			}))
-		end
-		for i = 1, #G.hand.highlighted do
-			local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+			for i = 1, #G.hand.highlighted do
+				local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3, 0.3); return true
+					end
+				}))
+			end
+			delay(0.2)
+			for i = 1, #G.hand.highlighted do
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.1,
+					func = function()
+						---@type Card
+						local _c = G.hand.highlighted[i]
+						_c:set_ability(card.ability.extra.ability)
+						return true
+					end
+				}))
+			end
+			for i = 1, #G.hand.highlighted do
+				local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(0.3,
+							0.3); return true
+					end
+				}))
+			end
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
-				delay = 0.15,
+				delay = 0.2,
 				func = function()
-					G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(0.3,
-						0.3); return true
+					G.hand:unhighlight_all(); return true
 				end
 			}))
-		end
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			delay = 0.2,
-			func = function()
-				G.hand:unhighlight_all(); return true
+			delay(0.5)
+		end,
+		can_use = function(self, card)
+			return card.ability.extra.max_highlighted >= #G.hand.highlighted and
+				#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
+		end,
+		loc_vars = function(self, info_queue, card)
+			info_queue[#info_queue+1] = G.P_CENTERS[card.ability.extra.ability]
+			return {
+				vars = { card.ability.extra.max_highlighted, localize { type = 'name_text', key = card.ability.extra.ability, set = "Enhanced" } }
+			}
+		end,
+		draw = function(self, card, layer)
+			if not card.ability.pta_hidden_spawned then
+				PTASaka.Reward.draw(self, card, layer)
 			end
-		}))
-		delay(0.5)
-	end,
-	can_use = function(self, card)
-		return card.ability.extra.max_highlighted >= #G.hand.highlighted and
-			#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
-	end,
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = G.P_CENTERS[card.ability.extra.ability]
-		return {
-			vars = { card.ability.extra.max_highlighted, localize { type = 'name_text', key = card.ability.extra.ability, set = "Enhanced" } }
-		}
-	end
-}
+		end
+	}
+end
+
+-- These are tarots technically
+PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 3 })
+PTASaka.create_reward_tarot('truth', { x = 6, y = 0 }, "m_payasaka_true", "Tarot", { x = 0, y = 4 })
+PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 })
+PTASaka.create_reward_tarot('health', { x = 5, y = 0 }, "m_payasaka_laser", "Tarot", { x = 2, y = 4 })
 
 PTASaka.make_boosters('moji',
 	{
