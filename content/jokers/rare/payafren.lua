@@ -12,6 +12,9 @@ end
 function Card:get_pta_e_mult()
 	return SMODS.multiplicative_stacking((self.ability.e_mult or 1), (not self.ability.extra_enhancement and self.ability.perma_e_mult) or 0)
 end
+function Card:get_pta_balance()
+	return self.ability.perma_balance or 0
+end
 
 -- Only available if Talisman is present
 local get_chip_e_bonus = Card.get_chip_e_bonus
@@ -31,8 +34,8 @@ end
 
 local perma_bonuses = {
 	'perma_bonus', 'perma_mult',
-	'perma_x_chips', 'perma_x_mult',
-	'perma_e_chips', 'perma_e_mult'
+	'perma_x_mult', 'perma_e_mult',
+	'perma_p_dollars', 'perma_balance'
 }
 
 SMODS.Joker {
@@ -44,7 +47,7 @@ SMODS.Joker {
 	cost = 8,
 	blueprint_compat = true,
 	demicolon_compat = true,
-	config = { extra = { perma_bonus = 5, perma_mult = 5, perma_x_chips = 0.1, perma_x_mult = 0.1, perma_e_chips = 0.01, perma_e_mult = 0.01 } },
+	config = { extra = { perma_bonus = 5, perma_mult = 2, perma_x_mult = 0.1, perma_e_mult = 0.01, perma_p_dollars = 1, perma_balance = 0.02 } },
 	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not context.end_of_round then
@@ -61,7 +64,7 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		local vars = {}
 		for k, v in pairs(perma_bonuses) do
-			vars[#vars+1] = card.ability.extra[v]
+			vars[#vars+1] = v == 'perma_balance' and card.ability.extra[v]*100 or card.ability.extra[v]
 		end
 		local desc = PTASaka.DescriptionDummies["dd_payasaka_paya_variables"]
 		desc.vars = vars

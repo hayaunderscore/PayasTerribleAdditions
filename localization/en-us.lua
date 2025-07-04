@@ -1622,8 +1622,8 @@ return {
 				name = "Permanent upgrades",
 				text = {
 					"{C:chips}+#1#{} Chips, {C:mult}+#2#{} Mult,",
-					"{X:chips,C:white}X#3#{} Chips, {X:mult,C:white}X#4#{} Mult,",
-					"{X:dark_edition,C:white}^#5#{} Chips, {X:dark_edition,C:white}^#6#{} Mult",
+					"{X:mult,C:white}X#3#{} Mult, {X:dark_edition,C:white}^#4#{} Mult",
+					"{C:money}$#5#{}, {C:legendary}#6#%{} Balance",
 				}
 			},
 			dd_payasaka_dummy = {
@@ -2315,6 +2315,11 @@ return {
 			card_extra_e_mult = {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} extra Mult"
+				}
+			},
+			card_extra_balance = {
+				text = {
+					"{C:legendary}#1#%{} extra balance"
 				}
 			},
 			undiscovered_property = {

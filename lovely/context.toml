@@ -440,6 +440,11 @@ if not Talisman then
 		ret.playing_card.e_mult = e_mult
 	end
 end
+
+local balance = card:get_pta_balance()
+if balance > 0 then
+	ret.playing_card.pta_balance = balance
+end
 '''
 match_indent = true
 
@@ -451,6 +456,7 @@ position = 'after'
 payload = '''
 bonus_e_chips = (self.ability.perma_e_chips ~= 0 and self.ability.perma_e_chips ~= nil) and (self.ability.perma_e_chips + 1) or nil,
 bonus_e_mult = (self.ability.perma_e_mult ~= 0 and self.ability.perma_e_mult ~= nil) and (self.ability.perma_e_mult + 1) or nil,
+bonus_balance = (self.ability.perma_balance ~= 0 and self.ability.perma_balance ~= nil) and self.ability.perma_balance or nil,
 '''
 match_indent = true
 
@@ -465,6 +471,9 @@ if specific_vars and specific_vars.bonus_e_chips then
 end
 if specific_vars and specific_vars.bonus_e_mult then
 	localize{type = 'other', key = 'card_extra_e_mult', nodes = desc_nodes, vars = {specific_vars.bonus_e_mult}}
+end
+if specific_vars and specific_vars.bonus_balance then
+	localize{type = 'other', key = 'card_extra_balance', nodes = desc_nodes, vars = {specific_vars.bonus_balance*100}}
 end
 '''
 match_indent = true
