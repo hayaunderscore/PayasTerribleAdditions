@@ -70,6 +70,6 @@ SMODS.Joker {
 		return { vars = { card.ability.extra.mult, card.ability.extra.joker_slot } }
 	end,
 	in_pool = function(self, args)
-		return false
-	end
+		return false, { allow_duplicates = true }
+	end,
 }

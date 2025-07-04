@@ -6,7 +6,7 @@ SMODS.Joker {
 	end,
 	atlas = "JOE_Jokers2",
 	pos = { x = 0, y = 6 },
-	rarity = 1,
+	rarity = "payasaka_dud",
 	blueprint_compat = true,
 	demicoloncompat = true,
 	pta_credit = {
@@ -19,6 +19,9 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	in_pool = function(self, args)
+		return false, { allow_duplicates = true }
+	end,
 	calculate = function(self, card, context)
 		if context.joker_main and next(context.poker_hands['Pair']) then
 			for k, v in pairs(SMODS.Suits) do

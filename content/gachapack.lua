@@ -3,26 +3,26 @@
 -- The multiples is for the random function to pick that more likely
 -- Now with weights!
 PTASaka.gacha_rarity_table = {
-	{"Common", 200},
-	{"Uncommon", 160},
-	{"Rare", 50},
-	{"Legendary", 15},
+	{ "Common",    200 },
+	{ "Uncommon",  160 },
+	{ "Rare",      50 },
+	{ "Legendary", 15 },
 }
 
 if PTASaka.Mod.config["Ahead"] then
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_ahead', 20}
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'payasaka_daeha', 1}
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'payasaka_ahead', 20 }
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'payasaka_daeha', 1 }
 end
 
 if next(SMODS.find_mod('finity')) then
 	-- This would be really funny
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'finity_showdown', 10}
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'finity_showdown', 10 }
 end
 
 if Cryptid then
 	-- hahaha!
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'cry_epic', 25}
-	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = {'cry_exotic', 6}
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'cry_epic', 25 }
+	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'cry_exotic', 6 }
 end
 
 SMODS.Consumable {
@@ -221,15 +221,25 @@ SMODS.Consumable {
 	cost = 100,
 	kind = 'Gacha',
 	create_card = function(self, card, i)
-		if next(SMODS.find_card('j_payasaka_freetoplay')) and pseudorandom('saya_chance') < 1/2.5 then
-			local c = SMODS.create_card( { key = 'j_payasaka_dud', area = i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
-			G.pack_cards } )
+		if next(SMODS.find_card('j_payasaka_freetoplay')) and pseudorandom('saya_chance') < 1 / 2.5 then
+			local c = SMODS.create_card({
+				key = pseudorandom_element(G.P_JOKER_RARITY_POOLS["payasaka_dud"], 'yeah',
+					{
+						starting_deck = true,
+						in_pool = function(center, args)
+							return true
+						end
+					}).key,
+				area = i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
+					G.pack_cards
+			})
 			return c
 		end
 		local c = create_card("Joker",
 			i > math.floor(card.ability.extra / 2) and G.payasaka_gacha_pack_extra or
 			G.pack_cards, nil,
-			G.GAME.payasaka_unweighted_gacha and pseudorandom_element(PTASaka.gacha_rarity_table, pseudoseed('haha'))[1] or PTASaka.pseudorandom_alias_element(
+			G.GAME.payasaka_unweighted_gacha and pseudorandom_element(PTASaka.gacha_rarity_table, pseudoseed('haha'))[1] or
+			PTASaka.pseudorandom_alias_element(
 				G.GAME.payasaka_aliased_gacha_table, 'haha'), true, true, nil)
 		return c
 	end,
@@ -383,7 +393,7 @@ local function PityShow()
 		if c.highlighted then c:highlight(false) end
 		c.states.click.can = false
 	end
-	delay(0.2*G.SETTINGS.GAMESPEED)
+	delay(0.2 * G.SETTINGS.GAMESPEED)
 	for i = 1, #cards do
 		local percent = 1.2 - (i - 0.999) / (#cards - 0.998) * 0.4
 		G.E_MANAGER:add_event(Event({
@@ -429,7 +439,8 @@ G.FUNCS.gacha_select_card = function(e)
 			end
 			G[c1.ability.set == "Joker" and "jokers" or "consumeables"]:emplace(c1)
 			if c1.config.center.key ~= "j_payasaka_dud" then
-				SMODS.calculate_context({payasaka_taking_gacha = true, card = c1, area = G[c1.ability.set == "Joker" and "jokers" or "consumeables"]})
+				SMODS.calculate_context({ payasaka_taking_gacha = true, card = c1, area = G
+				[c1.ability.set == "Joker" and "jokers" or "consumeables"] })
 			end
 			G.GAME.pack_choices = G.GAME.pack_choices - 1
 			if G.GAME.pack_choices <= 0 and not (SMODS.OPENED_BOOSTER.edition and SMODS.OPENED_BOOSTER.edition.negative) then
