@@ -14,6 +14,7 @@ if not q_rankloader then
 		}
 	}
 	q_rankloader.cache = {}
+	q_rankloader.cached_sizes = {}
 	-- add other operators
 	local ops = { ">=", "<=", "~=", "==", ">", "<" }
 	for _, op in ipairs(ops) do
@@ -80,20 +81,21 @@ end
 
 if SMODS and not q_rankloader.old_nfs_read then
 	q_rankloader.old_nfs_read = NFS.read
-	NFS.read = function(path)
+	NFS.read = function(path, nS, sN)
 		if not path:match("%.lua$") then
-			return q_rankloader.old_nfs_read(path)
+			return q_rankloader.old_nfs_read(path, nS, sN)
 		end
 		if q_rankloader.cache[path] then
-			return q_rankloader.cache[path]
+			return q_rankloader.cache[path], q_rankloader.cached_sizes[path]
 		end
-		local content = q_rankloader.old_nfs_read(path)
+		local content, size = q_rankloader.old_nfs_read(path, nS, sN)
 		if not content then
-			return content
+			return content, size
 		end
 		local fixed = q_rankloader.patch_text(content)
 		q_rankloader.cache[path] = fixed
-		return fixed
+		q_rankloader.cached_sizes[path] = size
+		return fixed, size
 	end
 	print("[q_rankloader]: Hooked NFS.read!")
 end
