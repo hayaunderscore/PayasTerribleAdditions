@@ -1500,6 +1500,20 @@ return {
 					"meet the blind requirement"
 				}
 			},
+			bl_payasaka_construct = {
+				name = "The Construct",
+				text = {
+					"Scored chips are deducted by",
+					"Blind requirement / 10",
+				}
+			},
+			bl_payasaka_scholar = {
+				name = "The Scholar",
+				text = {
+					"Ranks are debuffed",
+					"sequentially",
+				}
+			},
 		},
 		Edition = {
 			e_payasaka_jpeg = {

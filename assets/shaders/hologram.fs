@@ -74,7 +74,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
      glow /= 0.7*float(actual_glow_samples);
 	 
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-	texture_coords.x += hologram.b * (rand(vec2(hologram.g, uv.y)) - rand(vec2(hologram.g*6., uv.y*0.9)));
+	vec2 floored_uv = (floor((uv*texture_details.ba)))/max(texture_details.b, texture_details.a);
+	texture_coords.x += hologram.b * (rand(vec2(hologram.g, floored_uv.y)) - rand(vec2(hologram.g*6., floored_uv.y*0.9)));
     
     //Create the horizontal glitch offset effects
     number offset_l = 0.;

@@ -15,6 +15,7 @@ SMODS.Blind {
 	defeat = function(self)
 		G.GAME.payasaka_prelude = false
 	end,
+	no_collection = true,
 	calculate = function(self, blind, context)
 		if G.GAME.payasaka_prelude and context.after then
 			for k, v in ipairs(G.play.cards) do

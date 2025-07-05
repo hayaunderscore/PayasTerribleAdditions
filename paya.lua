@@ -122,6 +122,7 @@ assert(SMODS.load_file("content/sounds.lua"))()
 
 -- Blinds
 PTASaka.RequireFolder("content/blinds/")
+PTASaka.RequireFolder("content/blinds/showdown/")
 
 -- Editions
 PTASaka.RequireFolder("content/editions/")
