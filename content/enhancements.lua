@@ -190,7 +190,7 @@ SMODS.Enhancement {
 	key = 'mimic',
 	atlas = "JOE_Enhancements",
 	pos = { x = 5, y = 0 },
-	config = { mimic_card = true },
+	config = { mimic_card = true, mimic_effect = 2 },
 	pta_credit = {
 		idea = {
 			credit = 'ariyi',
@@ -205,8 +205,8 @@ SMODS.Enhancement {
 	no_rank = true,
 	replace_base_card = true,
 	update = function(self, card, dt)
-		if G.STAGE == G.STAGES.RUN and G.STATE ~= G.STATES.HAND_PLAYED then
-			if card.area == G.hand then
+		if G.STAGE == G.STAGES.RUN then
+			if card.area == G.hand and G.STATE ~= G.STATES.HAND_PLAYED then
 				-- get left card
 				local found = false
 				for i = 1, #card.area.cards do
@@ -215,7 +215,7 @@ SMODS.Enhancement {
 					---@type Card
 					local l = card.area.cards[i-1]
 					if c == card and l then
-						if card.ability.lastbase ~= (l.ability.lastbase or l.base) then
+						if card.ability.last_card_copied ~= card.ability.card_copied then
 							local _atlas, _pos = get_front_spriteinfo((l.ability.conf_card or l.config.card))
 							if not card.children.front then
 								card.children.front = Sprite(card.T.x, card.T.y, card.T.w, card.T.h, _atlas, _pos)
@@ -231,6 +231,8 @@ SMODS.Enhancement {
 								front.atlas = _atlas
 								front:set_sprite_pos(_pos)
 							end
+							card.ability.mimic_effect = 1
+							card.ability.last_card_copied = l.ability.last_card_copied or l.sort_id
 						end
 						if l and l.ability.pta_none then
 							if card.children.front then
@@ -240,6 +242,7 @@ SMODS.Enhancement {
 						end
 						card.ability.lastbase = (l.ability.lastbase or l.base)
 						card.ability.conf_card = (l.ability.conf_card or l.config.card)
+						card.ability.card_copied = l.ability.card_copied or l.sort_id
 						card.ability.pta_none = nil
 						found = true
 						break
@@ -252,6 +255,12 @@ SMODS.Enhancement {
 						end
 					end
 				end
+			end
+			function lerp(a, b, t)
+				return a + (b - a) * t
+			end
+			if card.ability.mimic_effect and (card.area == G.hand or card.area == G.play) then
+				card.ability.mimic_effect = lerp(card.ability.mimic_effect, card.area == G.play and 0 or 0.007, G.real_dt*(card.area == G.play and 15 or 5))
 			end
 		end
 	end,

@@ -386,10 +386,10 @@ target = '''=[SMODS _ "src/card_draw.lua"]'''
 pattern = '''if self.children.front and (self.ability.delayed or (self.ability.effect ~= 'Stone Card' and not self.config.center.replace_base_card)) then'''
 position = 'at'
 payload = '''
-if self.children.front and (self.ability.delayed or self.ability.effect ~= 'Stone Card') and (self.ability.mimic_card or self.config.center_key == "m_payasaka_mimic") then
+if self.children.front and (self.area and not self.area.config.collection) and (self.ability.delayed or self.ability.effect ~= 'Stone Card') and (self.ability.mimic_card or self.config.center_key == "m_payasaka_mimic") then
 	--self.children.front:draw_shader('dissolve')
 	if self.ARGS.send_to_shader then
-		self.ARGS.send_to_shader[3] = self.area == G.hand and 0.007 or 0
+		self.ARGS.send_to_shader[3] = self.ability.mimic_effect or 0
 	end
 	self.children.front:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
 	if self.ARGS.send_to_shader then
