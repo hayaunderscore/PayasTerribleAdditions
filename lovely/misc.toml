@@ -365,9 +365,15 @@ target = '''=[SMODS _ "src/card_draw.lua"]'''
 pattern = '''self.children.center:draw_shader('dissolve')'''
 position = 'at'
 payload = '''
-if self.ability.mimic_card then
+if self.ability.mimic_card or self.config.center_key == "m_payasaka_mimic" then
 	--self.children.center:draw_shader('dissolve')
+	if self.ARGS.send_to_shader then
+		self.ARGS.send_to_shader[3] = 0
+	end
 	self.children.center:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
+	if self.ARGS.send_to_shader then
+		self.ARGS.send_to_shader[3] = nil
+	end
 else
 	self.children.center:draw_shader('dissolve')
 end
@@ -377,15 +383,19 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS _ "src/card_draw.lua"]'''
-pattern = '''self.children.front:draw_shader('dissolve')'''
+pattern = '''if self.children.front and (self.ability.delayed or (self.ability.effect ~= 'Stone Card' and not self.config.center.replace_base_card)) then'''
 position = 'at'
 payload = '''
-if self.ability.mimic_card then
+if self.children.front and (self.ability.delayed or self.ability.effect ~= 'Stone Card') and (self.ability.mimic_card or self.config.center_key == "m_payasaka_mimic") then
 	--self.children.front:draw_shader('dissolve')
+	if self.ARGS.send_to_shader then
+		self.ARGS.send_to_shader[3] = self.area == G.hand and 0.007 or 0
+	end
 	self.children.front:draw_shader('payasaka_hologram', nil, self.ARGS.send_to_shader)
-else
-	self.children.front:draw_shader('dissolve')
-end
+	if self.ARGS.send_to_shader then
+		self.ARGS.send_to_shader[3] = nil
+	end
+elseif self.children.front and (self.ability.delayed or (self.ability.effect ~= 'Stone Card' and not self.config.center.replace_base_card)) then
 '''
 match_indent = true
 

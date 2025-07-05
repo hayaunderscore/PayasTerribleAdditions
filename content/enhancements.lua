@@ -201,8 +201,62 @@ SMODS.Enhancement {
 			colour = HEX('09d707')
 		},
 	},
+	no_suit = true,
+	no_rank = true,
+	replace_base_card = true,
+	update = function(self, card, dt)
+		if G.STAGE == G.STAGES.RUN and G.STATE ~= G.STATES.HAND_PLAYED then
+			if card.area == G.hand then
+				-- get left card
+				local found = false
+				for i = 1, #card.area.cards do
+					---@type Card
+					local c = card.area.cards[i]
+					---@type Card
+					local l = card.area.cards[i-1]
+					if c == card and l then
+						if card.ability.lastbase ~= (l.ability.lastbase or l.base) then
+							local _atlas, _pos = get_front_spriteinfo((l.ability.conf_card or l.config.card))
+							if not card.children.front then
+								card.children.front = Sprite(card.T.x, card.T.y, card.T.w, card.T.h, _atlas, _pos)
+								card.children.front.states.hover = card.states.hover
+								card.children.front.states.click = card.states.click
+								card.children.front.states.drag = card.states.drag
+								card.children.front.states.collide.can = false
+								card.children.front:set_role({major = card, role_type = 'Glued', draw_major = card})
+							end
+							if card.children.front then
+								---@type Sprite
+								local front = card.children.front
+								front.atlas = _atlas
+								front:set_sprite_pos(_pos)
+							end
+						end
+						if l and l.ability.pta_none then
+							if card.children.front then
+								card.children.front:remove()
+								card.children.front = nil
+							end
+						end
+						card.ability.lastbase = (l.ability.lastbase or l.base)
+						card.ability.conf_card = (l.ability.conf_card or l.config.card)
+						card.ability.pta_none = nil
+						found = true
+						break
+					end
+					if c == card and not l then
+						card.ability.pta_none = true
+						if card.children.front then
+							card.children.front:remove()
+							card.children.front = nil
+						end
+					end
+				end
+			end
+		end
+	end,
 	calculate = function(self, card, context)
-		if context.before and card.area ~= G.deck then
+		if context.before and card.area ~= G.deck and card.area ~= G.discard then
 			-- Get left card and copy its ability
 			local left = nil
 			for i = 1, #card.area.cards do
@@ -212,6 +266,7 @@ SMODS.Enhancement {
 			end
 			if left and left.config.center_key ~= "m_payasaka_mimic" then
 				card:set_ability(left.config.center_key, false, true)
+				assert(SMODS.change_base(card, left.base.suit, left.base.value))
 				card.ability.mimic_card = true
 				return {
 					message = "Copied!"

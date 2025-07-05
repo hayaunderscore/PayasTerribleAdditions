@@ -517,6 +517,39 @@ function Card:set_ability(center, ...)
 	end
 end
 
+local old_get_id = Card.get_id
+function Card:get_id()
+	if SMODS.has_enhancement(self, "m_payasaka_mimic") and self.area and (self.area == G.hand or self.area == G.play) then
+		-- get left card
+		for i = 1, #self.area.cards do
+			---@type Card
+			local c = self.area.cards[i]
+			if c == self and self.area.cards[i-1] then
+				return self.area.cards[i-1]:get_id()
+			end
+		end
+	end
+	return old_get_id(self)
+end
+
+local old_is_suit = Card.is_suit
+function Card:is_suit(suit, bypass_debuff, flush_calc)
+	if not flush_calc then
+		if self.debuff and not bypass_debuff then return end
+	end
+	if SMODS.has_enhancement(self, "m_payasaka_mimic") and self.area and (self.area == G.hand or self.area == G.play) then
+		-- get left card
+		for i = 1, #self.area.cards do
+			---@type Card
+			local c = self.area.cards[i]
+			if c == self and self.area.cards[i-1] then
+				return self.area.cards[i-1]:is_suit(suit, bypass_debuff, flush_calc)
+			end
+		end
+	end
+	return old_is_suit(self, suit, bypass_debuff, flush_calc)
+end
+
 local function find_joker_by_sort_id(id)
 	for _, area in ipairs(SMODS.get_card_areas('jokers')) do
 		if area.cards then

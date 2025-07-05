@@ -4,7 +4,7 @@
 	#define MY_HIGHP_OR_MEDIUMP mediump
 #endif
 
-extern MY_HIGHP_OR_MEDIUMP vec2 hologram;
+extern MY_HIGHP_OR_MEDIUMP vec3 hologram;
 extern MY_HIGHP_OR_MEDIUMP number dissolve;
 extern MY_HIGHP_OR_MEDIUMP number time;
 extern MY_HIGHP_OR_MEDIUMP vec4 texture_details;
@@ -51,6 +51,10 @@ vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
     return vec4(shadow ? vec3(0.,0.,0.) : tex.xyz, res > adjusted_dissolve ? (shadow ? tex.a*0.3: tex.a) : .0);
 }
 
+float rand(vec2 co){
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
     //Glow effect
@@ -68,6 +72,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
             }
      }
      glow /= 0.7*float(actual_glow_samples);
+	 
+	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
+	texture_coords.x += hologram.b * (rand(vec2(hologram.g, uv.y)) - rand(vec2(hologram.g*6., uv.y*0.9)));
     
     //Create the horizontal glitch offset effects
     number offset_l = 0.;
@@ -87,7 +94,6 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     vec4 tex = Texel( texture, texture_coords);
     //if (tex.a < 0.001){tex.rgb = vec3(0.,1.,1.);}
-    vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
 
     number light_strength = 0.4*(0.3*sin(2.*hologram.g) + 0.6 + 0.3*sin(hologram.r*3.) + 0.9);
     vec4 final_col;
