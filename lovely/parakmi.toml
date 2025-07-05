@@ -82,7 +82,7 @@ elseif _c.set == 'Back' and not (_c.generate_ui and type(_c.generate_ui) == 'fun
     elseif name_to_check == 'Plasma Deck' then loc_args = {effect_config.ante_scaling}
     elseif name_to_check == 'Erratic Deck' then
     end
-	specific_vars = PTASaka.FH.merge(specific_vars, loc_args)
+	specific_vars = PTASaka.FH.merge(specific_vars or {}, loc_args or {})
 	-- This is ignored if the back already has a generate_ui (like modded backs)
 	SMODS.Center.generate_ui(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
     if specific_vars and specific_vars.pinned then info_queue[#info_queue+1] = {key = 'pinned_left', set = 'Other'} end
