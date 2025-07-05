@@ -738,6 +738,7 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 						---@type Card
 						local _c = G.hand.highlighted[i]
 						_c:set_ability(card.ability.extra.ability)
+						if center == "m_payasaka_mimic" then _c.ability.mimic_card = true end
 						return true
 					end
 				}))
@@ -783,7 +784,7 @@ end
 -- These are tarots technically
 PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 3 })
 PTASaka.create_reward_tarot('truth', { x = 6, y = 0 }, "m_payasaka_true", "Tarot", { x = 0, y = 4 })
-PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 })
+PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 }, 1)
 PTASaka.create_reward_tarot('health', { x = 5, y = 0 }, "m_payasaka_laser", "Tarot", { x = 2, y = 4 })
 
 PTASaka.make_boosters('moji',

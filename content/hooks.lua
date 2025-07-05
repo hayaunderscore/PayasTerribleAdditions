@@ -512,6 +512,9 @@ function Card:set_ability(center, ...)
 			end, PTASaka.headroom_whitelist)
 		end
 	end
+	if self.ability and self.ability.mimic_card then
+		self.ability.mimic_card = nil
+	end
 end
 
 local function find_joker_by_sort_id(id)

@@ -2097,7 +2097,7 @@ return {
 				name = "Righteous Mind",
 				text = {
 					"Enhances {C:attention}#1#",
-					"selected cards to",
+					"selected card to",
 					"{C:attention}#2#s",
 				}
 			},
