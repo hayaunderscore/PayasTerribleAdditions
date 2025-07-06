@@ -260,7 +260,7 @@ SMODS.Enhancement {
 				return a + (b - a) * t
 			end
 			if card.ability.mimic_effect and (card.area == G.hand or card.area == G.play) then
-				card.ability.mimic_effect = lerp(card.ability.mimic_effect, card.area == G.play and 0 or 0.007, G.real_dt*(card.area == G.play and 15 or 5))
+				card.ability.mimic_effect = lerp(card.ability.mimic_effect, 0, G.real_dt*5)
 			end
 		end
 	end,

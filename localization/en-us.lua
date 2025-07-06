@@ -1579,8 +1579,9 @@ return {
 			m_payasaka_mimic = {
 				name = "Mimic Card",
 				text = {
-					"{C:attention}Mimics{} the ability of",
+					"{C:attention}Mimics{} the properties of",
 					"the card to the left",
+					"{C:inactive,s:0.8}(Except seals and editions)"
 				}
 			},
 		},
