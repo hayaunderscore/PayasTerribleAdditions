@@ -11,13 +11,13 @@ SMODS.Blind {
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 3 },
 	dollars = 6,
-	mult = 12,
+	mult = 4,
 	boss_colour = HEX('7b194e'),
 	boss = { min = 8, showdown = true },
 	set_blind = function(self)
 		G.GAME.payasaka_manifold_mayhem = true
 		G.GAME.payasaka_old_manifest_chips = G.GAME.blind.chips
-		local mult = math.max(3 * ((G.GAME.payasaka_small_blind_surplus or 2)*(G.GAME.payasaka_big_blind_surplus or 2)), 12)
+		local mult = math.max(((G.GAME.payasaka_small_blind_surplus or 2)*(G.GAME.payasaka_big_blind_surplus or 2)), 4)
 		-- Cryptid bros dont get no nerf
 		if to_big(mult) > to_big(100) and not Cryptid then mult = to_big(100) end
 		mult = math.floor(mult)
