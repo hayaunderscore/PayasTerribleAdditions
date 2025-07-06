@@ -1449,6 +1449,13 @@ return {
 					"listed when scored"
 				}
 			},
+			j_payasaka_kinghalo = {
+				name = "King Halo",
+				text = {
+					"Retriggers {C:attention}unscored{} card",
+					"effects {C:attention}#1#{} additional times"
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
