@@ -2,7 +2,7 @@ SMODS.Blind {
 	key = "construct",
 	atlas = "JOE_Blinds",
 	pos = {x = 0, y = 5},
-	dollars = 8,
+	dollars = 5,
 	mult = 2,
 	boss = {min = 0, max = 1999},
 	boss_colour = HEX('a58445'),

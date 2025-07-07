@@ -10,7 +10,7 @@ SMODS.Blind {
 	key = 'showdown_manifold_mayhem',
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 3 },
-	dollars = 6,
+	dollars = 8,
 	mult = 4,
 	boss_colour = HEX('7b194e'),
 	boss = { min = 8, showdown = true },

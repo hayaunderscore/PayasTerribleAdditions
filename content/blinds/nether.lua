@@ -2,7 +2,7 @@ SMODS.Blind {
 	key = "nether",
 	atlas = "JOE_Blinds",
 	pos = {x = 0, y = 0},
-	dollars = 8,
+	dollars = 6,
 	mult = 2,
 	boss = {min = 0, max = 1999},
 	boss_colour = HEX('35153F'),

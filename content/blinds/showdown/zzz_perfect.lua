@@ -11,7 +11,7 @@ SMODS.Blind {
 	key = 'showdown_sweet_sleep',
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 4 },
-	dollars = 6,
+	dollars = 8,
 	mult = 4,
 	boss_colour = HEX('ff63ac'),
 	boss = { min = 39, showdown = true },
