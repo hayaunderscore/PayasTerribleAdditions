@@ -435,7 +435,7 @@ local tabs = function()
 					{ card_limit = 3, type = 'title', highlight_limit = 0, collection = true }
 				)
 				for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
-					local area = k <= math.ceil(#PTASaka.SetToggle.obj_buffer/2) and G.pta_features_area or G.pta_features_area_two
+					local area = k <= math.ceil(#G.P_CENTER_POOLS.PTASet/2) and G.pta_features_area or G.pta_features_area_two
 					local card = Card(area.T.x + (area.T.w / 2), area.T.y,
 						G.CARD_W, G.CARD_H, G.P_CARDS.empty, v)
 					area:emplace(card)

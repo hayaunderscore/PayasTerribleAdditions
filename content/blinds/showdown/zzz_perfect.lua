@@ -58,7 +58,7 @@ SMODS.Blind {
 					}))
 				end
 			else
-				if to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult)) == to_big(Talisman and "Infinity" or math.huge) then
+				if to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult)) == to_big(Talisman and "Infinity" or math.huge) or to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult)) == to_big(Talisman and "NaN" or -(math.huge/math.huge)) then
 					G.GAME.payasaka_scored_naneinfs = G.GAME.payasaka_scored_naneinfs + 1
 				end
 			end

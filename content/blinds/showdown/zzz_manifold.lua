@@ -32,6 +32,9 @@ SMODS.Blind {
 	end,
 	defeat = function(self)
 		G.GAME.payasaka_manifold_mayhem = false
+	end,
+	get_loc_debuff_text = function(self)
+		return "Blind multiplier is Small Blind surplus * Big Blind surplus"
 	end
 }
 

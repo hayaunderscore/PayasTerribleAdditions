@@ -1556,15 +1556,15 @@ return {
 			bl_payasaka_showdown_sweet_sleep_alt = {
 				name = 'Sweet Sleep',
 				text = {
-					"Multiplies chips by X#1#",
-					"if current chips does not",
+					"Multiplies score by X#1#",
+					"if current score does not",
 					"meet the blind requirement"
 				}
 			},
 			bl_payasaka_construct = {
 				name = "The Construct",
 				text = {
-					"Scored chips are deducted by",
+					"Score is deducted by",
 					"Blind requirement / 10",
 				}
 			},
@@ -1572,7 +1572,7 @@ return {
 				name = "The Scholar",
 				text = {
 					"Ranks are debuffed",
-					"sequentially",
+					"sequentially per hand",
 				}
 			},
 		},
@@ -2945,6 +2945,40 @@ return {
 				"______",
 				"{f:payasaka_pokemon}TYPE",
 				"{f:payasaka_pokemon}CoolTrainer♀"
+			},
+			lq_manifold_1 = {
+				"Don't push",
+				"your luck!"
+			},
+			lq_manifold_2 = {
+				"Maybe try scoring",
+				"less next time?"
+			},
+			lq_manifold_3 = {
+				"The looming 183X",
+				"Base boss blind:"
+			},
+			lq_manifold_4 = {
+				"Thou shan't not",
+				"proceed... Maybe.",
+			},
+			lq_perfectheart_1 = {
+				"Remember, you",
+				"brought this",
+				"upon yourself!"
+			},
+			lq_perfectheart_2 = {
+				"It seems you must",
+				"try a bit harder.."
+			},
+			lq_perfectheart_3 = {
+				"Don't make me",
+				"do this again."
+			},
+			lq_perfectheart_4 = {
+				"Tsk.. Showing your",
+				"emotions makes you",
+				"easier to read...",
 			},
 		},
 		dictionary = {

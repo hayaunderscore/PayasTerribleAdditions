@@ -328,7 +328,7 @@ payload = '''
 blind_choice.config.key == "bl_payasaka_showdown_sweet_sleep" and {n=G.UIT.R, config={align = "cm", minh = 0.6}, nodes={
    {n=G.UIT.O, config={w=0.5,h=0.5, colour = G.C.BLUE, object = stake_sprite, hover = true, can_collide = false}},
    {n=G.UIT.B, config={h=0.1,w=0.1}},
-   {n=G.UIT.T, config={text = G.GAME.round_resets.ante == 39 and "TREE(3)" or number_format(blind_amt), scale = G.GAME.round_resets.ante == 39 and 0.9 or score_number_scale(0.9, number_format(blind_amt)), colour = disabled and G.C.UI.TEXT_INACTIVE or G.C.RED, shadow =  not disabled}}
+   {n=G.UIT.T, config={text = G.GAME.round_resets.ante == 39 and "TREE(3)" or number_format(blind_amt), scale = G.GAME.round_resets.ante == 39 and 0.8 or score_number_scale(0.9, number_format(blind_amt)), colour = disabled and G.C.UI.TEXT_INACTIVE or G.C.RED, shadow =  not disabled}}
 }} or 
 '''
 match_indent = true
