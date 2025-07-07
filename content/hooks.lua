@@ -141,13 +141,6 @@ function Game:start_run(args)
 		PTASaka.added_ortalab_food_jokers = true
 	end
 
-	-- Junko/Dango
-	PTASaka.food_jokers = {}
-	-- Index based list -> Key-Value based list
-	for k, v in ipairs(G.P_CENTER_POOLS["Food"]) do
-		PTASaka.food_jokers[v.key] = v
-	end
-
 	G.GAME.payasaka_reward_tarot_rate = G.GAME.payasaka_reward_tarot_rate or 0.025
 end
 

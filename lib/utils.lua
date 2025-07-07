@@ -77,7 +77,7 @@ function PTASaka.VashDestroyable(card)
 	if card.children.center.pinch.x then return false end
 	-- Otherwise...
 	return card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or
-	(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT)) or
+	(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
 	(card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
 end
 

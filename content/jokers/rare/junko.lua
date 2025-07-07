@@ -25,7 +25,7 @@ SMODS.Joker {
 		for _, joker in ipairs(G.jokers.cards) do
 			---@type SMODS.Joker
 			local center = joker.config.center
-			if PTASaka.food_jokers[center.key] and joker ~= card then
+			if center.pools and center.pools["Food"] and joker ~= card then
 				food = true
 				break
 			end
@@ -37,7 +37,7 @@ SMODS.Joker {
 			if context.other_joker then
 				---@type SMODS.Joker
 				local center = context.other_joker.config.center
-				if PTASaka.food_jokers[center.key] and context.other_joker ~= card then
+				if center.pools and center.pools["Food"] and context.other_joker ~= card then
 					return {
 						x_mult = card.ability.extra.x_mult
 					}

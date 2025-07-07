@@ -15,7 +15,7 @@ SMODS.Joker {
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card
 					and not G.jokers.cards[i].getting_sliced
-					and PTASaka.food_jokers[G.jokers.cards[i].config.center.key]
+					and G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools["Food"]
 				then
 					food_jokers[#food_jokers + 1] = G.jokers.cards[i]
 				end

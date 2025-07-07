@@ -313,7 +313,7 @@ position = "after"
 payload = '''
 G.GAME.found_food_jokers = G.GAME.found_food_jokers or {}
 G.GAME.found_food_joker_count = G.GAME.found_food_joker_count or 0
-if PTASaka.food_jokers[self.config.center_key] and not G.GAME.found_food_jokers[self.config.center_key] then
+if self.config.center.pools and self.config.center.pools["Food"] and not G.GAME.found_food_jokers[self.config.center_key] then
 	G.GAME.found_food_jokers[self.config.center_key] = true
 	G.GAME.found_food_joker_count = G.GAME.found_food_joker_count + 1
 end

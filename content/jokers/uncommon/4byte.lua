@@ -15,7 +15,7 @@ SMODS.Joker {
 		if context.card_added and not context.blueprint_card then
 			local c = context.card
 			G.GAME.found_food_jokers = G.GAME.found_food_jokers or {}
-			if c and PTASaka.food_jokers[c.config.center_key] and not G.GAME.found_food_jokers[c.config.center_key] then
+			if c and c.config.center and c.config.center.pools and c.config.center.pools["Food"] and not G.GAME.found_food_jokers[c.config.center_key] then
 				return {
 					message = localize('k_upgrade_ex')
 				}
