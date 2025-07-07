@@ -2,12 +2,12 @@
 if not q_rankloader then
 	q_rankloader = {}
 	q_rankloader.patterns = {
-		-- something:get_id() == id
+		-- something:get_id() % id == id
 		{
 			patt = "([%w_.#]+):get_id%(%s*%)%s*%%%s*([%w_.%(%)#]+)%s*==%s*([%w_.%(%)#]+)",
 			repl = "ids_op(%1, \"mod\", %2, %3)",
 		},
-		-- something[index]:get_id() == id
+		-- something[index]:get_id() % id == id
 		{
 			patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*%%%s*([%w_.%(%)]+)%s*==%s*([%w_.%(%)]+)",
 			repl = "ids_op(%1, \"mod\", %2, %3)"
@@ -34,7 +34,7 @@ if not q_rankloader then
 			patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.#]+%b[]):get_id%(%s*%)",
 			repl = "ids_op(%1, \"" .. op .. "\", %2:get_id())"
 		})
-		-- something[index]:get_id() [op] ???
+		-- something[index]:get_id() [op] other:get_id()
 		table.insert(q_rankloader.patterns, {
 			patt = "([%w_.#]+%b[]):get_id%(%s*%)%s*" .. esc .. "%s*([%w_.%(%)]+)",
 			repl = "ids_op(%1, \"" .. op .. "\", %2)"
