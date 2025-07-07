@@ -1438,6 +1438,9 @@ return {
 					"{X:mult,C:white}X#1#{} Mult if played",
 					"hand contains a {C:attention}Pair{}",
 					"with {C:attention}matching{} suits"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}spit on that thang",
 				}
 			},
 			j_payasaka_paya_friend = {
@@ -1447,6 +1450,9 @@ return {
 					"permanently gains",
 					"{C:attention}any{} of the values",
 					"listed when scored"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}cracked hiker???",
 				}
 			},
 			j_payasaka_kinghalo = {
@@ -1454,6 +1460,9 @@ return {
 				text = {
 					"Retriggers {C:attention}unscored{} card",
 					"effects {C:attention}#1#{} additional times"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Is Playing Balatro",
 				}
 			},
 			j_payasaka_adigail = {
@@ -1463,6 +1472,9 @@ return {
 					"all {C:attention}discovered{} poker hands",
 					"to Chips and Mult",
 					"{C:inactive,s:0.8}(Does not include secret hands)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}challenpoints.ogg",
 				}
 			},
 			j_payasaka_sa8s = {
@@ -1471,6 +1483,9 @@ return {
 					"Halves the denominator of",
 					"all {C:attention}listed {C:green,E:1,S:1.1}probabilities",
 					"{C:inactive}(ex: {C:green}1 in 6{C:inactive} -> {C:green}1 in 3{C:inactive})",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Basically just OA6",
 				}
 			},
 			j_payasaka_ha20s = {
@@ -1478,6 +1493,9 @@ return {
 				text = {
 					"{C:attention}Retrigger{} cards or jokers",
 					"with {C:green,E:1,S:1.1}probabilities{} once",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Retrigger jokers...",
 				}
 			},
 			j_payasaka_potential = {
@@ -1487,6 +1505,9 @@ return {
 					"a random Joker when sold",
 					"Chances increase per {C:attention}unique{}",
 					"poker hand played"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Invisible Joker... 2!",
 				}
 			},
 			j_payasaka_chicot = {
