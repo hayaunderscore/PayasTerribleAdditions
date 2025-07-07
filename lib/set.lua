@@ -1,4 +1,6 @@
 -- Set toggles, similar to Cryptid
+---@class SetToggle: SMODS.Center
+---@overload fun(self: SetToggle): SetToggle
 PTASaka.SetToggle = SMODS.Center:extend{
 	set = "PTASet",
 	pos = { x = 0, y = 0 },
