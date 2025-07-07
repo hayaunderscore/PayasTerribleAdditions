@@ -64,44 +64,48 @@ function Game:start_run(args)
 	merged.mult_ante = G.GAME.round_resets.ante
 
 	-- create switch butan for dos cards
-	G.payasaka_dos_cardarea_switch = UIBox {
-		definition = { n = G.UIT.ROOT, config = { align = 'cm', colour = G.C.CLEAR, minw = G.deck.T.w, minh = 0.5 }, nodes = {
-			{ n = G.UIT.R, nodes = {
-				{
-					n = G.UIT.C,
-					config = {
-						align = "tm",
-						minw = 2,
-						padding = 0.1,
-						r = 0.1,
-						hover = true,
-						colour = G.C.UI.BACKGROUND_DARK,
-						shadow = true,
-						button = "payasaka_open_dos_cardarea",
-						func = "payasaka_can_open_dos_cardarea",
-					},
-					nodes = {
-						{
-							n = G.UIT.R,
-							config = { align = "bcm", padding = 0 },
-							nodes = {
-								{
-									n = G.UIT.T,
-									config = {
-										text = "DOS Cards",
-										scale = 0.35,
-										colour = G.C.UI.TEXT_LIGHT,
-										id = "payasaka_dos_text"
+	if not TheFamily then
+		G.payasaka_dos_cardarea_switch = UIBox {
+			definition = { n = G.UIT.ROOT, config = { align = 'cm', colour = G.C.CLEAR, minw = G.deck.T.w, minh = 0.5 }, nodes = {
+				{ n = G.UIT.R, nodes = {
+					{
+						n = G.UIT.C,
+						config = {
+							align = "tm",
+							minw = 2,
+							padding = 0.1,
+							r = 0.1,
+							hover = true,
+							colour = G.C.UI.BACKGROUND_DARK,
+							shadow = true,
+							button = "payasaka_open_dos_cardarea",
+							func = "payasaka_can_open_dos_cardarea",
+						},
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "bcm", padding = 0 },
+								nodes = {
+									{
+										n = G.UIT.T,
+										config = {
+											text = "DOS Cards",
+											scale = 0.35,
+											colour = G.C.UI.TEXT_LIGHT,
+											id = "payasaka_dos_text"
+										}
 									}
 								}
-							}
-						},
+							},
+						}
 					}
-				}
-			} }
-		} },
-		config = { major = G.deck, align = 'tm', offset = { x = 0, y = -0.35 }, bond = 'Weak' }
-	}
+				} }
+			} },
+			config = { major = G.deck, align = 'tm', offset = { x = 0, y = -0.35 }, bond = 'Weak' }
+		}
+	end
+	PTASaka.dos_card_status = "DOS Cards"
+	PTASaka.dos_card_status_update_tf = nil
 
 	--G.payasaka_dos_cardarea_switch.role.major = nil
 

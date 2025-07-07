@@ -21,6 +21,7 @@ SMODS.Blind {
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					SMODS.juice_up_blind()
+					return true
 				end
 			})
 			G.E_MANAGER:add_event(Event({

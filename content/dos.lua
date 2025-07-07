@@ -248,13 +248,22 @@ PTASaka.DOSCard {
 ]]
 
 G.FUNCS.payasaka_open_dos_cardarea = function(e)
+	PTASaka.dos_card_status_update_tf = true
 	if not G.deck.states.visible then
 		G.FUNCS.payasaka_open_deck(e)
+		PTASaka.dos_card_status = "DOS Cards"
 		return
 	end
+	PTASaka.dos_card_status = "Deck"
+	G.FUNCS.payasaka_open_dos_area_real(e)
+end
+
+G.FUNCS.payasaka_open_dos_area_real = function(e)
 	G.CONTROLLER.dos_area_lock = true
 	G.E_MANAGER:add_event(Event({
 		trigger = 'immediate',
+		blocking = false,
+		--blockable = false,
 		func = function()
 			play_sound('other1')
 			--G.deck:set_role({ xy_bond = 'Weak' })
@@ -265,15 +274,20 @@ G.FUNCS.payasaka_open_dos_cardarea = function(e)
 	G.E_MANAGER:add_event(Event({
 		trigger = 'after',
 		delay = 0.3,
+		blocking = false,
+		--blockable = false,
 		func = (function()
 			--PTASaka.dos_cardarea:set_role({ xy_bond = 'Weak' })
 			PTASaka.dos_cardarea.T.y = PTASaka.dos_cardarea.T.y - 5
-			G.payasaka_dos_cardarea_switch.role.major = PTASaka.dos_cardarea
 			G.deck.states.visible = false
 			G.CONTROLLER.dos_area_lock = false
-			local text = G.payasaka_dos_cardarea_switch:get_UIE_by_ID("payasaka_dos_text")
-			text.config.text = "Deck"
-			G.payasaka_dos_cardarea_switch:recalculate()
+			if G.payasaka_dos_cardarea_switch then
+				G.payasaka_dos_cardarea_switch.role.major = PTASaka.dos_cardarea
+				local text = G.payasaka_dos_cardarea_switch:get_UIE_by_ID("payasaka_dos_text")
+				text.config.text = "Deck"
+				PTASaka.dos_card_status = text.config.text
+				G.payasaka_dos_cardarea_switch:recalculate()
+			end
 			return true
 		end)
 	}))
@@ -283,6 +297,8 @@ G.FUNCS.payasaka_open_deck = function(e)
 	G.CONTROLLER.dos_area_lock = true
 	G.E_MANAGER:add_event(Event({
 		trigger = 'immediate',
+		blocking = false,
+		--blockable = false,
 		func = function()
 			play_sound('other1')
 			--PTASaka.dos_cardarea:set_role({ xy_bond = 'Weak' })
@@ -293,15 +309,20 @@ G.FUNCS.payasaka_open_deck = function(e)
 	G.E_MANAGER:add_event(Event({
 		trigger = 'after',
 		delay = 0.1,
+		blocking = false,
+		--blockable = false,
 		func = (function()
 			--G.deck:set_role({ xy_bond = 'Weak' })
 			G.deck.T.y = G.deck.T.y - 5
-			G.payasaka_dos_cardarea_switch.role.major = G.deck
 			G.deck.states.visible = true
 			G.CONTROLLER.dos_area_lock = false
-			local text = G.payasaka_dos_cardarea_switch:get_UIE_by_ID("payasaka_dos_text")
-			text.config.text = "DOS Cards"
-			G.payasaka_dos_cardarea_switch:recalculate()
+			if G.payasaka_dos_cardarea_switch then
+				G.payasaka_dos_cardarea_switch.role.major = G.deck
+				local text = G.payasaka_dos_cardarea_switch:get_UIE_by_ID("payasaka_dos_text")
+				text.config.text = "DOS Cards"
+				PTASaka.dos_card_status = text.config.text
+				G.payasaka_dos_cardarea_switch:recalculate()
+			end
 			return true
 		end)
 	}))

@@ -1,5 +1,70 @@
 -- Various UI stuff
 
+--#region TheFamily tabs
+
+PTASaka.dos_card_status = "DOS Cards"
+
+if TheFamily then
+	TheFamily.create_tab_group {
+		key = 'pta',
+		order = 2,
+	}
+	TheFamily.create_tab {
+		key = 'pta_dos_cards',
+		group_key = 'pta',
+		order = 0,
+		keep = true,
+		type = "switch",
+		front_label = function(definition, card)
+			return {
+				text = PTASaka.dos_card_status,
+			}
+		end,
+		center = "c_payasaka_dos_wildtwo",
+		popup = function(definition, card)
+			PTASaka.dos_card_status_ui = "Toggle "..PTASaka.dos_card_status
+			return {
+				name = {
+					{
+						n = G.UIT.T,
+						config = {
+							ref_value = "dos_card_status_ui",
+							ref_table = PTASaka,
+							colour = G.C.WHITE,
+							scale = 0.4,
+						},
+					},
+				},
+			}
+		end,
+		update = function(definition, card)
+			if PTASaka.dos_card_status_update_tf then
+				if PTASaka.dos_card_status == "Deck" then
+					card.area:add_to_highlighted(card)
+				else
+					card.area:remove_from_highlighted(card)
+				end
+				PTASaka.dos_card_status_update_tf = nil
+			end
+		end,
+		click = function(definition, card)
+			if G.CONTROLLER.dos_area_lock or G.CONTROLLER.lock_input or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0) or G.CONTROLLER.locked then
+				return true
+			end
+		end,
+		highlight = function(definition, card)
+			if G.CONTROLLER.dos_area_lock then return end
+			return G.FUNCS.payasaka_open_dos_area_real()
+		end,
+		unhighlight = function(definition, card)
+			if G.CONTROLLER.dos_area_lock then return end
+			return G.FUNCS.payasaka_open_deck()
+		end,
+	}
+end
+
+--#endregion
+
 --#region Credit mod badges
 
 -- Colours
