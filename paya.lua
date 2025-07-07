@@ -144,8 +144,10 @@ assert(SMODS.load_file("content/jokers/rarity_definitions.lua"))()
 PTASaka.RequireFolder("content/jokers/common/")
 -- Uncommon
 PTASaka.RequireFolder("content/jokers/uncommon/")
+PTASaka.RequireFolder("content/jokers/uncommon/friend/")
 -- Rare
 PTASaka.RequireFolder("content/jokers/rare/")
+PTASaka.RequireFolder("content/jokers/rare/friend/")
 -- Legendary
 PTASaka.RequireFolder("content/jokers/legendary/")
 if conf["Ahead"] then

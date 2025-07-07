@@ -301,6 +301,12 @@ function PTASaka.arrow(arrow, val1, val2, og_arrow)
 	else
 		val = val ^ PTASaka.arrow(arrow - 1, val, val2, arrow)
 	end
+	if not Talisman then
+		if tostring(math.abs(val)) == tostring(math.abs(math.huge/math.huge)) then
+			-- Do not allow -nan in some circumstances (both chips and mult are math.huge for example)
+			return math.huge
+		end
+	end
 	return val
 end
 

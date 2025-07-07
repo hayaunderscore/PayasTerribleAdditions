@@ -185,6 +185,13 @@ SMODS.Shader {
 	path = 'hologram.fs'
 }
 
+-- SHUT
+local should_hide_front = Card.should_hide_front
+function Card:should_hide_front()
+	if self.config.center_key == "m_payasaka_mimic" then return false end
+	if should_hide_front then return should_hide_front(self) end
+end
+
 SMODS.Enhancement {
 	name = "pta-Mimic",
 	key = 'mimic',

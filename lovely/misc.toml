@@ -399,3 +399,24 @@ elseif self.children.front and (self.ability.delayed or (self.ability.effect ~= 
 '''
 match_indent = true
 
+# Minor fixes for Huh! All 20s with Ten 10s
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.calculate_effect(eff, eff.card); j = j+1; _, eff = next(reps[j]) '''
+position = 'at'
+payload = '''
+SMODS.calculate_effect(eff, eff.card); j = j+1; _, eff = next(reps[j] or {}); eff = eff or {}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''local _, eff = next(reps[j])'''
+position = 'at'
+payload = '''
+local _, eff = next(reps[j] or {})
+if not eff then eff = {} end
+'''
+match_indent = true

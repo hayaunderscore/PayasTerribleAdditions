@@ -1456,6 +1456,39 @@ return {
 					"effects {C:attention}#1#{} additional times"
 				}
 			},
+			j_payasaka_adigail = {
+				name = "Adigail",
+				text = {
+					"Adds double the {C:attention}average{} of",
+					"all {C:attention}discovered{} poker hands",
+					"to Chips and Mult",
+					"{C:inactive,s:0.8}(Does not include secret hands)"
+				}
+			},
+			j_payasaka_sa8s = {
+				name = "Shucks! All 8s",
+				text = {
+					"Halves the denominator of",
+					"all {C:attention}listed {C:green,E:1,S:1.1}probabilities",
+					"{C:inactive}(ex: {C:green}1 in 6{C:inactive} -> {C:green}1 in 3{C:inactive})",
+				}
+			},
+			j_payasaka_ha20s = {
+				name = "Huh! All 20s",
+				text = {
+					"{C:attention}Retrigger{} cards or jokers",
+					"with {C:green,E:1,S:1.1}probabilities{} once",
+				}
+			},
+			j_payasaka_potential = {
+				name = "Potential Energy",
+				text = {
+					"{C:green}#1# in #2#{} chance of {C:attention}duplicating",
+					"a random Joker when sold",
+					"Chances increase per {C:attention}unique{}",
+					"poker hand played"
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
