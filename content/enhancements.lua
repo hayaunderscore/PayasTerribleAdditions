@@ -421,7 +421,7 @@ end
 
 local remove_card_ref = CardArea.remove_card
 function CardArea:remove_card(card, discarded_only, ...)
-	if card and (not card.ability.akyrs_sigma) and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
+	if card and card.ability and (not card.ability.akyrs_sigma) and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
 		if card.ability.set == "Joker" and G.jokers then
 			G.jokers.config.card_limit = G.jokers.config.card_limit + (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
 		elseif card.ability.set ~= "Joker" and G.consumeables then

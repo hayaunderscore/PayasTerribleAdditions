@@ -71,14 +71,26 @@ function PTASaka.VashDestroyable(card)
 	if G.PAYASAKA_IGNORE_VASH_SENTIMENT then return false end
 	-- Sold card, proceed with destruction
 	if G.CONTROLLER.locks.selling_card then return false end
-	-- Food joker
-	if card.config.center.pools and card.config.center.pools["Food"] then return false end
-	-- Food joker not in the Food pool, just in case
-	if card.children.center.pinch.x then return false end
 	-- Otherwise...
-	return card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or
+	local ret = card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or
 	(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
 	(card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
+	if (not ret) and card.old_area then
+		ret = card.old_area == G.jokers or card.old_area == G.consumeables or card.old_area == G.payasaka_dos_cardarea or
+		(card.old_area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
+		(card.old_area == G.play and G.STATE == G.STATES.HAND_PLAYED)
+	end
+	return ret
+end
+
+-- Check if a Joker is a Food joker
+function PTASaka.is_food(card)
+	if card.ability.set ~= "Joker" then return false end
+	-- Food joker
+	if card.config.center.pools and card.config.center.pools["Food"] then return true end
+	-- Food joker not in the Food pool, just in case
+	if card.children.center.pinch.x then return true end
+	return false
 end
 
 -- Check if Vash should destroy a Joker
@@ -88,7 +100,7 @@ end
 function PTASaka.VashDestroy(card, no_dissolve)
 	local stop_removal = false
 	-- Check for Vash
-	if next(SMODS.find_card('j_payasaka_vash')) and card.config.center_key ~= "j_payasaka_vash" and PTASaka.VashDestroyable(card) and not no_dissolve then
+	if (next(SMODS.find_card('j_payasaka_vash')) or next(SMODS.find_card('j_payasaka_manhattan'))) and card.config.center_key ~= "j_payasaka_vash" and PTASaka.VashDestroyable(card) and not no_dissolve then
 		local ret = {}
 		SMODS.calculate_context({ payasaka_card_removed = true, card = card }, ret); SMODS.trigger_effects(ret)
 		for k, v in ipairs(ret) do
@@ -96,6 +108,9 @@ function PTASaka.VashDestroy(card, no_dissolve)
 				stop_removal = _v.prevent_remove or stop_removal
 			end
 		end
+	end
+	if stop_removal and card.area == nil and card.old_area then
+		card.old_area:emplace(card)
 	end
 	return stop_removal
 end

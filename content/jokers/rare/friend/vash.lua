@@ -28,6 +28,9 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if (context.payasaka_card_removed or context.payasaka_prevent_destroy_card) and not context.blueprint_card then
 			if context.card then
+				if PTASaka.is_food(context.card) then
+					return nil, false
+				end
 				if context.card.ability.set == "Joker" then
 					card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 				else

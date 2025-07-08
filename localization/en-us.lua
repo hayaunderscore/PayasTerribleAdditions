@@ -1510,6 +1510,23 @@ return {
 					"{C:inactive,s:0.8}Invisible Joker... 2!",
 				}
 			},
+			j_payasaka_bakushin = {
+				name = "Sakura Bakushin O",
+				text = {
+					"{X:attention,C:white}X#1#{} Speed",
+					"{C:inactive,s:0.8}Speed of what????",
+				},
+			},
+			j_payasaka_manhattan = {
+				name = "Manhattan Cafe",
+				text = {
+					"When a {C:attention}Food Joker{} is",
+					"about to be {C:red,E:1}destroyed{},",
+					"turn that Joker into",
+					"a {C:attention}random{} Food Joker",
+					"and {C:red,E:1}prevent destruction"
+				},
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {

@@ -420,3 +420,68 @@ local _, eff = next(reps[j] or {})
 if not eff then eff = {} end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''self.TIMERS.TOTAL = self.TIMERS.TOTAL + dt*(self.SPEEDFACTOR)'''
+position = 'before'
+payload = '''
+if G.jokers then
+	self.bakushin_multiplier = (2 ^ #SMODS.find_card('j_payasaka_bakushin'))
+	self.SPEEDFACTOR = self.SPEEDFACTOR * self.bakushin_multiplier
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''--move and update all other moveables'''
+position = 'before'
+payload = '''
+if G.jokers then
+	self.real_dt = self.real_dt * (self.bakushin_multiplier or 1)
+	self.TIMERS.REAL = self.TIMERS.REAL * (self.bakushin_multiplier or 1)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''local move_dt = math.min(1/20, self.real_dt)'''
+position = 'before'
+payload = '''
+if G.jokers then
+	self.real_dt = self.real_dt / (self.bakushin_multiplier or 1)
+	self.TIMERS.REAL = self.TIMERS.REAL / (self.bakushin_multiplier or 1)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''if not G.debug_UI_toggle then '''
+position = 'before'
+payload = '''
+if G.jokers then
+	self.real_dt = self.real_dt * (self.bakushin_multiplier or 1)
+	self.TIMERS.REAL = self.TIMERS.REAL * (self.bakushin_multiplier or 1)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''if self.achievement_notification then '''
+position = 'before'
+payload = '''
+if G.jokers then
+	self.real_dt = self.real_dt / (self.bakushin_multiplier or 1)
+	self.TIMERS.REAL = self.TIMERS.REAL / (self.bakushin_multiplier or 1)
+end
+'''
+match_indent = true

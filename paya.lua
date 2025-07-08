@@ -142,6 +142,7 @@ assert(SMODS.load_file("content/boosters.lua"))()
 assert(SMODS.load_file("content/jokers/rarity_definitions.lua"))()
 -- Common
 PTASaka.RequireFolder("content/jokers/common/")
+PTASaka.RequireFolder("content/jokers/common/friend/")
 -- Uncommon
 PTASaka.RequireFolder("content/jokers/uncommon/")
 PTASaka.RequireFolder("content/jokers/uncommon/friend/")

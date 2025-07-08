@@ -1152,6 +1152,16 @@ function CardArea:update(dt)
 	end
 end
 
+-- yeah
+local c_up = Card.update
+function Card:update(dt)
+	if self.area then
+		-- Annoying fix for Jokers that remove their area for Vash/Manhattan Cafe
+		self.old_area = self.area
+	end
+	return c_up(self, dt)
+end
+
 -- Round evaluation stuff
 local update_round_evalref = Game.update_round_eval
 function Game:update_round_eval(dt)
