@@ -2100,8 +2100,9 @@ return {
 			c_payasaka_hone = {
 				name = "Align",
 				text = {
-					"Levels up the 2 {C:purple,E:1}most played",
-					"poker hands by {C:attention}#1#",
+					"Levels up the {C:attention}2",
+					"{C:purple,E:1}most played{} poker",
+					"hands by {C:attention}#1#",
 				}
 			},
 			c_payasaka_metalicize = {
