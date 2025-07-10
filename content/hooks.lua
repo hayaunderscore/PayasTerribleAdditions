@@ -1739,6 +1739,7 @@ function Game:update(dt)
 	local recuperares = SMODS.find_card('j_payasaka_recuperare')
 	PTASaka.recuperares = next(recuperares) and recuperares
 	local niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
+	PTASaka.scale_modifier_jokers = SMODS.find_card('j_payasaka_oguri')
 	-- Get ahead count after updating
 	for _, s in ipairs(PTASaka.WhitelistedAheadAreas) do
 		local area = G[s]

@@ -1527,6 +1527,16 @@ return {
 					"and {C:red,E:1}prevent destruction"
 				},
 			},
+			j_payasaka_oguri = {
+				name = "Oguri Cap",
+				text = {
+					"Scaling Jokers scale",
+					"{C:attention}twice{} as fast",
+					"{C:inactive,s:0.8}(e.g. +2 -> +4)",
+					"{C:inactive,s:0.8}Does not include",
+					"{C:inactive,s:0.8}run scaling jokers"
+				},
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {

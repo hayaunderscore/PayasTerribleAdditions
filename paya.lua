@@ -228,3 +228,6 @@ assert(SMODS.load_file("lib/set.lua"))()
 
 -- UI stuff not related to gameplay
 assert(SMODS.load_file("lib/ui.lua"))()
+
+-- Scale library
+assert(SMODS.load_file("lib/scale.lua"))()
