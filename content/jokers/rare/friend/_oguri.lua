@@ -9,6 +9,7 @@ SMODS.Joker {
 	blueprint_compat = false,
 	demicoloncompat = false,
 	immutable = true,
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	pta_credit = {
 		art = {
 			credit = 'ariyi',

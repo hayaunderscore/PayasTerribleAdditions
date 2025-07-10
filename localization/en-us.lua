@@ -913,11 +913,10 @@ return {
 			j_payasaka_patrick = {
 				name = "Lucky",
 				text = {
-					"{X:mult,C:white}X#1#{} Mult for {C:attention}every",
-					"{C:risk}Risk{} card used in",
-					"this {C:attention}run, creates",
-					"{C:attention}#2#{} {C:risk}Risk{} card at",
-					"the end of an {C:attention}ante",
+					"This Joker gains {X:mult,C:white}X#1#{} Mult",
+					"for each {C:risk}Risk{} card {C:attention}used",
+					"Creates a {C:risk}Risk{} card after",
+					"defeating the {C:attention}boss blind",
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)"
 				},
 				payasaka_comment = {
@@ -1535,6 +1534,15 @@ return {
 					"{C:inactive,s:0.8}(e.g. +2 -> +4)",
 					"{C:inactive,s:0.8}Does not include",
 					"{C:inactive,s:0.8}run scaling jokers"
+				},
+			},
+			j_payasaka_catchan = {
+				name = "Catchan",
+				text = {
+					"This Joker gains {C:attention}+#1#{} hand",
+					"size after defeating",
+					"a boss blind",
+					"{C:inactive}(Currently {C:attention}+#2#{C:inactive} Hand Size)",
 				},
 			},
 			j_payasaka_chicot = {
