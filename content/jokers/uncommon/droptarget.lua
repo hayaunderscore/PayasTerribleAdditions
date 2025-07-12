@@ -38,7 +38,7 @@ SMODS.Joker {
 						---@type Sprite
 						local spr = card.children.center
 						spr:set_sprite_pos({ x = self.pos.x + card.ability.immutable.sprite_state, y = self.pos.y })
-						if o then o:juice_up() end
+						if o then o:juice_up(0.7) end
 						return true
 					end
 				})
@@ -52,11 +52,9 @@ SMODS.Joker {
 			end
 			if card.ability.immutable.random_values[3] < num / den then
 				G.E_MANAGER:add_event(Event{
-					trigger = 'after',
-					delay = 0.05,
 					func = function()
 						card.ability.immutable.sprite_state = 1
-						card:juice_up()
+						card:juice_up(0.7)
 						---@type Sprite
 						local spr = card.children.center
 						spr:set_sprite_pos({ x = self.pos.x + card.ability.immutable.sprite_state, y = self.pos.y })
@@ -67,11 +65,9 @@ SMODS.Joker {
 			end
 			if card.ability.immutable.random_values[2] < num / den then
 				G.E_MANAGER:add_event(Event{
-					trigger = 'after',
-					delay = 0.05,
 					func = function()
 						card.ability.immutable.sprite_state = 2
-						card:juice_up()
+						card:juice_up(0.7)
 						---@type Sprite
 						local spr = card.children.center
 						spr:set_sprite_pos({ x = self.pos.x + card.ability.immutable.sprite_state, y = self.pos.y })
@@ -82,6 +78,10 @@ SMODS.Joker {
 			end
 			table.remove(card.ability.immutable.random_values, 1)
 			card.ability.immutable.random_values[#card.ability.immutable.random_values+1] = pseudorandom('drop_target')
+			-- Call pseudorandom_result here teehee
+			SMODS.post_prob = SMODS.post_prob or {}
+			SMODS.calculate_context({payasaka_pseudorandom_result = true, result = card.ability.immutable.random_values[1] or 0, trigger_obj = card, numerator = num, denominator = den, identifier = 'drop_target'})
+    		SMODS.post_prob[#SMODS.post_prob+1] = {pseudorandom_result = true, result = card.ability.immutable.random_values[1] or 0, trigger_obj = card, numerator = num, denominator = den, identifier = 'drop_target'}
 		end
 		if context.joker_main or context.forcetrigger then
 			return {

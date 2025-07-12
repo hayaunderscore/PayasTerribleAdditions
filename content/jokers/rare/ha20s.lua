@@ -25,7 +25,7 @@ SMODS.Joker {
 				repetitions = 1
 			}
 		end
-		if context.pseudorandom_result and context.trigger_obj then
+		if context.payasaka_pseudorandom_result and context.trigger_obj and not card.ability.extra.trigger then
 			---@type Card
 			local c = context.trigger_obj
 			if type(c) == 'table' and c:is(Card) and c.ability and (c.ability.set == "Joker" or c.ability.set == "Enhanced" or c.ability.set == 'Default') then

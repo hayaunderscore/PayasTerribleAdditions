@@ -477,3 +477,15 @@ if specific_vars and specific_vars.bonus_balance then
 end
 '''
 match_indent = true
+
+# Add old version of context.pseudorandom_result here
+# As this needs to run BEFORE the jokers to properly work
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.post_prob = SMODS.post_prob or {}'''
+position = 'before'
+payload = '''
+SMODS.calculate_context({payasaka_pseudorandom_result = true, result = result, trigger_obj = trigger_obj, numerator = numerator, denominator = denominator, identifier = identifier or seed})
+'''
+match_indent = true
