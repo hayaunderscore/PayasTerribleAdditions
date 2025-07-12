@@ -2,10 +2,28 @@
 -- Proxy stuff inspired by https://github.com/Steamodded/smods/pull/781
 
 --- table for keys blacklisted for scaling
-PTASaka.valid_scaling_keys = {
+PTASaka.invalid_scaling_keys = {
 	['immutable'] = true,
 	['consumeable'] = true,
 	['mimic_effect'] = true,
+	['id'] = true,
+	['identifier'] = true, -- used by Finity's Crimson Heart
+	['finitycrimsonheartmark'] = true, -- Ditto
+	['finityceruleanbellmark'] = true, -- Cerulean Bell
+	['finityrazzleraindropmark'] = true, -- Razzle Raindrop
+	['finitysaffronshieldmark'] = true, -- Saffron Shield
+	["ID"] = true,
+	["sort_id"] = true,
+	["perish_tally"] = true,
+	["colour"] = true,
+	["suit_nominal"] = true,
+	["base_nominal"] = true,
+	["face_nominal"] = true,
+	["qty"] = true,
+	["selected_d6_face"] = true,
+	["d_size"] = true,
+	["h_size"] = true,
+	['next_joker'] = true, -- Adult Card
 }
 
 ---@param card Card
@@ -49,7 +67,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 
 			-- Not in game, not in an area, area is collection, or the value is not a number
 			-- If so, ignore, and just modify it normally
-			if (G.STAGE ~= G.STAGES.RUN or not card.area or card.area.config.collection) or PTASaka.valid_scaling_keys[k] then
+			if (G.STAGE ~= G.STAGES.RUN or not card.area or card.area.config.collection) or PTASaka.invalid_scaling_keys[k] then
 				tree[key.."_orig"][k] = v
 				return
 			end
