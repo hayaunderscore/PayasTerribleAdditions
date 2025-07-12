@@ -61,9 +61,7 @@ function G.FUNCS.payasaka_use_phil(e)
 					end
 					c:set_edition(fake.edition or nil)
 					c:set_seal(fake.seal or nil)
-					for k, v in pairs(fake.ability_table or {}) do
-						c.ability[k] = v
-					end
+					c.ability = fake.ability_table
 					c:hard_set_T(card.VT.x, card.VT.y)
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Unleashed!", sound = 'timpani', instant = true })
 					return true
@@ -87,7 +85,7 @@ function G.FUNCS.payasaka_use_phil(e)
 			})
 			card.ability.saved_cards[#card.ability.saved_cards+1] = {
 				suit = c.base.suit, value = c.base.value,
-				ability_base = c.config.center_key, ability_table = c.ability,
+				ability_base = c.config.center_key, ability_table = PTASaka.deep_copy(c.ability),
 				seal = c.seal, edition = c.edition
 			}
 			card.sell_cost = card.sell_cost + 2

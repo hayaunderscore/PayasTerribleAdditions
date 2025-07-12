@@ -33,6 +33,11 @@ SMODS.Blind {
 			if G.GAME.payasaka_scholar_rank > #G.GAME.payasaka_scholar then
 				G.GAME.payasaka_scholar_rank = 1
 			end
+			G.GAME.blind.loc_debuff_text = ("All %ss are debuffed"):format(localize(G.GAME.payasaka_scholar[G.GAME.payasaka_scholar_rank].value, 'ranks'))
+			G.GAME.blind:alert_debuff(true)
+			G.GAME.blind.block_play = nil
+		end
+		if G.GAME.payasaka_scholar and context.hand_drawn then
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					for k, v in pairs(G.playing_cards) do
@@ -41,9 +46,6 @@ SMODS.Blind {
 					return true
 				end
 			})
-			G.GAME.blind.loc_debuff_text = ("All %ss are debuffed"):format(localize(G.GAME.payasaka_scholar[G.GAME.payasaka_scholar_rank].value, 'ranks'))
-			G.GAME.blind:alert_debuff(true)
-			G.GAME.blind.block_play = nil
 		end
 	end,
 	get_loc_debuff_text = function(self)

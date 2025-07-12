@@ -478,6 +478,24 @@ end
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''if specific_vars and specific_vars.bonus_p_dollars then'''
+position = 'before'
+payload = '''
+if specific_vars and specific_vars.bonus_e_chips then
+	localize{type = 'other', key = 'card_extra_e_chips', nodes = desc_nodes, vars = {specific_vars.bonus_e_chips}}
+end
+if specific_vars and specific_vars.bonus_e_mult then
+	localize{type = 'other', key = 'card_extra_e_mult', nodes = desc_nodes, vars = {specific_vars.bonus_e_mult}}
+end
+if specific_vars and specific_vars.bonus_balance then
+	localize{type = 'other', key = 'card_extra_balance', nodes = desc_nodes, vars = {specific_vars.bonus_balance*100}}
+end
+'''
+match_indent = true
+
 # Add old version of context.pseudorandom_result here
 # As this needs to run BEFORE the jokers to properly work
 [[patches]]
