@@ -61,6 +61,11 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 		(tbl or card)[key][k] = v
 	end
 
+	-- For some checks later
+	local center_key = card.config.center_key
+	local center = card.config.center
+	local exclusion_function = card.config.center.pta_exclusion_function
+
 	setmetatable((tbl or card)[key], {
 		__newindex = function(t, k, v)
 			if tree[key.."_orig"][k] == v then return end -- Unmodified, so ignore
@@ -84,6 +89,26 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			local new_val = v
 			local diff = new_val - (tree[key.."_orig"][k] or 0)
 			new_val = (tree[key.."_orig"][k] or 0) + diff * 2 ^ (PTASaka.scale_modifier_jokers and #PTASaka.scale_modifier_jokers or 0)
+
+			-- Specific stuff for specific jokers
+			-- Yorick's extra.yorick_discards should not exceed discards
+			if center_key == "j_yorick" and k == 'yorick_discards' then tree[key.."_orig"][k] = math.min(new_val, v); return end
+			-- Custom jokers can add `pta_exclusion_function` to their jokers for specific things
+			if exclusion_function and type(exclusion_function) == 'function' then
+				-- Card center, card instance, current value, old value, new value, key of value to be modified, table key of value
+				local ret = exclusion_function(center, card, tree[key.."_orig"][k], v, new_val, k, key)
+				-- Boolean, simply prevent scaling
+				if type(ret) == 'boolean' and ret then
+					tree[key.."_orig"][k] = v
+					return
+				end
+				-- Number, return modified value
+				if type(ret) == 'number' and ret then
+					tree[key.."_orig"][k] = ret
+					return
+				end
+			end
+
 			tree[key..'_orig'][k] = new_val
 		end,
 		__index = function(t, k)
