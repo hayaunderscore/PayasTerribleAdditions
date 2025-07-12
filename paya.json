@@ -17,5 +17,10 @@
 	"conflicts": [
 		"Entropy (<<1~)",
 		"MoreFluff (<<1.2.0~)"
-	]
+	],
+
+	"git_owner": "hayaunderscore",
+	"git_repo": "PayasTerribleAdditions",
+	"mod_path": "Mods/PayasTerribleAdditions",
+	"allow_redistribution": true,
 }
