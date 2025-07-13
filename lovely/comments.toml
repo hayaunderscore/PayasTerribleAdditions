@@ -22,6 +22,8 @@ if card.config and card.config.center and PTASaka.Mod.config["Witty Comments"] t
 	if pcall(function() return G.localization.descriptions[_set][_key].payasaka_comment end) and G.localization.descriptions[_set][_key].payasaka_comment then
 		localize { type = 'payasaka_comment', key = _key, set = _set, vars = _vars, nodes = comment_nodes }
 		comment_main = desc_from_rows(comment_nodes)
+		comment_main.config.id = 'pta_comment_box'
+		comment_main.config.minh = #comment_nodes > 1 and 0.8 or 0.5
 	end
 end
 '''
@@ -34,10 +36,26 @@ target = 'functions/UI_definitions.lua'
 pattern = "desc_from_rows(AUT.main),"
 position = 'after'
 payload = '''
-comment_main and {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.GREY, 0.15), r = 0.1}, nodes={
-      {n=G.UIT.R, config={align = "tm", minh = 0.36, padding = 0.03}, nodes={{n=G.UIT.T, config={text = localize('k_payasaka_comment'), scale = 0.32, colour = G.C.UI.TEXT_LIGHT}}}},
+comment_main and {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.GREY, 0.15), r = 0.1, filler = true}, nodes={
+      {n=G.UIT.C, config={align = "tm", minh = 0.36, padding = 0.03, filler = true}, nodes={{n = G.UIT.R, config={align = "tm", minh = 0.36, padding = 0.03}, nodes={{n=G.UIT.T, config={text = localize('k_payasaka_comment'), scale = 0.32, colour = G.C.UI.TEXT_LIGHT}}}}, comment_main}},
     }} or nil,
-comment_main,
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = 'Node.hover(self)'
+position = 'after'
+payload = '''
+if self.children.h_popup then
+	local comment = self.children.h_popup:get_UIE_by_ID('pta_comment_box')
+	if comment then
+		comment.config.minw = comment:get_major().major.T.w - (0.03+0.1+0.05)*2
+		self.children.h_popup:recalculate()
+	end
+end
 '''
 match_indent = true
 times = 1
