@@ -1420,7 +1420,10 @@ return {
 				}
 			},
 			j_payasaka_goldship = {
-				name = "Gold Ship",
+				name = {
+					"{f:5}ゴールドシップ",
+					"{C:edition,s:0.5}Gold Ship"
+				},
 				text = {
 					"{C:attention}Retriggers{} scored card",
 					"if the card before it",
@@ -1455,7 +1458,10 @@ return {
 				}
 			},
 			j_payasaka_kinghalo = {
-				name = "King Halo",
+				name = {
+					"{f:5}キングヘイロー",
+					"{C:edition,s:0.5}King Halo"
+				},
 				text = {
 					"Retriggers {C:attention}unscored{} card",
 					"effects {C:attention}#1#{} additional times"
@@ -1510,14 +1516,20 @@ return {
 				}
 			},
 			j_payasaka_bakushin = {
-				name = "Sakura Bakushin O",
+				name = {
+					"{f:5}サクラバクシンオー",
+					"{C:edition,s:0.5}Sakura Bakushin O"
+				},
 				text = {
 					"{X:attention,C:white}X#1#{} Speed",
 					"{C:inactive,s:0.8}Speed of what????",
 				},
 			},
 			j_payasaka_manhattan = {
-				name = "Manhattan Cafe",
+				name = {
+					"{f:5}マンハッタンカフェ",
+					"{C:edition,s:0.5}Manhattan Cafe"
+				},
 				text = {
 					"When a {C:attention}Food Joker{} is",
 					"about to be {C:red,E:1}destroyed{},",
@@ -1527,7 +1539,10 @@ return {
 				},
 			},
 			j_payasaka_oguri = {
-				name = "Oguri Cap",
+				name = {
+					"{f:5}オグリキャップ",
+					"{C:edition,s:0.5}Oguri Cap"
+				},
 				text = {
 					"Scaling Jokers scale",
 					"{C:attention}twice{} as fast",
