@@ -2424,12 +2424,16 @@ return {
 			c_payasaka_mfc_lightblue = {
 				name = "Light Blue",
 				text = {
-					"Create a {C:dark_edition}Negative{}",
-					"{C:reward}Reward{} card for",
-					"every {C:attention}#4#{} rounds",
-					"this has been held",
-					"{X:attention,C:white}X#5#{} Blind size",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+					{
+						"{X:attention,C:white}X#5#{} Blind size",
+					},
+					{
+						"Create a {C:dark_edition}Negative{}",
+						"{C:reward}Reward{} card for",
+						"every {C:attention}#4#{} rounds",
+						"this has been held",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+					}
 				}
 			},
 		},
