@@ -21,9 +21,43 @@ PTASaka.invalid_scaling_keys = {
 	["face_nominal"] = true,
 	["qty"] = true,
 	["selected_d6_face"] = true,
-	["d_size"] = true,
-	["h_size"] = true,
 	['next_joker'] = true, -- Adult Card
+}
+
+-- Table for keys whitelisted ONLY on the ability table
+PTASaka.whitelisted_ability_keys = {
+	['mult'] = true,
+	['h_mult'] = true,
+	['h_x_mult'] = true,
+	['h_dollars'] = true,
+	['p_dollars'] = true,
+	['t_mult'] = true,
+	['t_chips'] = true,
+	['x_mult'] = true,
+	['h_chips'] = true,
+	['x_chips'] = true,
+	['h_x_chips'] = true,
+	['h_size'] = true,
+	['d_size'] = true,
+    ['extra'] = true,
+	['extra_value'] = true,
+	['perma_bonus'] = true,
+	['perma_x_chips'] = true,
+	['perma_mult'] = true,
+	['perma_x_mult'] = true,
+	['perma_h_chips'] = true,
+	['perma_h_mult'] = true,
+	['perma_h_x_mult'] = true,
+	['perma_p_dollars'] = true,
+	['perma_h_dollars'] = true,
+	['caino_xmult'] = true,
+	['invis_rounds'] = true,
+	['yorick_discards'] = true, -- Accounted for
+	['perma_e_chips'] = true,
+	['perma_e_mult'] = true,
+	['perma_balance'] = true,
+	['partial_rounds'] = true, -- Accounted for
+	['val'] = true
 }
 
 ---@param card Card
@@ -64,6 +98,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 	-- For some checks later
 	local center_key = card.config.center_key
 	local center = card.config.center
+	local set = card.ability.set
 	local exclusion_function = card.config.center.pta_exclusion_function
 
 	setmetatable((tbl or card)[key], {
@@ -72,7 +107,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 
 			-- Not in game, not in an area, area is collection, or the value is not a number
 			-- If so, ignore, and just modify it normally
-			if (G.STAGE ~= G.STAGES.RUN or not card.area or card.area.config.collection) or PTASaka.invalid_scaling_keys[k] then
+			if (G.STAGE ~= G.STAGES.RUN or not card.area or card.area.config.collection) or (PTASaka.invalid_scaling_keys[k] or (key == 'ability' and not PTASaka.whitelisted_ability_keys[k])) then
 				tree[key.."_orig"][k] = v
 				return
 			end
@@ -90,9 +125,11 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			local diff = new_val - (tree[key.."_orig"][k] or 0)
 			new_val = (tree[key.."_orig"][k] or 0) + diff * 2 ^ (PTASaka.scale_modifier_jokers and #PTASaka.scale_modifier_jokers or 0)
 
-			-- Specific stuff for specific jokers
+			-- Specific stuff for specific jokers/consumables
 			-- Yorick's extra.yorick_discards should not exceed discards
 			if center_key == "j_yorick" and k == 'yorick_discards' then tree[key.."_orig"][k] = math.min(new_val, v); return end
+			-- Colour cards upgrade rounds should not inflate beyond 0 or negatives
+			if set == "Colour" or set == "Shape" and k == 'partial_rounds' then tree[key.."_orig"][k] = math.max(new_val, v); return end
 			-- Custom jokers can add `pta_exclusion_function` to their jokers for specific things
 			if exclusion_function and type(exclusion_function) == 'function' then
 				-- Card center, card instance, current value, old value, new value, key of value to be modified, table key of value
