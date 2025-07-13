@@ -98,12 +98,12 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 				-- Card center, card instance, current value, old value, new value, key of value to be modified, table key of value
 				local ret = exclusion_function(center, card, tree[key.."_orig"][k], v, new_val, k, key)
 				-- Boolean, simply prevent scaling
-				if type(ret) == 'boolean' and ret then
+				if type(ret) == 'boolean' and not ret then
 					tree[key.."_orig"][k] = v
 					return
 				end
 				-- Number, return modified value
-				if type(ret) == 'number' and ret then
+				if type(ret) == 'number' then
 					tree[key.."_orig"][k] = ret
 					return
 				end
