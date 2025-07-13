@@ -22,7 +22,7 @@ if TheFamily then
 		end,
 		center = "c_payasaka_dos_wildtwo",
 		popup = function(definition, card)
-			PTASaka.dos_card_status_ui = "Toggle "..PTASaka.dos_card_status
+			PTASaka.dos_card_status_ui = "Toggle " .. PTASaka.dos_card_status
 			return {
 				name = {
 					{
@@ -188,54 +188,69 @@ end
 
 --#region Credit boxes
 
-local function create_credit(_key)
-	local text_nodes = {}
-	localize { type = 'descriptions', key = _key, set = "PTACredits", nodes = text_nodes }
-	local name = localize { type = 'name_text', key = _key, set = "PTACredits" }
+local function create_UIBox_credit_popup(key, colour, vars)
+	local blind_text = {}
+
+	local loc_name = localize { type = 'name_text', key = key, set = "PTACredits" }
+	local ability_text = {}
+	localize { type = 'descriptions', key = key, set = "PTACredits", nodes = ability_text }
+	return {
+		n = G.UIT.ROOT,
+		config = { align = "cm", padding = 0.05, colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05 },
+		nodes = {
+			{
+				n = G.UIT.R,
+				config = { align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = colour or G.C.GREY },
+				nodes = {
+					{ n = G.UIT.O, config = { object = DynaText({ string = loc_name, colours = { G.C.UI.TEXT_LIGHT }, shadow = true, rotate = false, spacing = 2, bump = true, scale = 0.4 }) } },
+				}
+			},
+			{ n = G.UIT.R, config = { align = "cm" }, nodes = { desc_from_rows(ability_text) } },
+		}
+	}
+end
+
+local function create_credit(_key, colour, idx)
+	local temp_blind = AnimatedSprite(0, 0, 1.3, 1.3, G.ANIMATION_ATLAS['payasaka_JOE_CreditChips'],
+		{ x = 0, y = idx or 0 })
+	temp_blind:define_draw_steps({
+		{ shader = 'dissolve', shadow_height = 0.05 },
+		{ shader = 'dissolve' }
+	})
+	temp_blind.float = true
+	temp_blind.states.hover.can = true
+	temp_blind.states.drag.can = false
+	temp_blind.states.collide.can = true
+	temp_blind.hover = function()
+		if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then
+			if not temp_blind.hovering and temp_blind.states.visible then
+				temp_blind.hovering = true
+				temp_blind.hover_tilt = 3
+				temp_blind:juice_up(0.05, 0.02)
+				play_sound('chips1', math.random() * 0.1 + 0.55, 0.12)
+				temp_blind.config.h_popup = create_UIBox_credit_popup(_key, colour, {})
+				temp_blind.config.h_popup_config = { align = 'cl', offset = { x = -0.1, y = 0 }, parent = temp_blind }
+				Node.hover(temp_blind)
+				if temp_blind.children.alert then
+					temp_blind.children.alert:remove()
+					temp_blind.children.alert = nil
+					temp_blind.config.blind.alerted = true
+					G:save_progress()
+				end
+			end
+		end
+	end
+	temp_blind.stop_hover = function()
+		temp_blind.hovering = false; Node.stop_hover(temp_blind); temp_blind.hover_tilt = 0
+	end
 	return {
 		n = G.UIT.C,
 		config = {
 			align = "cm",
-			padding = 0.05,
-			r = 0.12,
-			colour = lighten(G.C.JOKER_GREY, 0.5),
-			emboss = 0.07,
+			padding = 0.1,
 		},
 		nodes = {
-			{
-				n = G.UIT.C,
-				config = {
-					align = "cm",
-					padding = 0.07,
-					r = 0.1,
-					colour = G.C.BLACK,
-					0.1
-				},
-				nodes = {
-					{
-						n = G.UIT.R,
-						config = { align = "cm", padding = 0.05, r = 0.1 },
-						nodes = {
-							{
-								n = G.UIT.O,
-								config = {
-									object = DynaText {
-										string = name,
-										bump = true,
-										pop_in = 0,
-										pop_in_rate = 4,
-										silent = true,
-										shadow = true,
-										scale = (0.55 - 0.004 * #name),
-										colours = { G.C.UI.TEXT_LIGHT }
-									}
-								}
-							}
-						}
-					},
-					desc_from_rows(text_nodes),
-				}
-			}
+			{ n = G.UIT.O, config = { object = temp_blind, focus_with_object = true } },
 		}
 	}
 end
@@ -435,7 +450,8 @@ local tabs = function()
 					{ card_limit = 3, type = 'title', highlight_limit = 0, collection = true }
 				)
 				for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
-					local area = k <= math.ceil(#G.P_CENTER_POOLS.PTASet/2) and G.pta_features_area or G.pta_features_area_two
+					local area = k <= math.ceil(#G.P_CENTER_POOLS.PTASet / 2) and G.pta_features_area or
+					G.pta_features_area_two
 					local card = Card(area.T.x + (area.T.w / 2), area.T.y,
 						G.CARD_W, G.CARD_H, G.P_CARDS.empty, v)
 					area:emplace(card)
@@ -554,18 +570,18 @@ local tabs = function()
 									n = G.UIT.R,
 									config = { align = "cm", padding = 0.1 },
 									nodes = {
-										create_credit("credit_haya"),
-										create_credit("credit_ari"),
+										create_credit("credit_haya", HEX('644c86'), 0),
+										create_credit("credit_ari", HEX('469274'), 1),
 									}
 								},
 								{
 									n = G.UIT.R,
 									config = { align = "cm", padding = 0.1 },
 									nodes = {
-										create_credit("credit_loggers"),
-										create_credit("credit_aikoyori"),
-										create_credit("credit_airrice"),
-										create_credit("credit_kctm"),
+										create_credit("credit_loggers", HEX('864b1b'), 2),
+										create_credit("credit_aikoyori", HEX('85a468'), 3),
+										create_credit("credit_airrice", HEX('a1c5c4'), 4),
+										create_credit("credit_kctm", HEX('58c8b1'), 5),
 									}
 								},
 								{
@@ -593,9 +609,9 @@ local tabs = function()
 									n = G.UIT.R,
 									config = { align = "cm", padding = 0.1 },
 									nodes = {
-										create_credit("credit_canichat"),
-										create_credit("credit_notmario"),
-										create_credit("credit_missingnumber"),
+										create_credit("credit_canichat", HEX('ab8ed3'), 6),
+										create_credit("credit_notmario", HEX('c2413a'), 7),
+										create_credit("credit_missingnumber", HEX('9489a7'), 8),
 									}
 								},
 							}

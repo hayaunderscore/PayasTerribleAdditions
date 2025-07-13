@@ -29,6 +29,7 @@ SMODS.Atlas { key = "JOE_Jokers2", path = "jokers2.png", px = 71, py = 95 }
 
 -- Blind atlas
 SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
+SMODS.Atlas { key = "JOE_CreditChips", path = "creditchips.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
 
 -- Tarots and Spectrals
 SMODS.Atlas { key = "JOE_Tarots", path = "tarots.png", px = 71, py = 95 }
