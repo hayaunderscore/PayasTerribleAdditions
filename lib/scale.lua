@@ -101,6 +101,9 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 	local set = card.ability.set
 	local exclusion_function = card.config.center.pta_exclusion_function
 
+	-- Add a fallback just in case if there was already a metatable for this before...
+	local old_meta = getmetatable((tbl or card)[key])
+
 	setmetatable((tbl or card)[key], {
 		__newindex = function(t, k, v)
 			if tree[key.."_orig"][k] == v then return end -- Unmodified, so ignore
@@ -109,6 +112,9 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			-- If so, ignore, and just modify it normally
 			if (G.STAGE ~= G.STAGES.RUN or not card.area or card.area.config.collection) or (PTASaka.invalid_scaling_keys[k] or (key == 'ability' and not PTASaka.whitelisted_ability_keys[k])) then
 				tree[key.."_orig"][k] = v
+				if old_meta and old_meta.__newindex then
+					old_meta.__newindex(t, k, v)
+				end
 				return
 			end
 
