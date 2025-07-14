@@ -539,7 +539,7 @@ PTASaka.Reward {
 	key = 'sulfur',
 	atlas = 'JOE_Risk',
 	pos = { x = 4, y = 1 },
-	config = { extra = { max_highlighted = 4, min_highlighted = 2 } },
+	config = { extra = { max_highlighted = 4, min_highlighted = 1 } },
 	use = function(self, card, area, copier)
 		local destroyed_cards = {}
 		for i = #G.hand.highlighted, 1, -1 do
