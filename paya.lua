@@ -16,6 +16,7 @@ conf["Music"] = nil_sane(conf["Music"], true)
 conf["Witty Comments"] = nil_sane(conf["Witty Comments"], true)
 conf["Ahead"] = nil_sane(conf["Ahead"], true)
 conf["Risk Cards"] = nil_sane(conf["Risk Cards"], true)
+conf["Experimental"] = nil_sane(conf["Experimental"], true)
 
 -- hiii
 SMODS.optional_features.retrigger_joker = true

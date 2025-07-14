@@ -67,6 +67,14 @@ return {
 					"{C:payasaka_prismatic_gradient}Prismatic{} Joker",
 				}
 			},
+			b_payasaka_dummy = {
+				name = "Test Deck?",
+				text = {
+					"If you somehow got this,",
+					"{C:payasaka_prismatic_gradient,E:1}congratulations!{}",
+					"Have a carrot."
+				}
+			},
 			b_payasaka_sticker = {
 				name = "Sticker Deck",
 				text = {
@@ -2844,6 +2852,13 @@ return {
 
 		},
 		PTASet = {
+			ptaset_payasaka_experimental = {
+				name = "Experimental Features",
+				text = {
+					"Enables new funny features!",
+					"{C:inactive,s:0.8}Includes stuff that may be broken."
+				}
+			},
 			ptaset_payasaka_ahead = {
 				name = "Ahead Jokers",
 				text = {

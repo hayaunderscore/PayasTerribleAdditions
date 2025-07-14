@@ -357,6 +357,40 @@ SMODS.Back {
 	end
 }
 end
+-- Dummy deck to be displayed in the main mod menu
+-- Also used for general testing.
+SMODS.Back {
+	key = 'dummy',
+	atlas = "JOE_Decks",
+	pos = { x = 3, y = 0 },
+	unlocked = true,
+	discovered = true,
+	no_collection = true,
+	in_pool = function (self, args)
+		return false
+	end,
+	inject = function(self, i)
+		SMODS.Center.inject(self, i)
+		-- This should never appear in the Back pool for anything. Ever.
+		SMODS.remove_pool(G.P_CENTER_POOLS.Back, self.key)
+	end,
+	config = { dollars = 1e300 },
+	apply = function(self, back)
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				for _, card in pairs(G.playing_cards) do
+					assert(SMODS.change_base(card, "Clubs", "Ace"))
+				end
+				SMODS.add_card { key = 'j_payasaka_joyousspring', edition = 'e_negative' }
+				SMODS.add_card { key = 'j_payasaka_nil', edition = 'e_negative' }
+				local mechanic = SMODS.add_card { key = 'c_payasaka_mechanic', edition = 'e_negative' }
+				mechanic.ability.pta_dont_care = true -- Hidden mechanic ability to change any joker, not just nils
+				mechanic.ability.eternal = true -- Yeah
+				return true
+			end
+		})
+	end
+}
 
 local function get_compat(center, sticker)
 	if center[sticker.."_compat"] then

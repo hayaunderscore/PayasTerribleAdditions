@@ -63,6 +63,14 @@ PTASaka.SetToggle = SMODS.Center:extend{
 	end
 }
 
+-- Experimental
+PTASaka.SetToggle {
+	key = 'experimental',
+	atlas = "JOE_Jokers2",
+	pos = { x = 4, y = 6 },
+	pta_associated_config = "Experimental",
+	requires_restart = true,
+}
 -- Ahead Jokers
 PTASaka.SetToggle {
 	key = 'ahead',

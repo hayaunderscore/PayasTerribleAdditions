@@ -219,8 +219,10 @@ local function create_credit(_key, colour, idx)
 	})
 	temp_blind.float = true
 	temp_blind.states.hover.can = true
-	temp_blind.states.drag.can = false
+	temp_blind.states.drag.can = true
 	temp_blind.states.collide.can = true
+	temp_blind.config = {force_focus = true}
+	temp_blind:set_role({major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak'})
 	temp_blind.hover = function()
 		if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then
 			if not temp_blind.hovering and temp_blind.states.visible then
@@ -231,14 +233,16 @@ local function create_credit(_key, colour, idx)
 				temp_blind.config.h_popup = create_UIBox_credit_popup(_key, colour, {})
 				temp_blind.config.h_popup_config = { align = 'cl', offset = { x = -0.1, y = 0 }, parent = temp_blind }
 				Node.hover(temp_blind)
-				if temp_blind.children.alert then
-					temp_blind.children.alert:remove()
-					temp_blind.children.alert = nil
-					temp_blind.config.blind.alerted = true
-					G:save_progress()
-				end
+				temp_blind.children.h_popup:set_role({major = temp_blind.children.h_popup, role_type = 'Major', draw_major = temp_blind.children.h_popup, xy_bond = 'Strong'})
 			end
 		end
+		if not temp_blind.start_T then
+			temp_blind.start_T = copy_table(temp_blind.T)
+		end
+	end
+	temp_blind.stop_drag = function()
+		Node.stop_drag(temp_blind);
+		temp_blind.T.x, temp_blind.T.y = temp_blind.start_T.x or temp_blind.T.x, temp_blind.start_T.y or temp_blind.T.y
 	end
 	temp_blind.stop_hover = function()
 		temp_blind.hovering = false; Node.stop_hover(temp_blind); temp_blind.hover_tilt = 0
@@ -250,7 +254,7 @@ local function create_credit(_key, colour, idx)
 			padding = 0.1,
 		},
 		nodes = {
-			{ n = G.UIT.O, config = { object = temp_blind, focus_with_object = true } },
+			{ n = G.UIT.O, config = { object = temp_blind, focus_with_object = true, role = {major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak'} } },
 		}
 	}
 end
@@ -338,7 +342,7 @@ PTASaka.Mod.custom_ui = function(mod_nodes)
 	)
 	local silent = false
 	for i, center in pairs(set) do
-		G.GAME.viewed_back = Back(G.P_CENTERS.b_payasaka_prismatic)
+		G.GAME.viewed_back = Back(G.P_CENTERS.b_payasaka_dummy)
 		local card = Card(G.pta_main_jokers_list.T.x + (G.pta_main_jokers_list.T.w / 2), G.pta_main_jokers_list.T.y,
 			G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[center] or PTASaka.DescriptionDummies[center],
 			{
@@ -348,7 +352,7 @@ PTASaka.Mod.custom_ui = function(mod_nodes)
 				playing_card = i,
 				viewing_back = true,
 				bypass_back =
-					G.P_CENTERS["b_payasaka_prismatic"].pos
+					G.P_CENTERS["b_payasaka_dummy"].pos
 			})
 		G.pta_main_jokers_list:emplace(card)
 		card:hard_set_T(G.pta_main_jokers_list.T.x + (G.pta_main_jokers_list.T.w / 2))
@@ -437,25 +441,33 @@ local tabs = function()
 			label = "Features",
 			chosen = true,
 			tab_definition_function = function()
+				local len = #G.P_CENTER_POOLS.PTASet / 2
 				G.pta_features_area = CardArea(
 					G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
-					3.25 * G.CARD_W,
-					0.95 * G.CARD_H,
-					{ card_limit = 3, type = 'title', highlight_limit = 0, collection = true }
+					(math.ceil(len) + 0.25) * G.CARD_W,
+					0.875 * G.CARD_H,
+					{ card_limit = math.ceil(len), type = 'title', highlight_limit = 0, collection = true }
 				)
 				G.pta_features_area_two = CardArea(
 					G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
-					3.25 * G.CARD_W,
-					0.95 * G.CARD_H,
-					{ card_limit = 3, type = 'title', highlight_limit = 0, collection = true }
+					(math.ceil(len) + 0.25) * G.CARD_W,
+					0.875 * G.CARD_H,
+					{ card_limit = math.ceil(len), type = 'title', highlight_limit = 0, collection = true }
 				)
 				for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
 					local area = k <= math.ceil(#G.P_CENTER_POOLS.PTASet / 2) and G.pta_features_area or
 					G.pta_features_area_two
-					local card = Card(area.T.x + (area.T.w / 2), area.T.y,
+					local card = Card(area.T.x + (area.T.w / 2.5), area.T.y,
 						G.CARD_W, G.CARD_H, G.P_CARDS.empty, v)
 					area:emplace(card)
-					card:hard_set_T(area.T.x + (area.T.w / 2))
+					G.E_MANAGER:add_event(Event{
+						blockable = false,
+						blocking = false,
+						func = function()
+							card:hard_set_T(area.T.x + (area.T.w / 2.5))
+							return true
+						end
+					})
 				end
 				return {
 					n = G.UIT.ROOT,
@@ -475,7 +487,7 @@ local tabs = function()
 							nodes = {
 								{
 									n = G.UIT.R,
-									config = { align = "cm", padding = 0.5, colour = darken(G.C.BLACK, 0.2), emboss = 0.05, r = 0.1 },
+									config = { align = "cm", padding = 0.4, no_fill = true },
 									nodes = {
 										{
 											n = G.UIT.R,

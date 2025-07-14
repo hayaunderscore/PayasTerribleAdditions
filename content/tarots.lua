@@ -441,7 +441,7 @@ SMODS.Consumable {
 	can_use = function(self, card)
 		local highlighted = {}
 		for _, v in ipairs(G.jokers.highlighted) do
-			if v.config.center.key == "j_payasaka_nil" then
+			if v.config.center.key == "j_payasaka_nil" or card.ability.pta_dont_care then
 				table.insert(highlighted, v)
 			end
 		end
@@ -453,7 +453,7 @@ SMODS.Consumable {
 	use = function(self, card, area, copier)
 		local highlighted = {}
 		for _, v in ipairs(G.jokers.highlighted) do
-			if v.config.center.key == "j_payasaka_nil" then
+			if v.config.center.key == "j_payasaka_nil" or card.ability.pta_dont_care then
 				table.insert(highlighted, v)
 			end
 		end

@@ -1,8 +1,8 @@
 SMODS.ConsumableType {
 	key = 'Reward',
 	collection_rows = { 6, 6 },
-	secondary_colour = HEX('7f8481'),
-	primary_colour = HEX('d7e0e0'),
+	secondary_colour = HEX('dc86c2'),
+	primary_colour = HEX('9dccf2'),
 	shop_rate = 0,
 	loc_txt = {},
 	default = 'c_payasaka_conform'
@@ -21,7 +21,7 @@ SMODS.UndiscoveredSprite {
 }
 
 G.C.SET.Reward = HEX('7f8481')
-G.C.SECONDARY_SET.Reward = HEX('d7e0e0')
+G.C.SECONDARY_SET.Reward = HEX('9dccf2')
 
 ---@class Reward: SMODS.Consumable
 ---@field pseudo_legendaries? (Reward|table)[]
@@ -780,6 +780,12 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 			if not card.ability.pta_hidden_spawned then
 				PTASaka.Reward.draw(self, card, layer)
 			end
+		end,
+		set_card_type_badge = function (self, card, badges)
+			badges[#badges+1] = create_badge(
+				card.ability.pta_hidden_spawned and localize('k_tarot').."?" or localize('k_reward'),
+				G.C.SECONDARY_SET[card.ability.pta_hidden_spawned and "Tarot" or card.ability.set], nil, 1.2
+			)
 		end
 	}
 end

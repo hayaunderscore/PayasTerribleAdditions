@@ -465,6 +465,11 @@ function PTASaka.pseudorandom_alias_element(t, seed)
 	return t.values[index]
 end
 
+function PTASaka.run_test_deck()
+	G.GAME.selected_back:change_to(G.P_CENTERS.b_payasaka_dummy)
+	G.FUNCS.start_run(nil, {deck = 'b_payasaka_dummy'})
+end
+
 -- Force triggering with Yomiel
 PTASaka.VanillaJokerWhitelist = {
 	["Joker"] = true,

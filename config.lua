@@ -6,4 +6,5 @@ return {
 	["Witty Comments"] = true,
 	["Ahead"] = true,
 	["Risk Cards"] = true,
+	["Experimental"] = true,
 }

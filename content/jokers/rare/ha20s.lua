@@ -20,9 +20,11 @@ SMODS.Joker {
 	config = { extra = { trigger = false } },
 	calculate = function(self, card, context)
 		if ((context.retrigger_joker_check and not context.retrigger_joker) or context.repetition) and card.ability.extra.trigger then
-			card.ability.extra.trigger = false
 			return {
-				repetitions = 1
+				repetitions = 1,
+				func = function()
+					card.ability.extra.trigger = false
+				end
 			}
 		end
 		if context.payasaka_pseudorandom_result and context.trigger_obj and not card.ability.extra.trigger then

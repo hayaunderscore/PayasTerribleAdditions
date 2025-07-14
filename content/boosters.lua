@@ -32,7 +32,7 @@ PTASaka.make_boosters('friend',
 			ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
 			ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
 		end,
-	}
+	}, 2
 )
 
 --#endregion
