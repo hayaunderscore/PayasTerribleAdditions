@@ -2252,6 +2252,13 @@ return {
 					"random {C:attention}enhancement",
 				}
 			},
+			c_payasaka_legacy = {
+				name = "Legacy",
+				text = {
+					"Destroy a {C:attention}random",
+					"Joker, {C:dark_edition}+#1#{} hand size",
+				}
+			},
 			c_payasaka_companion = {
 				name = "Companion",
 				text = {

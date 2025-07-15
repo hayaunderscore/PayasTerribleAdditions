@@ -1,6 +1,6 @@
 SMODS.ConsumableType {
 	key = 'Reward',
-	collection_rows = { 5, 5 },
+	collection_rows = { 6, 6 },
 	secondary_colour = HEX('dc86c2'),
 	primary_colour = HEX('9dccf2'),
 	shop_rate = 0,
@@ -635,6 +635,40 @@ PTASaka.Reward {
 	end
 }
 
+PTASaka.Reward {
+	key = 'legacy',
+	atlas = 'JOE_Risk',
+	pos = { x = 1, y = 2 },
+	config = { extra = { amt = 1 } },
+	use = function(self, card, area, copier)
+		local eligibleJokers = {}
+		for _, c in pairs(G.jokers.cards) do
+			if not SMODS.is_eternal(c, card) then eligibleJokers[#eligibleJokers+1] = c end
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				G.hand:change_size(card.ability.extra.amt)
+				if next(eligibleJokers) then
+					Card.start_dissolve(pseudorandom_element(eligibleJokers, 'legacy_proc'))
+				end
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		delay(0.5)
+	end,
+	can_use = function(self, card)
+		return G.jokers and #G.jokers.cards > 0
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.amt }
+		}
+	end
+}
+
 local rarities = {
 	[1] = "Common",
 	[2] = "Uncommon",
@@ -929,6 +963,112 @@ PTASaka.Reward {
 	end,
 }
 
+G.FUNCS.pta_can_select_consumable = function(e)
+	local card = e.config.ref_table
+	local card_limit = card.edition and card.edition.card_limit or 0
+	if #G.consumeables.cards < G.consumeables.config.card_limit + card_limit then
+		e.config.colour = G.C.GREEN
+		e.config.button = 'use_card'
+	else
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+	end
+end
+
+function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, max)
+	return PTASaka.Reward {
+		key = key,
+		atlas = 'JOE_Risk',
+		pos = pos,
+		config = { extra = { max_highlighted = max or 2, min_highlighted = 1, ability = center } },
+		pta_hidden_set = hidden_set or "Tarot",
+		pta_hidden_pos = hidden_pos or pos,
+		use = function(self, card, area, copier)
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
+					return true
+				end
+			}))
+			for i = 1, #G.hand.highlighted do
+				local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3,
+							0.3); return true
+					end
+				}))
+			end
+			delay(0.2)
+			for i = 1, #G.hand.highlighted do
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.1,
+					func = function()
+						---@type Card
+						local _c = G.hand.highlighted[i]
+						_c:set_ability(card.ability.extra.ability)
+						if center == "m_payasaka_mimic" then _c.ability.mimic_card = true end
+						return true
+					end
+				}))
+			end
+			for i = 1, #G.hand.highlighted do
+				local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(
+							0.3,
+							0.3); return true
+					end
+				}))
+			end
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.2,
+				func = function()
+					G.hand:unhighlight_all(); return true
+				end
+			}))
+			delay(0.5)
+		end,
+		can_use = function(self, card)
+			return card.ability.extra.max_highlighted >= #G.hand.highlighted and
+				#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
+		end,
+		loc_vars = function(self, info_queue, card)
+			info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.ability]
+			return {
+				vars = { card.ability.extra.max_highlighted, localize { type = 'name_text', key = card.ability.extra.ability, set = "Enhanced" } }
+			}
+		end,
+		draw = function(self, card, layer)
+			if not card.ability.pta_hidden_spawned then
+				PTASaka.Reward.draw(self, card, layer)
+			end
+		end,
+		set_card_type_badge = function(self, card, badges)
+			badges[#badges + 1] = create_badge(
+				card.ability.pta_hidden_spawned and localize('k_tarot') .. "?" or localize('k_reward'),
+				G.C.SECONDARY_SET[card.ability.pta_hidden_spawned and "Tarot" or card.ability.set], nil, 1.2
+			)
+		end
+	}
+end
+
+-- These are tarots technically
+PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 4 })
+PTASaka.create_reward_tarot('truth', { x = 6, y = 0 }, "m_payasaka_true", "Tarot", { x = 0, y = 4 })
+PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 }, 1)
+PTASaka.create_reward_tarot('health', { x = 5, y = 0 }, "m_payasaka_laser", "Tarot", { x = 2, y = 4 })
+
 PTASaka.Reward {
 	key = 'mind',
 	atlas = 'JOE_Risk',
@@ -1038,112 +1178,6 @@ PTASaka.Reward {
 		}
 	end
 }
-
-G.FUNCS.pta_can_select_consumable = function(e)
-	local card = e.config.ref_table
-	local card_limit = card.edition and card.edition.card_limit or 0
-	if #G.consumeables.cards < G.consumeables.config.card_limit + card_limit then
-		e.config.colour = G.C.GREEN
-		e.config.button = 'use_card'
-	else
-		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-		e.config.button = nil
-	end
-end
-
-function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, max)
-	return PTASaka.Reward {
-		key = key,
-		atlas = 'JOE_Risk',
-		pos = pos,
-		config = { extra = { max_highlighted = max or 2, min_highlighted = 1, ability = center } },
-		pta_hidden_set = hidden_set or "Tarot",
-		pta_hidden_pos = hidden_pos or pos,
-		use = function(self, card, area, copier)
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.4,
-				func = function()
-					play_sound('tarot1')
-					card:juice_up(0.3, 0.5)
-					return true
-				end
-			}))
-			for i = 1, #G.hand.highlighted do
-				local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
-				G.E_MANAGER:add_event(Event({
-					trigger = 'after',
-					delay = 0.15,
-					func = function()
-						G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3,
-							0.3); return true
-					end
-				}))
-			end
-			delay(0.2)
-			for i = 1, #G.hand.highlighted do
-				G.E_MANAGER:add_event(Event({
-					trigger = 'after',
-					delay = 0.1,
-					func = function()
-						---@type Card
-						local _c = G.hand.highlighted[i]
-						_c:set_ability(card.ability.extra.ability)
-						if center == "m_payasaka_mimic" then _c.ability.mimic_card = true end
-						return true
-					end
-				}))
-			end
-			for i = 1, #G.hand.highlighted do
-				local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
-				G.E_MANAGER:add_event(Event({
-					trigger = 'after',
-					delay = 0.15,
-					func = function()
-						G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(
-							0.3,
-							0.3); return true
-					end
-				}))
-			end
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.2,
-				func = function()
-					G.hand:unhighlight_all(); return true
-				end
-			}))
-			delay(0.5)
-		end,
-		can_use = function(self, card)
-			return card.ability.extra.max_highlighted >= #G.hand.highlighted and
-				#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
-		end,
-		loc_vars = function(self, info_queue, card)
-			info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.ability]
-			return {
-				vars = { card.ability.extra.max_highlighted, localize { type = 'name_text', key = card.ability.extra.ability, set = "Enhanced" } }
-			}
-		end,
-		draw = function(self, card, layer)
-			if not card.ability.pta_hidden_spawned then
-				PTASaka.Reward.draw(self, card, layer)
-			end
-		end,
-		set_card_type_badge = function(self, card, badges)
-			badges[#badges + 1] = create_badge(
-				card.ability.pta_hidden_spawned and localize('k_tarot') .. "?" or localize('k_reward'),
-				G.C.SECONDARY_SET[card.ability.pta_hidden_spawned and "Tarot" or card.ability.set], nil, 1.2
-			)
-		end
-	}
-end
-
--- These are tarots technically
-PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 4 })
-PTASaka.create_reward_tarot('truth', { x = 6, y = 0 }, "m_payasaka_true", "Tarot", { x = 0, y = 4 })
-PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 }, 1)
-PTASaka.create_reward_tarot('health', { x = 5, y = 0 }, "m_payasaka_laser", "Tarot", { x = 2, y = 4 })
 
 PTASaka.make_boosters('moji',
 	{

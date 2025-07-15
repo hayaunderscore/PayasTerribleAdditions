@@ -32,7 +32,7 @@ end
 
 SMODS.ConsumableType {
 	key = 'Risk',
-	collection_rows = { 9, 6, 4 },
+	collection_rows = { 5, 6 },
 	primary_colour = HEX('c42430'),
 	secondary_colour = HEX('891e2b'),
 	shop_rate = 0,
