@@ -1,6 +1,6 @@
 SMODS.ConsumableType {
 	key = 'Reward',
-	collection_rows = { 6, 6 },
+	collection_rows = { 5, 5 },
 	secondary_colour = HEX('dc86c2'),
 	primary_colour = HEX('9dccf2'),
 	shop_rate = 0,
@@ -205,7 +205,7 @@ PTASaka.Reward {
 				end
 			end
 		end
-		for _, hand in pairs({_last_hand, _hand}) do
+		for _, hand in pairs({ _last_hand, _hand }) do
 			SMODS.smart_level_up_hand(card, hand, false, card.ability.extra.level)
 		end
 	end,
@@ -583,6 +583,353 @@ PTASaka.Reward {
 }
 
 PTASaka.Reward {
+	key = 'enlighten',
+	atlas = 'JOE_Risk',
+	pos = { x = 2, y = 2 },
+	config = { extra = { amt = 3 } },
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		-- ban these from creation
+		for _, v in pairs(G.P_CENTER_POOLS.Reward) do
+			G.GAME.banned_keys[v.key] = true
+		end
+		for _ = 1, card.ability.extra.amt do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.2,
+				func = function()
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
+					SMODS.add_card { set = "Consumeables", edition = 'e_negative', area = G.consumeables }
+					return true
+				end
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.5,
+			func = function()
+				-- unban these
+				for _, v in pairs(G.P_CENTER_POOLS.Reward) do
+					G.GAME.banned_keys[v.key] = nil
+				end
+				return true
+			end
+		}))
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.amt }
+		}
+	end
+}
+
+local rarities = {
+	[1] = "Common",
+	[2] = "Uncommon",
+	[3] = "Rare",
+	[4] = "Legendary"
+}
+
+---@type table<string, string|table|nil>
+PTASaka.rarity_upgrades = {
+	["akyrs_supercommon"] = "Common",
+	["Common"] = "Uncommon",
+	["Uncommon"] = "Rare",
+	["Rare"] = {
+		-- Epic rarity
+		Cryptid and SMODS.Rarities['cry_epic'] and 'cry_epic' or nil,
+		"Legendary"
+	},
+	["Legendary"] = {
+		-- Only if Cryptid is installed, and the rarity exists
+		Cryptid and SMODS.Rarities['cry_exotic'] and 'cry_exotic' or nil,
+		-- Reverse legendaries
+		Entropy and 'entr_reverse_legendary' or nil,
+		-- Showdown Jokers
+		next(SMODS.find_mod('finity')) and 'finity_showdown' or nil
+	},
+	-- Reverse legendaries upgrade to exotics
+	['entr_reverse_legendary'] = Cryptid and SMODS.Rarities['cry_exotic'] and 'cry_exotic' or nil,
+	["payasaka_ahead"] = "payasaka_daeha"
+}
+
+PTASaka.Reward {
+	key = 'rebirth',
+	atlas = 'JOE_Risk',
+	pos = { x = 4, y = 2 },
+	config = { extra = { max_highlighted = 1, min_highlighted = 1 } },
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		delay(0.2)
+		for i = 1, #G.jokers.highlighted do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					---@type Card
+					local _c = G.jokers.highlighted[i]
+					---@class Joker: SMODS.Joker
+					---@field rarity string|number
+					local center = _c.config.center
+					local rarity = center.rarity
+					if type(rarity) == 'number' then
+						rarity = rarities[rarity]
+					end
+					if PTASaka.rarity_upgrades[rarity] then
+						local selected_rarity = PTASaka.rarity_upgrades[rarity]
+						if type(selected_rarity) == 'table' then
+							if next(selected_rarity) then
+								selected_rarity = pseudorandom_element(selected_rarity, 'rare')
+							else
+								card_eval_status_text(_c, 'extra', nil, nil, nil,
+									{ message = localize('k_nope_ex'), instant = true, sound = 'tarot2' }); return true
+							end                                                                                                                       -- Aww!
+						end
+						if not SMODS.is_eternal(_c) then _c:start_dissolve() end
+						SMODS.add_card { set = "Joker", rarity = selected_rarity }
+					else
+						card_eval_status_text(_c, 'extra', nil, nil, nil,
+							{ message = localize('k_nope_ex'), instant = true, sound = 'tarot2' });
+					end
+					return true
+				end
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.jokers:unhighlight_all(); return true
+			end
+		}))
+		delay(0.5)
+	end,
+	can_use = function(self, card)
+		return card.ability.extra.max_highlighted >= #G.jokers.highlighted and
+			#G.jokers.highlighted >= (card.ability.extra.min_highlighted or 1)
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.max_highlighted }
+		}
+	end
+}
+
+PTASaka.Reward {
+	key = 'recall',
+	atlas = 'JOE_Risk',
+	pos = { x = 0, y = 3 },
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				if not G.GAME.payasaka_last_sold_joker then
+					attention_text({
+						text = localize('k_nope_ex'),
+						scale = 1.3,
+						hold = 1.4,
+						major = card,
+						backdrop_colour = G.C.SECONDARY_SET.Tarot,
+						align = (G.STATE ~= G.STATES.PLAY_TAROT) and 'tm' or 'cm',
+						offset = { x = 0, y = (G.STATE ~= G.STATES.PLAY_TAROT) and -0.2 or 0 },
+						silent = true
+					})
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.06 * G.SETTINGS.GAMESPEED,
+						blockable = false,
+						blocking = false,
+						func = function()
+							play_sound('tarot2', 0.76, 0.4); return true
+						end
+					}))
+					play_sound('tarot2', 1, 0.4)
+					card:juice_up(0.3, 0.5)
+				else
+					SMODS.add_card { key = G.GAME.payasaka_last_sold_joker }
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
+				end
+				return true
+			end
+		}))
+		delay(0.5)
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+}
+
+PTASaka.Reward {
+	key = 'meld',
+	atlas = 'JOE_Risk',
+	pos = { x = 1, y = 3 },
+	config = { extra = { max_highlighted = 4, min_highlighted = 2 } },
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		for i = 1, #G.hand.highlighted do
+			local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3, 0.3); return true
+				end
+			}))
+		end
+		delay(0.2)
+		local rightmost = G.hand.highlighted[1]
+		for i = 1, #G.hand.highlighted do
+			if G.hand.highlighted[i].T.x > rightmost.T.x then
+				rightmost = G.hand
+					.highlighted[i]
+			end
+		end
+		for i = 1, #G.hand.highlighted do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					if G.hand.highlighted[i] ~= rightmost then
+						---@type Card
+						local _c = G.hand.highlighted[i]
+						assert(SMODS.change_base(_c, nil, rightmost.base.value))
+					end
+					return true
+				end
+			}))
+		end
+		for i = 1, #G.hand.highlighted do
+			local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(0.3,
+						0.3); return true
+				end
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.hand:unhighlight_all(); return true
+			end
+		}))
+		delay(0.5)
+	end,
+	can_use = function(self, card)
+		return card.ability.extra.max_highlighted >= #G.hand.highlighted and
+			#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.max_highlighted }
+		}
+	end
+}
+
+PTASaka.Reward {
+	key = 'harmony',
+	atlas = 'JOE_Risk',
+	pos = { x = 2, y = 3 },
+	use = function(self, card, area, copier)
+		local enhancement = SMODS.poll_enhancement({ key = 'harmony_proc', guaranteed = true })
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+		}))
+		for i = 1, #G.hand.cards do
+			local percent = 1.15 - (i - 0.999) / (#G.hand.cards - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					G.hand.cards[i]:flip(); play_sound('card1', percent); G.hand.cards[i]:juice_up(0.3, 0.3); return true
+				end
+			}))
+		end
+		for i = 1, #G.hand.cards do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					---@type Card
+					local _c = G.hand.cards[i]
+					_c:set_ability(G.P_CENTERS[enhancement])
+					return true
+				end
+			}))
+		end
+		for i = 1, #G.hand.cards do
+			local percent = 0.85 + (i - 0.999) / (#G.hand.cards - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					G.hand.cards[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.cards[i]:juice_up(0.3,
+						0.3); return true
+				end
+			}))
+		end
+		delay(0.5)
+	end,
+	can_use = function(self, card)
+		return G.hand and #G.hand.cards > 0
+	end,
+}
+
+PTASaka.Reward {
+	key = 'companion',
+	atlas = 'JOE_Risk',
+	pos = { x = 3, y = 3 },
+	use = function(self, card, area, copier)
+		SMODS.add_card { set = "Friend", area = G.jokers }
+		play_sound('timpani')
+		card:juice_up()
+		delay(0.6)
+	end,
+	can_use = function(self, card)
+		return #G.jokers.cards < G.jokers.config.card_limit
+	end,
+}
+
+PTASaka.Reward {
 	key = 'mind',
 	atlas = 'JOE_Risk',
 	pos = { x = 0, y = 2 },
@@ -728,7 +1075,8 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 					trigger = 'after',
 					delay = 0.15,
 					func = function()
-						G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3, 0.3); return true
+						G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3,
+							0.3); return true
 					end
 				}))
 			end
@@ -752,7 +1100,8 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 					trigger = 'after',
 					delay = 0.15,
 					func = function()
-						G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(0.3,
+						G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(
+							0.3,
 							0.3); return true
 					end
 				}))
@@ -771,7 +1120,7 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 				#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
 		end,
 		loc_vars = function(self, info_queue, card)
-			info_queue[#info_queue+1] = G.P_CENTERS[card.ability.extra.ability]
+			info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.ability]
 			return {
 				vars = { card.ability.extra.max_highlighted, localize { type = 'name_text', key = card.ability.extra.ability, set = "Enhanced" } }
 			}
@@ -781,9 +1130,9 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 				PTASaka.Reward.draw(self, card, layer)
 			end
 		end,
-		set_card_type_badge = function (self, card, badges)
-			badges[#badges+1] = create_badge(
-				card.ability.pta_hidden_spawned and localize('k_tarot').."?" or localize('k_reward'),
+		set_card_type_badge = function(self, card, badges)
+			badges[#badges + 1] = create_badge(
+				card.ability.pta_hidden_spawned and localize('k_tarot') .. "?" or localize('k_reward'),
 				G.C.SECONDARY_SET[card.ability.pta_hidden_spawned and "Tarot" or card.ability.set], nil, 1.2
 			)
 		end
@@ -791,7 +1140,7 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 end
 
 -- These are tarots technically
-PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 3 })
+PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 4 })
 PTASaka.create_reward_tarot('truth', { x = 6, y = 0 }, "m_payasaka_true", "Tarot", { x = 0, y = 4 })
 PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 }, 1)
 PTASaka.create_reward_tarot('health', { x = 5, y = 0 }, "m_payasaka_laser", "Tarot", { x = 2, y = 4 })

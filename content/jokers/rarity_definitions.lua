@@ -12,6 +12,13 @@ SMODS.Gradient {
 	interpolation = 'linear'
 }
 
+SMODS.Gradient {
+	key = "friend",
+	colours = { lighten(G.C.RED, 0.3), lighten(G.C.BLUE, 0.3) },
+	cycle = 5,
+	interpolation = 'linear'
+}
+
 SMODS.Rarity {
 	key = "thunderstruck",
 	badge_colour = HEX('344245'),

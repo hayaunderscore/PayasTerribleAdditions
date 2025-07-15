@@ -656,6 +656,7 @@ function Card:sell_card()
 	sell(self)
 	-- Not a joker....
 	if self.ability.set ~= "Joker" then return end
+	pcall(function() G.GAME.payasaka_last_sold_joker = self.config.center_key end)
 	if self.ability.name == "Adult Card" then return end -- No.
 	if self.ability.name == "payasaka_nil" then return end -- No!
 	-- We don have it yet!

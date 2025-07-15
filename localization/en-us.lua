@@ -2212,6 +2212,54 @@ return {
 					"of {C:attention}#1#{} selected card",
 				}
 			},
+			c_payasaka_enlighten = {
+				name = "Enlighten",
+				text = {
+					"Creates {C:attention}#1#{} random",
+					"{C:dark_edition}Negative{} consumables",
+					"{C:inactive,s:0.8}(Cannot create Reward cards)"
+				}
+			},
+			c_payasaka_rebirth = {
+				name = "Rebirth",
+				text = {
+					"{C:red}Destroys{} {C:attention}#1#{} selected Joker",
+					"and {C:attention}creates{} another Joker",
+					"of a higher {C:attention}rarity",
+				}
+			},
+			c_payasaka_recall = {
+				name = "Recall",
+				text = {
+					"Creates the last Joker",
+					"you recently {C:attention}sold{}",
+					"{C:inactive}(Does not need room)"
+				}
+			},
+			c_payasaka_meld = {
+				name = "Meld",
+				text = {
+					"Convert up to {C:attention}#1#{} selected",
+					"cards into the {C:attention}rightmost",
+					"card's {C:attention}rank",
+				}
+			},
+			c_payasaka_harmony = {
+				name = "Harmony",
+				text = {
+					"Converts all cards",
+					"in hand to a single",
+					"random {C:attention}enhancement",
+				}
+			},
+			c_payasaka_companion = {
+				name = "Companion",
+				text = {
+					"Creates a random",
+					"{C:payasaka_friend}Friend{} Joker",
+					"{C:inactive}(Must have room)"
+				}
+			},
 			c_payasaka_spirit = {
 				name = "Bountiful Spirit",
 				text = {
@@ -2232,8 +2280,8 @@ return {
 				name = "Righteous Mind",
 				text = {
 					"Enhances {C:attention}#1#",
-					"selected card to",
-					"{C:attention}#2#s",
+					"selected card to a",
+					"{C:attention}#2#",
 				}
 			},
 			c_payasaka_health = {
