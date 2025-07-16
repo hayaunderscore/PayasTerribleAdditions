@@ -784,7 +784,7 @@ return {
 				}
 			},
 			j_payasaka_joker_lua = {
-				name = "joker.lua",
+				name = "{f:payasaka_FiraCode}joker.lua",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for every",
 					"lua file {C:attention}required/loaded",
