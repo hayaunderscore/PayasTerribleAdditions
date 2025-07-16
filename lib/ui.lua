@@ -8,6 +8,16 @@ if TheFamily then
 	TheFamily.create_tab_group {
 		key = 'pta',
 		order = 2,
+		loc_txt = {
+			name = "PTA Tabs",
+			description = {
+				"Tabs related to the hit mod",
+				"Paya's Terrible Additions"
+			}
+		},
+		center = "c_payasaka_mechanic"
+		-- TODO: Add disabling support for this
+		-- can_be_disabled = true,
 	}
 	TheFamily.create_tab {
 		key = 'pta_dos_cards',
@@ -15,6 +25,14 @@ if TheFamily then
 		order = 0,
 		keep = true,
 		type = "switch",
+		loc_txt = {
+			name = "DOS Cards",
+			description = {
+				"Toggle between showing",
+				"DOS Cards or the deck"
+			}
+		},
+		-- can_be_disabled = true,
 		front_label = function(definition, card)
 			return {
 				text = PTASaka.dos_card_status,
