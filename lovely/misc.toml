@@ -485,3 +485,26 @@ if G.jokers then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'engine/ui.lua'
+pattern = "if next(self.children) == nil or self.config.no_fill then"
+position = 'after'
+payload = '''
+if self.config.no_fill_width and next(self.children) then
+	for k, w in pairs(self.children) do
+        if w.set_wh then 
+            local _cw, _ch = w:set_wh()
+            if _cw and _ch then
+                if _cw > _max_w then _max_w = _cw end
+                if _ch > _max_h then _max_h = _ch end
+            else
+                _max_w = padding
+                _max_h = padding
+            end
+        end
+    end
+end
+'''
+match_indent = true

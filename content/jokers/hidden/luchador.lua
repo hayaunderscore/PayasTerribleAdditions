@@ -1,4 +1,4 @@
-SMODS.Joker:take_ownership('chicot', {
+SMODS.Joker:take_ownership('luchador', {
 	calculate = function(self, card, context)
 		if context.setting_blind and not context.blueprint and context.blind.boss then
 			if G.GAME.risk_cards_risks and next(G.GAME.risk_cards_risks) then
@@ -15,41 +15,36 @@ SMODS.Joker:take_ownership('chicot', {
 					trigger = 'after',
 					delay = 0.2,
 					func = function()
-						card:set_ability("j_payasaka_chicot")
+						card:set_ability("j_payasaka_luchador")
 						play_sound('tarot2')
 						card:flip()
 						return true
 					end
 				})
 				SMODS.calculate_effect({ message = "Transformed!" }, card)
-			else
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								G.GAME.blind:disable()
-								play_sound('timpani')
-								delay(0.4)
-								return true
-							end
-						}))
-						SMODS.calculate_effect({ message = localize('ph_boss_disabled') }, card)
-						return true
-					end
-				}))
 			end
 			return nil, true -- This is for Joker retrigger purposes
 		end
+		if context.selling_self then
+            if G.GAME.blind and not G.GAME.blind.disabled and G.GAME.blind.boss then
+                return {
+                    message = localize('ph_boss_disabled'),
+                    func = function() -- This is for timing purposes, it runs after the message
+                        G.GAME.blind:disable()
+                    end
+                }
+            end
+        end
 	end
 }, true)
 
--- Chicot?
+-- Luchador?
 SMODS.Joker {
-	name = "ThunderstruckChicot",
-	key = "chicot",
+	name = "ThunderstruckLuchador",
+	key = "luchador",
 	rarity = "payasaka_thunderstruck",
 	atlas = "JOE_Jokers2",
-	pos = { x = 0, y = 5 },
+	pos = { x = 1, y = 5 },
 	cost = 25,
 	blueprint_compat = false,
 	demicoloncompat = false,
@@ -57,7 +52,7 @@ SMODS.Joker {
 	no_collection = true,
 	discovered = true,
 	unlocked = true,
-	-- These guys are unobtainable without Chicot!
+	-- These guys are unobtainable without Luchador!
 	in_pool = function(self, args)
 		return false
 	end,
@@ -72,12 +67,17 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.repetition and G.GAME.risk_cards_risks and next(G.GAME.risk_cards_risks) then
+		if context.selling_self then
+			if G.GAME.risk_cards_risks and next(G.GAME.risk_cards_risks) then
+				for _, v in pairs(G.GAME.payasaka_risk_objects) do
+					v.ability.persist = true
+				end
+			end
 			return {
-				repetitions = G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks or 0
+				message = "Locked!"
 			}
 		end
-		-- go back to being chicot
+		-- go back to being luchador
 		if context.round_eval then
 			-- Nuh uh
 			G.E_MANAGER:add_event(Event{
@@ -92,7 +92,7 @@ SMODS.Joker {
 				trigger = 'after',
 				delay = 0.2,
 				func = function()
-					card:set_ability("j_chicot")
+					card:set_ability("j_luchador")
 					play_sound('tarot2')
 					card:flip()
 					return true
@@ -102,9 +102,4 @@ SMODS.Joker {
 			return nil, true
 		end
 	end,
-	loc_vars = function(self, info_queue, card)
-		return {
-			vars = { G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks or 0 }
-		}
-	end
 }

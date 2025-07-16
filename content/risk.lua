@@ -7,7 +7,7 @@ function PTASaka.RiskObject:init(key)
 end
 
 function PTASaka.RiskObject:calculate(context)
-	if self.center.risk_calculate and type(self.center.risk_calculate) == 'function' then
+	if self.center.risk_calculate and type(self.center.risk_calculate) == 'function' and (G.GAME.blind_on_deck == 'Boss' or self.center.can_calculate_outside_of_boss) then
 		return self.center:risk_calculate(self, context)
 	end
 end
@@ -60,6 +60,7 @@ local reward_sets = {
 
 ---@class Risk: SMODS.Consumable
 ---@field risk_calculate? fun(self: Risk|table, risk: RiskObject|table, context: CalcContext|table): table?, boolean?  Calculates effects based on parameters in `context`. See [SMODS calculation](https://github.com/Steamodded/smods/wiki/calculate_functions) docs for details. 
+---@field can_calculate_outside_of_boss? boolean Determines if the Risk card's `risk_calculate` can run outside of a boss blind
 ---@overload fun(self: Risk): Risk
 PTASaka.Risk = SMODS.Consumable:extend {
 	set = 'Risk',
@@ -680,6 +681,7 @@ PTASaka.Risk {
 	atlas = "JOE_Risk",
 	pos = { x = 2, y = 0 },
 	tier = 3,
+	can_calculate_outside_of_boss = true,
 	use = function(self, card, area, copier)
 		-- no need to save it if the damn thing is already the question
 		-- im the motherfucking question bitch
@@ -758,27 +760,35 @@ PTASaka.Risk {
 				return true
 			end
 		})
+		G.GAME.payasaka_casted = true
 		PTASaka.Risk.use(self, card, area, copier)
 	end,
-	apply_reward = function(self, ability)
-		G.GAME.payasaka_cannot_reroll = nil
-		G.GAME.round_resets.last_cast_boss = nil
-		G.GAME.payasaka_merged_boss_keys = {}
-		--[[
-		add_tag(Tag('tag_charm'))
-		add_tag(Tag('tag_meteor'))
-		add_tag(Tag('tag_ethereal'))
-		]]
-		G.E_MANAGER:add_event(Event {
-			trigger = 'after',
-			delay = 0.5,
-			blocking = false,
-			func = function()
-				G.GAME.payasaka_hard_mode_cast = nil
-				return true
+	risk_calculate = function(self, risk, context)
+		if (context.end_of_round and context.main_eval) and not risk.ability.persist and G.GAME.blind_on_deck == 'Boss' then
+			G.GAME.payasaka_cannot_reroll = nil
+			G.GAME.round_resets.last_cast_boss = nil
+			G.GAME.payasaka_merged_boss_keys = {}
+			G.GAME.payasaka_casted = nil
+			G.E_MANAGER:add_event(Event {
+				trigger = 'after',
+				delay = 0.5,
+				blocking = false,
+				func = function()
+					G.GAME.payasaka_hard_mode_cast = nil
+					return true
+				end
+			})
+		end
+		if context.ending_shop and not G.GAME.payasaka_casted then
+			if G.GAME.payasaka_prelude_next_blind == nil then
+				G.GAME.payasaka_prelude_next_blind = "bl_payasaka_question"
+				G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_prelude'
+			else
+				G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_question'
 			end
-		})
-	end,
+			G.GAME.payasaka_casted = true
+		end
+	end
 }
 
 PTASaka.Risk {
@@ -827,6 +837,16 @@ PTASaka.Risk {
 			colour = HEX('09d707')
 		},
 	},
+	can_calculate_outside_of_boss = true,
+	risk_calculate = function(self, risk, context)
+		if (context.end_of_round and context.main_eval) and (not risk.ability.persist) and G.GAME.blind_on_deck == 'Boss' then
+			G.GAME.payasaka_cannot_reroll = nil
+		end
+		if context.ending_shop and not G.GAME.payasaka_prelude_next_blind then
+			G.GAME.payasaka_prelude_next_blind = G.GAME.round_resets.blind_choices.Boss
+			G.GAME.round_resets.blind_choices.Boss = 'bl_payasaka_prelude'
+		end
+	end,
 	use = function(self, card, area, copier)
 		if G.GAME.payasaka_prelude_next_blind then card:start_dissolve(); return end
 		G.GAME.payasaka_prelude_next_blind = G.GAME.round_resets.blind_choices.Boss
@@ -874,7 +894,6 @@ PTASaka.Risk {
 	end,
 	apply_reward = function(self, ability)
 		G.GAME.payasaka_prelude_next_blind = nil
-		G.GAME.payasaka_cannot_reroll = nil
 		for _, area in ipairs({ G.play, G.hand, G.deck, G.discard }) do
 			for i = 1, #area.cards do
 				---@type Card

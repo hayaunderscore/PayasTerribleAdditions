@@ -57,7 +57,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = '''-- TARGET: add your own individual scoring targets'''
 position = 'after'
 payload = '''
-for k, v in ipairs(G.GAME.payasaka_risk_objects or {}) do
+for k, v in pairs(G.GAME.payasaka_risk_objects or {}) do
 	if (type(v) == "table") and v and v.is and v:is(PTASaka.RiskObject) then
 		t[#t+1] = { object = v, scored_card = G.GAME.blind.children.animatedSprite }
 	end
@@ -74,11 +74,11 @@ payload = '''
 if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' then
 	for k, v in ipairs(G.GAME.risk_cards_risks) do
 		G.P_CENTERS[v.key].apply_risk(G.P_CENTERS[v.key], v.ability)
-		G.GAME.payasaka_risk_objects[k] = PTASaka.RiskObject(v.key)
+		G.GAME.payasaka_risk_objects[#G.GAME.payasaka_risk_objects+1] = PTASaka.RiskObject(v.key)
 	end
-	for k, v in ipairs(G.GAME.payasaka_risk_objects) do
-		G.GAME.payasaka_risk_objects[k]:calculate({setting_blind = true, blind = G.GAME.round_resets.blind})
-	end
+end
+for k, v in pairs(G.GAME.payasaka_risk_objects) do
+	v:calculate({setting_blind = true, blind = G.GAME.round_resets.blind})
 end
 
 '''
@@ -100,13 +100,19 @@ if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' and not game_over 
     G.GAME.risk_cards_risks = {}
 end
 if G.GAME.payasaka_risk_objects and G.GAME.blind_on_deck == 'Boss' and not game_over then
-	for k_, v in ipairs(G.GAME.payasaka_risk_objects) do
-		if G.GAME.payasaka_risk_objects[k] then
-			G.GAME.payasaka_risk_objects[k]:remove()
-			G.GAME.payasaka_risk_objects[k] = nil
+	local persist = {}
+	for k_, v in pairs(G.GAME.payasaka_risk_objects) do
+		if v and not v.ability.persist then
+			v:remove()
+		elseif v and v.ability.persist then
+			persist[#persist+1] = v
+			G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks+1] = {
+				key = v.center.key,
+				ability = PTASaka.deep_copy(v.ability.extra)
+			}
 		end
 	end
-	G.GAME.payasaka_risk_objects = {}
+	G.GAME.payasaka_risk_objects = persist
 end
 '''
 match_indent = true

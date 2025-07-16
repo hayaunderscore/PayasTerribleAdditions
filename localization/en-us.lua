@@ -1578,6 +1578,16 @@ return {
 				},
 				-- These guys don't have comments
 			},
+			j_payasaka_luchador = {
+				name = "Luchador",
+				text = {
+					"Sell this card to make",
+					"{C:risk}Risk{} cards used this",
+					"ante {C:attention}persist{} for the",
+					"rest of the run"
+				},
+				-- These guys don't have comments
+			},
 		},
 		Blind = {
 			bl_payasaka_nether = {

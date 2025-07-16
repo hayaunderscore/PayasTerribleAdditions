@@ -1,18 +1,18 @@
 -- Finity cross mod
 if next(SMODS.find_mod('finity')) then
 	FinisherBossBlindStringMap = FinisherBossBlindStringMap or {}
-	FinisherBossBlindStringMap["bl_payasaka_question"] = {"j_payasaka_cast", "The Cast"}
-	FinisherBossBlindStringMap["bl_payasaka_question_hard"] = {"j_payasaka_missingno", "MISSINGNO."}
+	FinisherBossBlindStringMap["bl_payasaka_question"] = { "j_payasaka_cast", "The Cast" }
+	FinisherBossBlindStringMap["bl_payasaka_question_hard"] = { "j_payasaka_missingno", "MISSINGNO." }
 	FinisherBossBlindQuips = FinisherBossBlindQuips or {}
-	FinisherBossBlindQuips["bl_payasaka_question"] = {"question", 4}
-	FinisherBossBlindQuips["bl_payasaka_question_hard"] = {"m", 4}
+	FinisherBossBlindQuips["bl_payasaka_question"] = { "question", 4 }
+	FinisherBossBlindQuips["bl_payasaka_question_hard"] = { "m", 4 }
 end
 
 -- Fuses two boss blinds together. Jesus.
 SMODS.Blind {
 	key = "question",
 	atlas = "JOE_Blinds",
-	pos = {x = 0, y = 1},
+	pos = { x = 0, y = 1 },
 	dollars = 8,
 	mult = 2,
 	boss = {
@@ -21,26 +21,26 @@ SMODS.Blind {
 	},
 	boss_colour = HEX('46585c'),
 	collection_loc_vars = function(self)
-		return {key = "bl_payasaka_question_alt"}
+		return { key = "bl_payasaka_question_alt" }
 	end,
 	loc_vars = function(self)
 		if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) then
 			local localized = {}
 			for i = 1, #G.GAME.payasaka_merged_boss_keys do
-				localized[#localized+1] = localize { type = 'name_text', key = G.GAME.payasaka_merged_boss_keys[i], set = 'Blind' }
+				localized[#localized + 1] = localize { type = 'name_text', key = G.GAME.payasaka_merged_boss_keys[i], set = 'Blind' }
 			end
-			local conc = table.concat(localized, ", ", 1, #localized-1)
-			conc = conc.." and "..localized[#localized]
-			return {vars = {conc}}
+			local conc = table.concat(localized, ", ", 1, #localized - 1)
+			conc = conc .. " and " .. localized[#localized]
+			return { vars = { conc } }
 		else
-			return {key = "bl_payasaka_question_alt"}
+			return { key = "bl_payasaka_question_alt" }
 		end
 	end,
 	show_fusions = true,
 	set_blind = function(self)
 		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		if not next(G.GAME.payasaka_merged_boss_keys) then
-			for i = 1,2 do
+			for i = 1, 2 do
 				-- Fix Finity creating an infinite loop by using The Cast as the bosses for... The Cast.
 				local old_name = G.GAME.selected_back.name
 				G.GAME.selected_back.name = "b_red"
@@ -59,20 +59,25 @@ SMODS.Blind {
 		end
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			self.mult = math.max(2, G.P_BLINDS[v].mult)
-			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.GAME.starting_params.ante_scaling
+			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * self.mult *
+				G.GAME.starting_params.ante_scaling
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-			SMODS.merge_lists(self.boss, (G.P_BLINDS[v].boss and type(G.P_BLINDS[v].boss) == "table") and G.P_BLINDS[v].boss or {})
+			SMODS.merge_lists(self.boss,
+				(G.P_BLINDS[v].boss and type(G.P_BLINDS[v].boss) == "table") and G.P_BLINDS[v].boss or {})
 			-- todo support multiple debuffs
-			G.GAME.blind.debuff = G.GAME.blind.debuff or { hand = {}, h_size_ge = 0, h_size_le = 0, is_face = false, suits = {}, values = {}, nominals = {} }
-			SMODS.merge_lists(G.GAME.blind.debuff, (G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table") and G.P_BLINDS[v].debuff or {})
+			G.GAME.blind.debuff = G.GAME.blind.debuff or
+				{ hand = {}, h_size_ge = 0, h_size_le = 0, is_face = false, suits = {}, values = {}, nominals = {} }
+			SMODS.merge_lists(G.GAME.blind.debuff,
+				(G.P_BLINDS[v].debuff and type(G.P_BLINDS[v].debuff) == "table") and G.P_BLINDS[v].debuff or {})
 			-- blindexpander stuffs
 			if G.P_BLINDS[v].passives then
 				-- passives support
 				G.GAME.blind.passives = G.GAME.blind.passives or {}
-				SMODS.merge_lists(G.GAME.blind.passives, (G.P_BLINDS[v].passives and type(G.P_BLINDS[v].passives) == "table") and G.P_BLINDS[v].passives or {})
+				SMODS.merge_lists(G.GAME.blind.passives,
+					(G.P_BLINDS[v].passives and type(G.P_BLINDS[v].passives) == "table") and G.P_BLINDS[v].passives or {})
 				if self.passives then
-					self.children.alert = UIBox{
-						definition = create_UIBox_card_alert(), 
+					self.children.alert = UIBox {
+						definition = create_UIBox_card_alert(),
 						config = {
 							align = "tri",
 							offset = {
@@ -88,7 +93,8 @@ SMODS.Blind {
 			-- summons
 			if (G.P_BLINDS[v].summon) then
 				G.GAME.blind.summon = G.GAME.blind.summon or {}
-				SMODS.merge_lists(G.GAME.blind.summon, (G.P_BLINDS[v].summon and type(G.P_BLINDS[v].summon) == "table") and G.P_BLINDS[v].summon or {})
+				SMODS.merge_lists(G.GAME.blind.summon,
+					(G.P_BLINDS[v].summon and type(G.P_BLINDS[v].summon) == "table") and G.P_BLINDS[v].summon or {})
 			end
 			if G.P_BLINDS[v].set_blind then
 				--print("set blind")
@@ -114,14 +120,14 @@ SMODS.Blind {
 			if G.P_BLINDS[v].name == 'The Mouth' then
 				G.GAME.blind.only_hand = false
 			end
-			if G.P_BLINDS[v].name == 'The Fish' then 
+			if G.P_BLINDS[v].name == 'The Fish' then
 				G.GAME.blind.prepped = nil
 			end
-			if G.P_BLINDS[v].name == 'The Water' then 
+			if G.P_BLINDS[v].name == 'The Water' then
 				G.GAME.blind.discards_sub = G.GAME.current_round.discards_left
 				ease_discard(-G.GAME.blind.discards_sub)
 			end
-			if G.P_BLINDS[v].name == 'The Needle' then 
+			if G.P_BLINDS[v].name == 'The Needle' then
 				G.GAME.blind.hands_sub = G.GAME.round_resets.hands - 1
 				ease_hands_played(-G.GAME.blind.hands_sub)
 			end
@@ -133,15 +139,32 @@ SMODS.Blind {
 				for k, v in ipairs(G.jokers.cards) do
 					v:flip()
 				end
-				if #G.jokers.cards > 1 then 
-					G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function() 
-						G.E_MANAGER:add_event(Event({ func = function() G.jokers:shuffle('aajk'); play_sound('cardSlide1', 0.85);return true end })) 
-						delay(0.15)
-						G.E_MANAGER:add_event(Event({ func = function() G.jokers:shuffle('aajk'); play_sound('cardSlide1', 1.15);return true end })) 
-						delay(0.15)
-						G.E_MANAGER:add_event(Event({ func = function() G.jokers:shuffle('aajk'); play_sound('cardSlide1', 1);return true end })) 
-						delay(0.5)
-					return true end })) 
+				if #G.jokers.cards > 1 then
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.2,
+						func = function()
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									G.jokers:shuffle('aajk'); play_sound('cardSlide1', 0.85); return true
+								end
+							}))
+							delay(0.15)
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									G.jokers:shuffle('aajk'); play_sound('cardSlide1', 1.15); return true
+								end
+							}))
+							delay(0.15)
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									G.jokers:shuffle('aajk'); play_sound('cardSlide1', 1); return true
+								end
+							}))
+							delay(0.5)
+							return true
+						end
+					}))
 				end
 			end
 		end
@@ -155,10 +178,10 @@ SMODS.Blind {
 			for k, v in ipairs(G.jokers.cards) do
 				if v.facing == 'back' then v:flip() end
 			end
-			if G.P_BLINDS[v].name == 'The Water' then 
+			if G.P_BLINDS[v].name == 'The Water' then
 				ease_discard(G.GAME.blind.discards_sub)
 			end
-			if G.P_BLINDS[v].name == 'The Wheel' or G.P_BLINDS[v].name == 'The House' or G.P_BLINDS[v].name == 'The Mark' or G.P_BLINDS[v].name == 'The Fish' then 
+			if G.P_BLINDS[v].name == 'The Wheel' or G.P_BLINDS[v].name == 'The House' or G.P_BLINDS[v].name == 'The Mark' or G.P_BLINDS[v].name == 'The Fish' then
 				for i = 1, #G.hand.cards do
 					if G.hand.cards[i].facing == 'back' then
 						G.hand.cards[i]:flip()
@@ -168,27 +191,27 @@ SMODS.Blind {
 					v.ability.wheel_flipped = nil
 				end
 			end
-			if G.P_BLINDS[v].name == 'The Needle' then 
+			if G.P_BLINDS[v].name == 'The Needle' then
 				ease_hands_played(G.GAME.blind.hands_sub)
 			end
-			if G.P_BLINDS[v].name == 'The Wall' then 
-				G.GAME.blind.chips = G.GAME.blind.chips/2
+			if G.P_BLINDS[v].name == 'The Wall' then
+				G.GAME.blind.chips = G.GAME.blind.chips / 2
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 			end
-			if G.P_BLINDS[v].name == 'Cerulean Bell' then 
+			if G.P_BLINDS[v].name == 'Cerulean Bell' then
 				for k, v in ipairs(G.playing_cards) do
 					v.ability.forced_selection = nil
 				end
 			end
-			if G.P_BLINDS[v].name == 'The Manacle' then 
+			if G.P_BLINDS[v].name == 'The Manacle' then
 				G.hand:change_size(1)
-				
+
 				G.FUNCS.draw_from_deck_to_hand(1)
 			end
 			if G.P_BLINDS[v].name == 'The Serpent' then
 			end
-			if G.P_BLINDS[v].name == 'Violet Vessel' then 
-				G.GAME.blind.chips = G.GAME.blind.chips/3
+			if G.P_BLINDS[v].name == 'Violet Vessel' then
+				G.GAME.blind.chips = G.GAME.blind.chips / 3
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 			end
 		end
@@ -223,7 +246,7 @@ SMODS.Blind {
 							any_forced = true
 						end
 					end
-					if not any_forced then 
+					if not any_forced then
 						G.hand:unhighlight_all()
 						local forced_card = pseudorandom_element(G.hand.cards, pseudoseed('cerulean_bell'))
 						forced_card.ability.forced_selection = true
@@ -233,9 +256,12 @@ SMODS.Blind {
 				if G.P_BLINDS[v].name == 'Crimson Heart' and G.GAME.blind.prepped and G.jokers.cards[1] then
 					local jokers = {}
 					for i = 1, #G.jokers.cards do
-						if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then jokers[#jokers+1] =G.jokers.cards[i] end
+						if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then
+							jokers[#jokers + 1] = G.jokers.cards
+								[i]
+						end
 						G.jokers.cards[i]:set_debuff(false)
-					end 
+					end
 					local _card = pseudorandom_element(jokers, pseudoseed('crimson_heart'))
 					if _card then
 						_card:set_debuff(true)
@@ -256,27 +282,30 @@ SMODS.Blind {
 			end
 			-- vanillaaaaaaaaa
 			if G.P_BLINDS[v].name == "The Hook" then
-				G.E_MANAGER:add_event(Event({ func = function()
-					local any_selected = nil
-					local _cards = {}
-					for k, v in ipairs(G.hand.cards) do
-						_cards[#_cards+1] = v
-					end
-					for i = 1, 2 do
-						if G.hand.cards[i] then 
-							local selected_card, card_key = pseudorandom_element(_cards, pseudoseed('hook'))
-							G.hand:add_to_highlighted(selected_card, true)
-							table.remove(_cards, card_key)
-							any_selected = true
-							play_sound('card1', 1)
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local any_selected = nil
+						local _cards = {}
+						for k, v in ipairs(G.hand.cards) do
+							_cards[#_cards + 1] = v
 						end
+						for i = 1, 2 do
+							if G.hand.cards[i] then
+								local selected_card, card_key = pseudorandom_element(_cards, pseudoseed('hook'))
+								G.hand:add_to_highlighted(selected_card, true)
+								table.remove(_cards, card_key)
+								any_selected = true
+								play_sound('card1', 1)
+							end
+						end
+						if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
+						return true
 					end
-					if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
-				return true end })) 
+				}))
 				G.GAME.blind.triggered = true
 				delay(0.7)
 			end
-			if G.P_BLINDS[v].name == 'Crimson Heart' then 
+			if G.P_BLINDS[v].name == 'Crimson Heart' then
 				if G.jokers.cards[1] then
 					G.GAME.blind.triggered = true
 					G.GAME.blind.prepped = true
@@ -286,13 +315,22 @@ SMODS.Blind {
 				G.GAME.blind.prepped = true
 			end
 			if G.P_BLINDS[v].name == "The Tooth" then
-				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-				for i = 1, #G.play.cards do
-					G.E_MANAGER:add_event(Event({func = function() G.play.cards[i]:juice_up(); return true end })) 
-					ease_dollars(-1)
-					delay(0.23)
-				end
-				return true end })) 
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.2,
+					func = function()
+						for i = 1, #G.play.cards do
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									G.play.cards[i]:juice_up(); return true
+								end
+							}))
+							ease_dollars(-1)
+							delay(0.23)
+						end
+						return true
+					end
+				}))
 				G.GAME.blind.triggered = true
 			end
 		end
@@ -301,9 +339,27 @@ SMODS.Blind {
 		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local ret = false
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].debuff then
+				if G.P_BLINDS[v].debuff.suit and card:is_suit(G.P_BLINDS[v].debuff.suit) then
+					ret = true
+				end
+				if G.P_BLINDS[v].debuff.is_face and card:is_face() then
+					ret = true
+				end
+				if G.P_BLINDS[v].debuff.value and G.P_BLINDS[v].debuff.value == card:get_id() then
+					ret = true
+				end
+				if G.P_BLINDS[v].debuff.nominal == card.base.nominal then
+					ret = true
+				end
+			end
+			if G.P_BLINDS[v].name == 'Verdant Leaf' and card.area ~= G.jokers and not G.GAME.blind.disabled then
+				ret = true
+			end
 			if G.P_BLINDS[v].recalc_debuff then
 				--print("recalculating debuffs")
-				ret = G.P_BLINDS[v].recalc_debuff(G.P_BLINDS[v], card, from_blind) == true
+				local _ret = G.P_BLINDS[v].recalc_debuff(G.P_BLINDS[v], card, from_blind)
+				if _ret then ret = true end
 			end
 		end
 		return ret
@@ -348,7 +404,7 @@ SMODS.Blind {
 					if not check then G.GAME.blind.only_hand = handname end
 				end
 			end
-			if G.P_BLINDS[v].name == 'The Arm' then 
+			if G.P_BLINDS[v].name == 'The Arm' then
 				G.GAME.blind.triggered = false
 				if to_big(G.GAME.hands[handname].level) > to_big(1) then
 					G.GAME.blind.triggered = true
@@ -356,9 +412,9 @@ SMODS.Blind {
 						level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
 						G.GAME.blind:wiggle()
 					end
-				end 
+				end
 			end
-			if G.P_BLINDS[v].name == 'The Ox' then 
+			if G.P_BLINDS[v].name == 'The Ox' then
 				G.GAME.blind.triggered = false
 				if handname == G.GAME.current_round.most_played_poker_hand then
 					G.GAME.blind.triggered = true
@@ -366,7 +422,7 @@ SMODS.Blind {
 						ease_dollars(-G.GAME.dollars, true)
 						G.GAME.blind:wiggle()
 					end
-				end 
+				end
 			end
 			::skip_everything::
 		end
@@ -389,7 +445,7 @@ SMODS.Blind {
 							any_forced = true
 						end
 					end
-					if not any_forced then 
+					if not any_forced then
 						G.hand:unhighlight_all()
 						local forced_card = pseudorandom_element(G.hand.cards, pseudoseed('cerulean_bell'))
 						if forced_card then
@@ -401,9 +457,12 @@ SMODS.Blind {
 				if G.P_BLINDS[v].name == 'Crimson Heart' and G.GAME.blind.prepped and G.jokers.cards[1] then
 					local jokers = {}
 					for i = 1, #G.jokers.cards do
-						if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then jokers[#jokers+1] =G.jokers.cards[i] end
+						if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then
+							jokers[#jokers + 1] = G.jokers.cards
+								[i]
+						end
 						G.jokers.cards[i]:set_debuff(false)
-					end 
+					end
 					local _card = pseudorandom_element(jokers, pseudoseed('crimson_heart'))
 					if _card then
 						_card:set_debuff(true)
@@ -425,7 +484,7 @@ SMODS.Blind {
 			end
 			if G.P_BLINDS[v].name == "The Flint" then
 				G.GAME.blind.triggered = true
-				_m, _c, yeppers = math.max(math.floor(_m*0.5 + 0.5), 1), math.max(math.floor(_c*0.5 + 0.5), 0), true
+				_m, _c, yeppers = math.max(math.floor(_m * 0.5 + 0.5), 1), math.max(math.floor(_c * 0.5 + 0.5), 0), true
 			end
 		end
 		return _m, _c, yeppers
@@ -479,7 +538,7 @@ SMODS.Blind {
 	end,
 	cry_cap_score = function(self, score)
 		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
-		local ret = math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count,hand_chips or 1e300,mult or 1e300))
+		local ret = math.floor(PTASaka.arrow(G.GAME.payasaka_exponential_count, hand_chips or 1e300, mult or 1e300))
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
 			if G.P_BLINDS[v].cry_cap_score then
 				--print("modified !!!")
@@ -503,29 +562,14 @@ SMODS.Blind {
 		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		local rets = {}
 		for k, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+			if G.P_BLINDS[v].name == 'Verdant Leaf' and context.selling_card and context.card.ability.set == "Joker" then
+				G.GAME.blind:disable()
+				return nil, true
+			end
 			if G.P_BLINDS[v].calculate then
 				--print("modified !!!")
 				local calc = G.P_BLINDS[v].calculate(G.P_BLINDS[v], G.GAME.blind, context) or {}
-				rets[#rets+1] = calc
-			end
-			-- why.
-			if context.debuff_card and G.P_BLINDS[v].debuff then
-				for _, area in ipairs({{cards = G.playing_cards}, G.jokers, G.consumeables}) do
-					for _, card in ipairs(area.cards) do
-						if G.P_BLINDS[v].debuff.suit and card:is_suit(G.P_BLINDS[v].debuff.suit) then
-							rets[#rets+1] = { debuff = true }
-						end
-						if G.P_BLINDS[v].debuff.is_face and card:is_face() then
-							rets[#rets+1] = { debuff = true }
-						end
-						if G.P_BLINDS[v].debuff.value and G.P_BLINDS[v].debuff.value == card:get_id() then
-							rets[#rets+1] = { debuff = true }
-						end
-						if G.P_BLINDS[v].debuff.nominal == card.base.nominal then
-							rets[#rets+1] = { debuff = true }
-						end
-					end
-				end
+				rets[#rets + 1] = calc
 			end
 		end
 		return PTASaka.recursive_extra(rets, 1)
@@ -538,105 +582,127 @@ SMODS.Blind {
 
 local set_blindref = Blind.set_blind
 function Blind.set_blind(self, blind, reset, silent)
-    if not reset then
-        self.show_fusions = blind and blind.show_fusions or false
-        if self.show_fusions then
-            self.children.alert = UIBox{
-                definition = create_UIBox_card_alert(), 
-                config = {
-                    align = "tri",
-                    offset = {
-                        x = 0.1, y = 0
-                    },
-                    parent = self
-                }
-            }
-        else
-            self.children.alert = nil
-        end
-    end
-    set_blindref(self, blind, reset, silent)
+	if not reset then
+		self.show_fusions = blind and blind.show_fusions or false
+		if self.show_fusions then
+			self.children.alert = UIBox {
+				definition = create_UIBox_card_alert(),
+				config = {
+					align = "tri",
+					offset = {
+						x = 0.1, y = 0
+					},
+					parent = self
+				}
+			}
+		else
+			self.children.alert = nil
+		end
+	end
+	set_blindref(self, blind, reset, silent)
 end
 
-function info_from_fused(fused)
-    local width = 6
-    for _, v in ipairs(SMODS.Mods) do
-        if v.fused_ui_size and type(v.fused_ui_size) == "function" then
-            width = math.max(width, v.fused_ui_size())
-        end
-    end
-    local desc_nodes = {}
-	local name_nodes = localize{type = 'name', key = fused, set = "Blind", name_nodes = {}, vars = {}}
-	local spr = AnimatedSprite(0,0, 0.5, 0.5, G.ANIMATION_ATLAS[G.P_BLINDS[fused].atlas] or G.ANIMATION_ATLAS['blind_chips'],  G.P_BLINDS[fused].pos)
-	spr:define_draw_steps({   {shader = 'dissolve', shadow_height = 0.05},  {shader = 'dissolve'}  })
+function create_UIBox_blind_fused_popup(blind, vars)
+	local blind_text = {}
+
+	local _dollars = blind.dollars
+	local target = { type = 'raw_descriptions', key = blind.key, set = 'Blind', vars = vars or blind.vars }
+	local loc_key = blind.key
+	if blind.collection_loc_vars and type(blind.collection_loc_vars) == 'function' then
+		local res = blind:collection_loc_vars() or {}
+		loc_key = res.key or blind.key
+		target.vars = res.vars or target.vars
+		target.key = res.key or target.key
+	end
+	local loc_target = localize(target)
+	local loc_name = localize { type = 'name_text', key = blind.key, set = 'Blind' }
+
+	local spr = AnimatedSprite(0, 0, 0.5, 0.5,
+		G.ANIMATION_ATLAS[blind.atlas] or G.ANIMATION_ATLAS['blind_chips'], blind.pos)
+	spr:define_draw_steps({ { shader = 'dissolve', shadow_height = 0.05 }, { shader = 'dissolve' } })
 	spr.float = true
-	spr.config = {blind = G.P_BLINDS[fused], force_focus = true}
-	table.insert(name_nodes, 1, {
-		n = G.UIT.O,
-		config={align = "cl", object = spr},
-	})
-	local loc_vars = G.P_BLINDS[fused].vars
-	if G.P_BLINDS[fused].loc_vars then loc_vars = G.P_BLINDS[fused].loc_vars(G.P_BLINDS[fused]) end
-    localize{type = 'descriptions', key = fused, set = "Blind", nodes = desc_nodes, vars = loc_vars and loc_vars.vars and loc_vars.vars or {}}
-    local desc = {}
-    for _, v in ipairs(desc_nodes) do
-        desc[#desc+1] = {n=G.UIT.R, config={align = "cl"}, nodes=v}
-    end
-    return
-    {n=G.UIT.R, config={align = "cl", colour = lighten(G.P_BLINDS[fused].boss_colour or G.C.GREY, 0.4), r = 0.1, padding = 0.05}, nodes={
-        {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1}, nodes = name_nodes},
-        {n=G.UIT.R, config={align = "cl", minw = width, minh = 0.4, r = 0.1, padding = 0.05, colour = desc_nodes.background_colour or G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=desc}}}
-    }}
+	spr.config = { blind = blind, force_focus = true }
+
+		local ability_text = {}
+		if loc_target then
+			for k, v in ipairs(loc_target) do
+				ability_text[#ability_text + 1] = { n = G.UIT.R, config = { align = "cm" }, nodes = { { n = G.UIT.T, config = { text = v, scale = 0.35, shadow = true, colour = G.C.WHITE } } } }
+			end
+		end
+		blind_text[#blind_text + 1] =
+		{
+			n = G.UIT.R,
+			config = { align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, minh = 0.9, padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4) },
+			nodes = ability_text
+		}
+	return {
+		n = G.UIT.R,
+		config = { align = "cm", padding = 0.05, colour = G.C.WHITE, r = 0.1, emboss = 0.05 },
+		nodes = {
+			{
+				n = G.UIT.R,
+				config = { align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = blind.boss_colour or G.C.GREY },
+				nodes = {
+					{
+						n = G.UIT.O,
+						config = { align = "cm", object = spr },
+					},
+					{ n = G.UIT.O, config = { object = DynaText({ string = loc_name, colours = { G.C.UI.TEXT_LIGHT }, shadow = true, rotate = false, spacing = 2, bump = true, scale = 0.4 }) } },
+				}
+			},
+			{ n = G.UIT.R, config = { align = "cm" }, nodes = blind_text },
+		}
+	}
 end
 
 function create_UIBox_blind_fused(blind)
-    local fused_lines = {}
-    for _, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
-        fused_lines[#fused_lines+1] = info_from_fused(v)
-    end
-    return
-    {n=G.UIT.ROOT, config = {align = 'cm', colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05, padding = 0.05}, nodes={
-        {n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.05, colour = G.C.GREY}, nodes={
-            {n=G.UIT.C, config = {align = "lm", padding = 0.1}, nodes = fused_lines}
-        }}
-    }}
+	local fused_lines = {}
+	for _, v in ipairs(G.GAME.payasaka_merged_boss_keys) do
+		fused_lines[#fused_lines + 1] = create_UIBox_blind_fused_popup(G.P_BLINDS[v])
+	end
+	return
+	{
+		n = G.UIT.ROOT,
+		config = { align = 'cm', padding = 0.1, colour = G.C.CLEAR, no_fill = true, no_fill_width = true },
+		nodes = fused_lines
+	}
 end
 
 local blind_hoverref = Blind.hover
 function Blind.hover(self)
-    if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then 
-        if not self.hovering and self.states.visible and self.children.animatedSprite.states.visible then
-            if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) and self.config.blind and self.config.blind.show_fusions then
-                G.blind_fused = UIBox{
-                    definition = create_UIBox_blind_fused(self),
-                    config = {
-                        major = self,
-                        parent = nil,
-                        offset = {
-                            x = 0.15,
-                            y = 0.2 + 0.38*#G.GAME.payasaka_merged_boss_keys,
-                        },  
-                        type = "cr",
-                    }
-                }
-                G.blind_fused.attention_text = true
-                G.blind_fused.states.collide.can = false
-                G.blind_fused.states.drag.can = false
-                if self.children.alert then
-                    self.children.alert:remove()
-                    self.children.alert = nil
-                end
-            end
-        end
-    end
-    blind_hoverref(self)
+	if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then
+		if not self.hovering and self.states.visible and self.children.animatedSprite.states.visible then
+			if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) and self.config.blind and self.config.blind.show_fusions then
+				G.blind_fused = UIBox {
+					definition = create_UIBox_blind_fused(self),
+					config = {
+						major = self,
+						parent = self,
+						offset = {
+							x = 0.15,
+							y = 0.2 + 0.38 * #G.GAME.payasaka_merged_boss_keys,
+						},
+						type = "cr",
+					}
+				}
+				G.blind_fused.attention_text = true
+				G.blind_fused.states.collide.can = false
+				G.blind_fused.states.drag.can = false
+				if self.children.alert then
+					self.children.alert:remove()
+					self.children.alert = nil
+				end
+			end
+		end
+	end
+	blind_hoverref(self)
 end
 
 local blind_stop_hoverref = Blind.stop_hover
 function Blind.stop_hover(self)
-    if G.blind_fused then
-        G.blind_fused:remove()
-        G.blind_fused = nil
-    end
-    blind_stop_hoverref(self)
+	if G.blind_fused then
+		G.blind_fused:remove()
+		G.blind_fused = nil
+	end
+	blind_stop_hoverref(self)
 end
