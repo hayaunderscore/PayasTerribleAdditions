@@ -120,7 +120,7 @@ function SMODS.create_mod_badges(obj, badges)
 	local target_badge = 0
 	local base_scale = 0.9
 	for i = 1, #badges do
-		if badges[i].nodes[1].nodes[2].config.object.string == 'Paya Is Terrible' then
+		if badges[i].nodes[1].nodes[2].config.object.string == 'TerrAddt' then
 			target_badge = i
 			base_scale = badges[i].nodes[1].nodes[2].config.object.scale * 3.03
 			--print("Badge found!")
@@ -144,7 +144,7 @@ function SMODS.create_mod_badges(obj, badges)
 	end
 	local scales = {}
 	local min_scale = 1
-	local strings = { "Paya Is Terrible" }
+	local strings = { "TerrAddt" }
 	local dtxt = {}
 	local colours = { G.C.PAYA_PURPLE }
 	for k, v in pairs(cred) do

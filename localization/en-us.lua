@@ -1559,6 +1559,24 @@ return {
 					"{C:inactive,s:0.8}run scaling jokers"
 				},
 			},
+			j_payasaka_kitasan = {
+				name = {
+					"{f:5}キタサンブラック",
+					"{C:edition,s:0.5}Kitasan Black"
+				},
+				text = {
+					{
+						"This Joker gains {X:mult,C:white}X#1#{} Mult at",
+						"{C:attention}random{} times during the run",
+						"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					},
+					{
+						"Gained XMult {C:attention}exponentially",
+						"increases for each {C:attention}copy{} of",
+						"this Joker currently owned",
+					}
+				},
+			},
 			j_payasaka_catchan = {
 				name = "Catchan",
 				text = {
