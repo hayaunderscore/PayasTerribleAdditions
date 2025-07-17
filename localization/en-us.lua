@@ -1586,6 +1586,15 @@ return {
 					"{C:inactive}(Currently {C:attention}+#2#{C:inactive} Hand Size)",
 				},
 			},
+			j_payasaka_kacey = {
+				name = "Kacey",
+				text = {
+					"{C:attention}Upgrades{} Booster Packs",
+					"in the shop to be",
+					"one {C:attention}tier{} higher",
+					"{C:inactive,s:0.8}(e.g. Jumbo -> Mega)"
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
