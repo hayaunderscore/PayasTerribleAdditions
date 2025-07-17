@@ -196,10 +196,10 @@ end
 
 -- Ok look its very stupid but __pairs doesn't exist until Lua 5.2 so bear with me
 local next_ref = next
-function next(table, index)
+function next(table, index, ...)
 	local mt = getmetatable(table)
 	if mt and mt.__proxy_meta and not PTASaka.ignore_proxy_check then table = mt.__proxy_meta end
-	return next_ref(table, index)
+	return next_ref(table, index, ...)
 end
 
 local pairs_ref = pairs

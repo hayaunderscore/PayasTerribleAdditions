@@ -4,6 +4,8 @@ SMODS.Joker {
 	rarity = "payasaka_daeha",
 	atlas = "JOE_Jokers2",
 	pos = { x = 1, y = 6 },
+	soul_pos = { x = 2, y = 8 },
+	pta_front_pos = { x = 1, y = 8 },
 	cost = 25,
 	no_doe = true, -- :]
 	demicoloncompat = true,
@@ -37,5 +39,6 @@ SMODS.Joker {
 		return { 
 			vars = { card.ability.extra.xmult_gain, card.ability.extra.xmult }
 		}
-	end
+	end,
+	shine_front_pos = true,
 }

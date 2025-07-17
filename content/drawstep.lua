@@ -40,10 +40,13 @@ SMODS.DrawStep {
 SMODS.DrawStep {
 	key = 'pta_front',
 	order = 61,
-	func = function(self)
+	func = function(self, layer)
 		if self.config.center.pta_front_pos and (self.config.center.discovered or self.bypass_discovery_center) then
 			if self:should_draw_base_shader() then
 				self.children.pta_front:draw_shader('dissolve', nil, nil, nil, self.children.center)
+				if self.config.center.shine_front_pos then
+					self.children.pta_front:draw_shader('booster', nil, self.ARGS.send_to_shader, nil, self.children.center)
+				end
 			end
 			if self.edition then
 				for k, v in pairs(G.P_CENTER_POOLS.Edition) do
@@ -57,6 +60,9 @@ SMODS.DrawStep {
 			if (self.edition and self.edition.negative) then
 				self.children.pta_front:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil,
 					self.children.center)
+			end
+			if SMODS.DrawSteps['stickers'] then
+				SMODS.DrawSteps['stickers'].func(self, layer)
 			end
 		end
 	end,
