@@ -69,6 +69,8 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 	-- Immutable cards do not need a proxy
 	if card.config.center.immutable then return end
 
+	PTASaka.ignore_proxy_check = true
+
 	if pass == nil then
 		pass = true
 		key = 'ability'
@@ -105,6 +107,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 	local old_meta = getmetatable((tbl or card)[key])
 
 	setmetatable((tbl or card)[key], {
+		__proxy_meta = tree[key.."_orig"],
 		__newindex = function(t, k, v)
 			if tree[key.."_orig"][k] == v then return end -- Unmodified, so ignore
 
@@ -112,9 +115,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			-- If so, ignore, and just modify it normally
 			if (G.STAGE ~= G.STAGES.RUN or not card.area or card.area.config.collection) or (PTASaka.invalid_scaling_keys[k] or (key == 'ability' and not PTASaka.whitelisted_ability_keys[k])) then
 				tree[key.."_orig"][k] = v
-				if old_meta and old_meta.__newindex then
-					old_meta.__newindex(t, k, v)
-				end
+				--if type(v) == 'table' then print(v) end
 				return
 			end
 
@@ -158,6 +159,8 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			return tree[key..'_orig'][k]
 		end
 	})
+
+	PTASaka.ignore_proxy_check = nil
 end
 
 function PTASaka.remove_card_scale_proxy(parent, tree, key)
@@ -169,45 +172,72 @@ function PTASaka.remove_card_scale_proxy(parent, tree, key)
 	parent[key] = tree[key.."_orig"]
 	setmetatable(parent[key], nil)
 
+	PTASaka.ignore_proxy_check = true
 	for k, _ in pairs(tree) do
 		if k ~= key.."_orig" then
 			PTASaka.remove_card_scale_proxy(parent[key], tree[k], k)
 		end
 	end
+	PTASaka.ignore_proxy_check = nil
+end
+
+function PTASaka.remove_proxy(self)
+	if self.pta_ability_scaled then
+		PTASaka.remove_card_scale_proxy(self, self.pta_ability_scaled)
+		--self.pta_ability_scaled = nil
+	end
+	self.pta_ability_scaled = {}
+end
+
+function PTASaka.create_proxy(self)
+	self.pta_ability_scaled = {}
+	PTASaka.create_card_scale_proxy(self, self.pta_ability_scaled)
+end
+
+-- Ok look its very stupid but __pairs doesn't exist until Lua 5.2 so bear with me
+local next_ref = next
+function next(table, index)
+	local mt = getmetatable(table)
+	if mt and mt.__proxy_meta and not PTASaka.ignore_proxy_check then table = mt.__proxy_meta end
+	return next_ref(table, index)
+end
+
+local pairs_ref = pairs
+function pairs(t)
+	local mt = getmetatable(t)
+	if mt and mt.__proxy_meta and not PTASaka.ignore_proxy_check then t = mt.__proxy_meta end
+	return pairs_ref(t)
 end
 
 local old_set_ability = Card.set_ability
 function Card:set_ability(...)
-	if self.pta_ability_scaled then
-		PTASaka.remove_card_scale_proxy(self, self.pta_ability_scaled)
-		--self.pta_ability_scaled = nil
-	end
+	PTASaka.remove_proxy(self)
 	old_set_ability(self, ...)
-	self.pta_ability_scaled = {}
-	PTASaka.create_card_scale_proxy(self, self.pta_ability_scaled)
+	PTASaka.create_proxy(self)
+end
+
+-- Remove proxy on copy_card
+local old_copy_card = copy_card
+function copy_card(other, ...)
+	PTASaka.remove_proxy(other)
+	local ret = old_copy_card(other, ...)
+	PTASaka.create_proxy(other)
+	return ret
 end
 
 local old_save = Card.save
 function Card:save()
-	if self.pta_ability_scaled then
-		PTASaka.remove_card_scale_proxy(self, self.pta_ability_scaled)
-		--self.pta_ability_scaled = nil
-	end
+	PTASaka.remove_proxy(self)
 	local ret = old_save(self)
 	ret.ability = copy_table(self.ability)
-	self.pta_ability_scaled = {}
-	PTASaka.create_card_scale_proxy(self, self.pta_ability_scaled)
+	PTASaka.create_proxy(self)
 	return ret
 end
 
 local old_load = Card.load
 function Card:load(cardTable, other_card)
-	if self.pta_ability_scaled then
-		PTASaka.remove_card_scale_proxy(self, self.pta_ability_scaled)
-		--self.pta_ability_scaled = nil
-	end
+	PTASaka.remove_proxy(self)
 	local ret = old_load(self, cardTable, other_card)
-	self.pta_ability_scaled = {}
-	PTASaka.create_card_scale_proxy(self, self.pta_ability_scaled)
+	PTASaka.create_proxy(self)
 	return ret
 end
