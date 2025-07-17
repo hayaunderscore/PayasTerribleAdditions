@@ -26,7 +26,8 @@ SMODS.Joker {
 				local center = booster.config.center
 				G.E_MANAGER:add_event(Event{
 					func = function()
-						-- Naively assume that if it ends in a number, its the pack skin
+						-- Naively assume that if it ends in a number, its the pack skin to extract the full key without it
+						-- If not, ok just go along anyway and determine tier as is
 						-- Look if you name your boosters weird and not like that, thats on you
 						-- Strip that
 						local key = center.key or ""
