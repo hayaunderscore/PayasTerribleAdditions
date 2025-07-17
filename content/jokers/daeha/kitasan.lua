@@ -3,7 +3,7 @@ SMODS.Joker {
 	key = 'kitasan',
 	rarity = "payasaka_daeha",
 	atlas = "JOE_Jokers2",
-	pos = { x = 4, y = 7 },
+	pos = { x = 1, y = 6 },
 	cost = 25,
 	no_doe = true, -- :]
 	demicoloncompat = true,

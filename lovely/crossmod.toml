@@ -248,3 +248,23 @@ end
 
 '''
 match_indent = true
+
+# Fix an issue with Paperback stick-related Food jokers crashing after a Food joker was resuscitated and got the chance to turn into a stick
+# Well more like anything Paperback related jokers that destroy themselves atleast...
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS paperback "utilities/misc_functions.lua"]'''
+pattern = '''
+G.jokers:remove_card(card)
+card:remove()'''
+position = 'at'
+payload = '''
+if PTASaka.VashDestroyable(card) and PTASaka.is_food(card) and next(SMODS.find_card('j_payasaka_manhattan')) then
+	PTASaka.VashDestroy(card)
+	return true
+else
+	G.jokers:remove_card(card)
+	card:remove()
+end
+'''
+match_indent = true
