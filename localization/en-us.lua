@@ -1595,6 +1595,16 @@ return {
 					"{C:inactive,s:0.8}(e.g. Jumbo -> Mega)"
 				}
 			},
+			j_payasaka_haru = {
+				name = {
+					"{f:5}ハルウララ",
+					"{C:edition,s:0.5}Haru Urara"
+				},
+				text = {
+					"Cards held in {C:attention}hand{} also",
+					"count as being {C:attention}unscored"
+				},
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {

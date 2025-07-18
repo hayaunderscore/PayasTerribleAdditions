@@ -507,3 +507,19 @@ payload = '''
 SMODS.calculate_context({payasaka_pseudorandom_result = true, result = result, trigger_obj = trigger_obj, numerator = numerator, denominator = denominator, identifier = identifier or seed})
 '''
 match_indent = true
+
+# Allow Haru Urara to allow held in hand repetitions
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.calculate_repetitions(card, context, reps)'''
+position = "after"
+payload = '''
+if context.cardarea == "unscored" and context.payasaka_haru_urara_old_area == G.hand then
+	context.cardarea = G.hand
+	SMODS.calculate_repetitions(card, context, reps)
+	context.cardarea = "unscored"
+end
+'''
+match_indent = true
+times = 1
