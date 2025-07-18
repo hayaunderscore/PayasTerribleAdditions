@@ -57,7 +57,10 @@ SMODS.Joker {
 				end
 				local new_key = key:gsub(old_type, type) ..
 					(type == 'ultra' and "" or "_1") -- Only supports ONE skin for now
-				if G.P_CENTERS[new_key] then
+				if not G.P_CENTERS[new_key] then -- try without the pack skin suffix
+					new_key = key:gsub(old_type, type)
+				end
+				if G.P_CENTERS[new_key] and new_key ~= center.key then
 					booster:set_ability(G.P_CENTERS[new_key])
 					booster:set_sprites(G.P_CENTERS[center.key])
 					G.E_MANAGER:add_event(Event {
