@@ -2,7 +2,7 @@
 SMODS.Joker {
 	name = "pta-Kacey",
 	key = "kacey",
-	rarity = 3,
+	rarity = 2,
 	atlas = "JOE_Jokers2",
 	pos = { x = 3, y = 7 },
 	cost = 8,
