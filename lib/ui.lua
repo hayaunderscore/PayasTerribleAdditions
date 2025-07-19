@@ -112,6 +112,10 @@ G.C.BADGE_TEMP_BG = SMODS.Gradient {
 
 local cmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
+	-- Sneakily sneak this in here...
+	if obj and obj.pools and obj.pools["Friend"] then
+		badges[#badges + 1] = create_badge('Friend', SMODS.Gradients['payasaka_friend'])
+	end
 	if obj and obj.pta_no_mod_badge then return end
 	cmb(obj, badges)
 	if SMODS.config.no_mod_badges then return end
@@ -239,8 +243,8 @@ local function create_credit(_key, colour, idx)
 	temp_blind.states.hover.can = true
 	temp_blind.states.drag.can = true
 	temp_blind.states.collide.can = true
-	temp_blind.config = {force_focus = true}
-	temp_blind:set_role({major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak'})
+	temp_blind.config = { force_focus = true }
+	temp_blind:set_role({ major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak' })
 	temp_blind.hover = function()
 		if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then
 			if not temp_blind.hovering and temp_blind.states.visible then
@@ -251,7 +255,8 @@ local function create_credit(_key, colour, idx)
 				temp_blind.config.h_popup = create_UIBox_credit_popup(_key, colour, {})
 				temp_blind.config.h_popup_config = { align = 'cl', offset = { x = -0.1, y = 0 }, parent = temp_blind }
 				Node.hover(temp_blind)
-				temp_blind.children.h_popup:set_role({major = temp_blind.children.h_popup, role_type = 'Major', draw_major = temp_blind.children.h_popup, xy_bond = 'Strong'})
+				temp_blind.children.h_popup:set_role({ major = temp_blind.children.h_popup, role_type = 'Major', draw_major =
+				temp_blind.children.h_popup, xy_bond = 'Strong' })
 			end
 		end
 		if not temp_blind.start_T then
@@ -272,7 +277,7 @@ local function create_credit(_key, colour, idx)
 			padding = 0.1,
 		},
 		nodes = {
-			{ n = G.UIT.O, config = { object = temp_blind, focus_with_object = true, role = {major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak'} } },
+			{ n = G.UIT.O, config = { object = temp_blind, focus_with_object = true, role = { major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak' } } },
 		}
 	}
 end
@@ -474,11 +479,11 @@ local tabs = function()
 				)
 				for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
 					local area = k <= math.ceil(#G.P_CENTER_POOLS.PTASet / 2) and G.pta_features_area or
-					G.pta_features_area_two
+						G.pta_features_area_two
 					local card = Card(area.T.x + (area.T.w / 2.5), area.T.y,
 						G.CARD_W, G.CARD_H, G.P_CARDS.empty, v)
 					area:emplace(card)
-					G.E_MANAGER:add_event(Event{
+					G.E_MANAGER:add_event(Event {
 						blockable = false,
 						blocking = false,
 						func = function()
