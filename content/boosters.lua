@@ -35,6 +35,43 @@ PTASaka.make_boosters('friend',
 	}, 2
 )
 
+PTASaka.make_boosters('voucher',
+	{
+		{ x = 2, y = 0, cost = 10 },
+	},
+	{
+		{ x = 2, y = 1, cost = 18 }
+	},
+	{},
+	{
+		atlas = "JOE_Boosters",
+		kind = 'Voucher',
+		weight = 0,
+		create_card = function(self, card, i)
+			return {
+				set = "Voucher",
+				area = G.pack_cards,
+				skip_materialize = true,
+				soulable = true,
+				key_append = "vouch"
+			}
+		end,
+		update_pack = function(self, dt)
+			SMODS.Booster.update_pack(self, dt)
+			if SMODS.OPENED_BOOSTER and SMODS.OPENED_BOOSTER.ability and SMODS.OPENED_BOOSTER.ability.old_voucher then
+				if G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
+					G.GAME.current_round.voucher.spawn[SMODS.OPENED_BOOSTER.ability.old_voucher] = false
+				end
+			end
+		end,
+		group_key = 'k_voucher_pack',
+		ease_background_colour = function(self)
+			ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
+			ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
+		end,
+	}
+)
+
 --#endregion
 
 --#region Ultra Booster Packs

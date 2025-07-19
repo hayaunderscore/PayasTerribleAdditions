@@ -1605,6 +1605,16 @@ return {
 					"count as being {C:attention}unscored"
 				},
 			},
+			j_payasaka_ichiro = {
+				name = {
+					"{f:5}大神 一郎",
+					"{C:edition,s:0.5}Ichiro Ogami"
+				},
+				text = {
+					"First Voucher in the shop is",
+					"replaced with a {C:attention}Voucher Pack",
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
@@ -2761,29 +2771,43 @@ return {
 				name = "Friend Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:joker} Friend{} Jokers",
+					"{C:attention}#2#{C:payasaka_friend} Friend{} Jokers",
 				},
 			},
 			p_payasaka_friend_normal_2 = {
 				name = "Friend Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:joker} Friend{} Jokers",
+					"{C:attention}#2#{C:payasaka_friend} Friend{} Jokers",
 				},
 			},
 			p_payasaka_friend_jumbo_1 = {
 				name = "Jumbo Friend Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:joker} Friend{} Jokers",
+					"{C:attention}#2#{C:payasaka_friend} Friend{} Jokers",
 				},
 			},
 			p_payasaka_friend_mega_1 = {
 				name = "Mega Friend Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:joker} Friend{} Jokers",
+					"{C:attention}#2#{C:payasaka_friend} Friend{} Jokers",
 				},
+			},
+			p_payasaka_voucher_normal_1 = {
+				name = "Voucher Pack",
+				text = {
+					"Redeem {C:attention}#1#{} of up to",
+					"{C:attention}#2#{} random Vouchers{}",
+				}
+			},
+			p_payasaka_voucher_jumbo_1 = {
+				name = "Jumbo Voucher Pack",
+				text = {
+					"Redeem {C:attention}#1#{} of up to",
+					"{C:attention}#2#{} random Vouchers{}",
+				}
 			},
 			payasaka_random_seal = {
 				name = "Random Stamp",
@@ -3164,6 +3188,7 @@ return {
 			b_reward_cards = "Reward Cards",
 			k_property_pack = "Real Estate Pack",
 			k_friend_pack = "Friend Pack",
+			k_voucher_pack = "Voucher Pack",
 			k_moji_pack = "Reward Pack",
 			k_risk_pack = "Risk Pack",
 			k_gacha_pack = "Gacha Pack",
