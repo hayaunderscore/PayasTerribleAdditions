@@ -18,6 +18,7 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			local chip_tally, mult_tally = 0, 0
