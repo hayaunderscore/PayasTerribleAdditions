@@ -209,6 +209,9 @@ function pairs(t)
 	return pairs_ref(t)
 end
 
+-- I am very annoyed.
+copy_table = PTASaka.deep_copy
+
 local old_set_ability = Card.set_ability
 function Card:set_ability(...)
 	PTASaka.remove_proxy(self)
