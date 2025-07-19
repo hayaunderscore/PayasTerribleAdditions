@@ -70,8 +70,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 	if card.config.center.immutable then return end
 	-- For now, dont make playing cards have a proxy
 	-- Tends to cause bugs with enhancements, plus we only need this for Jokers and consumables anyway...
-	if card.ability.set == "Default" then return end
-	if card.ability.set == "Enhanced" then return end
+	if card.playing_card then return end
 
 	PTASaka.ignore_proxy_check = true
 
