@@ -14,6 +14,7 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	pools = { ["Joker"] = true, ["Friend"] = true },
 	calculate = function(self, card, context)
 		if (context.payasaka_card_removed or context.payasaka_prevent_destroy_card) and not context.blueprint_card then
 			if context.card and PTASaka.is_food(context.card) then
