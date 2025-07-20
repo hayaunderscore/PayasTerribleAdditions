@@ -1760,6 +1760,15 @@ return {
 					"{C:inactive,s:0.8}(Except seals and editions)"
 				}
 			},
+			m_payasaka_score = {
+				name = "Score Card",
+				text = {
+					"Counts as both",
+					"scored and unscored",
+					"{C:chips}+#1#{} chips per",
+					"scored card"
+				}
+			},
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },

@@ -179,6 +179,37 @@ SMODS.Enhancement {
 	end
 }
 
+SMODS.Enhancement {
+	name = "pta-Score",
+	key = 'score',
+	atlas = "JOE_Enhancements",
+	pos = { x = 6, y = 0 },
+	config = { card_chips = 2 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	always_scores = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.main_scoring then
+			for _, c in pairs(context.scoring_hand) do
+				SMODS.calculate_effect({ chip_mod = card.ability.card_chips }, c)
+				card_eval_status_text(c, 'extra', nil, (percent or 1) + 0.1, nil, { message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.card_chips}}, colour = G.C.BLUE, delay = 0.2, sound = 'chips1' })
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.card_chips } }
+	end
+}
+
+
 -- Edited version of the hologram shader for Mimic
 SMODS.Shader {
 	key = 'hologram',

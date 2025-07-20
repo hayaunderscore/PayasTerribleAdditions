@@ -523,3 +523,51 @@ end
 '''
 match_indent = true
 times = 1
+
+# Allow King Halo + other unscored centric jokers to do individual context triggers on score cards
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })'''
+position = "after"
+payload = '''
+if context.cardarea == G.play and SMODS.has_enhancement(card, "m_payasaka_score") then
+	context.cardarea = "unscored"
+	SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+	context.cardarea = G.play
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })'''
+position = "after"
+payload = '''
+if context.cardarea == G.play and SMODS.has_enhancement(card, "m_payasaka_score") then
+	context.cardarea = "unscored"
+	SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+	context.cardarea = G.play
+end
+'''
+match_indent = true
+times = 1
+
+# Same with repetitions
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.calculate_repetitions(card, context, reps)'''
+position = "after"
+payload = '''
+if context.cardarea == G.play and SMODS.has_enhancement(card, "m_payasaka_score") then
+	context.cardarea = "unscored"
+	print("hi 2")
+	SMODS.calculate_repetitions(card, context, reps)
+	context.cardarea = G.play
+end
+'''
+match_indent = true
+times = 1
