@@ -5,7 +5,7 @@ SMODS.Blind {
 	dollars = 5,
 	mult = 2,
 	boss = {min = 0, max = 1999},
-	boss_colour = HEX('a58445'),
+	boss_colour = HEX('60a1cc'),
 	set_blind = function(self)
 		G.GAME.payasaka_construct = true
 	end,

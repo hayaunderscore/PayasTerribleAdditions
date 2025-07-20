@@ -70,6 +70,13 @@ PTASaka.DescriptionDummy {
 	end
 }
 
+PTASaka.DescriptionDummy {
+	key = "frozen",
+	generate_ui = function(_c, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		PTASaka.generate_ui_for_info_queue(_c.key, 'DescriptionDummy', desc_nodes, specific_vars or _c.vars or {})
+	end
+}
+
 -- Adult card card list
 local dummy = PTASaka.DescriptionDummy {
 	key = "adultcard_area",

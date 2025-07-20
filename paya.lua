@@ -51,6 +51,7 @@ SMODS.Atlas { key = "JOE_Decks", path = "backs.png", px = 71, py = 95 }
 
 -- Enhancement atlas
 SMODS.Atlas { key = "JOE_Enhancements", path = "enhancements.png", px = 71, py = 95 }
+SMODS.Atlas { key = "sharpmark", path = "sharpmark.png", px = 97, py = 97 }
 
 -- Tags atlas
 SMODS.Atlas { key = "JOE_Tags", path = "tags.png", px = 34, py = 34 }

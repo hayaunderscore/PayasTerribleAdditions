@@ -1677,7 +1677,7 @@ return {
 				}
 			},
 			bl_payasaka_construct = {
-				name = "The Construct",
+				name = "The Downpour",
 				text = {
 					"Score is deducted by",
 					"Blind requirement / 10",
@@ -1688,6 +1688,22 @@ return {
 				text = {
 					"Ranks are debuffed",
 					"sequentially per hand",
+				}
+			},
+			bl_payasaka_sharp = {
+				name = "The Sharp",
+				text = {
+					"Mark 3 cards upon setting",
+					"the blind or after scoring,",
+					"Destroy marked cards if",
+					"held in hand after scoring"
+				}
+			},
+			bl_payasaka_stasis = {
+				name = "The Stasis",
+				text = {
+					"Freezes a random card",
+					"before playing a hand",
 				}
 			},
 		},
@@ -1760,6 +1776,14 @@ return {
 					"{C:inactive,s:0.8}(Except seals and editions)"
 				}
 			},
+			m_payasaka_ice = {
+				name = "Ice Card",
+				text = {
+					"Turns into a",
+					"Frozen Card",
+					"when played"
+				}
+			},
 			m_payasaka_score = {
 				name = "Score Card",
 				text = {
@@ -1829,6 +1853,15 @@ return {
 			dd_payasaka_dummy = {
 				text = {
 					"???"
+				}
+			},
+			dd_payasaka_frozen = {
+				name = "Frozen Card",
+				text = {
+					"{C:attention}Forced{} to be selected and is",
+					"discarded {C:attention}back{} into the deck",
+					"{C:attention}Unfreezes{} when played again",
+					"or discarded manually",
 				}
 			}
 		},

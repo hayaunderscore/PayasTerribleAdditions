@@ -8,7 +8,7 @@ SMODS.DrawStep {
 	func = function(self)
 		if self.pta_trick_sprite then
 			local _F = self.pta_trick_sprite_args
-			local exptime = math.exp(-(0.8 * (((percent or 1)*2) or 1)) * G.real_dt)
+			local exptime = math.exp(-(0.8 * (((percent or 1) * 2) or 1)) * G.real_dt)
 
 			if self.pta_tricked then
 				_F.intensity = 8
@@ -19,16 +19,17 @@ SMODS.DrawStep {
 			_F.timer = _F.timer + G.real_dt * (1 + _F.intensity * 0.2)
 			if _F.intensity_vel < 0 then _F.intensity_vel = _F.intensity_vel * (1 - 10 * G.real_dt) end
 			_F.intensity_vel = (1 - exptime) * (_F.intensity - _F.real_intensity) * G.real_dt * 25 +
-			exptime * _F.intensity_vel
+				exptime * _F.intensity_vel
 			_F.real_intensity = math.max(0, _F.real_intensity + _F.intensity_vel)
 			_F.change = (_F.change or 0) * (1 - 4. * G.real_dt) +
-			(4. * G.real_dt) * (_F.real_intensity < _F.intensity - 0.0 and 1 or 0) * _F.real_intensity
+				(4. * G.real_dt) * (_F.real_intensity < _F.intensity - 0.0 and 1 or 0) * _F.real_intensity
 			if _F.real_intensity < 0 then
 				self.pta_trick_sprite:remove()
 				self.pta_trick_sprite = nil
 				return
 			end
-			self.pta_trick_sprite:hard_set_T(self.T.x - (8 * (self.T.w / 71)), self.T.y - (48 * (self.T.h / 95)), self.T.w/12, self.T.h/12)
+			self.pta_trick_sprite:hard_set_T(self.T.x - (8 * (self.T.w / 71)), self.T.y - (48 * (self.T.h / 95)),
+				self.T.w / 12, self.T.h / 12)
 			self.pta_trick_sprite.VT.scale = self.VT.scale
 			self.pta_trick_sprite:draw(nil)
 		end
@@ -45,7 +46,8 @@ SMODS.DrawStep {
 			if self:should_draw_base_shader() then
 				self.children.pta_front:draw_shader('dissolve', nil, nil, nil, self.children.center)
 				if self.config.center.shine_front_pos then
-					self.children.pta_front:draw_shader('booster', nil, self.ARGS.send_to_shader, nil, self.children.center)
+					self.children.pta_front:draw_shader('booster', nil, self.ARGS.send_to_shader, nil,
+						self.children.center)
 				end
 			end
 			if self.edition then
@@ -88,7 +90,7 @@ SMODS.DrawStep {
 					if v.shader then
 						if self.edition[v.key:sub(3)] then
 							layer:draw_shader(v.shader, nil, nil, nil, self.children.center, nil, nil, (-6) *
-							(self.T.w / 71))
+								(self.T.w / 71))
 						end
 					end
 				end
@@ -177,4 +179,67 @@ SMODS.DrawStep {
 	conditions = { vortex = false, facing = 'front' },
 }
 
-SMODS.draw_ignore_keys.john_mark = true
+-- The Sharp's mark
+SMODS.DrawStep {
+	key = 'today_is_friday_in_california',
+	order = 1001,
+	func = function(self)
+		if self.ability.the_sharp_marked then
+			---@type Sprite
+			local layer = self.children.today_is_friday_in_california
+			if not layer then
+				layer = Sprite(
+					self.T.x,
+					self.T.y,
+					self.T.w,
+					self.T.h,
+					G.ASSET_ATLAS["payasaka_sharpmark"],
+					{ x = 0, y = 0 }
+				)
+				layer.scale.x = layer.scale.x * (97/71)
+				layer.scale.y = layer.scale.y * (97/95)
+				layer.role.draw_major = self
+				layer.states.hover.can = false
+				layer.states.click.can = false
+				self.children.today_is_friday_in_california = layer
+			end
+			local scale_mod = -0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL)
+			local rotate_mod = 0.03 * math.sin(1.219 * G.TIMERS.REAL)
+			layer:draw_shader("dissolve", 0, nil, nil, self.children.center, scale_mod, rotate_mod, (-14) * (self.T.w / 71), -(self.T.h / 95), nil, 0.6)
+			layer:draw_shader("dissolve", nil, nil, nil, self.children.center, scale_mod, rotate_mod, (-14) * (self.T.w / 71), -(self.T.h / 95))
+		end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
+SMODS.draw_ignore_keys.today_is_friday_in_california = true
+
+-- Frozen
+SMODS.DrawStep {
+	key = 'olaf_goals',
+	order = 1002,
+	func = function(self)
+		if self.ability.pta_frozen then
+			---@type Sprite
+			local layer = self.children.olaf_goals
+			if not layer then
+				layer = Sprite(
+					self.T.x,
+					self.T.y,
+					self.T.w,
+					self.T.h,
+					G.ASSET_ATLAS["payasaka_JOE_Enhancements"],
+					{ x = 7, y = 0 }
+				)
+				layer.role.draw_major = self
+				layer.states.hover.can = false
+				layer.states.click.can = false
+				self.children.olaf_goals = layer
+			end
+			layer:draw_shader("dissolve", nil, nil, nil, self.children.center, 0.1)
+		end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
+SMODS.draw_ignore_keys.olaf_goals = true

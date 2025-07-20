@@ -209,6 +209,51 @@ SMODS.Enhancement {
 	end
 }
 
+SMODS.Enhancement {
+	name = "pta-Ice",
+	key = 'ice',
+	atlas = "JOE_Enhancements",
+	pos = { x = 8, y = 0 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	calculate = function(self, card, context)
+		if context.before and card.area == G.play then
+			card.ability.pta_frozen = true
+			card.ability.forced_selection = true
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_frozen"]
+	end
+}
+
+local card_update_ref = Card.update
+function Card:update(dt)
+	local ret = card_update_ref(self, dt)
+	if self.ability.pta_frozen and self.area == G.hand and self.area.highlighted then
+		local fin = false
+		for k, v in pairs(self.area.highlighted) do
+			if v == self then
+				fin = true
+				break
+			end
+		end
+		if not fin then
+			self.highlighted = true
+			self.area:add_to_highlighted(self, true)
+			self.ability.forced_selection = true
+		end
+	end
+	return ret
+end
 
 -- Edited version of the hologram shader for Mimic
 SMODS.Shader {
