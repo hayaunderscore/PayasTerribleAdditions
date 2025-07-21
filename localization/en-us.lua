@@ -2824,6 +2824,13 @@ return {
 					"{C:attention}#2#{C:joker} Joker{} cards",
 				},
 			},
+			p_payasaka_code_ultra = {
+				name = "Ultra Program Pack",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
+				},
+			},
 			p_payasaka_friend_normal_1 = {
 				name = "Friend Pack",
 				text = {

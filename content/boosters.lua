@@ -91,6 +91,7 @@ PTASaka.make_boosters('voucher',
 ---@field f_choose? number Set selection for the booster pack.
 ---@field additional_size? number Additional size for the booster pack.
 ---@field additional_choose? number Set selection for the booster pack.
+---@field dependencies? table|string
 ---@field select_card? string String of card area in G, if cards are meant to be saved to an area.
 ---@field create_card? fun(self: SMODS.Booster|table, card: Card|table, i: number): Card|table Creates the cards inside the booster pack. Returning a table will create a Card through `SMODS.create_card`.
 
@@ -111,6 +112,7 @@ function PTASaka.UltraPack(t)
 		kind = t.kind or "Ultra",
 		cost = t.cost or 12,
 		select_card = t.select_card or nil,
+		dependencies = t.dependencies,
 		create_card = t.create_card or function(self, card, i)
 			return {
 				set = t.set,
@@ -127,7 +129,7 @@ function PTASaka.UltraPack(t)
 		end,
 		ease_background_colour = function(self)
 			ease_colour(G.C.DYN_UI.MAIN, t.colours[1] or G.C.BLACK)
-			ease_background_colour({ new_colour = t.colours[1] or G.C.BLACK, t.colours[2] or G.C.UI.BACKGROUND_DARK, t
+			ease_background_colour({ new_colour = t.colours[1] or G.C.BLACK, special_colour = t.colours[2] or G.C.UI.BACKGROUND_DARK, contrast = t
 			.colours[3] or 4 })
 		end
 	}
@@ -301,5 +303,18 @@ local buffoon = PTASaka.UltraPack {
 	f_size = 6, f_choose = 3,
 }
 buffoon.ease_background_colour = function(self) ease_background_colour_blind(G.STATES.BUFFOON_PACK) end
+
+if Cryptid then
+	PTASaka.UltraPack {
+		key = "code_ultra",
+		pos = { x = 6, y = 0 },
+		group_key = "k_cry_program_pack",
+		set = "Code",
+		kind = "Code",
+		f_size = 6, f_choose = 3,
+		dependencies = "Cryptid",
+		colours = { G.C.SET.Code, G.C.BLACK, 2 }
+	}
+end
 
 --#endregion
