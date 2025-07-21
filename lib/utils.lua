@@ -379,6 +379,7 @@ end
 
 ---@param c Card
 function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
+	if c.ability.pta_frozen == freeze then return end
 	if freeze then
 		c.ability.pta_frozen = true
 		c.ability.pta_unfreeze = nil
