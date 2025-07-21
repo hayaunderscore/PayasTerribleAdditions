@@ -94,6 +94,7 @@ PTASaka.UltraPack = SMODS.Booster:extend({
 	cost = 12,
 	colours = { G.C.BLACK, G.C.UI.BACKGROUND_DARK, 4 },
 	config = { extra = 7, choose = 3 },
+	weight = 0,
 	create_card = function(self, card, i)
 		return {
 			set = self.pack_set,
@@ -115,6 +116,7 @@ PTASaka.UltraPack = SMODS.Booster:extend({
 		if self.f_size or self.additional_size or self.f_choose or self.additional_choose then
 			self.config = { extra = self.f_size or (7 + (self.additional_size or 0)), choose = self.f_choose or (3 + (self.additional_choose or 0)) }
 		end
+		self.weight = 0
 		SMODS.Booster.register(self)
 	end
 })
