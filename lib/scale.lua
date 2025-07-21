@@ -135,7 +135,21 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			-- Will be unhardcoded soon probably
 			local new_val = v
 			local diff = new_val - (tree[key.."_orig"][k] or 0)
-			new_val = (tree[key.."_orig"][k] or 0) + diff * 2 ^ (PTASaka.scale_modifier_jokers and #PTASaka.scale_modifier_jokers or 0)
+			diff = diff * 2 ^ (PTASaka.scale_modifier_jokers and #PTASaka.scale_modifier_jokers or 0)
+
+			-- If Cryptid is enabled, calculate jokers `cry_scale_mod` if possible
+			-- Only partial support for now, but should work for most cases... I think.
+			if Cryptid and G.jokers then
+				for _, joker in pairs(G.jokers.cards) do
+					if joker.config and joker.config.center and joker.config.center.cry_scale_mod then
+						diff = joker.config.center:cry_scale_mod(
+							joker, card, diff, diff, v, new_val
+						) or diff
+					end
+				end
+			end
+
+			new_val = (tree[key.."_orig"][k] or 0) + diff
 
 			-- Specific stuff for specific jokers/consumables
 			-- Yorick's extra.yorick_discards should not exceed discards
