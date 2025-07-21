@@ -1704,6 +1704,14 @@ return {
 					"before playing a hand",
 				}
 			},
+			bl_payasaka_showdown_maroon_rose = {
+				name = "Maroon Rose",
+				text = {
+					"Debuffs leftmost and",
+					"rightmost played cards",
+					"after pressing play"
+				}
+			},
 		},
 		Edition = {
 			e_payasaka_jpeg = {

@@ -406,12 +406,13 @@ function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
 			end
 		end
 	else
+		local last_frozen = c.ability.pta_frozen
 		c.ability.pta_frozen = nil
 		c.ability.pta_unfreeze = nil
 		c.ability.forced_selection = false
 		c.ability.pta_hide_frozen_sprite = nil
 		c.ability.pta_force_draw_frozen = nil
-		if delay_sprite then
+		if delay_sprite and last_frozen then
 			c.ability.pta_force_draw_frozen = true
 			G.E_MANAGER:add_event(Event{
 				delay = full_delay and 0.1 or 0,
