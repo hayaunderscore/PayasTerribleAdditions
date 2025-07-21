@@ -1693,10 +1693,8 @@ return {
 			bl_payasaka_chamber = {
 				name = "The Chamber",
 				text = {
-					"Mark 3 cards upon setting",
-					"the blind or after scoring,",
-					"Destroy marked cards if",
-					"held in hand after scoring"
+					"Mark 3 cards for",
+					"death each hand",
 				}
 			},
 			bl_payasaka_stasis = {
