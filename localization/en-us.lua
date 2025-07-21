@@ -1635,6 +1635,14 @@ return {
 				},
 				-- These guys don't have comments
 			},
+			j_payasaka_pulmenti = {
+				name = "Numerus Pulmenti",
+				text = {
+					"All calculations are",
+					"considered as an",
+					"operator {C:attention}higher"
+				}
+			}
 		},
 		Blind = {
 			bl_payasaka_nether = {

@@ -35,6 +35,8 @@ create_sound("drop_target")
 -- Fanhead
 SMODS.Sound { key = 'emult', path = 'exponential_mult' .. ".wav" }
 SMODS.Sound { key = 'echips', path = 'exponential_chips' .. ".wav" }
+SMODS.Sound { key = 'eemult', path = 'TetrationalMult' .. ".wav" }
+SMODS.Sound { key = 'eechips', path = 'TetrationalChips' .. ".wav" }
 
 -- Some boss blinds cannot be disabled!
 create_sound("loudbuzzer")

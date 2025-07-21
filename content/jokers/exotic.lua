@@ -1,3 +1,4 @@
+--[[
 SMODS.Joker {
 	name = "Doodle Kosmos",
 	key = 'doodlekosmos',
@@ -77,6 +78,18 @@ SMODS.Joker {
 		end
 	end
 }
+]]
+
+SMODS.Joker {
+	name = 'pta-Pulmenti',
+	key = 'pulmenti',
+	rarity = "cry_exotic",
+	atlas = "JOE_Exotic",
+	pos = { x = 0, y = 5 },
+	soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
+	cost = 50,
+	demicoloncompat = true,
+}
 
 SMODS.Joker {
 	name = 'Imerlogio',
@@ -146,7 +159,7 @@ SMODS.Joker {
 				{
 					message = localize('k_upgrade_ex'),
 					extrafunc = function()
-						local suit_prefix = string.sub(_c.base.suit, 1, 1)..'_'
+						local suit_prefix = SMODS.Suits[_c.base.suit].card_key.."_"
 						_c:set_base(G.P_CARDS[suit_prefix..'Q'])
 						_c:juice_up()
 					end
@@ -192,7 +205,7 @@ SMODS.Joker {
 			return {
 				e_chips = card.ability.extra.e_chips,
 				colour = G.C.DARK_EDITION,
-				echip_message = {message = ("^%s Chips"):format(number_format(card.ability.extra.e_chips)), colour = G.C.DARK_EDITION, sound = "talisman_echip"},
+				--echip_message = {message = ("^%s Chips"):format(number_format(card.ability.extra.e_chips)), colour = G.C.DARK_EDITION, sound = "talisman_echip"},
 			}
 		end
 	end,

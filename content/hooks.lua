@@ -728,6 +728,15 @@ local whitelisted_keys = {
 	["EEEmult_mod"] = 'eeemult',
 }
 
+local pulmenti_redirect = {
+	['chips'] = 'x_chips',
+	['mult'] = 'x_mult',
+	['xchips'] = 'e_chips',
+	['xmult'] = 'e_mult',
+	['emult'] = 'ee_mult',
+	['echips'] = 'ee_chips',
+}
+
 -- Insert dummy repetitions in here
 table.insert(SMODS.calculation_keys, 1, "fake_repetitions")
 -- Same with these, for enotsworrA and Phil
@@ -772,6 +781,14 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		return true
 	end
 
+	if amount and is_number(amount) and to_big(amount) > to_big(0) and PTASaka.pulmenti_count and pulmenti_redirect[whitelisted_keys[key]] then
+		for i = 1, PTASaka.pulmenti_count do
+			if pulmenti_redirect[whitelisted_keys[key]] then
+				key = pulmenti_redirect[whitelisted_keys[key]]
+			end
+		end
+	end
+
 	if (key == 'e_chips') and amount ~= 1 and not Talisman then
 		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
 		hand_chips = mod_chips(hand_chips ^ amount)
@@ -814,6 +831,54 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
 						percent, nil,
 						{ message = ('^%s Mult'):format(number_format(amount)), sound = "payasaka_emult", colour = G.C.DARK_EDITION })
+				end
+			end
+		end
+		return true
+	end
+
+	if (key == 'ee_chips') and amount ~= 1 and not Talisman then
+		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+		hand_chips = mod_chips(hand_chips ^ (hand_chips ^ (amount - 1)))
+		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+		if not effect.remove_default_message then
+			if from_edition then
+				card_eval_status_text(scored_card, 'jokers', nil, percent, nil,
+					{ message = ('^^%s Chips'):format(number_format(amount)), colour = G.C.DARK_EDITION, edition = true })
+			else
+				if effect.echip_message then
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil, effect.echip_message)
+				else
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil,
+						{ message = ('^^%s Chips'):format(number_format(amount)), sound = "payasaka_eechips", colour = G.C.DARK_EDITION })
+				end
+			end
+		end
+		return true
+	end
+
+	if (key == 'ee_mult') and amount ~= 1 and not Talisman then
+		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+		mult = mod_mult(mult ^ (mult ^ (amount - 1)))
+		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+		if not effect.remove_default_message then
+			if from_edition then
+				card_eval_status_text(scored_card, 'jokers', nil, percent, nil,
+					{ message = ('^%s Mult'):format(number_format(amount)), colour = G.C.DARK_EDITION, edition = true })
+			else
+				if effect.emult_message then
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil, effect.emult_message)
+				else
+					card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						percent, nil,
+						{ message = ('^^%s Mult'):format(number_format(amount)), sound = "payasaka_eemult", colour = G.C.DARK_EDITION })
 				end
 			end
 		end
@@ -1739,6 +1804,7 @@ function Game:update(dt)
 	PTASaka.stop_you_are_violating_the_law = next(violating) and violating[1]
 	local recuperares = SMODS.find_card('j_payasaka_recuperare')
 	PTASaka.recuperares = next(recuperares) and recuperares
+	PTASaka.pulmenti_count = #SMODS.find_card('j_payasaka_pulmenti')
 	local niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
 	PTASaka.scale_modifier_jokers = SMODS.find_card('j_payasaka_oguri')
 	-- Get ahead count after updating
