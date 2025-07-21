@@ -214,7 +214,7 @@ target = 'functions/state_events.lua'
 pattern = '''G.hand.highlighted[i].ability.discarded = true'''
 position = 'after'
 payload = '''
-PTASaka.freeze_card(v, false, true);
+PTASaka.freeze_card(G.hand.highlighted[i], false, true);
 '''
 match_indent = true
 
