@@ -5,7 +5,7 @@ SMODS.Blind {
 	dollars = 6,
 	mult = 2,
 	boss = {min = 0, max = 1999},
-	boss_colour = HEX('35153F'),
+	boss_colour = HEX('4d3380'),
 	set_blind = function(self)
 		play_sound("payasaka_nether")
 		G.GAME.payasaka_nether_destroycards = true
