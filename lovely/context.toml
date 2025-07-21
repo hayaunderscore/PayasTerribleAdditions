@@ -196,11 +196,14 @@ if not G.GAME.payasaka_prelude then
 			target = _v.target or target
 		end
 	end
-	if v.ability.pta_unfreeze then v.ability.pta_frozen = nil; v.ability.pta_unfreeze = nil; end
-	if v.ability.pta_frozen then target = G.deck; v.ability.pta_unfreeze = true; end
+	if v.ability.pta_unfreeze then PTASaka.freeze_card(v, false, true); v.ability.pta_unfreeze = nil; end
+	if v.ability.pta_frozen then target = G.hand; v.ability.pta_unfreeze = true; end
 	draw_card(G.play,target, it*100/play_count,'down', false, v)
 else
-	draw_card(G.play,G.discard, it*100/play_count,'down', false, v)
+	local target = G.discard
+	if v.ability.pta_unfreeze then PTASaka.freeze_card(v, false, true); v.ability.pta_unfreeze = nil; end
+	if v.ability.pta_frozen then target = G.hand; v.ability.pta_unfreeze = true; end
+	draw_card(G.play,target, it*100/play_count,'down', false, v)
 end
 '''
 match_indent = true
@@ -211,8 +214,7 @@ target = 'functions/state_events.lua'
 pattern = '''G.hand.highlighted[i].ability.discarded = true'''
 position = 'after'
 payload = '''
-G.hand.highlighted[i].ability.pta_frozen = nil
-G.hand.highlighted[i].ability.pta_unfreeze = nil
+PTASaka.freeze_card(v, false, true);
 '''
 match_indent = true
 
@@ -223,7 +225,9 @@ target = 'functions/common_events.lua'
 pattern = '''if first_pass and not (_c.set == 'Edition') and badges then'''
 position = 'before'
 payload = '''
-if card_type == 'Default' or card_type == 'Enhanced' and card.ability.pta_frozen and not card.config.center_key == "m_payasaka_ice" then
+if card and card.ability and card.ability.pta_unfreeze then
+	info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_thaw"]
+elseif card and card.ability and card.ability.pta_frozen then
 	info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_frozen"]
 end
 '''

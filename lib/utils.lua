@@ -377,6 +377,60 @@ function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, 
 	return boosters
 end
 
+---@param c Card
+function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
+	if freeze then
+		c.ability.pta_frozen = true
+		c.ability.pta_unfreeze = nil
+		c.ability.pta_force_draw_frozen = nil
+		c.ability.pta_hide_frozen_sprite = nil
+		if delay_sprite then
+			c.ability.pta_hide_frozen_sprite = true
+			G.E_MANAGER:add_event(Event{
+				delay = full_delay and 0.1 or 0,
+				trigger = full_delay and 'after' or 'immediate',
+				func = function()
+					c.ability.pta_hide_frozen_sprite = nil
+					if not silent then
+						c:juice_up()
+						play_sound('payasaka_snd_icespell', 1, 0.4)
+					end
+					return true
+				end
+			})
+		else
+			if not silent then
+				c:juice_up()
+				play_sound('payasaka_snd_icespell', 1, 0.4)
+			end
+		end
+	else
+		c.ability.pta_frozen = nil
+		c.ability.pta_unfreeze = nil
+		c.ability.forced_selection = false
+		c.ability.pta_hide_frozen_sprite = nil
+		c.ability.pta_force_draw_frozen = nil
+		if delay_sprite then
+			c.ability.pta_force_draw_frozen = true
+			G.E_MANAGER:add_event(Event{
+				delay = full_delay and 0.1 or 0,
+				trigger = full_delay and 'after' or 'immediate',
+				func = function()
+					c.ability.pta_force_draw_frozen = nil
+					if not silent then
+						c:juice_up()
+					end
+					return true
+				end
+			})
+		else
+			if not silent then
+				c:juice_up()
+			end
+		end
+	end
+end
+
 -- Funny soul aura >:)))
 ---@param c Card
 function PTASaka.create_soul_aura_for_card(c)

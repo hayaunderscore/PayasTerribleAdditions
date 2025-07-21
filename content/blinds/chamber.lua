@@ -1,5 +1,5 @@
 SMODS.Blind {
-	key = "sharp",
+	key = "chamber",
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 7 },
 	dollars = 5,
@@ -7,23 +7,23 @@ SMODS.Blind {
 	boss = { min = 0, max = 1999 },
 	boss_colour = HEX('952222'),
 	set_blind = function(self)
-		G.GAME.payasaka_sharp = true
+		G.GAME.payasaka_chamber = true
 	end,
 	disable = function(self)
-		G.GAME.payasaka_sharp = false
+		G.GAME.payasaka_chamber = false
 	end,
 	defeat = function(self)
-		G.GAME.payasaka_sharp = false
+		G.GAME.payasaka_chamber = false
 	end,
 	calculate = function(self, blind, context)
-		if G.GAME.payasaka_sharp and context.destroy_card and context.cardarea == G.hand then
+		if G.GAME.payasaka_chamber and context.destroy_card and context.cardarea == G.hand then
 			if context.destroy_card.ability.the_sharp_marked then
 				return {
 					remove = true,
 				}
 			end
 		end
-		if G.GAME.payasaka_sharp then
+		if G.GAME.payasaka_chamber then
 			if context.before then
 				for k, v in pairs(G.play.cards) do
 					if v.ability.the_sharp_marked then
@@ -39,15 +39,15 @@ SMODS.Blind {
 					end
 				end
 			end
-			if context.after then G.GAME.payasaka_sharp_kill = true end
+			if context.after then G.GAME.payasaka_chamber_kill = true end
 			if context.end_of_round and context.main_eval then
-				G.GAME.payasaka_sharp_kill = nil
+				G.GAME.payasaka_chamber_kill = nil
 				for k, v in pairs(G.playing_cards) do
 					v.ability.the_sharp_marked = nil
 				end
 			end
-			if context.first_hand_drawn or (context.hand_drawn and G.GAME.payasaka_sharp_kill) then
-				G.GAME.payasaka_sharp_kill = nil
+			if context.first_hand_drawn or (context.hand_drawn and G.GAME.payasaka_chamber_kill) then
+				G.GAME.payasaka_chamber_kill = nil
 				local cards_to_mark = PTASaka.shallow_copy(G.hand.cards)
 				local count = 3
 				local current_len = #cards_to_mark

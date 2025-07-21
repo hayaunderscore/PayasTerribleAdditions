@@ -42,6 +42,8 @@ create_sound("loudbuzzer")
 -- Ask Madden
 SMODS.Sound { key = 'aeiou', path = 'aeiou' .. ".wav" }
 
+create_sound("snd_icespell")
+
 -- Custom music for prismatic jokers
 SMODS.Sound({
 	key = "music_prismatic",

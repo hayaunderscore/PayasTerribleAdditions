@@ -1690,8 +1690,8 @@ return {
 					"sequentially per hand",
 				}
 			},
-			bl_payasaka_sharp = {
-				name = "The Sharp",
+			bl_payasaka_chamber = {
+				name = "The Chamber",
 				text = {
 					"Mark 3 cards upon setting",
 					"the blind or after scoring,",
@@ -1858,10 +1858,19 @@ return {
 			dd_payasaka_frozen = {
 				name = "Frozen Card",
 				text = {
-					"{C:attention}Forced{} to be selected and is",
-					"discarded {C:attention}back{} into the deck",
-					"{C:attention}Unfreezes{} when played again",
-					"or discarded manually",
+					"Forced to be",
+					"selected",
+					"Can be played 2",
+					"more times"
+				}
+			},
+			dd_payasaka_thaw = {
+				name = "Frozen Card",
+				text = {
+					"Forced to be",
+					"selected",
+					"Can be played 1",
+					"additional time"
 				}
 			}
 		},

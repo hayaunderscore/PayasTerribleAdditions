@@ -17,14 +17,16 @@ SMODS.Blind {
 	end,
 	calculate = function(self, blind, context)
 		if G.GAME.payasaka_stasis then
-			if context.after then G.GAME.payasaka_stasis_kill = true end
 			if context.end_of_round and context.main_eval then
-				G.GAME.payasaka_stasis_kill = nil
+				for _, v in pairs(G.playing_cards) do
+					PTASaka.freeze_card(v, nil, nil, true)
+				end
 			end
-			if (context.hand_drawn and G.GAME.payasaka_stasis_kill) or context.first_hand_drawn then
-				G.GAME.payasaka_stasis_kill = nil
-				local card = pseudorandom_element(G.hand.cards, 'stasis')
-				card.ability.pta_frozen = true
+			if context.before then
+				local card = pseudorandom_element(PTASaka.FH.filter(G.play.cards, function(c) return c and c.ability and not c.ability.pta_frozen end), 'stasis')
+				if card then
+					PTASaka.freeze_card(card, true, true, nil, true)
+				end
 			end
 		end
 	end

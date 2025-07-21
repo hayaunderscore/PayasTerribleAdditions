@@ -179,6 +179,8 @@ SMODS.DrawStep {
 	conditions = { vortex = false, facing = 'front' },
 }
 
+SMODS.draw_ignore_keys.john_mark = true
+
 -- The Sharp's mark
 SMODS.DrawStep {
 	key = 'today_is_friday_in_california',
@@ -219,7 +221,7 @@ SMODS.DrawStep {
 	key = 'olaf_goals',
 	order = 1002,
 	func = function(self)
-		if self.ability.pta_frozen then
+		if (self.ability.pta_frozen or self.ability.pta_force_draw_frozen) and not self.ability.pta_hide_frozen_sprite then
 			---@type Sprite
 			local layer = self.children.olaf_goals
 			if not layer then

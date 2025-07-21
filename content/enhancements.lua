@@ -226,8 +226,10 @@ SMODS.Enhancement {
 	},
 	calculate = function(self, card, context)
 		if context.before and card.area == G.play then
-			card.ability.pta_frozen = true
-			card.ability.forced_selection = true
+			PTASaka.freeze_card(card, true, true, nil, true)
+		end
+		if context.end_of_round then
+			PTASaka.freeze_card(card, false, nil, true)
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
