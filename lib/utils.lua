@@ -481,8 +481,13 @@ local function status_collection_ui()
 		center = 'c_base',
 		h_mod = 1.18,
 		back_func = 'your_collection_other_gameobjects',
+		infotip = localize('ml_payasaka_status_info'),
 		modify_card = function(card, center)
 			card.ignore_pinned = true
+			if center.key == "status_payasaka_zzazz" then
+				card:set_sprites(G.P_CENTERS["j_joker"])
+				card.children.center:set_sprite_pos({x = 0, y = 0})
+			end
 			center:apply(card, true)
 		end,
 	})

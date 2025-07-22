@@ -3322,7 +3322,11 @@ return {
 			k_payasaka_dusty_ex = "Dusty!",
 			k_payasaka_blown_ex = "Blown!",
 			k_status = "Status",
-			k_statuses = "Statuses",
+			k_statuses = "Status Effects",
+			ml_payasaka_status_info = {
+				"Cards can have multiple status",
+				"effects at once"
+			}
 			-- #endregion
 		},
 		v_dictionary = {
