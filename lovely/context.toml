@@ -594,7 +594,6 @@ position = "after"
 payload = '''
 if context.cardarea == G.play and SMODS.has_enhancement(card, "m_payasaka_score") then
 	context.cardarea = "unscored"
-	print("hi 2")
 	SMODS.calculate_repetitions(card, context, reps)
 	context.cardarea = G.play
 end
