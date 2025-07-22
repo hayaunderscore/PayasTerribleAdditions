@@ -1,10 +1,3 @@
--- Odd how perma_mult isn't a thing...
-local get_chip_mult = Card.get_chip_mult
-function Card:get_chip_mult()
-	local mult = get_chip_mult(self)
-	return mult + ((not self.ability.extra_enhancement and self.ability.perma_mult) or 0)
-end
-
 -- Non-Talisman adjacent exponentials
 function Card:get_pta_e_chips()
 	return SMODS.multiplicative_stacking((self.ability.e_chips or 1), (not self.ability.extra_enhancement and self.ability.perma_e_chips) or 0)
