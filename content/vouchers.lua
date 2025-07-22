@@ -366,6 +366,7 @@ SMODS.Voucher {
 	cost = 10,
 	pyroxenes = 15,
 	requires = { "v_payasaka_crash" },
+	no_collection = true,
 	redeem = function(self, voucher)
 		G.E_MANAGER:add_event(Event {
 			func = function()
@@ -388,6 +389,7 @@ SMODS.Voucher {
 	cost = 10,
 	pyroxenes = 100,
 	requires = { "v_payasaka_equilibrium" },
+	no_collection = true,
 	redeem = function(self, voucher)
 		G.E_MANAGER:add_event(Event {
 			func = function()
