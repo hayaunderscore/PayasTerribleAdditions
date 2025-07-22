@@ -508,3 +508,23 @@ if self.config.no_fill_width and next(self.children) then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''for k, v in pairs(other.ability) do'''
+position = 'before'
+payload = '''
+PTASaka.remove_proxy(new_card)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''return new_card'''
+position = 'before'
+payload = '''
+PTASaka.create_proxy(new_card)
+'''
+match_indent = true
