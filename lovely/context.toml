@@ -459,7 +459,7 @@ target = 'functions/common_events.lua'
 pattern = '''-- TARGET: main scoring on played cards'''
 position = 'after'
 payload = '''
-if not Talisman then
+--if not Talisman then
 	local e_chips = card:get_pta_e_chips()
 	if e_chips > 0 then
 		ret.playing_card.e_chips = e_chips
@@ -469,7 +469,7 @@ if not Talisman then
 	if e_mult > 0 then
 		ret.playing_card.e_mult = e_mult
 	end
-end
+--end
 
 local balance = card:get_pta_balance()
 if balance > 0 then
