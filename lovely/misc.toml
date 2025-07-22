@@ -528,3 +528,27 @@ payload = '''
 PTASaka.create_proxy(new_card)
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''blind_choice.animation = AnimatedSprite(0,0, 1.4, 1.4, G.ANIMATION_ATLAS[blind_choice.config.atlas] or G.ANIMATION_ATLAS['blind_chips'],  blind_choice.config.pos)'''
+position = 'after'
+payload = '''
+if blind_choice.config.key == "bl_payasaka_question" and G.GAME and G.GAME.round_resets and G.GAME.round_resets.last_cast_boss then
+	blind_choice.animation:set_sprite_pos({ x = 0, y = 1 })
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''blind.lua'''
+pattern = '''self.children.animatedSprite:set_sprite_pos(self.config.blind.pos)'''
+position = 'after'
+payload = '''
+if self.pos and self.pos.edited then
+	self.children.animatedSprite:set_sprite_pos(self.pos)
+end
+'''
+match_indent = true

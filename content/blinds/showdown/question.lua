@@ -12,7 +12,7 @@ end
 SMODS.Blind {
 	key = "question",
 	atlas = "JOE_Blinds",
-	pos = { x = 0, y = 1 },
+	pos = { x = 0, y = 10 },
 	dollars = 8,
 	mult = 2,
 	boss = {
@@ -38,6 +38,9 @@ SMODS.Blind {
 	end,
 	show_fusions = true,
 	set_blind = function(self)
+		if G.GAME.round_resets.last_cast_boss then
+			G.GAME.blind.pos = { edited = true, x = 0, y = 1 }
+		end
 		if not G.GAME.payasaka_merged_boss_keys then G.GAME.payasaka_merged_boss_keys = {} end
 		if not next(G.GAME.payasaka_merged_boss_keys) then
 			for i = 1, 2 do
