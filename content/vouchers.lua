@@ -109,14 +109,6 @@ local TMTRAINER_STRING = {
 	"voucher Please take it"
 }
 
-local draw_base = Card.should_draw_base_shader
-function Card:should_draw_base_shader()
-	if self.config.center_key == "v_payasaka_tmtrainer" or self.config.center_key == "v_payasaka_cooltrainer" then
-		return false
-	end
-	return draw_base(self)
-end
-
 SMODS.Shader {
 	key = 'zzazz',
 	path = 'zzazz.fs'

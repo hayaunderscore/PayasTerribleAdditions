@@ -2637,6 +2637,14 @@ return {
 					"Destroyed if",
 					"held in hand"
 				}
+			},
+			status_payasaka_zzazz = {
+				name = "{f:payasaka_pokemon}ZZAZZAZZ",
+				text = {
+					"{f:payasaka_pokemon}______",
+					"{f:payasaka_pokemon}TYPE",
+					"{f:payasaka_pokemon}CoolTrainer♀"
+				},
 			}
 		},
 		Other = {
@@ -3332,6 +3340,7 @@ return {
 			payasaka_giant = "Giant",
 			status_payasaka_frozen = "Frozen",
 			status_payasaka_marked = "Marked",
+			status_payasaka_zzazz = "ZZAZZ",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
 			k_payasaka_thunderstruck = "Thunderstruck",

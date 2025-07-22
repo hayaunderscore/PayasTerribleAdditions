@@ -689,6 +689,17 @@ function Card:sell_card()
 	}))
 end
 
+local draw_base = Card.should_draw_base_shader
+function Card:should_draw_base_shader()
+	if self.config.center_key == "v_payasaka_tmtrainer" or self.config.center_key == "v_payasaka_cooltrainer" then
+		return false
+	end
+	if self.ability.status_payasaka_zzazz then
+		return false
+	end
+	return draw_base(self)
+end
+
 -- Individual effects....
 local whitelisted_keys = {
 	["chips"] = 'chips',

@@ -90,7 +90,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	
 	vec2 floored_uv = (floor((uv*texture_details.ba/vec2(8,8))))/max(texture_details.b/8, texture_details.a/8);
 
-	rndcoords.x += 0.05 * (rand(vec2(iTime, floored_uv.x)) - rand(vec2(iTime*6., floored_uv.x*0.9)));
+	rndcoords.x += 0.025 * (rand(vec2(iTime, floored_uv.x)) - rand(vec2(iTime*6., floored_uv.x*0.9)));
 
 	vec4 tex = Texel( texture, rndcoords );
 	tex = dissolve_mask(tex, rndcoords, uv);
