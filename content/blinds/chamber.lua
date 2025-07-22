@@ -16,34 +16,17 @@ SMODS.Blind {
 		G.GAME.payasaka_chamber = false
 	end,
 	calculate = function(self, blind, context)
-		if G.GAME.payasaka_chamber and context.destroy_card and context.cardarea == G.hand then
-			if context.destroy_card.ability.the_sharp_marked then
-				return {
-					remove = true,
-				}
-			end
-		end
 		if G.GAME.payasaka_chamber then
 			if context.before then
 				for k, v in pairs(G.play.cards) do
-					if v.ability.the_sharp_marked then
-						G.E_MANAGER:add_event(Event{
-							delay = 0.05,
-							trigger = 'after',
-							func = function()
-								v.ability.the_sharp_marked = nil
-								v:juice_up()
-								return true
-							end
-						})
-					end
+					PTASaka.set_status(v, "payasaka_marked", nil)
 				end
 			end
 			if context.after then G.GAME.payasaka_chamber_kill = true end
 			if context.end_of_round and context.main_eval then
 				G.GAME.payasaka_chamber_kill = nil
 				for k, v in pairs(G.playing_cards) do
-					v.ability.the_sharp_marked = nil
+					PTASaka.set_status(v, "payasaka_marked", nil)
 				end
 			end
 			if context.first_hand_drawn or (context.hand_drawn and G.GAME.payasaka_chamber_kill) then
@@ -54,7 +37,7 @@ SMODS.Blind {
 				while count > 0 and current_len > 0 do
 					local card = table.remove(cards_to_mark, pseudorandom('california', 1, #cards_to_mark))
 					if card then
-						card.ability.the_sharp_marked = true
+						PTASaka.set_status(card, "payasaka_marked", true)
 					end
 					current_len = #cards_to_mark
 					count = count - 1

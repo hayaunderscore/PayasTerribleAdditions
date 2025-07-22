@@ -197,6 +197,7 @@ assert(SMODS.load_file("content/decks.lua"))()
 
 -- Enhancements
 assert(SMODS.load_file("content/enhancements.lua"))()
+assert(SMODS.load_file("content/status.lua"))()
 
 -- Cross mod content: CardSleeves
 assert(SMODS.load_file("content/sleeve.lua"))()

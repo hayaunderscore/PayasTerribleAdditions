@@ -109,10 +109,22 @@ local TMTRAINER_STRING = {
 	"voucher Please take it"
 }
 
+local draw_base = Card.should_draw_base_shader
+function Card:should_draw_base_shader()
+	if self.config.center_key == "v_payasaka_tmtrainer" or self.config.center_key == "v_payasaka_cooltrainer" then
+		return false
+	end
+	return draw_base(self)
+end
+
+SMODS.Shader {
+	key = 'zzazz',
+	path = 'zzazz.fs'
+}
+
 SMODS.Voucher {
 	key = 'tmtrainer',
-	atlas = 'JOE_Vouchers',
-	pos = { x = 0, y = 1 },
+	pos = { x = 7, y = 0 },
 	cost = 10,
 	redeem = function(self, voucher)
 		--G.GAME.payasaka_tmtrainer_effects = true
@@ -123,6 +135,9 @@ SMODS.Voucher {
 		--G.GAME.payasaka_tmtrainer_effects = false
 		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) * 2
 		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) / 2
+	end,
+	draw = function(self, card, layer)
+		card.children.center:draw_shader('payasaka_zzazz', nil, card.ARGS.send_to_shader)
 	end,
 	loc_vars = function(self, info_queue, card)
 		local TMTRAINER_STRINGS_ONE = {}
@@ -197,8 +212,8 @@ local COOLTRAINER_STRING = {
 
 SMODS.Voucher {
 	key = 'cooltrainer',
-	atlas = 'JOE_Vouchers',
-	pos = { x = 1, y = 1 },
+	--atlas = 'JOE_Vouchers',
+	pos = { x = 7, y = 1 },
 	cost = 10,
 	requires = { "v_payasaka_tmtrainer" },
 	redeem = function(self, voucher)
@@ -214,7 +229,7 @@ SMODS.Voucher {
 		G.HUD:recalculate()
 	end,
 	draw = function(self, card, layer)
-		card.children.center:draw_shader('negative', nil, card.ARGS.send_to_shader)
+		card.children.center:draw_shader('payasaka_zzazz', nil, card.ARGS.send_to_shader)
 	end,
 	loc_vars = function(self, info_queue, card)
 		local TMTRAINER_STRINGS_ONE = {}
@@ -504,7 +519,7 @@ function PTASaka.deck_sleeve_redeem(self)
 		-- Entropy compat
 		if Entropy then
 			G.GAME.entr_bought_decks = G.GAME.entr_bought_decks or {}
-			G.GAME.entr_bought_decks[#G.GAME.entr_bought_decks+1] = self.config.center_key
+			G.GAME.entr_bought_decks[#G.GAME.entr_bought_decks + 1] = self.config.center_key
 		end
 
 		-- Apply effects that would only apply at the start of a run

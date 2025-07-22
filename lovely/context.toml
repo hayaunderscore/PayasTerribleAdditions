@@ -188,7 +188,7 @@ position = 'at'
 payload = '''
 if not G.GAME.payasaka_prelude then
 	local add = {}
-	SMODS.calculate_context({payasaka_play_to_discard = true, other_card = v}, add)
+	SMODS.calculate_context({payasaka_play_to_discard = true, other_card = v, scoring_hand = {v}}, add)
 	SMODS.trigger_effects(add)
 	local target = G.discard
 	for k, v in ipairs(add) do
@@ -196,13 +196,17 @@ if not G.GAME.payasaka_prelude then
 			target = _v.target or target
 		end
 	end
-	if v.ability.pta_unfreeze then PTASaka.freeze_card(v, false, true); v.ability.pta_unfreeze = nil; end
-	if v.ability.pta_frozen then target = G.hand; v.ability.pta_unfreeze = true; end
 	draw_card(G.play,target, it*100/play_count,'down', false, v)
 else
-	local target = G.discard
-	if v.ability.pta_unfreeze then PTASaka.freeze_card(v, false, true); v.ability.pta_unfreeze = nil; end
-	if v.ability.pta_frozen then target = G.hand; v.ability.pta_unfreeze = true; end
+	local target = G.deck
+	local add = {}
+	SMODS.calculate_context({payasaka_play_to_discard = true, other_card = v, scoring_hand = {v}}, add)
+	SMODS.trigger_effects(add)
+	for k, v in ipairs(add) do
+		for _k, _v in pairs(v) do
+			target = _v.target or target
+		end
+	end
 	draw_card(G.play,target, it*100/play_count,'down', false, v)
 end
 '''
@@ -214,22 +218,7 @@ target = 'functions/state_events.lua'
 pattern = '''G.hand.highlighted[i].ability.discarded = true'''
 position = 'after'
 payload = '''
-PTASaka.freeze_card(G.hand.highlighted[i], false, true);
-'''
-match_indent = true
-
-# Add Frozen card info_queue if applicable
-[[patches]]
-[patches.pattern]
-target = 'functions/common_events.lua'
-pattern = '''if first_pass and not (_c.set == 'Edition') and badges then'''
-position = 'before'
-payload = '''
-if card and card.ability and card.ability.pta_unfreeze then
-	info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_thaw"]
-elseif card and card.ability and card.ability.pta_frozen then
-	info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_frozen"]
-end
+PTASaka.freeze_card(G.hand.highlighted[i], nil, true);
 '''
 match_indent = true
 
@@ -600,3 +589,129 @@ end
 '''
 match_indent = true
 times = 1
+
+# STATUSES #
+
+# Statuses should still be active even if debuffed
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''if not card:can_calculate(context.ignore_debuff, context.remove_playing_cards) then
+        if card.ability.rental then
+            local ret = {}
+            ret[SMODS.Stickers.rental] = card:calculate_sticker(context, 'rental')
+            return ret, {}
+        end
+        return {}, {}
+    end'''
+position = 'at'
+payload = '''
+if not card:can_calculate(context.ignore_debuff, context.remove_playing_cards) then
+	local ret = {}
+	for _,k in ipairs(PTASaka.Status.obj_buffer) do
+        local v = PTASaka.Statuses[k]
+        local status = card:calculate_status(context, k)
+        if status then
+            ret[v] = status
+        end
+    end
+    if card.ability.rental then
+        ret[SMODS.Stickers.rental] = card:calculate_sticker(context, 'rental')
+    end
+    return ret, {}
+end
+'''
+match_indent = true
+
+# Calculate status effect returns
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''-- TARGET: evaluate your own general effects'''
+position = 'after'
+payload = '''
+for _,k in ipairs(PTASaka.Status.obj_buffer) do
+    local v = PTASaka.Statuses[k]
+    local status = card:calculate_status(context, k)
+    if status then
+        ret[v] = status
+    end
+end
+'''
+match_indent = true
+
+# Calculate effects
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''for _, k in ipairs(SMODS.Sticker.obj_buffer) do'''
+position = 'before'
+payload = '''
+for _, k in ipairs(PTASaka.Status.obj_buffer) do
+    local v = PTASaka.Statuses[k]
+    SMODS.calculate_effect_table_key(effect_table, v, card, ret)
+end
+'''
+match_indent = true
+
+# Apply status info_queue
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''local sticker = SMODS.Stickers[v]
+            if sticker then
+                local t = { key = v, set = 'Other' }'''
+position = 'before'
+payload = '''
+local status = PTASaka.Statuses[v]
+if status then
+    local t = { key = v, set = 'Status' }
+    local res = {}
+    if status.loc_vars and type(status.loc_vars) == 'function' then
+        res = status:loc_vars(info_queue, card) or {}
+        t.vars = res.vars or {}
+        t.key = res.key or t.key
+        t.set = res.set or t.set
+    end
+    info_queue[#info_queue+1] = t
+end
+'''
+match_indent = true
+
+# Apply status info_queue
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''localize{type = 'other', key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars}'''
+position = 'after'
+payload = '''
+elseif _c.set == "Status" then
+	localize{type = 'descriptions', set = _c.set, key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''for k, v in pairs(SMODS.Stickers) do'''
+position = 'before'
+payload = '''
+for k, v in pairs(PTASaka.Statuses) do
+	G.BADGE_COL[k] = v.badge_colour
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''for k, v in ipairs(SMODS.Sticker.obj_buffer) do'''
+position = 'before'
+payload = '''
+for k, v in ipairs(PTASaka.Status.obj_buffer) do
+    if self.ability[v] and not PTASaka.Statuses[v].hide_badge then
+        badges[#badges+1] = v
+    end
+end
+'''
+match_indent = true

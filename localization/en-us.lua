@@ -2622,6 +2622,23 @@ return {
 				}
 			},
 		},
+		Status = {
+			status_payasaka_frozen = {
+				name = "Frozen",
+				text = {
+					"Forced selected",
+					"until played",
+					"or discarded"
+				}
+			},
+			status_payasaka_marked = {
+				name = "Marked",
+				text = {
+					"Destroyed if",
+					"held in hand"
+				}
+			}
+		},
 		Other = {
 			card_extra_e_chips = {
 				text = {
@@ -3296,6 +3313,8 @@ return {
 			k_payasaka_hehe_ex = "Future!",
 			k_payasaka_dusty_ex = "Dusty!",
 			k_payasaka_blown_ex = "Blown!",
+			k_status = "Status",
+			k_statuses = "Statuses",
 			-- #endregion
 		},
 		v_dictionary = {
@@ -3311,6 +3330,8 @@ return {
 			payasaka_sunset = "Sunset",
 			payasaka_tired = "Tired",
 			payasaka_giant = "Giant",
+			status_payasaka_frozen = "Frozen",
+			status_payasaka_marked = "Marked",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
 			k_payasaka_thunderstruck = "Thunderstruck",

@@ -73,12 +73,12 @@ function PTASaka.VashDestroyable(card)
 	if G.CONTROLLER.locks.selling_card then return false end
 	-- Otherwise...
 	local ret = card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or
-	(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
-	(card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
+		(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
+		(card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
 	if (not ret) and card.old_area then
 		ret = card.old_area == G.jokers or card.old_area == G.consumeables or card.old_area == G.payasaka_dos_cardarea or
-		(card.old_area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
-		(card.old_area == G.play and G.STATE == G.STATES.HAND_PLAYED)
+			(card.old_area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK)) or
+			(card.old_area == G.play and G.STATE == G.STATES.HAND_PLAYED)
 	end
 	return ret
 end
@@ -317,7 +317,7 @@ function PTASaka.arrow(arrow, val1, val2, og_arrow)
 		val = val ^ PTASaka.arrow(arrow - 1, val, val2, arrow)
 	end
 	if not Talisman then
-		if tostring(math.abs(val)) == tostring(math.abs(math.huge/math.huge)) then
+		if tostring(math.abs(val)) == tostring(math.abs(math.huge / math.huge)) then
 			-- Do not allow -nan in some circumstances (both chips and mult are math.huge for example)
 			return math.huge
 		end
@@ -356,7 +356,7 @@ function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, 
 		t.pos = pos
 		t.config = { extra = pack_size, choose = 1 }
 		t.cost = pos.cost or 4
-		boosters[#boosters+1] = SMODS.Booster(t)
+		boosters[#boosters + 1] = SMODS.Booster(t)
 	end
 	for index, pos in ipairs(jumbo_poses) do
 		local t = copy_table(common_values)
@@ -364,7 +364,7 @@ function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, 
 		t.pos = pos
 		t.config = { extra = pack_size + 2, choose = 1 }
 		t.cost = pos.cost or 6
-		boosters[#boosters+1] = SMODS.Booster(t)
+		boosters[#boosters + 1] = SMODS.Booster(t)
 	end
 	for index, pos in ipairs(mega_poses) do
 		local t = copy_table(common_values)
@@ -372,14 +372,133 @@ function PTASaka.make_boosters(base_key, normal_poses, jumbo_poses, mega_poses, 
 		t.pos = pos
 		t.config = { extra = pack_size + 2, choose = 2 }
 		t.cost = pos.cost or 8
-		boosters[#boosters+1] = SMODS.Booster(t)
+		boosters[#boosters + 1] = SMODS.Booster(t)
 	end
 	return boosters
+end
+
+PTASaka.Statuses = {}
+
+-- Status condition base
+---@class PTASaka.Status: SMODS.GameObject
+---@field offset? table|{x: number, y: number} Pixel offset for the sprite.
+---@field scale? number Visual scale for the sprite.
+---@field rotate? number Visual rotate offset for the sprite.
+---@field size? table|{w: number, h: number} Determines the width and height of the sprite.
+---@overload fun(self: PTASaka.Status): PTASaka.Status
+SMODS.Status = SMODS.GameObject:extend {
+	obj_table = PTASaka.Statuses,
+	obj_buffer = {},
+	set = "Status",
+	required_params = {
+		'key'
+	},
+	class_prefix = "status",
+	should_apply = false,
+	config = {},
+	rate = 0,
+	sets = {
+		"Joker",
+		"Consumeable",
+		"Default",
+		"Enhanced"
+	},
+	offset = { x = 0, y = 0 },
+	scale = 0,
+	rotate = 0,
+	size = { w = 71, h = 95 },
+	register = function(self)
+		if self.registered then
+			sendWarnMessage(('Detected duplicate register call on object %s'):format(self.key), self.set)
+			return
+		end
+		self.name = self.key
+		--PTASaka.Statuses[self.key] = {}
+		PTASaka.Status.super.register(self)
+		self.order = #self.obj_buffer
+	end,
+	inject = function(self)
+		self.sticker_sprite = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS[self.atlas], self.pos)
+		G.shared_stickers[self.key] = self.sticker_sprite
+	end,
+	process_loc_text = function(self)
+		SMODS.process_loc_text(G.localization.descriptions[self.set], self.key, self.loc_txt)
+		SMODS.process_loc_text(G.localization.misc.labels, self.key, self.loc_txt, 'label')
+	end,
+	draw = function(self, card, layer)
+		local offset = { x = self.offset.x or 0, y = self.offset.y or 0 }
+		offset.x = offset.x * (card.T.w / 71) * card.T.scale
+		offset.y = offset.y * (card.T.h / 95) * card.T.scale
+		G.shared_stickers[self.key].scale.x = G.shared_stickers[self.key].scale.x * ((self.size.x or 71) / 71)
+		G.shared_stickers[self.key].scale.y = G.shared_stickers[self.key].scale.y * ((self.size.y or 95) / 95)
+		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers[self.key]:draw_shader('dissolve', nil, nil, nil, card.children.center, self.scale or nil,
+			self.rotate or nil, offset.x, offset.y)
+	end,
+	apply = function(self, card, val)
+		card.ability[self.key] = val and PTASaka.deep_copy(self.config) or nil
+	end
+}
+
+PTASaka.Status = SMODS.Status
+
+function Card:calculate_status(context, key)
+	local status = PTASaka.Statuses[key]
+	if self.ability[key] and type(status.calculate) == 'function' then
+		local o = status:calculate(self, context)
+		if o then
+			if not o.card then o.card = self end
+			return o
+		end
+	end
+end
+
+function PTASaka.set_status(c, status, apply)
+	if status == "payasaka_frozen" then
+		PTASaka.freeze_card(c, status, nil, true)
+		return
+	end
+	PTASaka.Statuses["status_" .. status]:apply(c, apply)
+end
+
+PTASaka.Mod.custom_collection_tabs = function()
+	return {
+		UIBox_button({
+			button = 'your_collection_payasaka_statuses',
+			id = 'your_collection_payasaka_statuses',
+			label = { localize('k_statuses') },
+			minw = 5,
+			minh = 1
+		})
+	}
+end
+
+local function status_collection_ui()
+	return SMODS.card_collection_UIBox(PTASaka.Statuses, { 5, 5 }, {
+		snap_back = true,
+		hide_single_page = true,
+		collapse_single_page = true,
+		center = 'c_base',
+		h_mod = 1.18,
+		back_func = 'your_collection_other_gameobjects',
+		modify_card = function(card, center)
+			card.ignore_pinned = true
+			center:apply(card, true)
+		end,
+	})
+end
+
+G.FUNCS.your_collection_payasaka_statuses = function()
+	G.SETTINGS.paused = true
+	G.FUNCS.overlay_menu {
+		definition = status_collection_ui()
+	}
 end
 
 ---@param c Card
 function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
 	if c.ability.pta_frozen == freeze then return end
+	PTASaka.Status.apply(PTASaka.Statuses["status_payasaka_frozen"], c, freeze)
 	if freeze then
 		c.ability.pta_frozen = true
 		c.ability.pta_unfreeze = nil
@@ -387,7 +506,7 @@ function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
 		c.ability.pta_hide_frozen_sprite = nil
 		if delay_sprite then
 			c.ability.pta_hide_frozen_sprite = true
-			G.E_MANAGER:add_event(Event{
+			G.E_MANAGER:add_event(Event {
 				delay = full_delay and 0.1 or 0,
 				trigger = full_delay and 'after' or 'immediate',
 				func = function()
@@ -414,7 +533,7 @@ function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
 		c.ability.pta_force_draw_frozen = nil
 		if delay_sprite and last_frozen then
 			c.ability.pta_force_draw_frozen = true
-			G.E_MANAGER:add_event(Event{
+			G.E_MANAGER:add_event(Event {
 				delay = full_delay and 0.1 or 0,
 				trigger = full_delay and 'after' or 'immediate',
 				func = function()
@@ -525,7 +644,7 @@ end
 
 function PTASaka.run_test_deck()
 	G.GAME.selected_back:change_to(G.P_CENTERS.b_payasaka_dummy)
-	G.FUNCS.start_run(nil, {deck = 'b_payasaka_dummy'})
+	G.FUNCS.start_run(nil, { deck = 'b_payasaka_dummy' })
 end
 
 -- Force triggering with Yomiel

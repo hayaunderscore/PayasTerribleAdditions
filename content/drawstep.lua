@@ -181,6 +181,25 @@ SMODS.DrawStep {
 
 SMODS.draw_ignore_keys.john_mark = true
 
+SMODS.DrawStep {
+	key = 'status',
+	order = 1001,
+	func = function(self, layer)
+		for k, v in pairs(PTASaka.Statuses) do
+            if self.ability[v.key] then
+                if v and v.draw and type(v.draw) == 'function' then
+                    v:draw(self, layer)
+                else
+                    G.shared_stickers[v.key].role.draw_major = self
+                    G.shared_stickers[v.key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
+                end
+            end
+        end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
+--[[
 -- The Sharp's mark
 SMODS.DrawStep {
 	key = 'today_is_friday_in_california',
@@ -245,3 +264,4 @@ SMODS.DrawStep {
 }
 
 SMODS.draw_ignore_keys.olaf_goals = true
+]]
