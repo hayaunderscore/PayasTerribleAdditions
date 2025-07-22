@@ -2509,6 +2509,22 @@ return {
 					"{C:inactive,s:0.8}Decks and even Sleeves!)",
 				}
 			},
+			v_payasaka_broad_strokes = {
+				name = "Broad Strokes",
+				text = {
+					"{C:green}#1# in #2#{} chance of creating",
+					"a corresponding {C:attention}rarity tag{} when",
+					"a Joker is {C:attention}sold{} or {C:attention}destroyed{}"
+				}
+			},
+			v_payasaka_fine_motion = {
+				name = "Fine Tuning",
+				text = {
+					"{C:green}#1# in #2#{} chance of creating",
+					"a corresponding {C:attention}edition tag{} when",
+					"a Joker is {C:attention}sold{} or {C:attention}destroyed{}"
+				}
+			},
 		},
 		Property = {
 			c_payasaka_brownproperty = {

@@ -209,6 +209,12 @@ SMODS.Voucher {
 	pos = { x = 7, y = 1 },
 	cost = 10,
 	requires = { "v_payasaka_tmtrainer" },
+	redeem = function(self, voucher)
+		G.GAME.payasaka_zzazz_chance = 0.5
+	end,
+	unredeem = function(self, voucher)
+		G.GAME.payasaka_zzazz_chance = 0.25
+	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('payasaka_zzazz_negative', nil, card.ARGS.send_to_shader)
 	end,
@@ -353,6 +359,69 @@ SMODS.Voucher {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.rare_rate * 100, card.ability.legendary_rate * 100 } }
 	end,
+}
+
+PTASaka.BroadTags = {
+	[2] = 'tag_uncommon',
+	[3] = 'tag_rare',
+	-- Very funny, Ali.
+	[4] = togabalatro and 'tag_toga_thelegend' or nil,
+	-- Aliases for the above
+	["Uncommon"] = 'tag_uncommon',
+	["Rare"] = 'tag_rare',
+	["Legendary"] = togabalatro and 'tag_toga_thelegend' or nil,
+}
+
+-- For tags with no tag name that ends with the edition
+PTASaka.FineTags = {}
+
+SMODS.Voucher {
+	key = 'broad_strokes',
+	atlas = 'JOE_Vouchers',
+	pos = { x = 0, y = 2 },
+	cost = 10,
+	config = { odds = 2 },
+	calculate = function(self, card, context)
+		if (context.joker_type_destroyed or context.selling_card) and context.card and SMODS.pseudorandom_probability(card, 'tag', 1, card.ability.odds) then
+			local rarity = context.card.config.center.rarity
+			if PTASaka.BroadTags[rarity] then
+				add_tag(Tag(PTASaka.BroadTags[rarity]))
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		local ab = card.ability or self.config or { odds = 2 }
+		local num, den = SMODS.get_probability_vars(card, 1, ab.odds)
+		return { vars = { num, den } }
+	end
+}
+
+SMODS.Voucher {
+	key = 'fine_motion',
+	atlas = 'JOE_Vouchers',
+	pos = { x = 1, y = 2 },
+	cost = 10,
+	config = { odds = 2 },
+	calculate = function(self, card, context)
+		if (context.joker_type_destroyed or context.selling_card) and context.card and context.card.edition and SMODS.pseudorandom_probability(card, 'tag', 1, card.ability.odds) then
+			local edition = context.card.edition.key or ""
+			local prefix_less = string.gsub(edition, "e_", "")
+			for tag, v in pairs(G.P_TAGS) do
+				if tag:sub(- #prefix_less) == prefix_less then
+					add_tag(Tag(tag))
+					return nil, true
+				end
+			end
+			if PTASaka.FineTags[edition] then
+				add_tag(Tag(PTASaka.FineTags[edition]))
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		local ab = card.ability or self.config or { odds = 2 }
+		local num, den = SMODS.get_probability_vars(card, 1, ab.odds)
+		return { vars = { num, den } }
+	end
 }
 
 SMODS.Voucher {
