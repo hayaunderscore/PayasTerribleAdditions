@@ -64,9 +64,33 @@ PTASaka.Status {
 		end
 	end,
 	draw = function(self, card, layer)
-		card.children.center:draw_shader('payasaka_zzazz', nil, card.ARGS.send_to_shader)
+		card.ARGS.send_to_shader[2] = G.TIMERS.REAL+(card.sort_id*2.432)
+		local shader = 'payasaka_zzazz'
+		if card.edition and card.edition.negative then
+			shader = 'payasaka_zzazz_negative'
+		end
+		card.children.center:draw_shader(shader, nil, card.ARGS.send_to_shader)
+		if card.children.pta_front then
+			card.children.pta_front:draw_shader(shader, nil, card.ARGS.send_to_shader)
+		end
+		card.ARGS.send_to_shader[2] = G.TIMERS.REAL
 		for _, v in pairs({'center', 'front', 'card_type_shader', 'edition', 'seal', 'stickers', 'payasaka_pta_front'}) do
 			SMODS.DrawSteps[v].func(card, layer)
 		end
+	end,
+	apply = function(self, card, val)
+		PTASaka.remove_proxy(card)
+		if card.ability[self.key] and not val then
+			card.ability = card.ability[self.key]
+		end
+		card.ability[self.key] = val and PTASaka.deep_copy(card.ability) or nil
+		if val then
+			PTASaka.with_deck_effects(card, function (c)
+				PTASaka.Misprintize({ val = c.ability, amt = 1, func = function (value, amount)
+					return value * (pseudorandom('zzazz', 1, 1000)/100)
+				end })
+			end)
+		end
+		PTASaka.create_proxy(card)
 	end
 }

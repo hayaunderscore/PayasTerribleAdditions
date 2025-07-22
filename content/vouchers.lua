@@ -114,19 +114,20 @@ SMODS.Shader {
 	path = 'zzazz.fs'
 }
 
+SMODS.Shader {
+	key = 'zzazz_negative',
+	path = 'zzazz_negative.fs'
+}
+
 SMODS.Voucher {
 	key = 'tmtrainer',
 	pos = { x = 7, y = 0 },
 	cost = 10,
 	redeem = function(self, voucher)
-		--G.GAME.payasaka_tmtrainer_effects = true
-		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) / 2
-		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) * 2
+		G.GAME.payasaka_zzazz_chance = 0.25
 	end,
 	unredeem = function(self, voucher)
-		--G.GAME.payasaka_tmtrainer_effects = false
-		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) * 2
-		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) / 2
+		G.GAME.payasaka_zzazz_chance = 0
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('payasaka_zzazz', nil, card.ARGS.send_to_shader)
@@ -208,20 +209,8 @@ SMODS.Voucher {
 	pos = { x = 7, y = 1 },
 	cost = 10,
 	requires = { "v_payasaka_tmtrainer" },
-	redeem = function(self, voucher)
-		G.GAME.payasaka_tmtrainer_effects = true
-		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) / 10
-		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) * 10
-		G.HUD:recalculate()
-	end,
-	unredeem = function(self, voucher)
-		G.GAME.payasaka_tmtrainer_effects = false
-		G.GAME.payasaka_tmtrainer_low_rnd = (G.GAME.payasaka_tmtrainer_low_rnd or 1) * 10
-		G.GAME.payasaka_tmtrainer_high_rnd = (G.GAME.payasaka_tmtrainer_high_rnd or 1) / 10
-		G.HUD:recalculate()
-	end,
 	draw = function(self, card, layer)
-		card.children.center:draw_shader('payasaka_zzazz', nil, card.ARGS.send_to_shader)
+		card.children.center:draw_shader('payasaka_zzazz_negative', nil, card.ARGS.send_to_shader)
 	end,
 	loc_vars = function(self, info_queue, card)
 		local TMTRAINER_STRINGS_ONE = {}

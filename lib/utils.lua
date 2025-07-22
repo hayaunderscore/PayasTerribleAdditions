@@ -128,6 +128,8 @@ end
 ---@param blacklist_key? fun(key: any, value: any, layer: number): boolean Additional blacklist function, taking in the key, value and layer as parameters. Defaults to a function for checking `x_mult` and `x_chips` for the ability table.
 ---@return any val Value modified.
 function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blacklist, layer, blacklist_key)
+	local meta = type(val) == 'table' and not is_number(val) and getmetatable(val) or nil
+	if meta then setmetatable(val, nil) end
 	reference = reference or {}
 	key = key or "1"
 	amt = amt or 1
@@ -145,22 +147,22 @@ function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blackli
 	end
 	blacklist = blacklist or PTASaka.MisprintizeForbidden
 	-- Forbidden, skip it
-	if blacklist[key] then return val end
+	if blacklist[key] then if type(val) == 'table' and not is_number(val) and meta then setmetatable(val, meta) end return val end
 	if (whitelist and whitelist[key]) or not whitelist then
 		local t = type(val)
 		--if is_number(val) then print("key: "..key.." val: "..val.." layer: "..layer) end
 		if is_number(val) and blacklist_key(key, val, layer) then
+			if type(val) == 'table' and not is_number(val) and meta then setmetatable(val, meta) end
 			reference[key] = val
 			return func(val, amt)
 		elseif t == "table" then
-			local k, v = next(val, nil)
-			while k ~= nil do
+			for k, v in pairs(val) do
 				val[k] = PTASaka.MMisprintize(v, amt, reference[key], k, func, whitelist, blacklist, layer + 1,
 					blacklist_key)
-				k, v = next(val, k)
 			end
 		end
 	end
+	if type(val) == 'table' and not is_number(val) and meta then setmetatable(val, meta) end
 	return val
 end
 
@@ -208,6 +210,7 @@ end
 ---@param unphotocopy boolean
 ---@param id number
 function PTASaka.Photocopy(jkr, mult, unphotocopy, id)
+	PTASaka.remove_proxy(jkr)
 	local mul = mult
 	if unphotocopy == true then mul = 1 / mult end
 	-- Otherwise, use ours
@@ -218,6 +221,7 @@ function PTASaka.Photocopy(jkr, mult, unphotocopy, id)
 		--jkr.ability.extra = PTASaka.MisprintizeTable(jkr.config.center_key, jkr.ability.extra, nil, mul, true)
 		jkr.ability.immutable.payasaka_photocopied[id] = not unphotocopy
 	end)
+	PTASaka.create_proxy(jkr)
 end
 
 -- Load all files in a folder
@@ -385,6 +389,10 @@ PTASaka.Statuses = {}
 ---@field scale? number Visual scale for the sprite.
 ---@field rotate? number Visual rotate offset for the sprite.
 ---@field size? table|{w: number, h: number} Determines the width and height of the sprite.
+---@field apply? fun(self: PTASaka.Status|table, card: Card|table, val: any) Handles applying and removing the sticker. By default, sets `card.ability[self.key] = val`. 
+---@field draw? fun(self: PTASaka.Status|table, card: Card|table, layer: string) Draws the sprite and shader of the sticker. 
+---@field loc_vars? fun(self: PTASaka.Status|table, info_queue: table, card: Card|table): table? Provides control over displaying descriptions and tooltips of the sticker's tooltip. See [SMODS.Sticker `loc_vars` implementation](https://github.com/Steamodded/smods/wiki/SMODS.Sticker#api-methods) documentation for details. 
+---@field calculate? fun(self: PTASaka.Status|table, card: Card|table, context: CalcContext|table): table?, boolean?  Calculates effects based on parameters in `context`. See [SMODS calculation](https://github.com/Steamodded/smods/wiki/calculate_functions) docs for details. 
 ---@overload fun(self: PTASaka.Status): PTASaka.Status
 SMODS.Status = SMODS.GameObject:extend {
 	obj_table = PTASaka.Statuses,

@@ -467,6 +467,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		card:set_sprites(card.config.center)
 		--card.ability.pta_hidden_spawned = nil
 	end
+	if card and G.GAME.payasaka_zzazz_chance and pseudorandom('glitch') < G.GAME.payasaka_zzazz_chance then
+		PTASaka.set_status(card, "payasaka_zzazz", true)
+	end
 	return card
 end
 
