@@ -16,7 +16,7 @@ PTASaka.make_boosters('friend',
 	{
 		atlas = "JOE_Risk",
 		kind = 'Friend',
-		weight = 0.4,
+		weight = 0,
 		select_card = 'jokers',
 		create_card = function(self, card, i)
 			return {

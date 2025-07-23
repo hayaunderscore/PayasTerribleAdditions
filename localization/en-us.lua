@@ -1615,6 +1615,15 @@ return {
 					"replaced with a {C:attention}Voucher Pack",
 				}
 			},
+			j_payasaka_across_the_world = {
+				name = "Across the World",
+				text = {
+					"Buffoon Packs in the shop",
+					"have a {C:green}#1# in #2#{} chance",
+					"of being {C:attention}replaced{} with a",
+					"corresponding {C:payasaka_friend}Friend{} Pack"
+				},
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {

@@ -6,7 +6,7 @@ SMODS.Joker {
 	key = "bakushin",
 	rarity = 1,
 	atlas = "JOE_Jokers2",
-	pos = { x = 1, y = 7 },
+	pos = { x = 6, y = 3 },
 	cost = 2,
 	blueprint_compat = false,
 	demicoloncompat = false,
