@@ -402,6 +402,7 @@ SMODS.Voucher {
 	pos = { x = 1, y = 2 },
 	cost = 10,
 	config = { odds = 2 },
+	requires = { 'v_payasaka_broad_strokes' },
 	calculate = function(self, card, context)
 		if (context.joker_type_destroyed or context.selling_card) and context.card and context.card.edition and SMODS.pseudorandom_probability(card, 'tag', 1, card.ability.odds) then
 			local edition = context.card.edition.key or ""
