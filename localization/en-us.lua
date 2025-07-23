@@ -1717,8 +1717,8 @@ return {
 			bl_payasaka_stasis = {
 				name = "The Stasis",
 				text = {
-					"Freezes a random card",
-					"before playing a hand",
+					"Freeze a random card",
+					"in played hand",
 				}
 			},
 			bl_payasaka_showdown_maroon_rose = {

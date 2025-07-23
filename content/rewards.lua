@@ -651,7 +651,9 @@ PTASaka.Reward {
 			func = function()
 				G.hand:change_size(card.ability.extra.amt)
 				if next(eligibleJokers) then
-					Card.start_dissolve(pseudorandom_element(eligibleJokers, 'legacy_proc'))
+					---@type Card
+					local joker = pseudorandom_element(eligibleJokers, 'legacy_proc')
+					joker:start_dissolve(G.C.RED)
 				end
 				card:juice_up(0.3, 0.5)
 				return true
