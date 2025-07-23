@@ -12,7 +12,7 @@ PTASaka.Status {
 				remove = true
 			}
 		end
-		if context.discard or (context.end_of_round and context.main_eval) then
+		if (context.discard and context.other_card == card) or (context.end_of_round and context.main_eval) then
 			self:apply(card, nil)
 		end
 	end,
@@ -36,7 +36,7 @@ PTASaka.Status {
 				target = G.hand
 			}
 		end
-		if context.discard or (context.end_of_round and context.main_eval) then
+		if (context.discard and context.other_card == card) or (context.end_of_round and context.main_eval) then
 			PTASaka.freeze_card(card, nil, true, true)
 		end
 	end,
