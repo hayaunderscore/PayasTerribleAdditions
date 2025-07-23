@@ -233,7 +233,7 @@ SMODS.Enhancement {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_frozen"]
+		info_queue[#info_queue+1] = { key = 'status_payasaka_frozen', set = "Status", vars = {} }
 	end
 }
 

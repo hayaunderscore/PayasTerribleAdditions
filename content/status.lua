@@ -7,7 +7,7 @@ PTASaka.Status {
 	size = { w = 97, h = 97 },
 	offset = { x = -14, y = -1 },
 	calculate = function(self, card, context)
-		if context.destroy_card and context.cardarea == G.hand then
+		if context.destroy_card and context.cardarea == G.hand and context.destroy_card == card then
 			return {
 				remove = true
 			}

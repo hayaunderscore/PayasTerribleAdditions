@@ -39,6 +39,7 @@ SMODS.Joker {
 			---@type Card
 			local consumable = G.consumeables.cards[i]
 			if not consumable.ability.consumable then goto continue end
+			PTASaka.remove_proxy(consumable)
 			-- Prevent the original from being misprinted TWICE
 			if type(consumable.ability.consumeable) == "table" then
 				consumable.ability.consumeable = copy_table(consumable.config.center.config)
@@ -48,6 +49,7 @@ SMODS.Joker {
 				function(v, a)
 					return v + a
 				end, PTASaka.headroom_whitelist)
+			PTASaka.create_proxy(consumable)
 			::continue::
 		end
 	end,
@@ -58,10 +60,12 @@ SMODS.Joker {
 			local consumable = G.consumeables.cards[i]
 			if not consumable.ability.consumable then goto continue end
 			-- check for values
+			PTASaka.remove_proxy(consumable)
 			consumable.ability = PTASaka.MMisprintize(consumable.ability, card.ability.extra.amt, nil, nil,
 				function(v, a)
 					return v - a
 				end, PTASaka.headroom_whitelist)
+			PTASaka.create_proxy(consumable)
 			::continue::
 		end
 	end,

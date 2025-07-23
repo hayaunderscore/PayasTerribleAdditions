@@ -502,6 +502,7 @@ function Card:set_ability(center, ...)
 	old_set_ability(self, center, ...)
 	local headrooms = SMODS.find_card("j_payasaka_maxheadroom")
 	if center.consumeable and next(headrooms) then
+		PTASaka.remove_proxy(self)
 		-- Prevent the original from being misprinted TWICE
 		if type(self.ability.consumeable) == "table" then
 			self.ability.consumeable = copy_table(center.config)
@@ -511,6 +512,7 @@ function Card:set_ability(center, ...)
 				return v + a
 			end, PTASaka.headroom_whitelist)
 		end
+		PTASaka.create_proxy(self)
 	end
 	if self.ability and self.ability.mimic_card then
 		self.ability.mimic_card = nil
