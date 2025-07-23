@@ -131,6 +131,7 @@ SMODS.Voucher {
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('payasaka_zzazz', nil, card.ARGS.send_to_shader)
+		card.children.center:draw_shader('voucher', nil, card.ARGS.send_to_shader)
 	end,
 	loc_vars = function(self, info_queue, card)
 		local TMTRAINER_STRINGS_ONE = {}
@@ -217,6 +218,7 @@ SMODS.Voucher {
 	end,
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('payasaka_zzazz_negative', nil, card.ARGS.send_to_shader)
+		card.children.center:draw_shader('voucher', nil, card.ARGS.send_to_shader)
 	end,
 	loc_vars = function(self, info_queue, card)
 		local TMTRAINER_STRINGS_ONE = {}
