@@ -3,6 +3,7 @@
 -- Talisman,,,,
 to_big = to_big or function(a) return a end
 is_number = is_number or function(a) return type(a) == "number" end
+lenient_bignum = lenient_bignum or function(a) return a end
 
 -- Misprintize stuff --
 

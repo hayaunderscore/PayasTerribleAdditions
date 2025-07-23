@@ -133,9 +133,9 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 			-- As there is only one joker that does scaling so far, this is VERY hardcoded to only use that joker...
 			-- Which is scaling this shit 2x as much
 			-- Will be unhardcoded soon probably
-			local new_val = v
-			local diff = new_val - (tree[key.."_orig"][k] or 0)
-			diff = diff * 2 ^ (PTASaka.scale_modifier_jokers and #PTASaka.scale_modifier_jokers or 0)
+			local new_val = lenient_bignum(v)
+			local diff = new_val - lenient_bignum(tree[key.."_orig"][k] or 0)
+			diff = diff * lenient_bignum(2 ^ (PTASaka.scale_modifier_jokers and #PTASaka.scale_modifier_jokers or 0))
 
 			-- If Cryptid is enabled, calculate jokers `cry_scale_mod` if possible
 			-- Only partial support for now, but should work for most cases... I think.
