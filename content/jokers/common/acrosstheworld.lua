@@ -2,7 +2,7 @@
 SMODS.Joker {
 	name = "pta-RRReferenceNo2",
 	key = "across_the_world",
-	rarity = 2,
+	rarity = 1,
 	atlas = "JOE_Jokers2",
 	pos = { x = 0, y = 8 },
 	cost = 8,
