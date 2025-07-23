@@ -44,9 +44,11 @@ PTASaka.Status {
 
 local draw_shader_ref = Sprite.draw_shader
 function Sprite:draw_shader(_shader, _shadow_height, _send, ...)
-	if PTASaka and PTASaka.shader_override and _shader == 'dissolve' then
-		_shader = PTASaka.shader_override
-		_send = PTASaka.shader_override_args
+	local _draw_major = self.role.draw_major or self
+	if (_shader == 'dissolve' or _shader == 'negative') and _draw_major and _draw_major.ability and _draw_major.ability.status_payasaka_zzazz then
+		_shader = _shader == 'negative' and 'payasaka_zzazz_negative' or 'payasaka_zzazz'
+		_send = _send or {0, 0}
+		_send[2] = (G.TIMERS.REAL+(self.ID*2.432)/(self.ID*187/82))+(self.ID*.4)
 	end
 	draw_shader_ref(self, _shader, _shadow_height, _send, ...)
 end
@@ -57,23 +59,7 @@ PTASaka.Status {
 	atlas = "JOE_Enhancements",
 	pos = { x = 7, y = 0 },
 	badge_colour = HEX('7adfff'),
-	draw = function(self, card, layer)
-		card.ARGS.send_to_shader[2] = G.TIMERS.REAL+(card.sort_id*2.432)
-		local shader = 'payasaka_zzazz'
-		if card.edition and card.edition.negative then
-			shader = 'payasaka_zzazz_negative'
-		end
-		card.ignore_for_now = true
-		card.ARGS.send_to_shader[2] = G.TIMERS.REAL
-		PTASaka.shader_override_args = card.ARGS.send_to_shader
-		PTASaka.shader_override = shader
-		for _, v in pairs({'center', 'front', 'card_type_shader', 'edition', 'seal', 'stickers', 'payasaka_pta_front', 'soul', 'floating_sprite'}) do
-			SMODS.DrawSteps[v].func(card, layer)
-		end
-		PTASaka.shader_override = nil
-		PTASaka.shader_override_args = nil
-		card.ignore_for_now = nil
-	end,
+	draw = function(self, card, layer) end,
 	apply = function(self, card, val)
 		PTASaka.remove_proxy(card)
 		if card.ability[self.key] and not val then
