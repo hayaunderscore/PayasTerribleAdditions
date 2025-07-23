@@ -42,41 +42,37 @@ PTASaka.Status {
 	end,
 }
 
+local draw_shader_ref = Sprite.draw_shader
+function Sprite:draw_shader(_shader, _shadow_height, _send, ...)
+	if PTASaka and PTASaka.shader_override and _shader == 'dissolve' then
+		_shader = PTASaka.shader_override
+		_send = PTASaka.shader_override_args
+	end
+	draw_shader_ref(self, _shader, _shadow_height, _send, ...)
+end
+
 -- ZZAZZ'd
 PTASaka.Status {
 	key = 'zzazz',
 	atlas = "JOE_Enhancements",
 	pos = { x = 7, y = 0 },
 	badge_colour = HEX('7adfff'),
-	calculate = function(self, card, context)
-		if context.payasaka_play_to_discard and context.other_card == card then
-			if card.ability.pta_unfreeze then
-				PTASaka.freeze_card(card, nil, true, true)
-				return nil, false
-			end
-			card.ability.pta_unfreeze = true
-			return {
-				target = G.hand
-			}
-		end
-		if context.discard or (context.end_of_round and context.main_eval) then
-			PTASaka.freeze_card(card, nil, true, true)
-		end
-	end,
 	draw = function(self, card, layer)
 		card.ARGS.send_to_shader[2] = G.TIMERS.REAL+(card.sort_id*2.432)
 		local shader = 'payasaka_zzazz'
 		if card.edition and card.edition.negative then
 			shader = 'payasaka_zzazz_negative'
 		end
-		card.children.center:draw_shader(shader, nil, card.ARGS.send_to_shader)
-		if card.children.pta_front then
-			card.children.pta_front:draw_shader(shader, nil, card.ARGS.send_to_shader)
-		end
+		card.ignore_for_now = true
 		card.ARGS.send_to_shader[2] = G.TIMERS.REAL
-		for _, v in pairs({'center', 'front', 'card_type_shader', 'edition', 'seal', 'stickers', 'payasaka_pta_front'}) do
+		PTASaka.shader_override_args = card.ARGS.send_to_shader
+		PTASaka.shader_override = shader
+		for _, v in pairs({'center', 'front', 'card_type_shader', 'edition', 'seal', 'stickers', 'payasaka_pta_front', 'soul', 'floating_sprite'}) do
 			SMODS.DrawSteps[v].func(card, layer)
 		end
+		PTASaka.shader_override = nil
+		PTASaka.shader_override_args = nil
+		card.ignore_for_now = nil
 	end,
 	apply = function(self, card, val)
 		PTASaka.remove_proxy(card)

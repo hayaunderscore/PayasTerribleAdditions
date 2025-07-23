@@ -183,7 +183,7 @@ SMODS.draw_ignore_keys.john_mark = true
 
 SMODS.DrawStep {
 	key = 'status',
-	order = 41,
+	order = 1001,
 	func = function(self, layer)
 		for k, v in pairs(PTASaka.Statuses) do
             if self.ability[v.key] then
