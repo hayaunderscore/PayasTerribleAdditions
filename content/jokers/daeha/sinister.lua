@@ -11,8 +11,8 @@ SMODS.Joker {
 	blueprint_compat = true,
 	config = { extra = { xmult = 1 } },
 	calculate = function(self, card, context)
-		if context.setting_blind or context.forcetrigger then
-			local random_roll = pseudorandom('sinister', 1, 5)
+		if context.payasaka_pre_setting_blind or context.forcetrigger then
+			local random_roll = G.GAME.force_sinister or pseudorandom('sinister', 1, 8)
 			if random_roll == 1 then
 				-- create a random negative joker
 				local eligible = {}
@@ -89,6 +89,54 @@ SMODS.Joker {
 						return true
 					end
 				})
+				return {
+					message = "Sinister!"
+				}
+			elseif random_roll == 6 then
+				-- 8 dollars
+				return {
+					dollars = 8,
+					message = "Sinister!"
+				}
+			elseif random_roll == 7 then
+				local enhancement = SMODS.poll_enhancement({ key = 'harmony_proc', guaranteed = true })
+				G.E_MANAGER:add_event(Event {
+					func = function()
+						local cards = math.min(G.hand.config.card_limit, #G.deck.cards)
+						for i = 1, cards do
+							draw_card(G.deck, G.hand, i * 100 / cards, 'up', true)
+						end
+						delay(0.4)
+						G.E_MANAGER:add_event(Event {
+							func = function()
+								for k, v in pairs(G.hand.cards) do
+									G.E_MANAGER:add_event(Event {
+										trigger = 'after',
+										delay = 0.15,
+										func = function()
+											v:juice_up(0.7)
+											play_sound('timpani')
+											v:set_ability(G.P_CENTERS[enhancement])
+											card_eval_status_text(v, 'extra', nil, nil, nil, { message = "Sinister!", instant = true })
+											return true
+										end
+									})
+								end
+								return true
+							end
+						})
+						delay(0.4)
+						card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Sinister!" })
+						return true
+					end
+				})
+			elseif random_roll == 8 then
+				-- win
+				end_round()
+				-- Make SURE it shows up as the blind defeat rather than "Saved by Mr. Bones"
+				G.GAME.payasaka_defeated_perfectheart = true
+				-- Prevent odd wins
+				PTASaka.payasaka_temp_no_draw = true
 				return {
 					message = "Sinister!"
 				}

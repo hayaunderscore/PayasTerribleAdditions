@@ -552,3 +552,13 @@ if self.pos and self.pos.edited then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''function Game:update_draw_to_hand(dt)'''
+position = 'after'
+payload = '''
+if PTASaka.payasaka_temp_no_draw then G.STATE = G.STATES.ROUND_EVAL; G.STATE_COMPLETE = true; PTASaka.payasaka_temp_no_draw = nil; G.GAME.chips = 0; return end
+'''
+match_indent = true

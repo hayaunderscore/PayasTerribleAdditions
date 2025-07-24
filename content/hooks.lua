@@ -1596,6 +1596,7 @@ end
 local delete_run_ref = Game.delete_run
 function Game:delete_run()
 	G.PAYASAKA_IGNORE_VASH_SENTIMENT = true
+	PTASaka.payasaka_temp_no_draw = nil
 	delete_run_ref(self)
 	G.PAYASAKA_IGNORE_VASH_SENTIMENT = nil
 end
