@@ -148,7 +148,10 @@ function PTASaka.MMisprintize(val, amt, reference, key, func, whitelist, blackli
 	end
 	blacklist = blacklist or PTASaka.MisprintizeForbidden
 	-- Forbidden, skip it
-	if blacklist[key] then if type(val) == 'table' and not is_number(val) and meta then setmetatable(val, meta) end return val end
+	if blacklist[key] then
+		if type(val) == 'table' and not is_number(val) and meta then setmetatable(val, meta) end
+		return val
+	end
 	if (whitelist and whitelist[key]) or not whitelist then
 		local t = type(val)
 		--if is_number(val) then print("key: "..key.." val: "..val.." layer: "..layer) end
@@ -390,10 +393,10 @@ PTASaka.Statuses = {}
 ---@field scale? number Visual scale for the sprite.
 ---@field rotate? number Visual rotate offset for the sprite.
 ---@field size? table|{w: number, h: number} Determines the width and height of the sprite.
----@field apply? fun(self: PTASaka.Status|table, card: Card|table, val: any) Handles applying and removing the sticker. By default, sets `card.ability[self.key] = val`. 
----@field draw? fun(self: PTASaka.Status|table, card: Card|table, layer: string) Draws the sprite and shader of the sticker. 
----@field loc_vars? fun(self: PTASaka.Status|table, info_queue: table, card: Card|table): table? Provides control over displaying descriptions and tooltips of the sticker's tooltip. See [SMODS.Sticker `loc_vars` implementation](https://github.com/Steamodded/smods/wiki/SMODS.Sticker#api-methods) documentation for details. 
----@field calculate? fun(self: PTASaka.Status|table, card: Card|table, context: CalcContext|table): table?, boolean?  Calculates effects based on parameters in `context`. See [SMODS calculation](https://github.com/Steamodded/smods/wiki/calculate_functions) docs for details. 
+---@field apply? fun(self: PTASaka.Status|table, card: Card|table, val: any) Handles applying and removing the sticker. By default, sets `card.ability[self.key] = val`.
+---@field draw? fun(self: PTASaka.Status|table, card: Card|table, layer: string) Draws the sprite and shader of the sticker.
+---@field loc_vars? fun(self: PTASaka.Status|table, info_queue: table, card: Card|table): table? Provides control over displaying descriptions and tooltips of the sticker's tooltip. See [SMODS.Sticker `loc_vars` implementation](https://github.com/Steamodded/smods/wiki/SMODS.Sticker#api-methods) documentation for details.
+---@field calculate? fun(self: PTASaka.Status|table, card: Card|table, context: CalcContext|table): table?, boolean?  Calculates effects based on parameters in `context`. See [SMODS calculation](https://github.com/Steamodded/smods/wiki/calculate_functions) docs for details.
 ---@overload fun(self: PTASaka.Status): PTASaka.Status
 SMODS.Status = SMODS.GameObject:extend {
 	obj_table = PTASaka.Statuses,
@@ -495,7 +498,7 @@ local function status_collection_ui()
 			card.ignore_pinned = true
 			if center.key == "status_payasaka_zzazz" then
 				card:set_sprites(G.P_CENTERS["j_joker"])
-				card.children.center:set_sprite_pos({x = 0, y = 0})
+				card.children.center:set_sprite_pos({ x = 0, y = 0 })
 			end
 			center:apply(card, true)
 		end,
@@ -659,6 +662,104 @@ end
 function PTASaka.run_test_deck()
 	G.GAME.selected_back:change_to(G.P_CENTERS.b_payasaka_dummy)
 	G.FUNCS.start_run(nil, { deck = 'b_payasaka_dummy' })
+end
+
+-- Reset everything back to what it was at the start
+-- Well most
+G.FUNCS.payasaka_nr_plus = function(e)
+	G.FUNCS.exit_overlay_menu()
+	-- reset back to ante 1
+	ease_ante((-G.GAME.round_resets.ante) + 1)
+	G.E_MANAGER:add_event(Event {
+		trigger = 'after',
+		delay = 0.2,
+		func = function()
+			local silent = false
+			for k, v in pairs(G.jokers.cards) do
+				v:start_dissolve(nil, silent)
+				silent = true
+			end
+			for k, v in pairs(G.consumeables.cards) do
+				v:start_dissolve(nil, silent)
+				silent = true
+			end
+			G.GAME.used_vouchers = {}
+			G.GAME.used_jokers = {}
+			if G.vouchers then
+				remove_all(G.vouchers.cards)
+			end
+			remove_all(G.deck.cards)
+
+			ease_dollars(-G.GAME.dollars)
+
+			G.playing_cards = {}
+			G.playing_card = 0
+
+			-- Reset starting params
+			G.GAME.starting_params = get_starting_params()
+
+			G.E_MANAGER:add_event(Event {
+				delay = 0.2,
+				trigger = 'after',
+				func = function()
+					G.consumeables.config.card_limit = G.GAME.starting_params.consumable_slots or 2
+					G.jokers.config.card_limit = G.GAME.starting_params.joker_slots or 5
+					G.GAME.round_resets.hands = G.GAME.starting_params.hands
+					G.GAME.round_resets.discards = G.GAME.starting_params.discards
+					G.GAME.round_resets.reroll_cost = G.GAME.starting_params.reroll_cost
+					ease_dollars(G.GAME.starting_params.dollars)
+					G.GAME.base_reroll_cost = G.GAME.starting_params.reroll_cost
+					G.GAME.round_resets.reroll_cost = G.GAME.base_reroll_cost
+					G.GAME.current_round.reroll_cost = G.GAME.base_reroll_cost
+					return true
+				end
+			})
+
+			SMODS.setup_stake(G.GAME.stake)
+
+			G.GAME.selected_back:apply_to_run()
+
+			local card_protos = {}
+			for k, v in pairs(G.P_CARDS) do
+				if type(SMODS.Ranks[v.value].in_pool) == 'function' and not SMODS.Ranks[v.value]:in_pool({ initial_deck = true, suit = v.suit })
+					or type(SMODS.Suits[v.suit].in_pool) == 'function' and not SMODS.Suits[v.suit]:in_pool({ initial_deck = true, rank = v.value }) then
+					goto continue
+				end
+				local _ = nil
+				if G.GAME.starting_params.erratic_suits_and_ranks then
+					v, k = pseudorandom_element(G.P_CARDS, pseudoseed('erratic'), { starting_deck = true })
+				end
+				local _r, _s = SMODS.Ranks[v.value].card_key, SMODS.Suits[v.suit].card_key
+				local keep, _e, _d, _g = true, nil, nil, nil
+
+				if G.GAME.starting_params.no_faces and SMODS.Ranks[v.value].face then keep = false end
+
+				if keep then card_protos[#card_protos + 1] = { s = _s, r = _r, e = _e, d = _d, g = _g } end
+				::continue::
+			end
+
+			if G.GAME.starting_params.extra_cards then
+				for k, v in pairs(G.GAME.starting_params.extra_cards) do
+					card_protos[#card_protos + 1] = v
+				end
+			end
+
+			table.sort(card_protos, function(a, b)
+				return
+					((a.s or '') .. (a.r or '') .. (a.e or '') .. (a.d or '') .. (a.g or '')) <
+					((b.s or '') .. (b.r or '') .. (b.e or '') .. (b.d or '') .. (b.g or ''))
+			end)
+
+			for k, v in ipairs(card_protos) do
+				card_from_control(v)
+				G.deck.cards[#G.deck.cards].facing = 'back'
+				G.deck.cards[#G.deck.cards].sprite_facing = 'back'
+			end
+
+			G.GAME.starting_deck_size = #G.playing_cards
+			return true
+		end
+	})
 end
 
 -- Force triggering with Yomiel

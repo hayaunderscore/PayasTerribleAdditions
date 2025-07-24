@@ -996,6 +996,33 @@ function Card:set_sprites(center, front)
 		self.children.pta_front.states.hover.can = false
 		self.children.pta_front.states.click.can = false
 	end
+	if center and not center.unlocked and center.set == "PTASet" then
+		if self.children.center then self.children.center:remove() end
+		self.children.center = Sprite(
+			self.T.x,
+			self.T.y,
+			self.T.w,
+			self.T.h,
+			G.ASSET_ATLAS["payasaka_JOE_Jokers2"],
+			{ x = 5, y = 7 }
+		)
+		self.children.center.states.hover = self.states.hover
+		self.children.center.states.click = self.states.click
+		self.children.center.states.drag = self.states.drag
+		self.children.center.states.collide.can = false
+		self.children.center:set_role({major = self, role_type = 'Glued', draw_major = self})
+		self.children.floating_sprite = Sprite(
+			self.T.x,
+			self.T.y,
+			self.T.w,
+			self.T.h,
+			G.ASSET_ATLAS["payasaka_JOE_Jokers2"],
+			{ x = 6, y = 7 }
+		)
+		self.children.floating_sprite.role.draw_major = self
+		self.children.floating_sprite.states.hover.can = false
+		self.children.floating_sprite.states.click.can = false
+	end
 	if center and center.key == 'c_payasaka_gacha' then
 		self.children.gacha_layer = Sprite(
 			self.T.x,

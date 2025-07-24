@@ -57,7 +57,7 @@ PTASaka.SetToggle = SMODS.Center:extend{
 		return false
 	end,
 	update = function(self, card, dt)
-		if card.ability.set == "PTASet" then
+		if card.ability.set == "PTASet" and self.unlocked and card.area ~= G.your_collection then
 			card.debuff = not PTASaka.Mod.config[self.pta_associated_config]
 		end
 	end
@@ -123,12 +123,30 @@ PTASaka.SetToggle {
 	soul_pos = { x = 2, y = 6 },
 	pta_associated_config = "Witty Comments"
 }
+-- New Run+
+PTASaka.SetToggle {
+	key = 'newrunplus',
+	atlas = "JOE_Jokers",
+	pos = { x = 4, y = 4 },
+	pta_associated_config = "New Run Plus",
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'win' and G.jokers then
+			for k, v in pairs(G.jokers.cards) do
+				if v.config.center.mod and v.config.center.mod.id == "pta_saka" then
+					return true
+				end
+			end
+		end
+		return false
+	end
+}
 
 local start_up_values = PTASaka.deep_copy(PTASaka.Mod.config)
 
 local cardClick = Card.click
 function Card:click()
-	if self.ability.set == "PTASet" then
+	if self.ability.set == "PTASet" and self.config.center.unlocked then
 		PTASaka.Mod.config[self.config.center.pta_associated_config] = not PTASaka.Mod.config[self.config.center.pta_associated_config]
 		self.debuff = not PTASaka.Mod.config[self.config.center.pta_associated_config]
 		self:juice_up(0.7)

@@ -3160,6 +3160,18 @@ return {
 					"things... Probably."
 				}
 			},
+			ptaset_payasaka_newrunplus = {
+				name = "New Run+",
+				text = {
+					"Allow restarting your run",
+					"with certain things intact!"
+				},
+				unlock = {
+					"Beat a run with a",
+					"{C:attention}Paya's Terrible Additions{}",
+					"Joker currently held"
+				},
+			},
 		},
 		PTACredits = {
 			credit_haya = {
@@ -3348,6 +3360,7 @@ return {
 			k_payasaka_blown_ex = "Blown!",
 			k_status = "Status",
 			k_statuses = "Status Effects",
+			k_ptaset = "Config",
 			ml_payasaka_status_info = {
 				"Cards can have multiple status",
 				"effects at once"

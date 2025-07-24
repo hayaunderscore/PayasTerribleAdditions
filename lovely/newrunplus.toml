@@ -1,0 +1,48 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "function create_UIBox_win()"
+position = 'after'
+payload = '''
+local allow_ng_plus = PTASaka.Mod.config["New Run Plus"]
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "UIBox_button({button = 'exit_overlay_menu', label = {localize('b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),"
+position = 'at'
+payload = '''
+{ 
+	n = G.UIT.C, 
+	nodes = {
+		UIBox_button({button = 'exit_overlay_menu', label = {localize('b_endless')}, minw = allow_ng_plus and 3.5 or 6.5, maxw = allow_ng_plus and 3.5 or 5, minh = 1.2, scale = allow_ng_plus and 0.5 or 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),
+	}
+},
+allow_ng_plus and { 
+	n = G.UIT.C, 
+	nodes = {
+		UIBox_button({button = 'payasaka_nr_plus', label = {"New Run+"}, minw = 3.5, maxw = 3.5, minh = 1.2, scale = 0.5, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}})
+	}
+} or nil,
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = "{n=G.UIT.O, config={object = DynaText({string = {card_center.set == 'Voucher' and localize('k_voucher') or localize('k_joker')}, colours = {G.C.BLUE},shadow = true, rotate = true, bump = true, pop_in = 0.3, pop_in_rate = 2, scale = 1.2})}}"
+position = 'at'
+payload = '''
+{n=G.UIT.O, config={object = DynaText({string = {card_center.set == 'Voucher' and localize('k_voucher') or card_center.set == 'PTASet' and localize('k_ptaset') or localize('k_joker')}, colours = {G.C.BLUE},shadow = true, rotate = true, bump = true, pop_in = 0.3, pop_in_rate = 2, scale = 1.2})}}
+'''
+match_indent = true
+times = 1

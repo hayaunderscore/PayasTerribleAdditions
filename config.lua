@@ -7,4 +7,5 @@ return {
 	["Ahead"] = true,
 	["Risk Cards"] = true,
 	["Experimental"] = true,
+	["New Run Plus"] = false,
 }
