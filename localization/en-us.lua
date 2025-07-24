@@ -1624,6 +1624,13 @@ return {
 					"corresponding {C:payasaka_friend}Friend{} Pack"
 				},
 			},
+			j_payasaka_sinisterpotion = {
+				name = "Sinister Potion",
+				text = {
+					"Has a {C:legendary,E:1}random effect{}",
+					"{C:inactive}Buy my Sinister Potion!"
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
