@@ -76,51 +76,6 @@ PTASaka.make_boosters('voucher',
 
 --#region Ultra Booster Packs
 
--- Helper for creating Ultra Booster Packs
----@class UltraParams: SMODS.Booster
----@field pack_set? string Set for the booster pack. Not used when `create_card` is specified.
----@field colours? table
----@field key_append? string Seed append for random card.
----@field f_size? number Set size for the booster pack.
----@field f_choose? number Set selection for the booster pack.
----@field additional_size? number Additional size for the booster pack.
----@field additional_choose? number Set selection for the booster pack.
----@overload fun(self: UltraParams): UltraParams
-PTASaka.UltraPack = SMODS.Booster:extend({
-	atlas = "JOE_UltraBoosters",
-	pos = { x = 0, y = 0 },
-	group_key = "",
-	kind = "Ultra",
-	cost = 12,
-	colours = { G.C.BLACK, G.C.UI.BACKGROUND_DARK, 4 },
-	config = { extra = 7, choose = 3 },
-	weight = 0,
-	create_card = function(self, card, i)
-		return {
-			set = self.pack_set,
-			area = G.pack_cards,
-			skip_materialize = true,
-			soulable = true,
-			key_append = self.key_append or "packut"
-		}
-	end,
-	loc_vars = function(self, info_queue, card)
-		local cfg = card.ability or self.config or {}
-		return { vars = { cfg.choose, cfg.extra } }
-	end,
-	ease_background_colour = function(self)
-		ease_colour(G.C.DYN_UI.MAIN, self.colours[1])
-		ease_background_colour({ new_colour = self.colours[1], special_colour = self.colours[2], contrast = self.colours[3] })
-	end,
-	register = function(self)
-		if self.f_size or self.additional_size or self.f_choose or self.additional_choose then
-			self.config = { extra = self.f_size or (7 + (self.additional_size or 0)), choose = self.f_choose or (3 + (self.additional_choose or 0)) }
-		end
-		self.weight = 0
-		SMODS.Booster.register(self)
-	end
-})
-
 PTASaka.UltraPack {
 	key = "arcana_ultra",
 	pos = { x = 0, y = 0 },

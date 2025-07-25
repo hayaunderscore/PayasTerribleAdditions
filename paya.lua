@@ -123,17 +123,13 @@ end
 -- MAIN CODE --
 
 -- Utilities
+-- Note: Probably move this to be appended on main.lua????
 assert(SMODS.load_file("lib/utils.lua"))()
+assert(SMODS.load_file("lib/fh.lua"))()
 assert(SMODS.load_file("lib/dectalk.lua"))() -- DECTalk module
 
 -- Descriptions
 assert(SMODS.load_file("lib/desc.lua"))()
-
--- Draw steps
-assert(SMODS.load_file("content/drawstep.lua"))()
-
--- Sounds
-assert(SMODS.load_file("content/sounds.lua"))()
 
 -- Blinds
 PTASaka.RequireFolder("content/blinds/")
@@ -142,14 +138,8 @@ PTASaka.RequireFolder("content/blinds/showdown/")
 -- Editions
 PTASaka.RequireFolder("content/editions/")
 
--- Challenges
-assert(SMODS.load_file("content/challenges.lua"))()
-
--- Tags
-assert(SMODS.load_file("content/tags.lua"))()
-
--- Boosters
-assert(SMODS.load_file("content/boosters.lua"))()
+-- Other stuff
+PTASaka.RequireFolder("content/misc/")
 
 -- Load all jokers
 
@@ -175,33 +165,27 @@ end
 -- Thunderstruck
 PTASaka.RequireFolder("content/jokers/hidden/")
 
+-- CONSUMABLES --
+
 -- Tarots, spectrals and seals
-assert(SMODS.load_file("content/tarots.lua"))()
+assert(SMODS.load_file("content/consumables/tarots.lua"))()
 
 -- Property cards
 if conf["Property Cards"] then
-	assert(SMODS.load_file("content/properties.lua"))()
+	assert(SMODS.load_file("content/consumables/properties.lua"))()
 end
 
-assert(SMODS.load_file("content/dos.lua"))()
+-- DOS Cards
+assert(SMODS.load_file("content/consumables/dos.lua"))()
+
+-- Risk cards
 if conf["Risk Cards"] then
-	assert(SMODS.load_file("content/risk.lua"))()
-	assert(SMODS.load_file("content/rewards.lua"))()
+	assert(SMODS.load_file("content/consumables/risk.lua"))()
+	assert(SMODS.load_file("content/consumables/rewards.lua"))()
 end
-assert(SMODS.load_file("content/gachapack.lua"))()
 
--- Vouchers
-assert(SMODS.load_file("content/vouchers.lua"))()
-
--- Decks
-assert(SMODS.load_file("content/decks.lua"))()
-
--- Enhancements
-assert(SMODS.load_file("content/enhancements.lua"))()
-assert(SMODS.load_file("content/status.lua"))()
-
--- Cross mod content: CardSleeves
-assert(SMODS.load_file("content/sleeve.lua"))()
+-- Gacha spectral specifically
+assert(SMODS.load_file("content/consumables/gachapack.lua"))()
 
 -- Cross mod content: Revo's Vault
 if RevosVault and conf["Cross Mod Content"] then
@@ -225,19 +209,16 @@ end
 
 -- Cross mod content: MoreFluff
 if next(SMODS.find_mod('MoreFluff')) and conf["Cross Mod Content"] then
-	assert(SMODS.load_file("content/cross-consum/colour.lua"))()
+	assert(SMODS.load_file("content/consumables/colour.lua"))()
 end
 
 -- Cross mod content: TOGA's Stuff
 if togabalatro and conf["Cross Mod Content"] then
-	assert(SMODS.load_file("content/toga.lua"))()
+	assert(SMODS.load_file("content/jokers/toga.lua"))()
 end
 
--- Pyroxenes
-assert(SMODS.load_file("content/pyrox.lua"))()
-
--- Any and all hooks
-assert(SMODS.load_file("content/hooks.lua"))()
+-- Internal
+PTASaka.RequireFolder("content/internal/")
 
 -- Sets for toggling various features
 assert(SMODS.load_file("lib/set.lua"))()
