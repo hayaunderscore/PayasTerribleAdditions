@@ -114,6 +114,7 @@ SMODS.Joker {
 	rarity = "payasaka_daeha",
 	atlas = "JOE_Jokers2",
 	pos = { x = 5, y = 2 },
+	soul_pos = { x = 7, y = 2 },
 	cost = 25,
 	no_doe = true, -- :]
 	demicoloncompat = false,
@@ -233,7 +234,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if irisu_area then
+		if irisu_area and irisu_area.cards then
 			for _, c in pairs(irisu_area.cards) do
 				---@type Card
 				local c = c

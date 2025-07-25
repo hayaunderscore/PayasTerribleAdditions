@@ -21,8 +21,9 @@ SMODS.Joker {
 	name = "enotsworrA",
 	key = 'enotsworra',
 	rarity = "payasaka_daeha",
-	atlas = "JOE_Jokers",
-	pos = { x = 0, y = 7 },
+	atlas = "JOE_Jokers2",
+	pos = { x = 8, y = 0 },
+	soul_pos = { x = 8, y = 1 },
 	cost = 25,
 	config = { extra = { chips = 50 }, current_sign = "plus", odds = 4 },
 	demicoloncompat = true,
@@ -70,6 +71,6 @@ SMODS.Joker {
 		end
 	end,
 	draw = function(self, card, layer)
-		card.children.center:draw_shader('negative_shine', nil, card.ARGS.send_to_shader)
+		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
 	end,
 }
