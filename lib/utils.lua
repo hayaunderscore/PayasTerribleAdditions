@@ -74,11 +74,11 @@ function PTASaka.VashDestroyable(card)
 	if G.CONTROLLER.locks.selling_card then return false end
 	-- Otherwise...
 	local ret = card.area == G.jokers or card.area == G.consumeables or card.area == G.payasaka_dos_cardarea or
-		(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED)) or
+		(card.area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.HAND_PLAYED or G.STATE == G.STATES.DRAW_TO_HAND or G.STATE == G.STATES.ROUND_EVAL or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED)) or
 		(card.area == G.play and G.STATE == G.STATES.HAND_PLAYED)
 	if (not ret) and card.old_area then
 		ret = card.old_area == G.jokers or card.old_area == G.consumeables or card.old_area == G.payasaka_dos_cardarea or
-			(card.old_area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED)) or
+			(card.old_area == G.hand and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.HAND_PLAYED or G.STATE == G.STATES.DRAW_TO_HAND or G.STATE == G.STATES.ROUND_EVAL or G.STATE == G.STATES.PLAY_TAROT or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED)) or
 			(card.old_area == G.play and G.STATE == G.STATES.HAND_PLAYED)
 	end
 	return ret

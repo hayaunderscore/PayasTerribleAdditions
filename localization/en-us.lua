@@ -1637,15 +1637,16 @@ return {
 					"{X:mult,C:white}X#1#{} Mult",
 					"{C:green}#2# in #3#{} chance for",
 					"drawn cards to be",
-					"marked for death"
+					"{C:attention}marked for death"
 				},
 			},
 			j_payasaka_contract = {
 				name = "Contract Killer",
 				text = {
 					"Marks a random card",
-					"{C:attention}held in hand",
-					"{C:attention}Destroyed{} cards give {C:money}$#1#",
+					"currently {C:attention}held in hand",
+					"{C:attention}Destroyed{} cards",
+					"each give {C:money}$#1#"
 				},
 			},
 			j_payasaka_chicot = {
