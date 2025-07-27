@@ -392,6 +392,7 @@ SMODS.Sticker {
 	},
 	default_compat = true,
 	config = { payasaka_sunset_extra = { odds = 4 } },
+	sticker_tier = 1,
 	calculate = function(self, card, context)
 		if G.GAME.current_round.hands_played > 1 and context.end_of_round and context.main_eval then
 			if SMODS.pseudorandom_probability(card, 'sunset_die', 1, (card.ability.payasaka_sunset_extra or self.config.payasaka_sunset_extra).odds) then
@@ -408,6 +409,7 @@ SMODS.Sticker {
 							delay = 0.3,
 							blockable = false,
 							func = function()
+								card.children.center.pinch.x = nil
 								card:remove()
 								card = nil
 								return true;
@@ -430,7 +432,7 @@ SMODS.Sticker {
 		return { vars = { num, den } }
 	end,
 	should_apply = function(self, card, center, area, bypass_reroll)
-		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then
+		if (card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve) and not card.ability.rental then
 			if (not get_compat(card.config.center, "payasaka_sunset")) or (card.ability.eternal or card.ability.perishable) then return false end
 			if G.GAME.modifiers.payasaka_sticker_deck and (area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers) then
 				if pseudorandom('packsunset') < (G.GAME.modifiers.enable_rentals_in_shop and 0.3 or 0.15) then
@@ -440,6 +442,80 @@ SMODS.Sticker {
 		end
 		return false
 	end
+}
+
+SMODS.Sticker {
+	key = 'delivery',
+	atlas = "JOE_Enhancements",
+	pos = { x = 5, y = 2 },
+	badge_colour = HEX('64bccc'),
+	rate = 0.3,
+	sets = {
+		"Joker"
+	},
+	config = { rounds = 2 },
+	default_compat = true,
+	payasaka_debuff_calculate = true,
+	sticker_tier = 1,
+	calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval then
+			card.ability[self.key].rounds = (card.ability[self.key].rounds or self.config.rounds) - 1
+			if card.ability[self.key].rounds <= 0 then
+				SMODS.Sticker.apply(self, card, nil)
+				SMODS.Sticker.apply(SMODS.Stickers["payasaka_delivered"], card, true)
+				SMODS.debuff_card(card, false, "delivery_debuff")
+				return {
+					message = "Delivered!",
+					colour = G.C.FILTER,
+					delay = 0.45
+				}
+			else
+				return {
+					message = localize{type='variable',key='a_remaining',vars={card.ability[self.key].rounds}},
+					colour = G.C.FILTER,
+					delay = 0.45
+				}
+			end
+		end
+		if context.card_added and context.card == card then
+			SMODS.debuff_card(card, true, "delivery_debuff")
+		end
+	end,
+	apply = function(self, card, val)
+		SMODS.Sticker.apply(self, card, val)
+		card.ability[self.key] = val and copy_table(self.config) or nil
+		SMODS.debuff_card(card, true, "delivery_debuff")
+	end,
+	loc_vars = function(self, info_queue, card)
+		local cfg = card.ability[self.key] or self.config or {}
+		return { vars = { cfg.rounds } }
+	end,
+	should_apply = function(self, card, center, area, bypass_reroll)
+		if (card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve) and not card.ability.rental then
+			if (not get_compat(card.config.center, self.key)) or (card.ability.eternal or card.ability.perishable) then return false end
+			if G.GAME.modifiers.payasaka_sticker_deck and (area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers) then
+				if pseudorandom('pack'..self.key) < self.rate then
+					return true
+				end
+			end
+		end
+		return false
+	end
+}
+
+SMODS.Sticker {
+	key = 'delivered',
+	atlas = "JOE_Enhancements",
+	pos = { x = 6, y = 2 },
+	badge_colour = HEX('73a7b1'),
+	rate = 0,
+	sets = {
+		"Joker"
+	},
+	default_compat = true,
+	sticker_tier = 1,
+	no_collection = true,
+	should_apply = function() return false end,
 }
 
 SMODS.Sticker {
@@ -453,6 +529,7 @@ SMODS.Sticker {
 	},
 	config = { payasaka_giant_extra = { slot = 1 } },
 	default_compat = true,
+	sticker_tier = 2,
 	should_apply = function(self, card, center, area, bypass_reroll)
 		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then
 			if not get_compat(card.config.center, "payasaka_giant") then return false end
@@ -467,6 +544,8 @@ SMODS.Sticker {
 	apply = function (self, card, val)
 		card.ability.payasaka_giant_extra = copy_table(self.config.payasaka_giant_extra)
 		card.ability.payasaka_giant = val
+		card.ability.payasaka_stickers = card.ability.payasaka_stickers or {}
+		card.ability.payasaka_stickers[self.key] = val
 		if (card.area == G.jokers) or (card.area == G.consumeables) then
 			if card.ability.set == "Joker" and G.jokers then
 				G.jokers.config.card_limit = G.jokers.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot * (val and 1 or -1)
@@ -487,26 +566,7 @@ function CardArea:emplace(card, location, stay_flipped, ...)
 			card:set_ability("m_payasaka_mimic", false, true)
 		end
 	end
-	if card and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
-		if card.ability.set == "Joker" and G.jokers then
-			G.jokers.config.card_limit = G.jokers.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
-		elseif card.ability.set ~= "Joker" and G.consumeables then
-			G.consumeables.config.card_limit = G.consumeables.config.card_limit - (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
-		end
-	end
 	return emplace_ref(self, card, location, stay_flipped, ...)
-end
-
-local remove_card_ref = CardArea.remove_card
-function CardArea:remove_card(card, discarded_only, ...)
-	if card and card.ability and (not card.ability.akyrs_sigma) and card.ability.payasaka_giant and (self == G.jokers or self == G.consumeables) then
-		if card.ability.set == "Joker" and G.jokers then
-			G.jokers.config.card_limit = G.jokers.config.card_limit + (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
-		elseif card.ability.set ~= "Joker" and G.consumeables then
-			G.consumeables.config.card_limit = G.consumeables.config.card_limit + (card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra).slot
-		end
-	end
-	return remove_card_ref(self, card, discarded_only, ...)
 end
 
 SMODS.Sticker {
@@ -519,6 +579,8 @@ SMODS.Sticker {
 		"Joker"
 	},
 	default_compat = true,
+	payasaka_debuff_calculate = true,
+	sticker_tier = 3,
 	should_apply = function(self, card, center, area, bypass_reroll)
 		if card.ability.set == "Joker" or G.GAME.modifiers.payasaka_sticker_deck_sleeve then
 			if not get_compat(card.config.center, "payasaka_tired") then return false end
@@ -529,5 +591,12 @@ SMODS.Sticker {
 			end
 		end
 		return false
+	end,
+	calculate = function(self, card, context)
+		if context.first_hand_drawn and G.GAME.facing_blind then
+			SMODS.debuff_card(card, true, 'tired_debuff')
+		elseif ((context.hand_drawn and G.GAME.facing_blind) or context.end_of_round) then
+			SMODS.debuff_card(card, false, 'tired_debuff')
+		end
 	end
 }

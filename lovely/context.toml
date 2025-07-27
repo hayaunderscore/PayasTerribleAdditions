@@ -339,39 +339,6 @@ end
 '''
 match_indent = true
 
-# Handle tired jokers
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''for i=1, hand_space do --draw cards from deckL'''
-position = 'before'
-payload = '''
-for _, area in pairs(SMODS.get_card_areas('jokers', nil)) do
-	for _, card in pairs(area.cards) do
-		if card.ability.payasaka_tired then
-			SMODS.debuff_card(card, G.GAME.current_round.hands_played < 1, "payasaka_tired")
-		end
-	end
-end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- context.end_of_round calculations'''
-position = 'after'
-payload = '''
-for _, area in pairs(SMODS.get_card_areas('jokers', "end_of_round")) do
-	for _, card in pairs(area.cards) do
-		if card.ability.payasaka_tired then
-			SMODS.debuff_card(card, G.GAME.current_round.hands_played < 1, "payasaka_tired")
-		end
-	end
-end
-'''
-match_indent = true
-
 [[patches]]
 [patches.pattern]
 target = 'functions/button_callbacks.lua'
@@ -614,6 +581,15 @@ if not card:can_calculate(context.ignore_debuff, context.remove_playing_cards) t
         if status then
             ret[v] = status
         end
+    end
+	for _,k in ipairs(SMODS.Sticker.obj_buffer) do
+        local v = SMODS.Stickers[k]
+		if v.payasaka_debuff_calculate then
+			local status = card:calculate_sticker(context, k)
+			if status then
+				ret[v] = status
+			end
+		end
     end
     if card.ability.rental then
         ret[SMODS.Stickers.rental] = card:calculate_sticker(context, 'rental')

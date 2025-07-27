@@ -694,6 +694,30 @@ function Card:sell_card()
 	}))
 end
 
+local add_to_deck_ref = Card.add_to_deck
+function Card:add_to_deck(from_debuff)
+	if (not self.added_to_deck) and self.ability and self.ability.payasaka_giant and G.jokers and not from_debuff then
+		if self.ability.consumeable then
+			G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+		else
+			G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+		end
+	end
+	add_to_deck_ref(self, from_debuff)
+end
+
+local remove_from_deck_ref = Card.remove_from_deck
+function Card:remove_from_deck(from_debuff)
+	if self.added_to_deck and self.ability and self.ability.payasaka_giant and G.jokers and not from_debuff then
+		if self.ability.consumeable then
+			G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+		else
+			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+		end
+	end
+	remove_from_deck_ref(self, from_debuff)
+end
+
 local draw_base = Card.should_draw_base_shader
 function Card:should_draw_base_shader()
 	if self.config.center_key == "v_payasaka_tmtrainer" or self.config.center_key == "v_payasaka_cooltrainer" then

@@ -420,6 +420,7 @@ SMODS.Stickers["eternal"].should_apply = function(self, card, center, area, bypa
 	end
 	return false
 end
+SMODS.Stickers["eternal"].sticker_tier = 1
 
 SMODS.Stickers["perishable"].should_apply = function(self, card, center, area, bypass_reroll)
 	local ret = true
@@ -436,6 +437,7 @@ SMODS.Stickers["perishable"].should_apply = function(self, card, center, area, b
 	end
 	return false
 end
+SMODS.Stickers["perishable"].sticker_tier = 1
 
 SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_reroll)
 	local ret = true
@@ -450,6 +452,7 @@ SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypas
 	end
 	return false
 end
+SMODS.Stickers["rental"].sticker_tier = 2
 
 SMODS.Back {
 	key = 'sticker',

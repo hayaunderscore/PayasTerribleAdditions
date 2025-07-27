@@ -2987,6 +2987,20 @@ return {
 					"{C:dark_edition}-#1#{} Joker slot",
 				}
 			},
+			payasaka_delivery = {
+				name = "Delivery",
+				text = {
+					"Undebuffed after",
+					"{C:attention}2{} rounds",
+					"{C:inactive}({C:attention}#1#{C:inactive} remaining)",
+				}
+			},
+			payasaka_delivered = {
+				name = "Delivered",
+				text = {
+					"No effects",
+				}
+			},
 			payasaka_randomeffects = {
 				name = "Effects:",
 				text = {
@@ -3405,6 +3419,8 @@ return {
 			payasaka_sunset = "Sunset",
 			payasaka_tired = "Tired",
 			payasaka_giant = "Giant",
+			payasaka_delivery = "Delivery",
+			payasaka_delivered = "Delivered",
 			status_payasaka_frozen = "Frozen",
 			status_payasaka_marked = "Marked",
 			status_payasaka_zzazz = "ZZAZZ",
