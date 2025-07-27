@@ -12,7 +12,7 @@ PTASaka.Status {
 				remove = true
 			}
 		end
-		if (context.discard and context.other_card == card) or (context.end_of_round and context.main_eval) then
+		if (context.discard and context.other_card == card) or (context.after and card.area ~= G.hand) then
 			self:apply(card, nil)
 		end
 	end,

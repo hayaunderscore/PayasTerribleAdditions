@@ -411,7 +411,7 @@ target = 'functions/state_events.lua'
 pattern = '''if cards_destroyed[i].shattered then'''
 position = 'before'
 payload = '''
-if next(SMODS.find_card('j_payasaka_vash')) and PTASaka.VashDestroyable(cards_destroyed[i]) then
+if PTASaka.CheckVash() and PTASaka.VashDestroyable(cards_destroyed[i]) then
 	cards_destroyed[i].shattered = nil
 	cards_destroyed[i].destroyed = nil
 	cards_destroyed[i].getting_sliced = nil
@@ -426,7 +426,7 @@ target = 'functions/state_events.lua'
 pattern = '''-- TARGET: effects when cards are removed'''
 position = 'before'
 payload = '''
-if next(SMODS.find_card('j_payasaka_vash')) then
+if PTASaka.CheckVash() then
 	local c = {}
 	for k, v in ipairs(cards_destroyed) do
 		if not PTASaka.VashDestroyable(v) then
