@@ -570,6 +570,7 @@ PTASaka.Reward {
 			end
 		}))
 		delay(0.5)
+		SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
 	end,
 	can_use = function(self, card)
 		return card.ability.extra.max_highlighted >= #G.hand.highlighted and

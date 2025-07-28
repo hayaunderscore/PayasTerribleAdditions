@@ -20,7 +20,7 @@ SMODS.Joker {
 	},
 	config = { extra = { dollars = 3, active = false } },
 	calculate = function(self, card, context)
-		if (context.payasaka_card_removed or context.payasaka_prevent_destroy_card) then
+		if ((context.payasaka_card_removed and G.STATE ~= G.STATES.HAND_PLAYED) or context.payasaka_prevent_destroy_card) then
 			local c = context.payasaka_prevent_destroy_card or context.card
 			if c and (c.ability.set == "Default" or c.ability.set == "Enhanced") then
 				return {

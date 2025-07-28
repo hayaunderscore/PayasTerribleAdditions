@@ -98,6 +98,9 @@ function PTASaka.CheckVash()
 	return (next(SMODS.find_card('j_payasaka_vash')) or next(SMODS.find_card('j_payasaka_manhattan')) or next(SMODS.find_card('j_payasaka_contract')))
 end
 
+SMODS.calculation_keys[#SMODS.calculation_keys+1] = "prevent_remove"
+SMODS.silent_calculation.prevent_remove = true
+
 -- Check if Vash should destroy a Joker
 ---@param card Card
 ---@param no_dissolve? boolean
@@ -106,13 +109,8 @@ function PTASaka.VashDestroy(card, no_dissolve)
 	local stop_removal = false
 	-- Check for Vash
 	if PTASaka.CheckVash() and card.config.center_key ~= "j_payasaka_vash" and PTASaka.VashDestroyable(card) and not no_dissolve then
-		local ret = {}
-		SMODS.calculate_context({ payasaka_card_removed = true, card = card }, ret); SMODS.trigger_effects(ret)
-		for k, v in ipairs(ret) do
-			for _k, _v in pairs(v) do
-				stop_removal = _v.prevent_remove or stop_removal
-			end
-		end
+		local flags = SMODS.calculate_context({ payasaka_card_removed = true, card = card }) or {}
+		if flags.prevent_remove then stop_removal = true end
 	end
 	if stop_removal and card.area == nil and card.old_area then
 		card.old_area:emplace(card)

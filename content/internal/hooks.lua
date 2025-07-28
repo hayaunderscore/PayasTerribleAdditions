@@ -823,6 +823,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		return true
 	end
 
+	-- Vash's prevent_remove
+	if key == 'prevent_remove' then return { [key] = amount } end
+
 	if amount and is_number(amount) and to_big(amount) > to_big(0) and PTASaka.pulmenti_count and pulmenti_redirect[whitelisted_keys[key]] then
 		for i = 1, PTASaka.pulmenti_count do
 			if pulmenti_redirect[whitelisted_keys[key]] then
