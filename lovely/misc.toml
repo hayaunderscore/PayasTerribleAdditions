@@ -570,8 +570,8 @@ pattern = '''if sticker.should_apply and type(sticker.should_apply) == 'function
 position = 'before'
 payload = '''
 if sticker.sticker_tier then
-	for s, _ in pairs(card.ability or {}) do
-		if SMODS.Stickers[s] and SMODS.Stickers[s].sticker_tier == sticker.sticker_tier then
+	for _, s in pairs(SMODS.Sticker.obj_buffer) do
+		if card.ability[s] and SMODS.Stickers[s].sticker_tier == sticker.sticker_tier then
 			goto continue
 		end
 	end

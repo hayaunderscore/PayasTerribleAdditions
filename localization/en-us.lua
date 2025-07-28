@@ -3007,6 +3007,14 @@ return {
 					"{X:dark_edition,C:white}X#1#{} Blind size",
 				}
 			},
+			payasaka_polymorph = {
+				name = "Polymorph",
+				text = {
+					"{C:attention}Transforms{} into a",
+					"{C:attention}random #1#{} at the",
+					"end of round"
+				}
+			},
 			payasaka_randomeffects = {
 				name = "Effects:",
 				text = {
@@ -3428,6 +3436,7 @@ return {
 			payasaka_delivery = "Delivery",
 			payasaka_delivered = "Delivered",
 			payasaka_taunt = "Taunt",
+			payasaka_polymorph = "Polymorph",
 			status_payasaka_frozen = "Frozen",
 			status_payasaka_marked = "Marked",
 			status_payasaka_zzazz = "ZZAZZ",

@@ -254,4 +254,44 @@ SMODS.Sticker {
 	end
 }
 
-
+SMODS.Sticker {
+	key = 'polymorph',
+	atlas = "JOE_Enhancements",
+	pos = { x = 8, y = 2 },
+	badge_colour = HEX('7c4bc1'),
+	get_rate = function(self, card)
+		if G.GAME.modifiers.enable_rentals_in_shop then return 0.2 end
+		return 0.05
+	end,
+	sets = { ["Joker"] = true },
+	default_compat = true,
+	payasaka_debuff_calculate = true,
+	sticker_tier = 3,
+	should_apply = deck_sleeve_combo_apply,
+	calculate = function(self, card, context)
+		if context.blind_defeated then
+			local pool_items = {}
+			for k, v in pairs(G.P_CENTER_POOLS[card.ability.set] or {}) do
+				local in_pool, pool_opts
+				if v.in_pool and type(v.in_pool) == 'function' then
+					in_pool, pool_opts = v:in_pool({ source = "polymorph" })
+				end
+				if v.unlocked
+					and not v.no_doe
+					and (in_pool or not v.in_pool)
+					and not G.GAME.banned_keys[v.key] then
+					pool_items[#pool_items + 1] = v.key
+				end
+			end
+			if next(pool_items) then
+				card:set_ability(pseudorandom_element(pool_items, 'polymorph'))
+				card:juice_up()
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		local name = localize('k_'..string.lower(card.ability.set))
+		if name == "ERROR" then name = "[card type]" end
+		return { vars = { name } }
+	end
+}
