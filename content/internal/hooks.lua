@@ -696,11 +696,16 @@ end
 
 local add_to_deck_ref = Card.add_to_deck
 function Card:add_to_deck(from_debuff)
-	if (not self.added_to_deck) and self.ability and self.ability.payasaka_giant and G.jokers and not from_debuff then
-		if self.ability.consumeable then
-			G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
-		else
-			G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+	if (not self.added_to_deck) and not from_debuff then
+		if self.ability and self.ability.payasaka_giant and G.jokers then
+			if self.ability.consumeable then
+				G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+			else
+				G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+			end
+		end
+		if self.ability and self.ability.payasaka_delivery then
+			SMODS.debuff_card(self, true, "delivery_debuff")
 		end
 	end
 	add_to_deck_ref(self, from_debuff)

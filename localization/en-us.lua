@@ -3001,6 +3001,12 @@ return {
 					"No effects",
 				}
 			},
+			payasaka_taunt = {
+				name = "Taunt",
+				text = {
+					"{X:dark_edition,C:white}X#1#{} Blind size",
+				}
+			},
 			payasaka_randomeffects = {
 				name = "Effects:",
 				text = {
@@ -3421,6 +3427,7 @@ return {
 			payasaka_giant = "Giant",
 			payasaka_delivery = "Delivery",
 			payasaka_delivered = "Delivered",
+			payasaka_taunt = "Taunt",
 			status_payasaka_frozen = "Frozen",
 			status_payasaka_marked = "Marked",
 			status_payasaka_zzazz = "ZZAZZ",
