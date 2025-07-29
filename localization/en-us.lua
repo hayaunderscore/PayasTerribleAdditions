@@ -3439,6 +3439,7 @@ return {
 		v_dictionary = {
 			pta_art_credit = { "Art: #1#" },
 			pta_idea_credit = { "Idea: #1#" },
+			pta_code_credit = { "Code: #1#" },
 			a_tallymult = "&#1# Mult",
 			a_whatchips = "#1# Chips",
 		},

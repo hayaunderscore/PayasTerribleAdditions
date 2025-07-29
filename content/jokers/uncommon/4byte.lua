@@ -10,6 +10,12 @@ SMODS.Joker {
 	demicoloncompat = true,
 	config = { used_jokers = { ["j_payasaka_4byte"] = true }, extra = { x_mult = 1, x_gain = 0.5 } },
 	pools = {["Joker"] = true, ["Food"] = true},
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		-- Purely visual
 		if context.card_added and not context.blueprint_card then

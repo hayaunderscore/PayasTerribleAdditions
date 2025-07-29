@@ -7,6 +7,12 @@ SMODS.Joker {
 	cost = 6,
 	blueprint_compat = false,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'qxy',
+			colour = HEX('6fbfed')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint_card then
 			for i = 1, #G.play.cards do

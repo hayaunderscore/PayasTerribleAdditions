@@ -9,7 +9,7 @@ SMODS.Joker {
 	demicoloncompat = false,
 	eternal_compat = false,
 	perishable_compat = false,
-	pools = { ["Joker"] = true, ["Meme"] = true },
+	pools = { ["Joker"] = true },
 	config = { saved_ids = {}, extra = { photographed = false } },
 	pta_usable = true,
 	loc_vars = function(self, info_queue, card)

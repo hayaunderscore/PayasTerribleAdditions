@@ -7,7 +7,7 @@
 	"main_file": "paya.lua",
 	"priority": 888,
 	"display_name": "TerrAddt",
-	"badge_colour": "4A3570",
+	"badge_colour": "515aa8",
 	"badge_text_colour": "",
 	"version": "1.0.0",
 	"dependencies": [

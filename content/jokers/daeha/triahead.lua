@@ -14,7 +14,7 @@ SMODS.Joker {
 	demicoloncompat = true,
 	eternal_compat = false,
 	perishable_compat = false,
-	pools = { ["Joker"] = true, ["Meme"] = true },
+	pools = { ["Joker"] = true },
 	dependencies = MoreFluff and "MoreFluff" or nil,
 	config = {
 		extra = {

@@ -42,6 +42,16 @@ SMODS.Joker {
 	demicolon_compat = true,
 	config = { extra = { perma_bonus = 5, perma_mult = 2, perma_x_mult = 0.1, perma_e_mult = 0.01, perma_p_dollars = 1, perma_balance = 0.02 } },
 	pools = { ["Joker"] = true, ["Friend"] = true },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not context.end_of_round then
 			local bonus = pseudorandom_element(perma_bonuses, 'paya')

@@ -86,7 +86,7 @@ end
 --#region Credit mod badges
 
 -- Colours
-G.C.PAYA_PURPLE = HEX('4A3570')
+G.C.PAYA_PURPLE = PTASaka.Mod.badge_colour
 G.C.BADGE_TEMP_BG = SMODS.Gradient {
 	key = 'badge_temp_bg',
 	colours = { G.C.PAYA_PURPLE, G.C.PAYA_PURPLE },
@@ -112,6 +112,7 @@ G.C.BADGE_TEMP_BG = SMODS.Gradient {
 
 local cmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
+	if not obj then return end
 	-- Sneakily sneak this in here...
 	if obj and obj.pools and obj.pools["Friend"] then
 		badges[#badges + 1] = create_badge('Friend', SMODS.Gradients['payasaka_friend'])
@@ -119,8 +120,13 @@ function SMODS.create_mod_badges(obj, badges)
 	if obj and obj.pta_no_mod_badge then return end
 	cmb(obj, badges)
 	if SMODS.config.no_mod_badges then return end
-	local cred = obj and obj.pta_credit or nil
-	if not cred then return end
+	local cred = obj and obj.pta_credit or {}
+	-- do not display default credit text if this badge is listed as a dependency
+	if obj and obj.mod and obj.mod.id == "pta_saka" and obj.registered then
+		cred.idea = cred.idea or { credit = "Haya" }
+		cred.art = cred.art or { credit = "Haya" }
+	end
+	if not next(cred) then return end
 	local target_badge = 0
 	local base_scale = 0.9
 	for i = 1, #badges do
@@ -131,6 +137,7 @@ function SMODS.create_mod_badges(obj, badges)
 			break
 		end
 	end
+	if not badges[target_badge] then return end
 	-- Taken from Cryptid
 	local function calc_scale_fac(text)
 		local size = base_scale

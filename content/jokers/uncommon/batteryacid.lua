@@ -12,6 +12,12 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	pools = {["Joker"] = true, ["Meme"] = true, ["Food"] = true},
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.setting_blind then
 			G.E_MANAGER:add_event(Event {

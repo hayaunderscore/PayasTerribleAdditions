@@ -9,6 +9,12 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	config = { extra = { x_mult_gain = 0.5, x_mult = 1 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.setting_blind and not context.blueprint then
 			local food_jokers = {}

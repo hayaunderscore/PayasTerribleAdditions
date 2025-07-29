@@ -19,6 +19,10 @@ SMODS.Joker {
 		idea = {
 			credit = "canichatandobserve",
 			colour = HEX('7d78b0')
+		},
+		code = {
+			credit = "canichatandobserve",
+			colour = HEX('7d78b0')
 		}
 	},
     loc_vars = function(self, info_queue, card)

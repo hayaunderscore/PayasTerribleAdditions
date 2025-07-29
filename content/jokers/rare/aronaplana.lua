@@ -96,6 +96,12 @@ SMODS.Joker {
 	cost = 6,
 	blueprint_compat = true,
 	demicoloncompat = true,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if (context.individual and context.cardarea == G.play and not context.end_of_round) and not context.blueprint_card then
 			-- dark suits
