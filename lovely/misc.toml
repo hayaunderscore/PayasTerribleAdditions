@@ -589,3 +589,16 @@ payload = '''
 ::continue::
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''engine/sprite.lua'''
+pattern = '''love.graphics.scale(1/(other_obj.scale_mag or other_obj.VT.scale))'''
+position = 'after'
+payload = '''
+if self.true_scale then
+	love.graphics.scale(self.true_scale)
+end
+'''
+match_indent = true

@@ -2055,21 +2055,30 @@ return {
 				},
 			},
 			tag_payasaka_tier1reward = {
-				name = "Reward Tag",
+				name = {
+					"Reward Tag",
+					"{C:edition,s:0.5}Tier 1"
+				},
 				text = {
 					"Gives a free",
 					"{C:reward}Reward Pack",
 				},
 			},
 			tag_payasaka_tier2reward = {
-				name = "Reward Tag (II)",
+				name = {
+					"Reward Tag",
+					"{C:edition,s:0.5}Tier 2"
+				},
 				text = {
 					"Gives a free",
 					"{C:reward}Jumbo Reward Pack",
 				},
 			},
 			tag_payasaka_tier3reward = {
-				name = "Reward Tag (III)",
+				name = {
+					"Reward Tag",
+					"{C:edition,s:0.5}Tier 3"
+				},
 				text = {
 					"Gives a free",
 					"{C:reward}Mega Reward Pack",
@@ -2695,7 +2704,14 @@ return {
 					"{f:payasaka_pokemon}TYPE",
 					"{f:payasaka_pokemon}CoolTrainer♀"
 				},
-			}
+			},
+			status_payasaka_awful = {
+				name = "Awful",
+				text = {
+					"All card values",
+					"are {C:attention}halved",
+				},
+			},
 		},
 		Other = {
 			card_extra_e_chips = {
@@ -3440,6 +3456,7 @@ return {
 			status_payasaka_frozen = "Frozen",
 			status_payasaka_marked = "Marked",
 			status_payasaka_zzazz = "ZZAZZ",
+			status_payasaka_awful = "Awful",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
 			k_payasaka_thunderstruck = "Thunderstruck",
