@@ -19,6 +19,7 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.starting_shop and not context.blueprint_card then
 			for _, area in pairs({ G.shop_vouchers, G.shop_booster }) do
+				if not area.cards then goto area_continue end
 				-- Check if boosters have a valid upgradable pack size
 				for i = 1, #area.cards do
 					---@type Card
@@ -78,6 +79,7 @@ SMODS.Joker {
 					end
 					::continue::
 				end
+				::area_continue::
 			end
 		end
 	end

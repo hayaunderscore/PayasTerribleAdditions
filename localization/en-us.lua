@@ -2052,7 +2052,30 @@ return {
 				name = "Ahead Tag",
 				text = {
 					"Shop has a free",
-					"{C:edition}Ahead Joker",
+					"{C:payasaka_prismatic_gradient}Ahead Joker",
+				},
+			},
+			tag_payasaka_potential = {
+				name = "T=ag2",
+				text = {
+					"Shop has a",
+					"{C:dark_edition}Potential Energy",
+					"{C:inactive,s:0.8}(The name doesn't make sense.)"
+				},
+			},
+			tag_payasaka_friend = {
+				name = "Landline Tag",
+				text = {
+					"Creates a",
+					"{C:payasaka_friend}Friend Joker",
+					"{C:inactive}(Must have room)"
+				},
+			},
+			tag_payasaka_thrillseeker = {
+				name = "Desperado Tag",
+				text = {
+					"Gives a free",
+					"{C:risk}Mega Risk Pack",
 				},
 			},
 			tag_payasaka_tier1reward = {
@@ -2104,12 +2127,16 @@ return {
 			c_payasaka_mechanic = {
 				name = "Mechanic",
 				text = {
-					"Turns up to {C:attention}#1#",
-					"selected {C:red}nil{} card",
-					"to a Joker of choice",
-					"Adds {C:dark_edition}Eternal{} to",
-					"selected Joker",
-					"{C:inactive,s:0.8}No limits.",
+					{
+						"Turns {C:attention}#1#{} selected {C:red}nil{} card",
+						"into a {C:attention}selected{} Joker of",
+						"choice from {C:attention}your collection",
+						"{C:inactive,s:0.8}No limits.",
+					},
+					{
+						"Adds {C:dark_edition}Eternal{} to all",
+						"selected {C:red}nil{} cards"
+					}
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Fluffy...",

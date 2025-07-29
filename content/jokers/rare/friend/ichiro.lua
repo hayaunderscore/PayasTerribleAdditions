@@ -21,7 +21,7 @@ SMODS.Joker {
 		},
 	},
 	add_to_deck = function(self, card, from_debuff)
-		if G.shop_vouchers and #G.shop_vouchers.cards > 0 and G.shop_vouchers.cards[1].ability.set == "Voucher" then
+		if G.shop_vouchers and G.shop_vouchers.cards and #G.shop_vouchers.cards > 0 and G.shop_vouchers.cards[1].ability.set == "Voucher" then
 			local old = G.shop_vouchers.cards[1].config.center
 			G.shop_vouchers.cards[1]:set_ability(G.P_CENTERS["p_payasaka_voucher_normal_1"])
 			G.shop_vouchers.cards[1]:set_sprites(old)
@@ -42,7 +42,7 @@ SMODS.Joker {
 	end,
 	calculate = function(self, card, context)
 		if context.starting_shop and not context.blueprint_card then
-			if G.shop_vouchers and #G.shop_vouchers.cards > 0 then
+			if G.shop_vouchers and G.shop_vouchers.cards and #G.shop_vouchers.cards > 0 then
 				local old = G.shop_vouchers.cards[1].config.center
 				G.shop_vouchers.cards[1]:set_ability(G.P_CENTERS["p_payasaka_voucher_normal_1"])
 				G.shop_vouchers.cards[1]:set_sprites(old)

@@ -1336,6 +1336,16 @@ SMODS.Tag {
 			return true
 		end
 	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 SMODS.Tag {
@@ -1362,6 +1372,16 @@ SMODS.Tag {
 			return true
 		end
 	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 SMODS.Tag {
@@ -1388,4 +1408,14 @@ SMODS.Tag {
 			return true
 		end
 	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }

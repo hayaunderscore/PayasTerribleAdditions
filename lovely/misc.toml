@@ -590,7 +590,6 @@ payload = '''
 '''
 match_indent = true
 
-
 [[patches]]
 [patches.pattern]
 target = '''engine/sprite.lua'''
@@ -600,5 +599,17 @@ payload = '''
 if self.true_scale then
 	love.graphics.scale(self.true_scale)
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''(self.ability.set == 'Voucher' and {G.C.SECONDARY_SET.Voucher, G.C.CLEAR}) or '''
+position = 'after'
+payload = '''
+(self.ability.set == 'Risk' and {G.C.SECONDARY_SET.Risk, G.C.SET.Risk}) or 
+(self.ability.set == 'Reward' and {G.C.SECONDARY_SET.Reward, G.C.SET.Reward}) or 
+(SMODS.ConsumableTypes[self.ability.set] and {SMODS.ConsumableTypes[self.ability.set].secondary_colour or G.C.GREEN}) or 
 '''
 match_indent = true

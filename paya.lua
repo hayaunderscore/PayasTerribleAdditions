@@ -169,6 +169,9 @@ PTASaka.RequireFolder("content/jokers/hidden/")
 
 -- CONSUMABLES --
 
+-- Gacha spectral specifically
+assert(SMODS.load_file("content/consumables/gachapack.lua"))()
+
 -- Tarots, spectrals and seals
 assert(SMODS.load_file("content/consumables/tarots.lua"))()
 
@@ -185,9 +188,6 @@ if conf["Risk Cards"] then
 	assert(SMODS.load_file("content/consumables/risk.lua"))()
 	assert(SMODS.load_file("content/consumables/rewards.lua"))()
 end
-
--- Gacha spectral specifically
-assert(SMODS.load_file("content/consumables/gachapack.lua"))()
 
 -- Cross mod content: Revo's Vault
 if RevosVault and conf["Cross Mod Content"] then

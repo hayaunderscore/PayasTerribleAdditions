@@ -96,3 +96,64 @@ SMODS.Tag {
 		end
 	end,
 }
+
+SMODS.Tag {
+	key = 'potential',
+	atlas = "JOE_Tags",
+	pos = { x = 3, y = 0 },
+	apply = function(self, tag, context)
+		if context.type == "store_joker_create" then
+			local card = create_card("Joker", context.area, nil, nil, nil, nil, "j_payasaka_potential", "t_ahead")
+			create_shop_card_ui(card, "Joker", context.area)
+			card.states.visible = false
+			tag:yep("+", G.C.EDITION, function()
+				card:start_materialize()
+				return true
+			end)
+			tag.triggered = true
+			return card
+		end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+}
+
+SMODS.Tag {
+	key = 'friend',
+	atlas = "JOE_Tags",
+	pos = { x = 4, y = 0 },
+	apply = function(self, tag, context)
+		if context.type == "new_blind_choice" then
+			if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+				tag:yep('+', SMODS.Gradients["payasaka_friend"], function()
+					local card = SMODS.add_card { set = "Friend", skip_materialize = true }
+					card.from_tag = true
+					card:start_materialize({G.C.RED, G.C.BLUE})
+					return true
+				end)
+			else
+				tag:nope()
+			end
+			tag.triggered = true
+			return true
+		end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+}
