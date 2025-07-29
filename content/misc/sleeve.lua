@@ -25,6 +25,7 @@ CardSleeves.Sleeve {
 	pos = { x = 1, y = 0 },
 	apply = function(self, sleeve)
 		local voucher = "v_overstock_norm"
+		local already_sticker_deck = G.GAME.modifiers.payasaka_sticker_deck
 		G.GAME.modifiers.payasaka_sticker_deck = true
 		if self.get_current_deck_key() == "b_payasaka_sticker" or (G.STAGE == G.STAGES.RUN and G.GAME and G.GAME.payasaka_used_decks and G.GAME.payasaka_used_decks["b_payasaka_sticker"]) then
 			G.GAME.modifiers.payasaka_sticker_deck_sleeve = true
@@ -35,6 +36,9 @@ CardSleeves.Sleeve {
 			func = function()
 				G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
 				Card.apply_to_run(nil, G.P_CENTERS[voucher])
+				if not already_sticker_deck then
+					SMODS.add_card { key = 'c_payasaka_purify' }
+				end
 				return true
 			end
 		})
@@ -46,7 +50,7 @@ CardSleeves.Sleeve {
 			key = self.key .. "_alt"
 			voucher = "v_overstock_plus"
 		end
-		return { key = key, vars = { localize { type = 'name_text', key = voucher, set = "Voucher" } } }
+		return { key = key, vars = { localize { type = 'name_text', key = voucher, set = "Voucher" }, localize { type = 'name_text', key = 'c_payasaka_purify', set = 'Reward' } } }
 	end,
 }
 

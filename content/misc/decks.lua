@@ -462,9 +462,15 @@ SMODS.Back {
 	config = { vouchers = { "v_overstock_norm" } },
 	apply = function(self, back)
 		G.GAME.modifiers.payasaka_sticker_deck = true
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				SMODS.add_card { key = 'c_payasaka_purify' }
+				return true
+			end
+		})
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { localize { type = 'name_text', key = self.config.vouchers[1], set = "Voucher" } } }
+		return { vars = { localize { type = 'name_text', key = self.config.vouchers[1], set = "Voucher" }, localize { type = 'name_text', key = 'c_payasaka_purify', set = 'Reward' } } }
 	end
 }
 

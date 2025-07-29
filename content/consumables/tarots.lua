@@ -42,7 +42,7 @@ if PTASaka.Mod.config["Property Cards"] then
 			local highlighted = {}
 			while count > 0 do
 				local c = table.remove(possible_properties, pseudorandom('avarice', 1, #possible_properties))
-				if c then highlighted[#highlighted+1] = c end
+				if c then highlighted[#highlighted + 1] = c end
 				count = count - 1
 			end
 			for i = 1, #highlighted do
@@ -388,12 +388,12 @@ SMODS.Seal {
 					sound = "xchips"
 				} or nil,
 				e_mult = (Talisman and SMODS.pseudorandom_probability(card, 'payasaka_random', 1, odds)) and s
-				.e_mult or nil,
+					.e_mult or nil,
 				emult_message = Talisman and
 					{ message = ("^%d Mult"):format(s.e_mult), colour = G.C.DARK_EDITION, sound = "talisman_emult" } or
 					nil,
 				e_chips = (Talisman and SMODS.pseudorandom_probability(card, 'payasaka_random', 1, odds)) and
-				s.e_chips or nil,
+					s.e_chips or nil,
 				echip_message = Talisman and
 					{ message = ("^%d Chips"):format(s.e_chips), colour = G.C.DARK_EDITION, sound = "talisman_echip" } or
 					nil,
@@ -556,6 +556,66 @@ SMODS.Sound({
 	end,
 })
 
+-- Grow
+SMODS.Consumable {
+	set = 'Spectral',
+	key = 'grow',
+	atlas = "JOE_Tarots",
+	pos = { x = 4, y = 1 },
+	cost = 5,
+	config = { max_highlighted = 1 },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = 'payasaka_giant', set = 'Other', vars = { 1 } }
+		return { vars = { (card.ability or self.config).max_highlighted } }
+	end,
+	can_use = function(self, card)
+		return G.jokers and #G.jokers.cards > 0 and #G.jokers.cards < G.jokers.config.card_limit
+	end,
+	in_pool = function(self, args)
+		return G.jokers and #G.jokers.cards > 0 and #G.jokers.cards < G.jokers.config.card_limit
+	end,
+	use = function(self, card, area, copier)
+		delay(0.3)
+		local joker = pseudorandom_element(G.jokers.cards, 'grow_proc')
+		if joker then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
+					return true
+				end
+			}))
+
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					SMODS.Stickers["payasaka_giant"]:apply(joker, true)
+					PTASaka.remove_proxy(joker)
+					PTASaka.with_deck_effects(joker, function(c)
+						PTASaka.Misprintize({
+							val = c.ability,
+							amt = 2,
+						})
+					end)
+					PTASaka.create_proxy(joker)
+					play_sound('gold_seal', 1.2, 0.4)
+					joker:juice_up(0.3, 0.3)
+					return true
+				end
+			}))
+		end
+
+		delay(0.6)
+	end
+}
+
 local rarities = {
 	[1] = "Common",
 	[2] = "Uncommon",
@@ -564,133 +624,135 @@ local rarities = {
 }
 
 if PTASaka.Mod.config["Ahead"] then
--- Center
-SMODS.Consumable {
-	set = 'Spectral',
-	key = 'center',
-	atlas = "JOE_Tarots",
-	pos = { x = 0, y = 1 },
-	soul_pos = {
-		x = 1, y = 1,
-		draw = function(self, scale_mod, rotate_mod)
-			local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
-				0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
-				(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
-			local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
-				0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
-			self.children.floating_sprite:draw_shader('dissolve', 0, nil, nil, self.children.center, scale_mod,
-				rotate_mod, nil, 0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
-			self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod,
-				rotate_mod)
+	-- Center
+	SMODS.Consumable {
+		set = 'Spectral',
+		key = 'center',
+		atlas = "JOE_Tarots",
+		pos = { x = 0, y = 1 },
+		soul_pos = {
+			x = 1, y = 1,
+			draw = function(self, scale_mod, rotate_mod)
+				local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
+					0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
+					(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
+				local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
+					0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) *
+					(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+				self.children.floating_sprite:draw_shader('dissolve', 0, nil, nil, self.children.center, scale_mod,
+					rotate_mod, nil, 0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
+				self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod,
+					rotate_mod)
+			end,
+			extra = { x = 2, y = 1 },
+		},
+		cost = 5,
+		config = { max_highlighted = 1 },
+		can_use = function(self, card)
+			return #G.jokers.highlighted ~= 0 and #G.jokers.highlighted <= card.ability.max_highlighted
 		end,
-		extra = { x = 2, y = 1 },
-	},
-	cost = 5,
-	config = { max_highlighted = 1 },
-	can_use = function(self, card)
-		return #G.jokers.highlighted ~= 0 and #G.jokers.highlighted <= card.ability.max_highlighted
-	end,
-	hidden = true,
-	soul_rate = 0.010,
-	use = function(self, card, area, copier)
-		local highlighted = {}
-		for _, v in ipairs(G.jokers.highlighted) do
-			table.insert(highlighted, v)
-		end
-		for i = 1, math.min(#highlighted, card.ability.max_highlighted) do
-			local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.15,
-				func = function()
-					if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted[i]
-						:juice_up(0.3, 0.3); return true
-				end
-			}))
-		end
-		local valid_daeha = {}
-		for k, v in ipairs(G.P_CENTER_POOLS["Joker"]) do
-			if type(v.rarity) == "string" and v.rarity == "payasaka_daeha" then
-				valid_daeha[#valid_daeha + 1] = v
+		hidden = true,
+		soul_rate = 0.010,
+		use = function(self, card, area, copier)
+			local highlighted = {}
+			for _, v in ipairs(G.jokers.highlighted) do
+				table.insert(highlighted, v)
 			end
-		end
-
-		delay(0.2)
-
-		--for i = 1, #highlighted do
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			delay = 0.1,
-			func = function()
-				for i = 1, #highlighted do
-					for k, v in pairs(highlighted[i].children) do
-						if k == 'center' or k == 'back' then goto continue end
-						highlighted[i].children[k]:remove()
-						highlighted[i].children[k] = nil
-						::continue::
+			for i = 1, math.min(#highlighted, card.ability.max_highlighted) do
+				local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted
+							[i]
+							:juice_up(0.3, 0.3); return true
 					end
-					highlighted[i]:remove_from_deck(true)
-					highlighted[i].debuff = false
-					highlighted[i]:set_ability(pseudorandom_element(valid_daeha, pseudoseed('center_shit')))
-					highlighted[i]:add_to_deck(true)
-				end
-				return true
+				}))
 			end
-		}))
-		--end
-		for i = 1, #highlighted do
-			local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.15,
-				func = function()
-					if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('tarot2', percent, 0.6); highlighted
-						[i]:juice_up(0.3, 0.3); return true
+			local valid_daeha = {}
+			for k, v in ipairs(G.P_CENTER_POOLS["Joker"]) do
+				if type(v.rarity) == "string" and v.rarity == "payasaka_daeha" then
+					valid_daeha[#valid_daeha + 1] = v
 				end
-			}))
-		end
-		delay(0.6)
+			end
 
-		for i = 1, #G.jokers.cards do
-			local joker = G.jokers.cards[i]
+			delay(0.2)
+
+			--for i = 1, #highlighted do
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
-				delay = 0.15,
+				delay = 0.1,
 				func = function()
-					if not joker.highlighted then
-						local fake = SMODS.create_card {
-							set = "Joker",
-							rarity = type(joker.config.center.rarity) == "number" and rarities[joker.config.center.rarity] or joker.config.center.rarity,
-							legendary = joker.config.center.rarity == 4
-						}
-						for k, v in pairs(joker.children) do
+					for i = 1, #highlighted do
+						for k, v in pairs(highlighted[i].children) do
 							if k == 'center' or k == 'back' then goto continue end
-							joker.children[k]:remove()
-							joker.children[k] = nil
+							highlighted[i].children[k]:remove()
+							highlighted[i].children[k] = nil
 							::continue::
 						end
-						joker:remove_from_deck(true)
-						joker:set_ability(G.P_CENTERS[fake.config.center.key])
-						joker:add_to_deck(true)
-						fake:remove()
-						joker:juice_up()
-						play_sound('timpani')
+						highlighted[i]:remove_from_deck(true)
+						highlighted[i].debuff = false
+						highlighted[i]:set_ability(pseudorandom_element(valid_daeha, pseudoseed('center_shit')))
+						highlighted[i]:add_to_deck(true)
 					end
 					return true
 				end
 			}))
-		end
-
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			delay = 0.2,
-			func = function()
-				G.jokers:unhighlight_all(); return true
+			--end
+			for i = 1, #highlighted do
+				local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('tarot2', percent, 0.6); highlighted
+							[i]:juice_up(0.3, 0.3); return true
+					end
+				}))
 			end
-		}))
-	end,
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.max_highlighted } }
-	end
-}
+			delay(0.6)
+
+			for i = 1, #G.jokers.cards do
+				local joker = G.jokers.cards[i]
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.15,
+					func = function()
+						if not joker.highlighted then
+							local fake = SMODS.create_card {
+								set = "Joker",
+								rarity = type(joker.config.center.rarity) == "number" and rarities[joker.config.center.rarity] or joker.config.center.rarity,
+								legendary = joker.config.center.rarity == 4
+							}
+							for k, v in pairs(joker.children) do
+								if k == 'center' or k == 'back' then goto continue end
+								joker.children[k]:remove()
+								joker.children[k] = nil
+								::continue::
+							end
+							joker:remove_from_deck(true)
+							joker:set_ability(G.P_CENTERS[fake.config.center.key])
+							joker:add_to_deck(true)
+							fake:remove()
+							joker:juice_up()
+							play_sound('timpani')
+						end
+						return true
+					end
+				}))
+			end
+
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.2,
+				func = function()
+					G.jokers:unhighlight_all(); return true
+				end
+			}))
+		end,
+		loc_vars = function(self, info_queue, card)
+			return { vars = { card.ability.max_highlighted } }
+		end
+	}
 end

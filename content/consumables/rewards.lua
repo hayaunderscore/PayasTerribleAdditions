@@ -644,7 +644,7 @@ PTASaka.Reward {
 	use = function(self, card, area, copier)
 		local eligibleJokers = {}
 		for _, c in pairs(G.jokers.cards) do
-			if not SMODS.is_eternal(c, card) then eligibleJokers[#eligibleJokers+1] = c end
+			if not SMODS.is_eternal(c, card) then eligibleJokers[#eligibleJokers + 1] = c end
 		end
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
@@ -740,7 +740,7 @@ PTASaka.Reward {
 							else
 								card_eval_status_text(_c, 'extra', nil, nil, nil,
 									{ message = localize('k_nope_ex'), instant = true, sound = 'tarot2' }); return true
-							end                                                                                                                       -- Aww!
+							end -- Aww!
 						end
 						if not SMODS.is_eternal(_c) then _c:start_dissolve() end
 						SMODS.add_card { set = "Joker", rarity = selected_rarity }
@@ -964,6 +964,89 @@ PTASaka.Reward {
 	can_use = function(self, card)
 		return #G.jokers.cards < G.jokers.config.card_limit
 	end,
+}
+
+PTASaka.Reward {
+	key = 'purify',
+	atlas = 'JOE_Risk',
+	pos = { x = 6, y = 4 },
+	no_collection = true,
+	config = { extra = { max_highlighted = 1 } },
+	can_use = function(self, card)
+		return #G.jokers.highlighted ~= 0 and #G.jokers.highlighted <= card.ability.extra.max_highlighted
+	end,
+	in_pool = function(self, args)
+		return false -- Never in the pool.
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.max_highlighted }
+		}
+	end,
+	use = function(self, card, area, copier)
+		local highlighted = {}
+		for _, v in ipairs(G.jokers.highlighted) do
+			table.insert(highlighted, v)
+		end
+		for i = 1, math.min(#highlighted, card.ability.extra.max_highlighted) do
+			local percent = 1.15 - (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('card1', percent); highlighted
+						[i]
+						:juice_up(0.3, 0.3); return true
+				end
+			}))
+		end
+		delay(0.2)
+
+		--for i = 1, #highlighted do
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.1,
+			func = function()
+				for i = 1, #highlighted do
+					highlighted[i]:remove_from_deck(true)
+					for k, v in ipairs(SMODS.Sticker.obj_buffer) do
+						if highlighted[i].ability[v] then
+							SMODS.Stickers[v]:apply(highlighted[i], false)
+						end
+					end
+					highlighted[i]:add_to_deck(true)
+				end
+				return true
+			end
+		}))
+		--end
+		for i = 1, #highlighted do
+			local percent = 0.85 + (i - 0.999) / (#highlighted - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					if highlighted[i].flip then highlighted[i]:flip(); end; play_sound('tarot2', percent, 0.6); highlighted
+						[i]:juice_up(0.3, 0.3); return true
+				end
+			}))
+		end
+		delay(0.6)
+
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.2,
+			func = function()
+				G.jokers:unhighlight_all(); return true
+			end
+		}))
+	end,
+	set_card_type_badge = function(self, card, badges)
+		badges[#badges + 1] = create_badge(
+			"Mercy",
+			G.C.SET[card.ability.set], nil, 1.2
+		)
+	end
 }
 
 G.FUNCS.pta_can_select_consumable = function(e)

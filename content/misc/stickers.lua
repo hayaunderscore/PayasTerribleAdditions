@@ -169,26 +169,12 @@ SMODS.Sticker {
 	sticker_tier = 2,
 	should_apply = deck_sleeve_combo_apply,
 	apply = function(self, card, val)
-		card.ability.payasaka_giant_extra = copy_table(self.config.payasaka_giant_extra)
+		card:remove_from_deck()
 		card.ability.payasaka_giant = val
-		card.ability.payasaka_stickers = card.ability.payasaka_stickers or {}
-		card.ability.payasaka_stickers[self.key] = val
-		if (card.area == G.jokers) or (card.area == G.consumeables) then
-			if card.ability.set == "Joker" and G.jokers then
-				G.jokers.config.card_limit = G.jokers.config.card_limit -
-					(card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra)
-					.slot *
-					(val and 1 or -1)
-			elseif card.ability.set ~= "Joker" and G.consumeables then
-				G.consumeables.config.card_limit = G.consumeables.config.card_limit -
-					(card.ability.payasaka_giant_extra or SMODS.Stickers["payasaka_giant"].config.payasaka_giant_extra)
-					.slot *
-					(val and 1 or -1)
-			end
-		end
+		card:add_to_deck()
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.payasaka_giant_extra and card.ability.payasaka_giant_extra.slot or self.config.payasaka_giant_extra.slot } }
+		return { vars = { self.config.payasaka_giant_extra.slot } }
 	end
 }
 

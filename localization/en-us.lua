@@ -79,6 +79,7 @@ return {
 				name = "Sticker Deck",
 				text = {
 					"Start with an {C:attention,T:v_overstock_norm}#1#",
+					"and a {C:dark_edition,T:c_payasaka_purify}#2# card",
 					"Jokers can have {C:attention}stickers",
 					"Stakes {C:attention}increase{} chance for their",
 					"{C:attention}respective{} sticker"
@@ -2114,6 +2115,16 @@ return {
 					"{C:inactive,s:0.8}Fluffy...",
 				}
 			},
+			c_payasaka_grow = {
+				name = "Grow",
+				text = {
+					"{C:attention}Doubles{} the values",
+					"of a {C:attention}random{} Joker",
+					"and adds {C:dark_edition}Giant{} to",
+					"the selected Joker",
+					"{C:inactive}(Must have room)"
+				}
+			},
 			c_payasaka_showdown = {
 				name = "Showdown",
 				text = {
@@ -2464,6 +2475,13 @@ return {
 					"{C:attention}#2#s",
 				}
 			},
+			c_payasaka_purify = {
+				name = "{C:edition}Purify",
+				text = {
+					"Removes {C:attention}all{} stickers",
+					"on {C:attention}#1#{} selected Joker"
+				}
+			}
 		},
 		Rotarot = {
 			c_payasaka_rot_greed = {
@@ -3083,6 +3101,7 @@ return {
 				name = "Sticker Sleeve",
 				text = {
 					"Start with an {C:attention,T:v_overstock_norm}#1#",
+					"and a {C:dark_edition,T:c_payasaka_purify}#2# card",
 					"Jokers can have {C:attention}stickers",
 					"Stakes {C:attention}increase{} chance for their",
 					"{C:attention}respective{} sticker"
@@ -3092,6 +3111,7 @@ return {
 				name = "Sticker Sleeve",
 				text = {
 					"Start with an {C:attention,T:v_overstock_plus}#1#",
+					"and a {C:dark_edition,T:c_payasaka_purify}#2# card",
 					"{E:1,C:legendary}Any{} card can have a {C:attention}sticker",
 				}
 			},
