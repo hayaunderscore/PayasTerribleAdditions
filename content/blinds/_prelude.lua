@@ -54,8 +54,7 @@ function Game.update_new_round(self, dt)
 	end
 
 	if not G.STATE_COMPLETE and G.GAME.blind.config.blind.key == 'bl_payasaka_prelude' then
-		local valueToPutInIf = (Talisman and to_big and to_big(G.GAME.chips):lt(to_big(G.GAME.blind.chips))) or
-			to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
+		local valueToPutInIf = to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
 		if G.GAME.current_round.hands_left <= 0 and valueToPutInIf then
 			G.STATE_COMPLETE = true
 			end_round()

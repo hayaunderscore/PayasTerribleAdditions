@@ -3,7 +3,17 @@
 -- Talisman,,,,
 to_big = to_big or function(a) return a end
 is_number = is_number or function(a) return type(a) == "number" end
-lenient_bignum = lenient_bignum or function(a) return a end
+to_number = to_number or function(a) return a end
+-- Override for lenient_bignum since it is a BITCH
+lenient_bignum = function(a)
+	if Talisman then
+		if type(a) == "number" then return a end
+		if is_number(a) and to_big(a) < to_big(1e300) and to_big(a) > to_big(-1e300) then
+			return to_number(a)
+		end
+	end
+	return a
+end
 
 -- Misprintize stuff --
 

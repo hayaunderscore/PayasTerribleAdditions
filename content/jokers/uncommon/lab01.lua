@@ -46,7 +46,7 @@ SMODS.Joker {
 			rets[#rets+1] = {
 				message = localize('k_reset').."!"
 			}
-			if G["payasaka_lab_jokers_"..tostring(card.sort_id)] then
+			if G["payasaka_lab_jokers_"..tostring(card.sort_id)] and G["payasaka_lab_jokers_"..tostring(card.sort_id)].cards then
 				---@type CardArea
 				local area = G["payasaka_lab_jokers_"..tostring(card.sort_id)]
 				for i = #area.cards, 1, -1 do
@@ -55,7 +55,7 @@ SMODS.Joker {
 				end
 			end
 		end
-		if G["payasaka_lab_jokers_"..tostring(card.sort_id)] then
+		if G["payasaka_lab_jokers_"..tostring(card.sort_id)] and G["payasaka_lab_jokers_"..tostring(card.sort_id)].cards then
 			---@type CardArea
 			local area = G["payasaka_lab_jokers_"..tostring(card.sort_id)]
 			for i = 1, #area.cards do
