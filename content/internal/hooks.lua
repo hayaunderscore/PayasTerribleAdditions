@@ -336,7 +336,7 @@ function Back:trigger_effect(args)
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
 			elseif type(obj.calculate) == "function" and type(args.context) == "string" then
 				local context = type(args.context) == "table" and args.context or
-				args                                                       -- bit hacky, though this shouldn't even have to be used?
+					args -- bit hacky, though this shouldn't even have to be used?
 				local effect = obj:calculate(obj, context)
 				if effect then
 					SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
@@ -363,7 +363,7 @@ function Back:trigger_effect(args)
 				args.chips, args.mult = new_chips or args.chips, new_mult or args.mult
 			elseif type(obj.calculate) == "function" and type(args.context) == "string" then
 				local context = type(args.context) == "table" and args.context or
-				args                                                       -- bit hacky, though this shouldn't even have to be used?
+					args -- bit hacky, though this shouldn't even have to be used?
 				local effect = obj:calculate(obj, context)
 				if effect then
 					SMODS.calculate_effect(effect, G.deck.cards[1] or G.deck)
@@ -449,7 +449,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if not forced_key and soulable then
 		for _, v in ipairs(PTASaka.Reward.pseudo_legendaries) do
 			if (_type == v.pta_hidden_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
-				if pseudorandom('hidden_'..v.key.._type..G.GAME.round_resets.ante) < (G.GAME["payasaka_reward_"..string.lower(v.pta_hidden_set).."_rate"] or 0) then
+				if pseudorandom('hidden_' .. v.key .. _type .. G.GAME.round_resets.ante) < (G.GAME["payasaka_reward_" .. string.lower(v.pta_hidden_set) .. "_rate"] or 0) then
 					forced_key = v.key
 					spawned_via_hidden = true
 				end
@@ -526,8 +526,8 @@ function Card:get_id()
 		for i = 1, #self.area.cards do
 			---@type Card
 			local c = self.area.cards[i]
-			if c == self and self.area.cards[i-1] then
-				return self.area.cards[i-1]:get_id()
+			if c == self and self.area.cards[i - 1] then
+				return self.area.cards[i - 1]:get_id()
 			end
 		end
 	end
@@ -544,8 +544,8 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 		for i = 1, #self.area.cards do
 			---@type Card
 			local c = self.area.cards[i]
-			if c == self and self.area.cards[i-1] then
-				return self.area.cards[i-1]:is_suit(suit, bypass_debuff, flush_calc)
+			if c == self and self.area.cards[i - 1] then
+				return self.area.cards[i - 1]:is_suit(suit, bypass_debuff, flush_calc)
 			end
 		end
 	end
@@ -788,9 +788,9 @@ table.insert(SMODS.calculation_keys, 1, "pf_mult")
 table.insert(SMODS.calculation_keys, 1, "pfmult")
 table.insert(SMODS.calculation_keys, 1, "pf_chips_mult")
 -- exponential stuff for paya
-SMODS.calculation_keys[#SMODS.calculation_keys+1] = "e_chips"
-SMODS.calculation_keys[#SMODS.calculation_keys+1] = "e_mult"
-SMODS.calculation_keys[#SMODS.calculation_keys+1] = "pta_balance"
+SMODS.calculation_keys[#SMODS.calculation_keys + 1] = "e_chips"
+SMODS.calculation_keys[#SMODS.calculation_keys + 1] = "e_mult"
+SMODS.calculation_keys[#SMODS.calculation_keys + 1] = "pta_balance"
 
 local calculate_individual_effect_hook = SMODS.calculate_individual_effect
 function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
@@ -845,13 +845,20 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			else
 				if effect.echip_message then
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil, effect.echip_message)
 				else
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil,
-						{ message = ('^%s Chips'):format(number_format(amount)), sound = "payasaka_echips", colour = G.C.DARK_EDITION })
+						{
+							message = ('^%s Chips'):format(number_format(amount)),
+							sound = "payasaka_echips",
+							colour = G.C
+								.DARK_EDITION
+						})
 				end
 			end
 		end
@@ -869,13 +876,20 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			else
 				if effect.emult_message then
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil, effect.emult_message)
 				else
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil,
-						{ message = ('^%s Mult'):format(number_format(amount)), sound = "payasaka_emult", colour = G.C.DARK_EDITION })
+						{
+							message = ('^%s Mult'):format(number_format(amount)),
+							sound = "payasaka_emult",
+							colour = G.C
+								.DARK_EDITION
+						})
 				end
 			end
 		end
@@ -893,13 +907,20 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			else
 				if effect.echip_message then
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil, effect.echip_message)
 				else
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil,
-						{ message = ('^^%s Chips'):format(number_format(amount)), sound = "payasaka_eechips", colour = G.C.DARK_EDITION })
+						{
+							message = ('^^%s Chips'):format(number_format(amount)),
+							sound = "payasaka_eechips",
+							colour = G
+								.C.DARK_EDITION
+						})
 				end
 			end
 		end
@@ -917,13 +938,20 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 			else
 				if effect.emult_message then
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil, effect.emult_message)
 				else
 					card_eval_status_text(
-					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+						effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra',
+						nil,
 						percent, nil,
-						{ message = ('^^%s Mult'):format(number_format(amount)), sound = "payasaka_eemult", colour = G.C.DARK_EDITION })
+						{
+							message = ('^^%s Mult'):format(number_format(amount)),
+							sound = "payasaka_eemult",
+							colour = G.C
+								.DARK_EDITION
+						})
 				end
 			end
 		end
@@ -931,57 +959,63 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 	end
 
 	if key == 'pta_balance' and amount then
-        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
 		local balance_chips = mod_chips(hand_chips * amount)
 		local balance_mult = mod_mult(mult * amount)
 		local avg = (balance_chips + balance_mult) / 2
 		hand_chips = hand_chips + (avg - balance_chips)
-        mult = mult + (avg - balance_mult)
-        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
-        G.E_MANAGER:add_event(Event({
-            func = (function()
-                -- scored_card:juice_up()
-                play_sound('gong', 0.94, 0.3)
-                play_sound('gong', 0.94*1.5, 0.2)
-                play_sound('tarot1', 1.5)
-                ease_colour(G.C.UI_CHIPS, {0.8, 0.45, 0.85, 1})
-                ease_colour(G.C.UI_MULT, {0.8, 0.45, 0.85, 1})
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    blockable = false,
-                    blocking = false,
-                    delay =  0.8,
-                    func = (function() 
-                            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.8)
-                            ease_colour(G.C.UI_MULT, G.C.RED, 0.8)
-                        return true
-                    end)
-                }))
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    blockable = false,
-                    blocking = false,
-                    no_delete = true,
-                    delay =  1.3,
-                    func = (function() 
-                        G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]
-                        G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]
-                        return true
-                    end)
-                }))
-                return true
-            end)
-        }))
-        if not effect.remove_default_message then
-            if effect.balance_message then
-                card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.balance_message)
-            else
-                card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, {message = localize('k_balanced'), colour =  {0.8, 0.45, 0.85, 1}})
-            end
-        end
+		mult = mult + (avg - balance_mult)
+		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+		G.E_MANAGER:add_event(Event({
+			func = (function()
+				-- scored_card:juice_up()
+				play_sound('gong', 0.94, 0.3)
+				play_sound('gong', 0.94 * 1.5, 0.2)
+				play_sound('tarot1', 1.5)
+				ease_colour(G.C.UI_CHIPS, { 0.8, 0.45, 0.85, 1 })
+				ease_colour(G.C.UI_MULT, { 0.8, 0.45, 0.85, 1 })
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					blockable = false,
+					blocking = false,
+					delay = 0.8,
+					func = (function()
+						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.8)
+						ease_colour(G.C.UI_MULT, G.C.RED, 0.8)
+						return true
+					end)
+				}))
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					blockable = false,
+					blocking = false,
+					no_delete = true,
+					delay = 1.3,
+					func = (function()
+						G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2],
+							G.C.BLUE[3], G.C.BLUE[4]
+						G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2],
+							G.C.RED[3], G.C.RED[4]
+						return true
+					end)
+				}))
+				return true
+			end)
+		}))
+		if not effect.remove_default_message then
+			if effect.balance_message then
+				card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+					percent, nil, effect.balance_message)
+			else
+				card_eval_status_text(
+					effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil,
+					percent, nil, { message = localize('k_balanced'), colour = { 0.8, 0.45, 0.85, 1 } })
+			end
+		end
 
-        return true
-    end
+		return true
+	end
 
 	-- Phil and enotsworrA
 	if key == "pf_chips" or key == "pfchips" then
@@ -1042,7 +1076,7 @@ function Card:set_sprites(center, front)
 		self.children.center.states.click = self.states.click
 		self.children.center.states.drag = self.states.drag
 		self.children.center.states.collide.can = false
-		self.children.center:set_role({major = self, role_type = 'Glued', draw_major = self})
+		self.children.center:set_role({ major = self, role_type = 'Glued', draw_major = self })
 		self.children.floating_sprite = Sprite(
 			self.T.x,
 			self.T.y,
@@ -1080,6 +1114,93 @@ function Card:set_sprites(center, front)
 		self.children.property_houses.role.draw_major = self
 		self.children.property_houses.states.hover.can = false
 		self.children.property_houses.states.click.can = false
+	end
+	if center and center.key == "c_payasaka_tagbagtest" then
+		local tag = self.ability and self.ability.tagbag_tag or center.pta_default_tag
+		local name = localize { type = 'name_text', set = 'Tag', key = tag }
+		local tag_center = G.P_TAGS[tag]
+		name = (name or ""):gsub(" Tag", ""):gsub(" Patch", "")
+		-- Create tag name graphic, if we have not created one yet...
+		if not G.ASSET_ATLAS["payasaka_tagbagatlas_"..name] then
+			-- New canvas that will serve as our pseudo-image
+			local canvas = love.graphics.newCanvas(71, 95)
+			---@type love.Font
+			local font = SMODS.Fonts["payasaka_Tarot"].FONT
+			local text = string.upper(name)
+			if font:getWidth(text) > 42 then text = text:lower() end
+			-- trim the text until it fits perfectly
+			local ot = text
+			while font:getWidth(text) > 42 do
+				ot = ot:sub(1, -2)
+				text = ot.."."
+			end
+			-- Create tag graphic quad
+			local tag_atlas = G.ASSET_ATLAS[tag_center.atlas or "tags"]
+			local quad = love.graphics.newQuad(tag_center.pos.x*tag_atlas.px, tag_center.pos.y*tag_atlas.py, tag_atlas.px, tag_atlas.py, tag_atlas.image)
+
+			local oldcanvas = love.graphics.getCanvas()
+			love.graphics.setCanvas(canvas)
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.printf({ HEX('586473'), text }, font, 1, 15, 71, "center")
+			-- Draw the tag graphic here too
+			love.graphics.draw(tag_atlas.image, quad, 19, 39)
+			love.graphics.setCanvas(oldcanvas)
+
+			G.ASSET_ATLAS["payasaka_tagbagatlas_"..name] = {
+				name = "payasaka_tagbagatlas_"..name,
+				path = G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"].path,
+				full_path = G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"].full_path,
+				image = canvas,
+				px = 71, py = 95,
+				type = 0
+			}
+		end
+		self.children.tagbag_name = Sprite(
+			self.T.x,
+			self.T.y,
+			self.T.w,
+			self.T.h,
+			G.ASSET_ATLAS["payasaka_tagbagatlas_"..name],
+			{ x = 0, y = 0 }
+		)
+		self.children.tagbag_name.role.draw_major = self
+		self.children.tagbag_name.states.hover.can = false
+		self.children.tagbag_name.states.click.can = false
+
+		-- Mods can add their own bag graphics
+		if tag_center and tag_center.mod and G.ASSET_ATLAS[tag_center.mod.prefix.."_tagbag_top"] then
+			self.children.pta_front:remove()
+			self.children.pta_front = Sprite(
+				self.T.x,
+				self.T.y,
+				self.T.w,
+				self.T.h,
+				G.ASSET_ATLAS[tag_center.mod.prefix.."_tagbag_top"],
+				{ x = 0, y = 0 }
+			)
+			self.children.pta_front.role.draw_major = self
+			self.children.pta_front.states.hover.can = false
+			self.children.pta_front.states.click.can = false
+		elseif tag == "tag_payasaka_nil" then -- nil tags use a blank tag bag top
+			self.children.pta_front:set_sprite_pos({ x = 4, y = 1 })
+		elseif tag_center and tag_center.mod then -- None? Use the ones that come with ours
+			local id = tag_center.mod.id or "Balatro"
+			if id == "pta_saka" then
+				self.children.pta_front:set_sprite_pos({ x = 1, y = 1 })
+			elseif id == "allinjest" then
+				self.children.pta_front:set_sprite_pos({ x = 2, y = 1 })
+			elseif id == "paperback" then
+				self.children.pta_front:set_sprite_pos({ x = 3, y = 1 })
+			elseif id == "aikoyorisshenanigans" then
+				self.children.pta_front:set_sprite_pos({ x = 5, y = 1 })
+			elseif id == "MoreFluff" then
+				self.children.pta_front:set_sprite_pos({ x = 6, y = 1 })
+			elseif id == "ortalab" then
+				self.children.pta_front:set_sprite_pos({ x = 7, y = 1 })
+			elseif id == "TOGAPack" then
+				self.children.pta_front:set_sprite_pos({ x = 8, y = 1 })
+			end
+		end
 	end
 	if self and self.ability and self.ability.pta_hidden_spawned and center and center.pta_hidden_pos and self.children.center then
 		self.children.center:set_sprite_pos(center.pta_hidden_pos)
@@ -1786,8 +1907,10 @@ end
 
 local oldcb = Card.get_chip_bonus
 function Card:get_chip_bonus()
-	if self.ability.payasaka_stunted then return (self.base.nominal + (self.ability.perma_bonus or 0)) /
-		(G.GAME.payasaka_shrink_active and 2 or 1) end
+	if self.ability.payasaka_stunted then
+		return (self.base.nominal + (self.ability.perma_bonus or 0)) /
+			(G.GAME.payasaka_shrink_active and 2 or 1)
+	end
 	return (oldcb(self) or 0) / (G.GAME.payasaka_shrink_active and 2 or 1)
 end
 
@@ -1935,7 +2058,7 @@ function localize(args, misc_cat)
 							(type(subpart) == 'string' and subpart or args.vars[tonumber(subpart[1])] or 'ERROR')
 					end
 					local desc_scale = (SMODS.Fonts[part.control.f] or G.FONTS[tonumber(part.control.f)] or G.LANG.font)
-					.DESCSCALE
+						.DESCSCALE
 					if G.F_MOBILE_UI then desc_scale = desc_scale * 1.5 end
 					if args.type == 'name' then
 						final_line[#final_line + 1] = {

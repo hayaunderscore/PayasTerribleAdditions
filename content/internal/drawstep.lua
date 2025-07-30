@@ -71,6 +71,28 @@ SMODS.DrawStep {
 	conditions = { vortex = false, facing = 'front' },
 }
 
+SMODS.DrawStep {
+	key = 'pta_front_shadow',
+	order = -999,
+	layers = { shadow = true, both = true },
+	func = function(self)
+		if self.config.center.pta_front_pos and self.config.center.pta_front_shadow then
+			--Draw the shadow
+			if not self.no_shadow and G.SETTINGS.GRAPHICS.shadows == 'On' and ((self.ability.effect ~= 'Glass Card' and not self.greyed and self:should_draw_shadow()) and ((self.area and self.area ~= G.discard and self.area.config.type ~= 'deck') or not self.area or self.states.drag.is)) then
+				self.shadow_height = 0 * (0.08 + 0.4 * math.sqrt(self.velocity.x ^ 2)) +
+				((((self.highlighted and self.area == G.play) or self.states.drag.is) and 0.35) or (self.area and self.area.config.type == 'title_2') and 0.04 or 0.1)
+				self.children.pta_front.T.x = self.children.center.T.x
+				self.children.pta_front.T.y = self.children.center.T.y
+				self.children.pta_front.T.w = self.children.center.T.w
+				self.children.pta_front.T.h = self.children.center.T.h
+				self.children.pta_front.T.r = self.children.center.T.r
+				self.children.pta_front:draw_shader('dissolve', self.shadow_height)
+			end
+		end
+	end,
+	conditions = { facing = 'front' },
+}
+
 SMODS.draw_ignore_keys.pta_front = true
 
 -- Additional layer for Gacha spectral
@@ -105,6 +127,34 @@ SMODS.DrawStep {
 }
 
 SMODS.draw_ignore_keys.gacha_layer = true
+
+SMODS.DrawStep {
+	key = 'tagbag_name',
+	order = 62,
+	func = function(self)
+		if self.children.tagbag_name then
+			self.children.tagbag_name:draw_shader('dissolve', nil, nil, nil, self.children.center)
+			if self.edition then
+				for k, v in pairs(G.P_CENTER_POOLS.Edition) do
+					if v.shader then
+						if self.edition[v.key:sub(3)] then
+							self.children.tagbag_name:draw_shader(v.shader, nil, nil, nil, self.children.center)
+						end
+					end
+				end
+			end
+			if (self.edition and self.edition.negative) then
+				self.children.tagbag_name:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, nil, self.children.center)
+			end
+			if SMODS.DrawSteps['stickers'] then
+				SMODS.DrawSteps['stickers'].func(self, layer)
+			end
+		end
+	end,
+	conditions = { vortex = false, facing = 'front' },
+}
+
+SMODS.draw_ignore_keys.tagbag_name = true
 
 -- Additional layer for Gacha spectral
 SMODS.DrawStep {
@@ -186,15 +236,15 @@ SMODS.DrawStep {
 	order = 1001,
 	func = function(self, layer)
 		for k, v in pairs(PTASaka.Statuses) do
-            if self.ability[v.key] then
-                if v and v.draw and type(v.draw) == 'function' then
-                    v:draw(self, layer)
-                else
-                    G.shared_stickers[v.key].role.draw_major = self
-                    G.shared_stickers[v.key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
-                end
-            end
-        end
+			if self.ability[v.key] then
+				if v and v.draw and type(v.draw) == 'function' then
+					v:draw(self, layer)
+				else
+					G.shared_stickers[v.key].role.draw_major = self
+					G.shared_stickers[v.key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
+				end
+			end
+		end
 	end,
 	conditions = { vortex = false, facing = 'front' },
 }

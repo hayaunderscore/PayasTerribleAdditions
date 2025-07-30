@@ -97,6 +97,7 @@ SMODS.Tag {
 	end,
 }
 
+--[[
 SMODS.Tag {
 	key = 'potential',
 	atlas = "JOE_Tags",
@@ -125,6 +126,7 @@ SMODS.Tag {
 		},
 	},
 }
+]]
 
 SMODS.Tag {
 	key = 'friend',

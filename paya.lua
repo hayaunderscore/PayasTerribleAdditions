@@ -44,6 +44,7 @@ SMODS.Atlas { key = "JOE_Boosters", path = "properties_boosters.png", px = 71, p
 SMODS.Atlas { key = "JOE_UltraBoosters", path = "ultra.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_DOS", path = "dos.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Risk", path = "risk.png", px = 71, py = 95 }
+SMODS.Atlas { key = "tagbag", path = "tagbag.png", px = 71, py = 95 }
 
 -- Voucher atlas
 SMODS.Atlas { key = "JOE_Vouchers", path = "vouchers.png", px = 71, py = 95 }
@@ -120,6 +121,17 @@ if PTASaka.Font then
 		squish = 1,
 		DESCSCALE = 1
 	}
+
+	SMODS.Font {
+		key = "Tarot",
+		path = "tarot.ttf",
+		render_scale = 6,
+		TEXT_HEIGHT_SCALE = 1,
+		TEXT_OFFSET = { x = 0, y = -24 },
+		FONTSCALE = 0.1,
+		squish = 1,
+		DESCSCALE = 1
+	}
 end
 
 -- MAIN CODE --
@@ -188,6 +200,8 @@ if conf["Risk Cards"] then
 	assert(SMODS.load_file("content/consumables/risk.lua"))()
 	assert(SMODS.load_file("content/consumables/rewards.lua"))()
 end
+
+assert(SMODS.load_file("content/consumables/tagbag.lua"))()
 
 -- Cross mod content: Revo's Vault
 if RevosVault and conf["Cross Mod Content"] then

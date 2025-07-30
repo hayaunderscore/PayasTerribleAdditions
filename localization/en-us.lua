@@ -2758,6 +2758,22 @@ return {
 				},
 			},
 		},
+		TagBag = {
+			c_payasaka_tagbagtest = {
+				name = "Tag Bag",
+				text = {
+					"Creates a",
+					"{C:attention}#1#"
+				}
+			},
+			c_payasaka_tagbagtest_patch = {
+				name = "Patch Pouch",
+				text = {
+					"Creates a",
+					"{C:attention}#1#"
+				}
+			}
+		},
 		Other = {
 			card_extra_e_chips = {
 				text = {
@@ -3437,6 +3453,9 @@ return {
 			k_reward = "Reward",
 			b_reward_cards = "Reward Cards",
 			k_property_pack = "Real Estate Pack",
+			k_tagbag = "Tag Bag",
+			k_tagbag_patch = "Patch Pouch",
+			b_tagbag_cards = "Tag Bag",
 			k_friend_pack = "Friend Pack",
 			k_voucher_pack = "Voucher Pack",
 			k_moji_pack = "Reward Pack",
