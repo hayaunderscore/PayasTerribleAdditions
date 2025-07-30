@@ -438,6 +438,13 @@ SMODS.Stickers["perishable"].should_apply = function(self, card, center, area, b
 	return false
 end
 SMODS.Stickers["perishable"].sticker_tier = 1
+local old_apply = SMODS.Stickers["perishable"].apply
+SMODS.Stickers["perishable"].apply = function (self, card, val)
+	old_apply(self, card, val)
+	if not val then
+		card:set_debuff(false)
+	end
+end
 
 SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_reroll)
 	local ret = true

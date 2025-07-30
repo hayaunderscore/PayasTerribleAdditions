@@ -11,33 +11,36 @@ end
 -- Helper function for our sticker application
 -- Even handles if were in the sticker deck or not
 local function deck_sleeve_combo_apply(self, card, center, area, bypass_reroll)
-	-- Always enable this if we can
-	if G.GAME.modifiers.payasaka_sticker_deck then
-		G.GAME.modifiers['enable_'..self.key] = true
-	end
-	if G.GAME.modifiers.payasaka_sticker_deck_sleeve and
-		(
-			center[self.key .. '_compat'] or -- explicit marker
-			(
-				center[self.key .. '_compat'] == nil and
-				((self.default_compat and not self.compat_exceptions[center.key]) or -- default yes with no exception
-					(not self.default_compat and self.compat_exceptions[center.key]))
-			)                                                             -- default no with exception
-		)
-	then
-		self.last_roll = pseudorandom((area == G.pack_cards and 'packssj' or 'shopssj') ..
-			self.key .. G.GAME.round_resets.ante)
-		local rate = self.rate or 0
-		if self.get_rate and type(self.get_rate) == 'function' then
-			rate = self:get_rate(card, center, area, bypass_reroll)
+	if ((area == G.pack_cards or area == G.payasaka_gacha_pack_extra or area == G.shop_jokers)) and not G.GAME.modifiers.enable_stickers_anywhere then
+		-- Always enable this if we can
+		if G.GAME.modifiers.payasaka_sticker_deck then
+			G.GAME.modifiers['enable_'..self.key] = true
 		end
-		return (bypass_reroll ~= nil) and bypass_reroll or self.last_roll > (1 - rate)
+		if G.GAME.modifiers.payasaka_sticker_deck_sleeve and
+			(
+				center[self.key .. '_compat'] or -- explicit marker
+				(
+					center[self.key .. '_compat'] == nil and
+					((self.default_compat and not self.compat_exceptions[center.key]) or -- default yes with no exception
+						(not self.default_compat and self.compat_exceptions[center.key]))
+				)                                                             -- default no with exception
+			)
+		then
+			self.last_roll = pseudorandom((area == G.pack_cards and 'packssj' or 'shopssj') ..
+				self.key .. G.GAME.round_resets.ante)
+			local rate = self.rate or 0
+			if self.get_rate and type(self.get_rate) == 'function' then
+				rate = self:get_rate(card, center, area, bypass_reroll)
+			end
+			return (bypass_reroll ~= nil) and bypass_reroll or self.last_roll > (1 - rate)
+		end
+		self.old_rate = self.old_rate or self.rate
+		if self.get_rate and type(self.get_rate) == 'function' then
+			self.rate = self:get_rate(card, center, area, bypass_reroll)
+		end
+		return SMODS.Sticker.should_apply(self, card, center, area, bypass_reroll)
 	end
-	self.old_rate = self.old_rate or self.rate
-	if self.get_rate and type(self.get_rate) == 'function' then
-		self.rate = self:get_rate(card, center, area, bypass_reroll)
-	end
-	return SMODS.Sticker.should_apply(self, card, center, area, bypass_reroll)
+	return false
 end
 
 SMODS.Sticker {
@@ -133,6 +136,9 @@ SMODS.Sticker {
 	apply = function(self, card, val)
 		SMODS.Sticker.apply(self, card, val)
 		card.ability[self.key] = val and copy_table(self.config) or nil
+		if not val then
+			SMODS.debuff_card(card, false, "delivery_debuff")
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		local cfg = card.ability[self.key] or self.config or {}
@@ -243,6 +249,12 @@ SMODS.Sticker {
 			SMODS.debuff_card(card, true, 'tired_debuff')
 		elseif ((context.hand_drawn and G.GAME.facing_blind) or context.end_of_round) then
 			SMODS.debuff_card(card, false, 'tired_debuff')
+		end
+	end,
+	apply = function(self, card, val)
+		SMODS.Sticker.apply(self, card, val)
+		if not val then
+			SMODS.debuff_card(card, false, "tired_debuff")
 		end
 	end
 }
