@@ -620,6 +620,8 @@ position = 'after'
 payload = '''
 elseif _c.set == "Status" then
 	localize{type = 'descriptions', set = _c.set, key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars}
+elseif _c.set == "TagBag" and full_UI_table.name then
+	localize{type = 'descriptions', set = _c.set, key = _c.key, nodes = desc_nodes, vars = specific_vars or _c.vars}
 '''
 match_indent = true
 

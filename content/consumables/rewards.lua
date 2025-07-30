@@ -516,23 +516,40 @@ PTASaka.Reward {
 	atlas = 'JOE_Risk',
 	pos = { x = 3, y = 1 },
 	use = function(self, card, area, copier)
-		local tag = Tag(pseudorandom_element(G.P_CENTER_POOLS.Tag, pseudoseed('dreamsprint')).key)
-		if tag.name == "Orbital Tag" then
-			local _poker_hands = {}
-			for k, v in pairs(G.GAME.hands) do
-				if v.visible then
-					_poker_hands[#_poker_hands + 1] = k
+		G.E_MANAGER:add_event(Event {
+			trigger = 'after',
+			delay = 0.5,
+			func = function()
+				local tag_key = pseudorandom_element(G.P_CENTER_POOLS.Tag, pseudoseed('dreamsprint')).key
+				local tag = Tag(tag_key)
+				if tag.name == "Orbital Tag" then
+					local _poker_hands = {}
+					for k, v in pairs(G.GAME.hands) do
+						if v.visible then
+							_poker_hands[#_poker_hands + 1] = k
+						end
+					end
+					tag.ability.orbital_hand = pseudorandom_element(_poker_hands, "joy_orbital")
 				end
+				add_tag(tag)
+				play_sound('generic1', 0.9 + math.random() * 0.1, 0.8)
+				play_sound('holo1', 1.2 + math.random() * 0.1, 0.4)
+				card:juice_up()
+				local bag = SMODS.add_card { key = 'c_payasaka_tagbagtest', area = G.consumeables, skip_materialize = true }
+				bag.ability.tagbag_tag = tag_key
+				bag:start_materialize()
+				return true
 			end
-			tag.ability.orbital_hand = pseudorandom_element(_poker_hands, "joy_orbital")
-		end
-		add_tag(tag)
-		card:juice_up()
+		})
 		delay(0.6)
 	end,
 	can_use = function(self, card)
 		return true
 	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = { key = 'c_payasaka_tagbagtest', set = 'TagBag', vars = { "[Tag]" } }
+		return { vars = { } }
+	end
 }
 
 PTASaka.Reward {

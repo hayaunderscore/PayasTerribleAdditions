@@ -2391,7 +2391,8 @@ return {
 				name = "Sprint",
 				text = {
 					"Creates a {C:attention}random",
-					"skip tag",
+					"skip tag and a",
+					"{C:attention}Tag Bag{} of it"
 				}
 			},
 			c_payasaka_sulfur = {
