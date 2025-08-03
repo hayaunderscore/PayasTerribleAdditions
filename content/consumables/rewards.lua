@@ -479,7 +479,7 @@ PTASaka.Reward {
 			local break_two = false
 			if voucher then
 				for _, v in ipairs(G.P_CENTER_POOLS["Voucher"]) do
-					if v.requires and next(v.requires) then
+					if v and type(v) == 'table' and v.requires and next(v.requires) then
 						for _, required in ipairs(v.requires) do
 							if required == center and not G.GAME.used_vouchers[v.key] then
 								eligible_vouchers[#eligible_vouchers + 1] = v.key

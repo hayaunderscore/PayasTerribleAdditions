@@ -16,8 +16,8 @@ SMODS.Blind {
 	boss = { min = 8, showdown = true },
 	calculate = function(self, blind, context)
 		if not blind.disabled then
-			if context.before and #context.scoring_hand > 0 then
-				for _, card in pairs({context.scoring_hand[1], context.scoring_hand[#context.scoring_hand]}) do
+			if context.before and #context.full_hand > 0 then
+				for _, card in pairs({context.full_hand[1], context.full_hand[#context.full_hand]}) do
 					SMODS.debuff_card(card, true, "maroon_rose")
 					card.pta_no_show_debuff = true
 					card_eval_status_text(card, 'extra', nil, nil, nil, {
