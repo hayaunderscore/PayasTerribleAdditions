@@ -1,5 +1,55 @@
 -- ALL HOOKS jesus
 
+-- Check for specific Jokers
+-- This should PROBABLY go in utils.lua....
+function PTASaka.UpdateGlobalJokerCounts()
+	local counts = {
+		recuperare = {},
+		pulmenti = {},
+		fatty = {}, -- (Affectionate)
+	}
+
+	-- Reset these
+	PTASaka.stop_you_are_violating_the_law = nil
+	PTASaka.recuperares = {}
+	PTASaka.pulmenti_count = 0
+	PTASaka.scale_modifier_jokers = {}
+
+	if not G.jokers or not G.jokers.cards then return end
+
+	for _, area in ipairs(SMODS.get_card_areas('jokers')) do
+		if area.cards then
+			for _, v in pairs(area.cards) do
+				if v and type(v) == 'table' and not v.debuff then
+					local key = v.config.center_key
+					-- Find A!NR. Only one really matters here sooo
+					if key == 'j_payasaka_no_retrigger' then
+						PTASaka.stop_you_are_violating_the_law = v
+					end
+					-- Find specific joker(s), count matters
+					-- Recuperare
+					if key == "j_payasaka_recuperare" then
+						table.insert(counts.recuperare, v)
+					end
+					-- Pulmenti
+					if key == "j_payasaka_pulmenti" then
+						table.insert(counts.pulmenti, v)
+					end
+					-- Oguri Cap
+					if key == "j_payasaka_oguri" then
+						table.insert(counts.fatty, v)
+					end
+				end
+			end
+		end
+	end
+
+	-- Set everything
+	PTASaka.recuperares = counts.recuperare
+	PTASaka.pulmenti_count = #counts.pulmenti
+	PTASaka.scale_modifier_jokers = counts.fatty
+end
+
 -- General start run hook
 local sr = Game.start_run
 function Game:start_run(args)
@@ -146,6 +196,8 @@ function Game:start_run(args)
 	end
 
 	G.GAME.payasaka_reward_tarot_rate = G.GAME.payasaka_reward_tarot_rate or 0.025
+
+	PTASaka.UpdateGlobalJokerCounts()
 end
 
 -- Custom G.GAME stuff
@@ -1121,7 +1173,7 @@ function Card:set_sprites(center, front)
 		local tag_center = G.P_TAGS[tag]
 		name = (name or ""):gsub(" Tag", ""):gsub(" Patch", "")
 		-- Create tag name graphic, if we have not created one yet...
-		if not G.ASSET_ATLAS["payasaka_tagbagatlas_"..name] then
+		if not G.ASSET_ATLAS["payasaka_tagbagatlas_" .. name] then
 			-- New canvas that will serve as our pseudo-image
 			local canvas = love.graphics.newCanvas(71, 95)
 			---@type love.Font
@@ -1132,11 +1184,12 @@ function Card:set_sprites(center, front)
 			local ot = text
 			while font:getWidth(text) > 42 do
 				ot = ot:sub(1, -2)
-				text = ot.."."
+				text = ot .. "."
 			end
 			-- Create tag graphic quad
 			local tag_atlas = G.ASSET_ATLAS[tag_center.atlas or "tags"]
-			local quad = love.graphics.newQuad(tag_center.pos.x*tag_atlas.px, tag_center.pos.y*tag_atlas.py, tag_atlas.px, tag_atlas.py, tag_atlas.image)
+			local quad = love.graphics.newQuad(tag_center.pos.x * tag_atlas.px, tag_center.pos.y * tag_atlas.py,
+				tag_atlas.px, tag_atlas.py, tag_atlas.image)
 
 			local oldcanvas = love.graphics.getCanvas()
 			love.graphics.setCanvas(canvas)
@@ -1146,12 +1199,13 @@ function Card:set_sprites(center, front)
 			love.graphics.draw(tag_atlas.image, quad, 19, 39)
 			love.graphics.setCanvas(oldcanvas)
 
-			G.ASSET_ATLAS["payasaka_tagbagatlas_"..name] = {
-				name = "payasaka_tagbagatlas_"..name,
+			G.ASSET_ATLAS["payasaka_tagbagatlas_" .. name] = {
+				name = "payasaka_tagbagatlas_" .. name,
 				path = G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"].path,
 				full_path = G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"].full_path,
 				image = canvas,
-				px = 71, py = 95,
+				px = 71,
+				py = 95,
 				type = 0
 			}
 		end
@@ -1160,7 +1214,7 @@ function Card:set_sprites(center, front)
 			self.T.y,
 			self.T.w,
 			self.T.h,
-			G.ASSET_ATLAS["payasaka_tagbagatlas_"..name],
+			G.ASSET_ATLAS["payasaka_tagbagatlas_" .. name],
 			{ x = 0, y = 0 }
 		)
 		self.children.tagbag_name.role.draw_major = self
@@ -1168,14 +1222,14 @@ function Card:set_sprites(center, front)
 		self.children.tagbag_name.states.click.can = false
 
 		-- Mods can add their own bag graphics
-		if tag_center and tag_center.mod and G.ASSET_ATLAS[tag_center.mod.prefix.."_tagbag_top"] then
+		if tag_center and tag_center.mod and G.ASSET_ATLAS[tag_center.mod.prefix .. "_tagbag_top"] then
 			self.children.pta_front:remove()
 			self.children.pta_front = Sprite(
 				self.T.x,
 				self.T.y,
 				self.T.w,
 				self.T.h,
-				G.ASSET_ATLAS[tag_center.mod.prefix.."_tagbag_top"],
+				G.ASSET_ATLAS[tag_center.mod.prefix .. "_tagbag_top"],
 				{ x = 0, y = 0 }
 			)
 			self.children.pta_front.role.draw_major = self
@@ -1996,13 +2050,10 @@ local old_update = Game.update
 function Game:update(dt)
 	old_update(self, dt)
 	PTASaka.ahead_count = 0
-	local violating = SMODS.find_card('j_payasaka_no_retrigger')
-	PTASaka.stop_you_are_violating_the_law = next(violating) and violating[1]
-	local recuperares = SMODS.find_card('j_payasaka_recuperare')
-	PTASaka.recuperares = next(recuperares) and recuperares
-	PTASaka.pulmenti_count = #SMODS.find_card('j_payasaka_pulmenti')
-	local niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
-	PTASaka.scale_modifier_jokers = SMODS.find_card('j_payasaka_oguri')
+	local niveus_terras = nil
+	if G.P_CENTERS.j_payasaka_niveusterras then
+		niveus_terras = next(SMODS.find_card('j_payasaka_niveusterras'))
+	end
 	-- Get ahead count after updating
 	for _, s in ipairs(PTASaka.WhitelistedAheadAreas) do
 		local area = G[s]
@@ -2014,6 +2065,18 @@ function Game:update(dt)
 		end
 		::continue::
 	end
+end
+
+local old_add_to_deck = Card.add_to_deck
+function Card:add_to_deck(from_debuff)
+	old_add_to_deck(self, from_debuff)
+	PTASaka.UpdateGlobalJokerCounts()
+end
+
+local old_remove_from_deck = Card.remove_from_deck
+function Card:remove_from_deck(from_debuff)
+	old_remove_from_deck(self, from_debuff)
+	PTASaka.UpdateGlobalJokerCounts()
 end
 
 -- Hooks to localize functions for comments
