@@ -613,3 +613,48 @@ payload = '''
 (SMODS.ConsumableTypes[self.ability.set] and {SMODS.ConsumableTypes[self.ability.set].secondary_colour or G.C.GREEN}) or 
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''if v.set == 'Joker' then table.insert(self.P_CENTER_POOLS['Joker'], v) end'''
+position = 'after'
+payload = '''
+if v.set == 'Joker' then
+	local _, desc = pcall(function() return localize { type = 'raw_descriptions', key = v.key, set = v.set, vars = {} } end)
+	if desc and type(desc) == 'table' then
+		for _, line in ipairs(desc) do
+			if line:find("nil in nil") or line:find("chance") then
+				--print("Probability joker! "..v.key)
+				self.PAYASAKA_PROBABILITY_JOKERS = self.PAYASAKA_PROBABILITY_JOKERS or {}
+				self.PAYASAKA_PROBABILITY_JOKERS[v.key] = true
+				break
+			end
+		end
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/loader.lua"]'''
+pattern = '''assert(v._discovered_unlocked_overwritten, ("Internal: discovery/unlocked of object \"%s\" failed to override."):format(v and v.key or "UNKNOWN"))'''
+position = 'before'
+payload = '''
+-- Check for probabilities
+if v.set and v.set == 'Joker' then
+	local _, desc = pcall(function() return localize { type = 'raw_descriptions', key = v.key, set = v.set, vars = {} } end)
+	if desc and type(desc) == 'table' then
+		for _, line in ipairs(desc) do
+			if line:find("nil in nil") or line:find("chance") then
+				--print("Probability joker! "..v.key)
+				G.PAYASAKA_PROBABILITY_JOKERS = G.PAYASAKA_PROBABILITY_JOKERS or {}
+				G.PAYASAKA_PROBABILITY_JOKERS[v.key] = true
+				break
+			end
+		end
+	end
+end
+'''
+match_indent = true

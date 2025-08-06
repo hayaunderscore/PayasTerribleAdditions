@@ -3085,6 +3085,35 @@ return {
 					"{X:dark_edition,C:white}X#1#{} Blind size",
 				}
 			},
+			payasaka_unlucky = {
+				name = "Unlucky",
+				text = {
+					"Halves listed",
+					"{C:green,E:1}probabilities"
+				}
+			},
+			payasaka_liability = {
+				name = "Liability",
+				text = {
+					"{C:money}$#1#{} interest cap",
+				}
+			},
+			payasaka_balance = {
+				name = "Balance",
+				text = {
+					"{C:red}-1{} hand on first",
+					"discard of round",
+					"{C:red}-1{} discard on first",
+					"hand of round",
+				}
+			},
+			payasaka_warranty = {
+				name = "Warranty",
+				text = {
+					"{C:money}$#1#{} if sold",
+					"or destroyed",
+				}
+			},
 			payasaka_polymorph = {
 				name = "Polymorph",
 				text = {
@@ -3520,6 +3549,10 @@ return {
 			payasaka_delivery = "Delivery",
 			payasaka_delivered = "Delivered",
 			payasaka_taunt = "Taunt",
+			payasaka_unlucky = "Unlucky",
+			payasaka_liability = "Liability",
+			payasaka_balance = "Balance",
+			payasaka_warranty = "Warranty",
 			payasaka_polymorph = "Polymorph",
 			status_payasaka_frozen = "Frozen",
 			status_payasaka_marked = "Marked",

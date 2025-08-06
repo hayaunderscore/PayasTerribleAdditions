@@ -161,6 +161,35 @@ SMODS.Sticker {
 }
 
 SMODS.Sticker {
+	key = 'warranty',
+	atlas = "JOE_Enhancements",
+	pos = { x = 4, y = 2 },
+	badge_colour = HEX('566166'),
+	get_rate = function(self, card)
+		if G.GAME.modifiers.enable_rentals_in_shop then return 0.15 end
+		return 0.1
+	end,
+	sets = { ["Joker"] = true },
+	default_compat = true,
+	sticker_tier = 1,
+	should_apply = deck_sleeve_combo_apply,
+	config = { dollars = -15 },
+	calculate = function(self, card, context)
+		if (context.joker_type_destroyed or context.selling_card) and context.card == card then
+			return {
+				dollars = card.ability[self.key].dollars or -15
+			}
+		end
+	end,
+	apply = function(self, card, val)
+		card.ability[self.key] = val and copy_table(self.config) or nil
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { self.config.dollars } }
+	end
+}
+
+SMODS.Sticker {
 	key = 'giant',
 	atlas = "JOE_Enhancements",
 	pos = { x = 2, y = 2 },
@@ -227,6 +256,43 @@ SMODS.Sticker {
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability[self.key].blind_size } }
+	end
+}
+
+SMODS.Sticker {
+	key = 'unlucky',
+	atlas = "JOE_Enhancements",
+	pos = { x = 7, y = 2 },
+	badge_colour = HEX('7fca70'),
+	get_rate = function(self, card)
+		if G.GAME.always_add_lucky then return 1 end
+		if G.GAME.modifiers.enable_rentals_in_shop then return 0.1 end
+		return 0.15
+	end,
+	sets = { ["Joker"] = true },
+	default_compat = true,
+	sticker_tier = 2,
+	config = {
+		odds_multiplier = 0.5,
+	},
+	calculate = function(self, card, context)
+		if context.mod_probability and context.trigger_obj == card then
+			return {
+				numerator = context.numerator * (card.ability[self.key].odds_multiplier or 0.5)
+			}
+		end
+	end,
+	should_apply = function(self, card, center, area, bypass_reroll)
+		if card and G.PAYASAKA_PROBABILITY_JOKERS[center.key] then
+			return deck_sleeve_combo_apply(self, card, center, area, bypass_reroll)
+		end
+		return false
+	end,
+	apply = function(self, card, val)
+		card.ability[self.key] = val and copy_table(self.config) or nil
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability[self.key].odds_multiplier } }
 	end
 }
 
@@ -299,4 +365,64 @@ SMODS.Sticker {
 		if name == "ERROR" then name = "[card type]" end
 		return { vars = { name } }
 	end
+}
+
+SMODS.Sticker {
+	key = 'liability',
+	atlas = "JOE_Enhancements",
+	pos = { x = 9, y = 2 },
+	badge_colour = HEX('566166'),
+	get_rate = function(self, card)
+		if G.GAME.modifiers.enable_eternals_in_shop then return 0.2 end
+		return 0.1
+	end,
+	sets = { ["Joker"] = true },
+	default_compat = true,
+	sticker_tier = 3,
+	should_apply = deck_sleeve_combo_apply,
+	config = { interest_neg = -2 },
+	apply = function(self, card, val)
+		card.ability[self.key] = val and copy_table(self.config) or nil
+	end,
+	payasaka_add_to_deck = function(self, card, from_debuff)
+		if (not card.added_to_deck) and not from_debuff then
+			G.GAME.interest_cap = G.GAME.interest_cap + card.ability[self.key].interest_neg*5
+			--print("changed interest cap")
+		end
+	end,
+	payasaka_remove_from_deck = function(self, card, from_debuff)
+		if card.added_to_deck and not from_debuff then
+			G.GAME.interest_cap = G.GAME.interest_cap - card.ability[self.key].interest_neg*5
+			--print("changed interest cap")
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { self.config.interest_neg } }
+	end
+}
+
+SMODS.Sticker {
+	key = 'balance',
+	atlas = "JOE_Enhancements",
+	pos = { x = 10, y = 2 },
+	badge_colour = HEX('566166'),
+	get_rate = function(self, card)
+		if G.GAME.modifiers.enable_eternals_in_shop then return 0.1 end
+		return 0.08
+	end,
+	sets = { ["Joker"] = true },
+	default_compat = true,
+	sticker_tier = 3,
+	should_apply = deck_sleeve_combo_apply,
+	calculate = function(self, card, context)
+		if context.pre_discard and G.GAME.current_round.discards_used <= 0 and G.GAME.current_round.hands_left > 0 then
+			ease_hands_played(-1)
+		end
+		if context.press_play and G.GAME.current_round.hands_played <= 0 and G.GAME.current_round.discards_left > 0 then
+			ease_discard(-1)
+		end
+	end,
+	apply = function(self, card, val)
+		card.ability[self.key] = val
+	end,
 }
