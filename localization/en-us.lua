@@ -3068,7 +3068,7 @@ return {
 			payasaka_delivery = {
 				name = "Delivery",
 				text = {
-					"Undebuffed after",
+					"Debuffed for",
 					"{C:attention}2{} rounds",
 					"{C:inactive}({C:attention}#1#{C:inactive} remaining)",
 				}
