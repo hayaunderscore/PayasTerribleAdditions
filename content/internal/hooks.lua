@@ -760,9 +760,11 @@ function Card:add_to_deck(from_debuff)
 			SMODS.debuff_card(self, true, "delivery_debuff")
 		end
 	end
-	for _, sticker in pairs(SMODS.Sticker.obj_buffer) do
-		if self.ability[sticker] and SMODS.Stickers[sticker].payasaka_add_to_deck then
-			SMODS.Stickers[sticker]:payasaka_add_to_deck(self, from_debuff)
+	if not self.added_to_deck then
+		for _, sticker in pairs(SMODS.Sticker.obj_buffer) do
+			if self.ability[sticker] and SMODS.Stickers[sticker].payasaka_add_to_deck then
+				SMODS.Stickers[sticker]:payasaka_add_to_deck(self, from_debuff)
+			end
 		end
 	end
 	add_to_deck_ref(self, from_debuff)
@@ -777,9 +779,11 @@ function Card:remove_from_deck(from_debuff)
 			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
 		end
 	end
-	for _, sticker in pairs(SMODS.Sticker.obj_buffer) do
-		if self.ability[sticker] and SMODS.Stickers[sticker].payasaka_remove_from_deck then
-			SMODS.Stickers[sticker]:payasaka_remove_from_deck(self, from_debuff)
+	if self.added_to_deck then
+		for _, sticker in pairs(SMODS.Sticker.obj_buffer) do
+			if self.ability[sticker] and SMODS.Stickers[sticker].payasaka_remove_from_deck then
+				SMODS.Stickers[sticker]:payasaka_remove_from_deck(self, from_debuff)
+			end
 		end
 	end
 	remove_from_deck_ref(self, from_debuff)
