@@ -22,6 +22,7 @@ SMODS.Joker:take_ownership('luchador', {
 					end
 				})
 				SMODS.calculate_effect({ message = "Transformed!" }, card)
+				check_for_unlock({ type = 'payasaka_encounter_thunderstruck' })
 			end
 			return nil, true -- This is for Joker retrigger purposes
 		end

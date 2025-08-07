@@ -557,6 +557,9 @@ local function status_collection_ui()
 				card:set_sprites(G.P_CENTERS["j_joker"])
 				card.children.center:set_sprite_pos({ x = 0, y = 0 })
 			end
+			if center.key == "status_payasaka_frozen" then
+				card.ability.pta_frozen = true
+			end
 			center:apply(card, true)
 		end,
 	})
@@ -587,7 +590,7 @@ function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
 					c.ability.pta_hide_frozen_sprite = nil
 					if not silent then
 						c:juice_up()
-						play_sound('payasaka_snd_icespell', 1, 0.4)
+						play_sound('payasaka_snd_icespell', 1, 0.25)
 					end
 					return true
 				end
@@ -595,7 +598,7 @@ function PTASaka.freeze_card(c, freeze, delay_sprite, silent, full_delay)
 		else
 			if not silent then
 				c:juice_up()
-				play_sound('payasaka_snd_icespell', 1, 0.4)
+				play_sound('payasaka_snd_icespell', 1, 0.25)
 			end
 		end
 	else

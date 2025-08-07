@@ -82,6 +82,7 @@ PTASaka.Risk = SMODS.Consumable:extend {
 			ability = PTASaka.deep_copy(card
 				.ability.extra)
 		}
+		check_for_unlock({ amount = #G.GAME.risk_cards_risks, type = 'payasaka_risk_count' })
 		local top_dynatext = nil
 		local bot_dynatext = nil
 

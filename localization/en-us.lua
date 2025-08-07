@@ -1650,6 +1650,24 @@ return {
 					"each give {C:money}$#1#"
 				},
 			},
+			j_payasaka_snowyday = {
+				name = "Snowy Day",
+				text = {
+					"{C:attention}+#1#{} hand size",
+					"Freezes the first card",
+					"in {C:attention}scored hand",
+				},
+			},
+			j_payasaka_blizzard = {
+				name = "Blizzard",
+				text = {
+					"{C:green}#1# in #2#{} chance of",
+					"freezing random cards",
+					"in {C:attention}scored hand",
+					"Frozen cards retrigger",
+					"{C:attention}#3#{} additional times"
+				},
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
@@ -3404,6 +3422,37 @@ return {
 		}
 	},
 	misc = {
+		achievement_names = {
+			ach_payasaka_gacha_prismatic = "3☆ Make Debut Ticket",
+			ach_payasaka_beat_ante39 = "The End?",
+			ach_payasaka_risktaker = "I'm Risking It!",
+			ach_payasaka_thunderstruck = "Great Summoning",
+			-- Don't tell anyone this was originally Friend Inside Me
+			ach_payasaka_friend = "Three's a Crowd"
+		},
+		achievement_descriptions = {
+			ach_payasaka_gacha_prismatic = {
+				"Obtain a Prismatic Joker",
+				"from a Gacha card"
+			},
+			ach_payasaka_beat_ante39 = {
+				"Win the Ante 39",
+				"superboss"
+			},
+			ach_payasaka_risktaker = {
+				"Use more than 10 Risk",
+				"cards in a single ante"
+			},
+			ach_payasaka_thunderstruck = {
+				"Have certain Jokers",
+				"while Risk cards are",
+				"in effect"
+			},
+			ach_payasaka_friend = {
+				"Win a run with atleast",
+				"3 Friend Jokers"
+			}
+		},
 		quips = {
 			lq_question_1 = {
 				"Quite, quite",

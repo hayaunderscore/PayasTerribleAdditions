@@ -40,7 +40,24 @@ PTASaka.Status {
 			PTASaka.freeze_card(card, nil, true, true)
 		end
 	end,
+	draw = function(self, card, layer)
+		if (card.ability.pta_frozen or card.ability.pta_force_draw_frozen) and not card.ability.pta_hide_frozen_sprite then
+			PTASaka.Status.draw(self, card, layer)
+		end
+	end
 }
+
+-- Make sure marked and frozen never persist
+function PTASaka.Mod.reset_game_globals(start)
+	for k, v in pairs(G.playing_cards or {}) do
+		if v.ability.pta_frozen then
+			PTASaka.set_status(v, "payasaka_frozen", nil)
+		end
+		if v.ability.status_payasaka_marked then
+			PTASaka.set_status(v, "payasaka_marked", nil)
+		end
+	end
+end
 
 local draw_shader_ref = Sprite.draw_shader
 function Sprite:draw_shader(_shader, _shadow_height, _send, ...)

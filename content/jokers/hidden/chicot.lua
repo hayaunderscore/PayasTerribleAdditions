@@ -22,6 +22,7 @@ SMODS.Joker:take_ownership('chicot', {
 					end
 				})
 				SMODS.calculate_effect({ message = "Transformed!" }, card)
+				check_for_unlock({ type = 'payasaka_encounter_thunderstruck' })
 			else
 				G.E_MANAGER:add_event(Event({
 					func = function()
