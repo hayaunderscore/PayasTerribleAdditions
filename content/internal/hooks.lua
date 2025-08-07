@@ -1182,93 +1182,34 @@ function Card:set_sprites(center, front)
 		self.children.property_houses.states.click.can = false
 	end
 	if center and center.key == "c_payasaka_tagbagtest" then
-		local tag = self.ability and self.ability.tagbag_tag or center.pta_default_tag
-		local name = localize { type = 'name_text', set = 'Tag', key = tag }
-		local tag_center = G.P_TAGS[tag]
-		name = (name or ""):gsub(" Tag", ""):gsub(" Patch", "")
-		-- Create tag name graphic, if we have not created one yet...
-		if not G.ASSET_ATLAS["payasaka_tagbagatlas_" .. name] then
-			-- New canvas that will serve as our pseudo-image
-			local canvas = love.graphics.newCanvas(71, 95)
-			---@type love.Font
-			local font = SMODS.Fonts["payasaka_Tarot"].FONT
-			local text = string.upper(name)
-			if font:getWidth(text) > 42 then text = text:lower() end
-			-- trim the text until it fits perfectly
-			local ot = text
-			while font:getWidth(text) > 42 do
-				ot = ot:sub(1, -2)
-				text = ot .. "."
-			end
-			-- Create tag graphic quad
-			local tag_atlas = G.ASSET_ATLAS[tag_center.atlas or "tags"]
-			local quad = love.graphics.newQuad(tag_center.pos.x * tag_atlas.px, tag_center.pos.y * tag_atlas.py,
-				tag_atlas.px, tag_atlas.py, tag_atlas.image)
+		local text_atlas, label_atlas, label_pos = PTASaka.CreateTagBagGraphic(self, center)
 
-			local oldcanvas = love.graphics.getCanvas()
-			love.graphics.setCanvas(canvas)
-			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.printf({ HEX('586473'), text }, font, 1, 15, 71, "center")
-			-- Draw the tag graphic here too
-			love.graphics.draw(tag_atlas.image, quad, 19, 39)
-			love.graphics.setCanvas(oldcanvas)
-
-			G.ASSET_ATLAS["payasaka_tagbagatlas_" .. name] = {
-				name = "payasaka_tagbagatlas_" .. name,
-				path = G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"].path,
-				full_path = G.ASSET_ATLAS["payasaka_JOE_Tarots_Adjust"].full_path,
-				image = canvas,
-				px = 71,
-				py = 95,
-				type = 0
-			}
-		end
+		-- create name sprite
 		self.children.tagbag_name = Sprite(
 			self.T.x,
 			self.T.y,
 			self.T.w,
 			self.T.h,
-			G.ASSET_ATLAS["payasaka_tagbagatlas_" .. name],
+			text_atlas,
 			{ x = 0, y = 0 }
 		)
 		self.children.tagbag_name.role.draw_major = self
 		self.children.tagbag_name.states.hover.can = false
 		self.children.tagbag_name.states.click.can = false
 
-		-- Mods can add their own bag graphics
-		if tag_center and tag_center.mod and G.ASSET_ATLAS[tag_center.mod.prefix .. "_tagbag_top"] then
-			self.children.pta_front:remove()
-			self.children.pta_front = Sprite(
-				self.T.x,
-				self.T.y,
-				self.T.w,
-				self.T.h,
-				G.ASSET_ATLAS[tag_center.mod.prefix .. "_tagbag_top"],
-				{ x = 0, y = 0 }
-			)
-			self.children.pta_front.role.draw_major = self
-			self.children.pta_front.states.hover.can = false
-			self.children.pta_front.states.click.can = false
-		elseif tag == "tag_payasaka_nil" then -- nil tags use a blank tag bag top
-			self.children.pta_front:set_sprite_pos({ x = 4, y = 1 })
-		elseif tag_center and tag_center.mod then -- None? Use the ones that come with ours
-			local id = tag_center.mod.id or "Balatro"
-			if id == "pta_saka" then
-				self.children.pta_front:set_sprite_pos({ x = 1, y = 1 })
-			elseif id == "allinjest" then
-				self.children.pta_front:set_sprite_pos({ x = 2, y = 1 })
-			elseif id == "paperback" then
-				self.children.pta_front:set_sprite_pos({ x = 3, y = 1 })
-			elseif id == "aikoyorisshenanigans" then
-				self.children.pta_front:set_sprite_pos({ x = 5, y = 1 })
-			elseif id == "MoreFluff" then
-				self.children.pta_front:set_sprite_pos({ x = 6, y = 1 })
-			elseif id == "ortalab" then
-				self.children.pta_front:set_sprite_pos({ x = 7, y = 1 })
-			elseif id == "TOGAPack" then
-				self.children.pta_front:set_sprite_pos({ x = 8, y = 1 })
-			end
-		end
+		-- recreate front sprite
+		self.children.pta_front:remove()
+		self.children.pta_front = Sprite(
+			self.T.x,
+			self.T.y,
+			self.T.w,
+			self.T.h,
+			label_atlas,
+			label_pos
+		)
+		self.children.pta_front.role.draw_major = self
+		self.children.pta_front.states.hover.can = false
+		self.children.pta_front.states.click.can = false
 	end
 	if self and self.ability and self.ability.pta_hidden_spawned and center and center.pta_hidden_pos and self.children.center then
 		self.children.center:set_sprite_pos(center.pta_hidden_pos)
