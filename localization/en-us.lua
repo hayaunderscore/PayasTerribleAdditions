@@ -3454,9 +3454,8 @@ return {
 				"cards in a single ante"
 			},
 			ach_payasaka_thunderstruck = {
-				"Have certain Jokers",
-				"while Risk cards are",
-				"in effect"
+				"Attempt to debuff a boss blind",
+				"while Risk cards are in effect",
 			},
 			ach_payasaka_friend = {
 				"Win a run with atleast",
