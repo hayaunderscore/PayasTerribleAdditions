@@ -658,3 +658,60 @@ if v.set and v.set == 'Joker' then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then'''
+position = 'at'
+payload = '''
+if next(SMODS.find_card("j_payasaka_almondeye")) and G.GAME.blind_on_deck ~= 'Boss' then
+	if G.GAME.blind_on_deck == 'Small' then
+		G.GAME.round_resets.blind_states.Small = 'Defeated'
+	elseif G.GAME.blind_on_deck == 'Big' then
+		G.GAME.round_resets.blind_states.Big = 'Defeated'
+	end
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_small then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''G.GAME.round_resets.boss_rerolled = false'''
+position = 'before'
+payload = '''
+if next(SMODS.find_card("j_payasaka_almondeye")) then
+	G.GAME.round_resets.blind_choices.Big = get_new_boss()
+	G.GAME.round_resets.blind_choices.Small = get_new_boss()
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''if v.eternal then _joker:set_eternal(true) end'''
+position = 'after'
+payload = '''
+if v.payasaka_status and next(v.payasaka_status) then
+	for kk, _ in pairs(v.payasaka_status) do
+		PTASaka.set_status(_joker, kk, true)
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''if v.eternal then card:set_eternal(true) end'''
+position = 'after'
+payload = '''
+if v.payasaka_status and next(v.payasaka_status) then
+	for kk, _ in pairs(v.payasaka_status) do
+		PTASaka.set_status(card, kk, true)
+	end
+end
+'''
+match_indent = true

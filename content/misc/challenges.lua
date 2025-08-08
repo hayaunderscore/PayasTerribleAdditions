@@ -1,7 +1,13 @@
+
+local function SigmaOrNah()
+	if AKYRS then return false end
+	return true
+end
+
 SMODS.Challenge {
 	key = 'stuckrock',
 	jokers = {
-		{ id = "j_payasaka_locomotive", eternal = true, stickers = {"cry_absolute"}, pinned = true }
+		{ id = "j_payasaka_locomotive", eternal = SigmaOrNah(), akyrs_sigma = true, pinned = true }
 	},
 	restrictions = {
 		banned_cards = {
@@ -42,6 +48,18 @@ if MoreFluff then
 		vouchers = { { id = 'v_mf_superboss_ticket' } }
 	}
 end
+
+SMODS.Challenge {
+	key = 'dreamfest',
+	jokers = {
+		{ id = "j_payasaka_almondeye", eternal = SigmaOrNah(), akyrs_sigma = true, payasaka_status = {["payasaka_awful"] = true} }
+	},
+	rules = {
+		custom = {
+			{ id = 'payasaka_dream_fest_indicator', value = true }
+		}
+	}
+}
 
 if AKYRS then
 	AKYRS.HardcoreChallenge {

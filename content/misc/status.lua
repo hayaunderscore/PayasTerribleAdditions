@@ -117,7 +117,7 @@ PTASaka.Status {
 			PTASaka.with_deck_effects(card, function(c)
 				PTASaka.Misprintize({
 					val = c.ability,
-					amt = val and 0.5 or 2,
+					amt = val and 0.75 or 1.5,
 				})
 			end)
 			PTASaka.create_proxy(card)

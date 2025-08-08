@@ -1668,6 +1668,16 @@ return {
 					"{C:attention}#3#{} additional times"
 				},
 			},
+			j_payasaka_almondeye = {
+				name = {
+					"{f:5}アーモンドアイ",
+					"{C:edition,s:0.5}Almond Eye",
+				},
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Score",
+					"All blinds are {C:dark_edition}Boss Blinds",
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
@@ -2772,8 +2782,8 @@ return {
 			status_payasaka_awful = {
 				name = "Awful",
 				text = {
-					"All card values",
-					"are {C:attention}halved",
+					"All card values are",
+					"reduced by {C:attention}25%",
 				},
 			},
 		},
@@ -3522,6 +3532,11 @@ return {
 				"easier to read...",
 			},
 		},
+		v_text = {
+			ch_c_payasaka_dream_fest_indicator = {
+				"Good luck!",
+			}
+		},
 		dictionary = {
 			k_property = "Property",
 			b_property_cards = "Property Cards",
@@ -3613,7 +3628,8 @@ return {
 		},
 		challenge_names = {
 			c_payasaka_stuckrock = "Stuck between a Rock and a Hard Place",
-			c_payasaka_freeticket = "Eternal Ticket to Hell"
+			c_payasaka_freeticket = "Eternal Ticket to Hell",
+			c_payasaka_dreamfest = "Dream Fest Legend"
 		},
 		hardcore_challenge_names = {
 			hc_payasaka_ultrastuckrock = "Trains vs. Jimbo",
