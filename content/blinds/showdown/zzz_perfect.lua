@@ -70,6 +70,12 @@ SMODS.Blind {
 			key = (G and G.GAME and G.GAME.round_resets and (G.GAME.round_resets.ante or 0) and G.STAGE == G.STAGES.RUN) == 39 and
 			"bl_payasaka_showdown_sweet_sleep" or "bl_payasaka_showdown_sweet_sleep_alt"
 		}
+	end,
+	collection_loc_vars = function(self)
+		return {
+			vars = { self.config.funny.mult },
+			key = "bl_payasaka_showdown_sweet_sleep_alt"
+		}
 	end
 }
 

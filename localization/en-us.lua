@@ -1783,6 +1783,13 @@ return {
 					"after pressing play"
 				}
 			},
+			bl_payasaka_showdown_the_nameless = {
+				name = "The Nameless",
+				text = {
+					"#1# in #2# chance of",
+					"washing out drawn cards"
+				}
+			}
 		},
 		Edition = {
 			e_payasaka_jpeg = {

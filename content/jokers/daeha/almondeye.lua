@@ -67,7 +67,7 @@ SMODS.Joker {
 			G.E_MANAGER:add_event(Event {
 				func = function()
 					G.GAME.chips = math.floor(G.GAME.chips ^ card.ability.extra.xscore)
-					G.GAME.chips_text = number_format(G.GAME.chips)
+					--G.GAME.chips_text = number_format(G.GAME.chips, 100000000)
 					G.HUD:get_UIE_by_ID('chip_UI_count'):juice_up(0.5, 0.5)
 					return true
 				end
