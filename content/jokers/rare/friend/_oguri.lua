@@ -16,4 +16,11 @@ SMODS.Joker {
 			colour = HEX('09d707')
 		},
 	},
+	calc_scaling = function(self, card, other_card, scaling_value, scalar_value, args)
+		-- If globalization is enabled, do not use calc_scaling !!!
+		if PTASaka.Mod.config["Fatty Mode"] then return nil end
+		return {
+			scalar_value = scalar_value*2
+		}
+	end
 }

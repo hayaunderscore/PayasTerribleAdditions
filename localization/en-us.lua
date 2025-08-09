@@ -3369,6 +3369,23 @@ return {
 					"Joker currently held"
 				},
 			},
+			ptaset_payasaka_fatty = {
+				name = "Oguri Globalization",
+				text = {
+					"Allow {C:attention}Oguri Cap{} to always detect",
+					"{C:attention}scaling changes{} in ALL Jokers",
+					"{C:dark_edition}Might break some things!"
+				},
+			},
+			ptaset_payasaka_hidden = {
+				name = "???",
+				text = {
+					"YOU SHOULD NOT BE HERE",
+				},
+				unlock = {
+					"???"
+				}
+			},
 		},
 		PTACredits = {
 			credit_haya = {

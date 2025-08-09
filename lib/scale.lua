@@ -1,5 +1,7 @@
 -- Double Scale/Scalae inspired scale manipulation shit why not
 -- Proxy stuff inspired by https://github.com/Steamodded/smods/pull/781
+-- UPDATE: This is largely now deprecated by https://github.com/Steamodded/smods/pull/861, though
+--         this still exists for those *certain* people with mods that don't use the new API yet
 
 --- table for keys blacklisted for scaling
 PTASaka.invalid_scaling_keys = {
@@ -66,6 +68,8 @@ PTASaka.whitelisted_ability_keys = {
 ---@param key string | nil
 ---@param pass boolean | nil
 function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
+	-- Do not create proxies when globalization is disabled
+	if not PTASaka.Mod.config["Fatty Mode"] then return end
 	-- Immutable cards do not need a proxy
 	if card.config.center.immutable then return end
 	-- For now, dont make playing cards have a proxy
@@ -183,6 +187,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 end
 
 function PTASaka.remove_card_scale_proxy(parent, tree, key)
+	if not PTASaka.Mod.config["Fatty Mode"] then return end
 	key = key or 'ability'
 	if not tree[key.."_orig"] then
 		return

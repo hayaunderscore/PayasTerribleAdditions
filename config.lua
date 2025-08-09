@@ -6,6 +6,9 @@ return {
 	["Witty Comments"] = true,
 	["Ahead"] = true,
 	["Risk Cards"] = true,
-	["Experimental"] = true,
+	["Experimental"] = true, -- No longer used directly
 	["New Run Plus"] = false,
+	-- Subcategories for Experimental Features
+	["Fatty Mode"] = false,
+	["VERYFUNNYFEATURETHATNEEDSTOBEUNLOCKED"] = true
 }

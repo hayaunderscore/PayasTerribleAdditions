@@ -1,7 +1,7 @@
 -- Set toggles, similar to Cryptid
 ---@class SetToggle: SMODS.Center
 ---@overload fun(self: SetToggle): SetToggle
-PTASaka.SetToggle = SMODS.Center:extend{
+PTASaka.SetToggle = SMODS.Center:extend {
 	set = "PTASet",
 	pos = { x = 0, y = 0 },
 	config = {},
@@ -12,6 +12,8 @@ PTASaka.SetToggle = SMODS.Center:extend{
 	required_params = {
 		"key",
 	},
+	subcategory = nil,
+	is_subcategory = nil,
 	no_doe = true, -- Chaos/Parakmi please don't choose this LMAO
 	inject = function(self, i)
 		if not G.P_CENTER_POOLS[self.set] then
@@ -22,29 +24,31 @@ PTASaka.SetToggle = SMODS.Center:extend{
 	end,
 	requires_restart = false,
 	loc_vars = function(self, info_queue, card)
-		local colour = card.debuff and G.C.JOKER_GREY or mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
-		local text = card.debuff and "currently disabled" or "currently enabled"
-		if self.requires_restart_confirmation then
-			colour = G.C.DARK_EDITION
-			text = "requires restart"
-		end
-		return {
-			main_end = {
-				{
-					n = G.UIT.C,
-					config = { align = "bm", minh = 0.4 },
-					nodes = {
-						{
-							n = G.UIT.C,
-							config = { ref_table = card, align = "m", colour = colour, r = 0.05, padding = 0.06 },
-							nodes = {
-								{ n = G.UIT.T, config = { text = ' '..text..' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+		if not self.is_subcategory then
+			local colour = card.debuff and G.C.JOKER_GREY or mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+			local text = card.debuff and "currently disabled" or "currently enabled"
+			if self.requires_restart_confirmation then
+				colour = G.C.DARK_EDITION
+				text = "requires restart"
+			end
+			return {
+				main_end = {
+					{
+						n = G.UIT.C,
+						config = { align = "bm", minh = 0.4 },
+						nodes = {
+							{
+								n = G.UIT.C,
+								config = { ref_table = card, align = "m", colour = colour, r = 0.05, padding = 0.06 },
+								nodes = {
+									{ n = G.UIT.T, config = { text = ' ' .. text .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+								}
 							}
 						}
 					}
 				}
 			}
-		}
+		end
 	end,
 	set_card_type_badge = function(self, card, badges) end,
 	pta_no_mod_badge = true,
@@ -57,7 +61,7 @@ PTASaka.SetToggle = SMODS.Center:extend{
 		return false
 	end,
 	update = function(self, card, dt)
-		if card.ability.set == "PTASet" and self.unlocked and card.area ~= G.your_collection then
+		if card.ability.set == "PTASet" and self.unlocked and card.area ~= G.your_collection and not self.is_subcategory then
 			card.debuff = not PTASaka.Mod.config[self.pta_associated_config]
 		end
 	end
@@ -68,8 +72,7 @@ PTASaka.SetToggle {
 	key = 'experimental',
 	atlas = "JOE_Jokers2",
 	pos = { x = 4, y = 6 },
-	pta_associated_config = "Experimental",
-	requires_restart = true,
+	is_subcategory = "experimental",
 }
 -- Ahead Jokers
 PTASaka.SetToggle {
@@ -141,20 +144,65 @@ PTASaka.SetToggle {
 		return false
 	end
 }
+-- Oguri Cap globalization
+PTASaka.SetToggle {
+	key = 'fatty',
+	atlas = "JOE_Jokers2",
+	pos = { x = 2, y = 7 },
+	pta_associated_config = "Fatty Mode",
+	subcategory = "experimental",
+	loc_vars = function(self, info_queue, card)
+		local vars = PTASaka.SetToggle.loc_vars(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.j_payasaka_oguri
+		return vars
+	end
+}
+-- ??? Will be used in place for SOMETHING...
+PTASaka.SetToggle {
+	key = 'hidden',
+	atlas = "JOE_Jokers2",
+	pos = { x = 2, y = 7 },
+	unlocked = false,
+	subcategory = "experimental",
+}
 
 local start_up_values = PTASaka.deep_copy(PTASaka.Mod.config)
+
+local create_UIBox_collection_subcategory = function(subcategory, rows)
+	rows = rows or {5,5,5}
+	-- filter out subcategory items
+	local pool = PTASaka.FH.filter(G.P_CENTER_POOLS.PTASet, function(v)
+		if v and v.subcategory and v.subcategory == subcategory then
+			return true
+		end
+		return false
+	end)
+    return SMODS.card_collection_UIBox(pool, rows, {
+        no_materialize = true,
+        h_mod = 0.95,
+		hide_single_page = true,
+    })
+end
 
 local cardClick = Card.click
 function Card:click()
 	if self.ability.set == "PTASet" and self.config.center.unlocked then
-		PTASaka.Mod.config[self.config.center.pta_associated_config] = not PTASaka.Mod.config[self.config.center.pta_associated_config]
-		self.debuff = not PTASaka.Mod.config[self.config.center.pta_associated_config]
-		self:juice_up(0.7)
-		play_sound('tarot2')
-		if self.config.center.requires_restart and start_up_values[self.config.center.pta_associated_config] ~= PTASaka.Mod.config[self.config.center.pta_associated_config] then
-			self.config.center.requires_restart_confirmation = true
-		elseif self.config.center.requires_restart then
-			self.config.center.requires_restart_confirmation = nil
+		if not self.config.center.is_subcategory then
+			PTASaka.Mod.config[self.config.center.pta_associated_config] = not PTASaka.Mod.config
+			[self.config.center.pta_associated_config]
+			self.debuff = not PTASaka.Mod.config[self.config.center.pta_associated_config]
+			self:juice_up(0.7)
+			play_sound('tarot2')
+			if self.config.center.requires_restart and start_up_values[self.config.center.pta_associated_config] ~= PTASaka.Mod.config[self.config.center.pta_associated_config] then
+				self.config.center.requires_restart_confirmation = true
+			elseif self.config.center.requires_restart then
+				self.config.center.requires_restart_confirmation = nil
+			end
+		else
+			G.SETTINGS.paused = true
+			G.FUNCS.overlay_menu {
+				definition = create_UIBox_collection_subcategory("experimental", {2}),
+			}
 		end
 	else
 		cardClick(self)

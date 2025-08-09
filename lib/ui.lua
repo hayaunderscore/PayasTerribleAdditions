@@ -469,23 +469,29 @@ local tabs = function()
 	{
 		{
 			label = "Features",
-			chosen = true,
+			chosen = false,
 			tab_definition_function = function()
-				local len = #G.P_CENTER_POOLS.PTASet / 2
+				local pool = PTASaka.FH.filter(G.P_CENTER_POOLS.PTASet, function(v)
+					if v and not v.subcategory then
+						return true
+					end
+					return false
+				end)
+				local len = math.ceil(#pool / 2)
 				G.pta_features_area = CardArea(
 					G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
-					(math.ceil(len) + 0.25) * G.CARD_W,
+					(len + 0.25) * G.CARD_W,
 					0.875 * G.CARD_H,
-					{ card_limit = math.ceil(len), type = 'title', highlight_limit = 0, collection = true }
+					{ card_limit = len, type = 'title', highlight_limit = 0, collection = true }
 				)
 				G.pta_features_area_two = CardArea(
 					G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
-					(math.ceil(len) + 0.25) * G.CARD_W,
+					(len + 0.25) * G.CARD_W,
 					0.875 * G.CARD_H,
-					{ card_limit = math.ceil(len), type = 'title', highlight_limit = 0, collection = true }
+					{ card_limit = len, type = 'title', highlight_limit = 0, collection = true }
 				)
-				for k, v in pairs(G.P_CENTER_POOLS.PTASet) do
-					local area = k <= math.ceil(#G.P_CENTER_POOLS.PTASet / 2) and G.pta_features_area or
+				for k, v in pairs(pool) do
+					local area = k <= len and G.pta_features_area or
 						G.pta_features_area_two
 					local card = Card(area.T.x + (area.T.w / 2.5), area.T.y,
 						G.CARD_W, G.CARD_H, G.P_CARDS.empty, v)
@@ -569,7 +575,7 @@ local tabs = function()
 		},
 		{
 			label = "Credits",
-			chosen = true,
+			chosen = false,
 			tab_definition_function = function()
 				return {
 					n = G.UIT.ROOT,
