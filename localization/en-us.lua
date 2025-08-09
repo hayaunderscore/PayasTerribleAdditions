@@ -3078,6 +3078,24 @@ return {
 					"when played",
 				}
 			},
+			payasaka_thunder_seal = {
+				name = "Thunder Stamp",
+				text = {
+					"Creates a {C:risk}Risk{} card if",
+					"played but {C:attention}unscored",
+					"{C:inactive}(Must have room)",
+				}
+			},
+			payasaka_ghost_seal = {
+				name = "Ghost Stamp",
+				text = {
+					"Creates a {C:dark_edition}Spectral{} card",
+					"and a {C:attention}copy{} of this card",
+					"once its {C:red}destroyed",
+					"{C:inactive}(Must have room)",
+					"{C:inactive}(Does not copy seal)",
+				}
+			},
 			payasaka_sunset = {
 				name = "Sunset",
 				text = {
@@ -3630,6 +3648,8 @@ return {
 			payasaka_jpeg = 'YCbCr',
 			payasaka_checkered = 'Checkered',
 			payasaka_random_seal = "Random Stamp",
+			payasaka_thunder_seal = "Thunder Stamp",
+			payasaka_ghost_seal = "Ghost Stamp",
 			payasaka_sunset = "Sunset",
 			payasaka_tired = "Tired",
 			payasaka_giant = "Giant",
