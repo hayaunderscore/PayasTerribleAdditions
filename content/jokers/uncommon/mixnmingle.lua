@@ -43,11 +43,12 @@ SMODS.Joker {
 					pseudoshuffle(cards, pseudoseed('mix.mingle.'))
 					-- for each card, determine distance from its original position
 					for i = 1, #cards do
-						card.ability.extra.xmult = card.ability.extra.xmult + (determine_distance(cards[i], i, G.play.cards)*card.ability.extra.xmult_gain)
+						local gain = (determine_distance(cards[i], i, G.play.cards)*card.ability.extra.xmult_gain)
+						card.ability.extra.xmult = card.ability.extra.xmult + gain
 						SMODS.scale_card(card, {
 							ref_table = card.ability.extra,
-							ref_value = "x_mult",
-							scalar_table = {gain = (determine_distance(cards[i], i, G.play.cards)*card.ability.extra.xmult_gain)},
+							ref_value = "xmult",
+							scalar_table = {gain = gain},
 							scalar_value = "gain",
 						})
 					end
