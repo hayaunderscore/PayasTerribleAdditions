@@ -3,6 +3,9 @@ PTASaka = {}
 PTASaka.Mod = SMODS.current_mod
 local conf = PTASaka.Mod.config
 
+-- i love jonh debugpkus
+assert(SMODS.current_mod.lovely, "Lovely patches were not loaded.\nMake sure your mod folder is not nested (there should be a bunch of files in the mod folder and not just another folder).")
+
 local nil_sane = function(val, def)
 	if val == nil then val = def end
 	return val
