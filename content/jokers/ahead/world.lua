@@ -24,6 +24,11 @@ SMODS.Joker {
 				local prob = SMODS.pseudorandom_probability(card, 'sekaide', 1, card.ability.extra.odds)
 				if (not _c:is_suit('Spades')) and prob then
 					card.ability.extra.f_x_chips = card.ability.extra.f_x_chips + card.ability.extra.x_chips
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "f_x_chips",
+						scalar_value = "x_chips",
+					})
 					-- does not turn it to spades visually, but still make it count
 					_c.base.suit = 'Spades'
 					_c.base.suit_nominal = 0.04

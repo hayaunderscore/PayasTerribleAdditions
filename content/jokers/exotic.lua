@@ -155,6 +155,11 @@ SMODS.Joker {
 				_c.base.nominal = 12
 				_c.base.value = 'Queen'
 				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.add
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "x_mult",
+					scalar_value = "add",
+				})
 				card_eval_status_text(card, 'extra', nil, nil, nil,
 				{
 					message = localize('k_upgrade_ex'),
@@ -195,6 +200,11 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.poker_hands and next(context.poker_hands["Flush"]) and context.before then
 			card.ability.extra.e_chips = card.ability.extra.e_chips + card.ability.extra.e_chips_add
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "e_chips",
+				scalar_value = "e_chips_add",
+			})
 			return {
 				colour = G.C.DARK_EDITION,
 				message = localize("k_upgrade_ex")

@@ -54,6 +54,11 @@ SMODS.Joker {
 				}
 			end
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "x_mult",
+				scalar_value = "x_mult_gain",
+			})
 			local destructable_jokers = PTASaka.FH.filter(food_jokers, function(v)
 				return not v.ability.eternal
 			end)

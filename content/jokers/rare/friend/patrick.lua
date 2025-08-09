@@ -22,6 +22,11 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == "Risk" and not context.blueprint_card then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_mod
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "x_mult",
+				scalar_value = "x_mult_mod",
+			})
 			return {
 				message = localize('k_upgrade_ex')
 			}

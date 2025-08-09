@@ -31,6 +31,11 @@ SMODS.Joker {
 		if context.end_of_round and G.GAME.blind_on_deck == 'Boss' and context.main_eval then
 			local old = card.ability.extra.hand_size
 			card.ability.extra.hand_size = card.ability.extra.hand_size + card.ability.extra.size_mod
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "hand_size",
+				scalar_value = "size_mod",
+			})
 			G.hand:change_size(card.ability.extra.hand_size - old)
 			SMODS.calculate_effect({ message = "+"..number_format(card.ability.extra.hand_size - old).." Hand Size" }, card)
 			return nil, true

@@ -212,6 +212,11 @@ SMODS.Joker {
 				end
 			})
 			card.ability.extra.xchips = card.ability.extra.xchips + card.ability.extra.xchip_mod
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "xchips",
+				scalar_value = "xchip_mod",
+			})
 		end
 	end,
 	loc_vars = function(self, info_queue, card)

@@ -58,6 +58,12 @@ SMODS.Joker {
 			if context.other_card and card.ability.extra[bonus] then
 				--print(bonus)
 				context.other_card.ability[bonus] = (context.other_card.ability[bonus] or 0) + card.ability.extra[bonus]
+				SMODS.scale_card(context.other_card, {
+					ref_table = context.other_card.ability,
+					ref_value = bonus,
+					scalar_table = card.ability.extra,
+					scalar_value = bonus,
+				})
 			end
 			return {
 				message = localize('k_upgrade_ex')

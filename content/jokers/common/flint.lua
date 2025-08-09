@@ -64,6 +64,12 @@ SMODS.Joker {
 					end
 				end
 				card.ability.extra.cmult = card.ability.extra.cmult + gain
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "cmult",
+					scalar_table = {gain = gain},
+					scalar_value = "gain"
+				})
 				if gain > 0 then
 					return {
 						message = localize { type = 'variable', key = 'a_mult', vars = { gain } },

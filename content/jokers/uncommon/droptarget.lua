@@ -43,6 +43,11 @@ SMODS.Joker {
 					end
 				})
 				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_add
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "chips",
+					scalar_value = "chips_add",
+				})
 				table.remove(card.ability.immutable.random_values, 1)
 				card.ability.immutable.random_values[#card.ability.immutable.random_values+1] = pseudorandom('drop_target')
 				return {

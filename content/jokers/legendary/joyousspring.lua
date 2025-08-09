@@ -45,6 +45,11 @@ SMODS.Joker {
 		elseif JoyousSpring and JoyousSpring.can_use_abilities(card) then
 			if not context.blueprint_card_card and not context.retrigger_joker and context.joy_no_draw then
                 card.ability.extra.joyous_mult = card.ability.extra.joyous_mult + card.ability.extra.base_xmult
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "joyous_mult",
+					scalar_value = "base_xmult",
+				})
                 return {
                     message = localize('k_upgrade_ex')
                 }

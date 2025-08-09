@@ -11,6 +11,11 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.payasaka_taking_gacha and not context.blueprint_card then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_gain
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "x_mult",
+				scalar_value = "x_gain",
+			})
 			return {
 				message = localize('k_upgrade_ex')
 			}

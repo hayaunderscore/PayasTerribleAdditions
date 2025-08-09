@@ -23,6 +23,11 @@ SMODS.Joker {
 			end
 			if G.jokers.cards[my_pos+1] then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.add_xmult
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "x_mult",
+					scalar_value = "add_xmult",
+				})
 				local _card = G.jokers.cards[my_pos+1]
 				G.E_MANAGER:add_event(Event({
 					func = function()

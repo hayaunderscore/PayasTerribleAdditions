@@ -44,6 +44,12 @@ SMODS.Joker {
 					-- for each card, determine distance from its original position
 					for i = 1, #cards do
 						card.ability.extra.xmult = card.ability.extra.xmult + (determine_distance(cards[i], i, G.play.cards)*card.ability.extra.xmult_gain)
+						SMODS.scale_card(card, {
+							ref_table = card.ability.extra,
+							ref_value = "x_mult",
+							scalar_table = {gain = (determine_distance(cards[i], i, G.play.cards)*card.ability.extra.xmult_gain)},
+							scalar_value = "gain",
+						})
 					end
 					G.play.cards = cards
 					G.play:set_ranks()

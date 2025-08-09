@@ -20,7 +20,7 @@ SMODS.Joker {
 		-- If globalization is enabled, do not use calc_scaling !!!
 		if PTASaka.Mod.config["Fatty Mode"] then return nil end
 		return {
-			scalar_value = scalar_value*2
+			scaling_value = scaling_value + scalar_value
 		}
 	end
 }

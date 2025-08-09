@@ -22,6 +22,11 @@ SMODS.Joker {
 			if context.other_card:is_suit('Spades') then
 				if context.other_card:is_face() then
 					card.ability.extra.f_x_chips = card.ability.extra.x_chips + card.ability.extra.f_x_chips
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "f_x_chips",
+						scalar_value = "x_chips",
+					})
 				end
 				return {
 					message = context.other_card:is_face() and localize("k_upgrade_ex") or nil,

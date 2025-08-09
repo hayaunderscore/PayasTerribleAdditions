@@ -21,6 +21,11 @@ SMODS.Joker {
 		if context.individual and context.cardarea == G.play and not context.blueprint_card then
 			if context.other_card and context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs") then
 				card.ability.extra.pyrox = card.ability.extra.pyrox + card.ability.extra.increase
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "pyrox",
+					scalar_value = "increase",
+				})
 				return {
 					message = localize('k_upgrade_ex'),
 					card = card

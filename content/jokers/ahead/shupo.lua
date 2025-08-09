@@ -37,6 +37,11 @@ SMODS.Joker {
 						played_sound = true
 					end
 					card.ability.extra.x_chips = card.ability.extra.x_chips + card.ability.extra.give_x_chip
+					SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+						ref_value = "x_chips",
+						scalar_value = "give_x_chip",
+					})
 					--card.states.drag.is = false
 					card_eval_status_text(G.jokers.cards[j], 'extra', nil, nil, nil, { message = localize('k_payasaka_nil_ex'), instant = true })
 				end

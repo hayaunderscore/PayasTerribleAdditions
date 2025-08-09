@@ -32,6 +32,11 @@ SMODS.Joker {
 					end
 				})
 				card.ability.x_chips = card.ability.x_chips + card.ability.x_chips_add
+				SMODS.scale_card(card, {
+					ref_table = card.ability,
+					ref_value = "x_chips",
+					scalar_value = "x_chips_add",
+				})
 				return {
 					message = localize('k_upgrade_ex'),
 					card = card

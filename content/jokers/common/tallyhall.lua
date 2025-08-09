@@ -20,6 +20,11 @@ SMODS.Joker {
 				local lastsign = card.ability.extra.current_increment >= 0 and 1 or -1
 				card.ability.extra.current_increment = (math.abs(card.ability.extra.current_increment) + 1) * -lastsign
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.current_increment
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "mult",
+					scalar_value = "current_increment",
+				})
 			end
 			return {
 				mult_mod = card.ability.extra.mult,
