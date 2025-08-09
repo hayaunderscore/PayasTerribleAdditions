@@ -1,5 +1,8 @@
+SMODS.Atlas { key = "ticket", path = "ticket.png", px = 66, py = 66 }
+
 SMODS.Achievement {
 	key = 'gacha_prismatic',
+	atlas = "ticket",
 	unlock_condition = function(self, args)
 		if args and args.type == 'payasaka_gacha_select' then
 			if args.card and args.card.config.center and args.card.config.center.rarity == "payasaka_daeha" then
