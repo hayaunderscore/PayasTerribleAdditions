@@ -17,22 +17,26 @@ SMODS.Blind {
 	end,
 	calculate = function(self, blind, context)
 		if G.GAME.payasaka_construct and context.after then
-			local chips = G.GAME.chips + to_big(PTASaka.arrow(G.GAME.payasaka_exponential_count or 0, hand_chips, mult))
 			G.E_MANAGER:add_event(Event{
 				func = function()
-					SMODS.juice_up_blind()
+					G.E_MANAGER:add_event(Event{
+						func = function()
+							SMODS.juice_up_blind()
+							return true
+						end
+					})
+					G.E_MANAGER:add_event(Event({
+						trigger = 'ease',
+						blocking = false,
+						ref_table = G.GAME,
+						ref_value = 'chips',
+						ease_to = G.GAME.chips - (G.GAME.blind.chips/10),
+						delay = 0.5,
+						func = (function(t) return math.floor(t) end)
+					}))
 					return true
 				end
 			})
-			G.E_MANAGER:add_event(Event({
-				trigger = 'ease',
-				blocking = false,
-				ref_table = G.GAME,
-				ref_value = 'chips',
-				ease_to = chips - (G.GAME.blind.chips/10),
-				delay = 0.5,
-				func = (function(t) return math.floor(t) end)
-			}))
 		end
 	end
 }

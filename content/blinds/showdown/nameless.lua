@@ -6,20 +6,11 @@ SMODS.Blind {
 	mult = 2,
 	boss_colour = HEX('d68ac1'),
 	boss = { min = 0, showdown = true, odds = 3 },
-	defeat = function(self)
-		for k, v in pairs(G.playing_cards) do
-			if v and v.ability.payasaka_old_suit then
-				assert(SMODS.change_base(v, v.ability.payasaka_old_suit, nil))
-				v.ability.payasaka_old_suit = nil
-			end
-		end
-	end,
 	calculate = function(self, blind, context)
 		if context.hand_drawn then
 			for k, v in pairs(context.hand_drawn) do
 				if SMODS.pseudorandom_probability(G.deck.cards[1], 'nameless', 1, self.boss.odds) and not v.ability.payasaka_old_suit then
 					-- change it lmao
-					v.ability.payasaka_old_suit = v.base.suit
 					assert(SMODS.change_base(v, "payasaka_washed", nil))
 					v:juice_up(0.1, 0.1)
 				end
