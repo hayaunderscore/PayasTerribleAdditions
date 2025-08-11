@@ -19,7 +19,7 @@ if next(SMODS.find_mod('finity')) then
 	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'finity_showdown', 10 }
 end
 
-if Cryptid then
+if PTASaka.is_cryptid then
 	-- hahaha!
 	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'cry_epic', 25 }
 	PTASaka.gacha_rarity_table[#PTASaka.gacha_rarity_table + 1] = { 'cry_exotic', 6 }

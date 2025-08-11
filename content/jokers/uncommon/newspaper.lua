@@ -40,7 +40,7 @@ SMODS.Joker {
 						{ message = localize('k_payasaka_reading_ex'), instant = true })
 					local suit = pseudorandom_element(valid, pseudoseed('payasaka_newspaper')).card_key
 					local rank = pseudorandom_element(SMODS.Ranks, pseudoseed('payasaka_newspaper')).card_key
-					local edition = poll_edition('payasaka_newspaper', nil, Cryptid == nil, true)
+					local edition = poll_edition('payasaka_newspaper', nil, not PTASaka.is_cryptid, true)
 					local _card = create_playing_card(
 						{ front = G.P_CARDS[suit .. '_' .. rank] },
 						G.hand, nil, false, { G.C.SECONDARY_SET.Spectral }

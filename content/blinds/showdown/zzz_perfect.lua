@@ -82,7 +82,7 @@ SMODS.Blind {
 local old_get_new_boss = get_new_boss
 function get_new_boss()
 	-- Are you up 2 it?
-	if G.GAME.round_resets.ante == 39 and not Cryptid then
+	if G.GAME.round_resets.ante == 39 and not PTASaka.is_cryptid then
 		return "bl_payasaka_showdown_sweet_sleep"
 	end
 	return old_get_new_boss()

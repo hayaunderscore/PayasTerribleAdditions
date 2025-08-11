@@ -143,7 +143,7 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 
 			-- If Cryptid is enabled, calculate jokers `cry_scale_mod` if possible
 			-- Only partial support for now, but should work for most cases... I think.
-			if Cryptid and G.jokers then
+			if PTASaka.is_cryptid and G.jokers then
 				for _, joker in pairs(G.jokers.cards) do
 					if joker.config and joker.config.center and joker.config.center.cry_scale_mod then
 						diff = joker.config.center:cry_scale_mod(

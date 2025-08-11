@@ -66,7 +66,7 @@ PTASaka.DOSCard {
 				if
 					v.unlocked == true
 					and v.rarity
-					and (not Cryptid or not Cryptid.no(v, "doe", k))
+					and (not PTASaka.is_cryptid or not Cryptid.no(v, "doe", k))
 					and not (G.GAME.banned_keys[v.key] or (G.GAME.cry_banished_keys and G.GAME.cry_banished_keys[v.key]))
 				then
 					pool[#pool + 1] = v.key

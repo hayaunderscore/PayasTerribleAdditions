@@ -703,19 +703,19 @@ PTASaka.rarity_upgrades = {
 	["Uncommon"] = "Rare",
 	["Rare"] = {
 		-- Epic rarity
-		Cryptid and SMODS.Rarities['cry_epic'] and 'cry_epic' or nil,
+		PTASaka.is_cryptid and SMODS.Rarities['cry_epic'] and 'cry_epic' or nil,
 		"Legendary"
 	},
 	["Legendary"] = {
 		-- Only if Cryptid is installed, and the rarity exists
-		Cryptid and SMODS.Rarities['cry_exotic'] and 'cry_exotic' or nil,
+		PTASaka.is_cryptid and 'cry_exotic' or nil,
 		-- Reverse legendaries
 		Entropy and 'entr_reverse_legendary' or nil,
 		-- Showdown Jokers
 		next(SMODS.find_mod('finity')) and 'finity_showdown' or nil
 	},
 	-- Reverse legendaries upgrade to exotics
-	['entr_reverse_legendary'] = Cryptid and SMODS.Rarities['cry_exotic'] and 'cry_exotic' or nil,
+	['entr_reverse_legendary'] = PTASaka.is_cryptid and 'cry_exotic' or nil,
 	["payasaka_ahead"] = "payasaka_daeha"
 }
 

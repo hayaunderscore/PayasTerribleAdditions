@@ -42,7 +42,7 @@ SMODS.Joker {
 				if center.unlocked == true and center.discovered
 					and center.key ~= self.key
 					and (rarity ~= nil and rarity == "finity_showdown")
-					and (not Cryptid or not Cryptid.no(center, "doe", k))
+					and (not PTASaka.is_cryptid or not Cryptid.no(center, "doe", k))
 					and not (G.GAME.banned_keys[center.key] or (G.GAME.cry_banished_keys and G.GAME.cry_banished_keys[center.key])) then
 					jokers[#jokers+1] = center
 				end
@@ -160,20 +160,20 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			local mult = G and G.GAME and math.floor(((G.GAME.payasaka_small_blind_surplus or 2) * (G.GAME.payasaka_big_blind_surplus or 2))) or 4
-			if not Cryptid and mult > 50 then mult = 50 end
+			if not PTASaka.is_cryptid and mult > 50 then mult = 50 end
 			return {
 				x_mult = mult
 			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		if not Cryptid then
+		if not PTASaka.is_cryptid then
 			local dd = PTASaka.DescriptionDummies["dd_payasaka_manifold_limiter"]
 			dd.vars = { card.ability.extra.max }
 			info_queue[#info_queue+1] = dd
 		end
 		local mult = G and G.GAME and math.floor(((G.GAME.payasaka_small_blind_surplus or 2) * (G.GAME.payasaka_big_blind_surplus or 2))) or 4
-		if not Cryptid and mult > 50 then mult = 50 end
+		if not PTASaka.is_cryptid and mult > 50 then mult = 50 end
 		return {
 			vars = { mult }
 		}

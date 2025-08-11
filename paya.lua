@@ -27,6 +27,11 @@ SMODS.optional_features.retrigger_joker = true
 SMODS.optional_features.cardareas.deck = true
 SMODS.optional_features.cardareas.discard = true
 
+PTASaka.is_cryptid = next(SMODS.find_mod('Cryptid'))
+if PTASaka.is_cryptid then
+	print("Cryptid detected... vro ;P")
+end
+
 -- ATLASES --
 
 -- Joker atlas
@@ -212,7 +217,7 @@ if RevosVault and conf["Cross Mod Content"] then
 end
 
 -- Cross mod content: Cryptid
-if Cryptid and conf["Cross Mod Content"] then
+if PTASaka.is_cryptid and conf["Cross Mod Content"] then
 	assert(SMODS.load_file("content/jokers/exotic.lua"))()
 end
 

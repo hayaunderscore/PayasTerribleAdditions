@@ -174,7 +174,7 @@ PTASaka.Property {
 				trigger = 'after',
 				delay = 0.1,
 				func = function()
-					local edition = poll_edition('payasaka_blueproperty_edition', nil, Cryptid == nil, true)
+					local edition = poll_edition('payasaka_blueproperty_edition', nil, not PTASaka.is_cryptid, true)
 					highlighted[i]:set_edition(edition)
 					return true
 				end

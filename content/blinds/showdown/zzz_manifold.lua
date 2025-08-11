@@ -19,7 +19,7 @@ SMODS.Blind {
 		G.GAME.payasaka_old_manifest_chips = G.GAME.blind.chips
 		local mult = math.max(((G.GAME.payasaka_small_blind_surplus or 2)*(G.GAME.payasaka_big_blind_surplus or 2)), 4)
 		-- Cryptid bros dont get no nerf
-		if to_big(mult) > to_big(100) and not Cryptid then mult = to_big(100) end
+		if to_big(mult) > to_big(100) and not PTASaka.is_cryptid then mult = to_big(100) end
 		mult = math.floor(mult)
 		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*mult*G.GAME.starting_params.ante_scaling
 		self.mult = mult
@@ -43,12 +43,12 @@ function end_round()
 	old_end_round()
 	if G.GAME.blind_on_deck == 'Small' then
 		G.GAME.payasaka_small_blind_surplus = to_big(G.GAME.chips)/to_big(G.GAME.blind.chips)
-		if (not Cryptid) and to_big(G.GAME.payasaka_small_blind_surplus) > to_big(50) then G.GAME.payasaka_small_blind_surplus = to_big(50) end
+		if (not PTASaka.is_cryptid) and to_big(G.GAME.payasaka_small_blind_surplus) > to_big(50) then G.GAME.payasaka_small_blind_surplus = to_big(50) end
 		--print(G.GAME.payasaka_small_blind_surplus)
 	end
 	if G.GAME.blind_on_deck == 'Big' then
 		G.GAME.payasaka_big_blind_surplus = to_big(G.GAME.chips)/to_big(G.GAME.blind.chips)
-		if (not Cryptid) and to_big(G.GAME.payasaka_big_blind_surplus) > to_big(50) then G.GAME.payasaka_big_blind_surplus = to_big(50) end
+		if (not PTASaka.is_cryptid) and to_big(G.GAME.payasaka_big_blind_surplus) > to_big(50) then G.GAME.payasaka_big_blind_surplus = to_big(50) end
 		--print(G.GAME.payasaka_big_blind_surplus)
 	end
 end

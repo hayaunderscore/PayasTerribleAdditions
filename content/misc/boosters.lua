@@ -248,7 +248,7 @@ PTASaka.UltraPack {
 	ease_background_colour = function(self) ease_background_colour_blind(G.STATES.BUFFOON_PACK) end
 }
 
-if Cryptid then
+if PTASaka.is_cryptid then
 	PTASaka.UltraPack {
 		key = "code_ultra",
 		atlas = "JOE_UltraBoosters",

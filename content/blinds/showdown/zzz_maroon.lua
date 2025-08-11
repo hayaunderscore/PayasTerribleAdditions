@@ -42,12 +42,12 @@ function end_round()
 	old_end_round()
 	if G.GAME.blind_on_deck == 'Small' then
 		G.GAME.payasaka_small_blind_surplus = to_big(G.GAME.chips)/to_big(G.GAME.blind.chips)
-		if (not Cryptid) and to_big(G.GAME.payasaka_small_blind_surplus) > to_big(50) then G.GAME.payasaka_small_blind_surplus = to_big(50) end
+		if (not PTASaka.is_cryptid) and to_big(G.GAME.payasaka_small_blind_surplus) > to_big(50) then G.GAME.payasaka_small_blind_surplus = to_big(50) end
 		--print(G.GAME.payasaka_small_blind_surplus)
 	end
 	if G.GAME.blind_on_deck == 'Big' then
 		G.GAME.payasaka_big_blind_surplus = to_big(G.GAME.chips)/to_big(G.GAME.blind.chips)
-		if (not Cryptid) and to_big(G.GAME.payasaka_big_blind_surplus) > to_big(50) then G.GAME.payasaka_big_blind_surplus = to_big(50) end
+		if (not PTASaka.is_cryptid) and to_big(G.GAME.payasaka_big_blind_surplus) > to_big(50) then G.GAME.payasaka_big_blind_surplus = to_big(50) end
 		--print(G.GAME.payasaka_big_blind_surplus)
 	end
 end

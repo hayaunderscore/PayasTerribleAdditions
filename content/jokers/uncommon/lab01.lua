@@ -27,7 +27,7 @@ SMODS.Joker {
 				if center.unlocked == true and center.discovered
 					and center.key ~= self.key
 					and (rarity ~= nil and rarity == "Common" or rarity == "Uncommon")
-					and (not Cryptid or not Cryptid.no(center, "doe", k))
+					and (not PTASaka.is_cryptid or not Cryptid.no(center, "doe", k))
 					and not (G.GAME.banned_keys[center.key] or (G.GAME.cry_banished_keys and G.GAME.cry_banished_keys[center.key])) then
 					jokers[#jokers+1] = center
 				end

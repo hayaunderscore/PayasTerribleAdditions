@@ -38,7 +38,7 @@ SMODS.Edition {
 				if coin or card:get_id() > 1 then
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Editioned!" })
 					card:juice_up()
-					card:set_edition(poll_edition('payasaka_jpeg', nil, Cryptid == nil, true), true)
+					card:set_edition(poll_edition('payasaka_jpeg', nil, not PTASaka.is_cryptid, true), true)
 				else
 					card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Enhanced!" })
 					card:juice_up()
