@@ -31,22 +31,6 @@ payload = '''
 match_indent = true
 times = 1
 
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- TARGET: main end_of_round evaluation'''
-position = 'before'
-payload = '''
-if G.GAME.blind_on_deck == 'Boss' and not game_over and G.GAME.payasaka_fucking_hell then
-	if #G.consumeables.cards < G.consumeables.config.card_limit then
-		local _c = SMODS.add_card { key = 'c_payasaka_gacha', area = G.consumeables }
-		_c:juice_up()
-	end
-end
-'''
-match_indent = true
-times = 1
-
 # Add ahead info_queue if applicable
 [[patches]]
 [patches.pattern]
@@ -257,20 +241,6 @@ if (G.GAME.payasaka_scored_naneinfs or 0) >= 9 then
 		ease_ante((-G.GAME.round_resets.ante))
 	end
 	return true
-end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''functions/state_events.lua'''
-pattern = '''-- TARGET: main end_of_round evaluation'''
-position = 'before'
-payload = '''
-if (G.GAME.payasaka_scored_naneinfs or 0) >= 9 then
-	G.GAME.payasaka_scored_naneinfs = 0
-	G.GAME.payasaka_defeated_perfectheart = true
-	game_over = false
 end
 '''
 match_indent = true

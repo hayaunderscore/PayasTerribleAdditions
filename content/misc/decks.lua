@@ -332,6 +332,14 @@ SMODS.Back {
 			end
 		})
 	end,
+	calculate = function(self, back, context)
+		if context.blind_defeated and G.GAME.blind_on_deck == 'Boss' then
+			if #G.consumeables.cards < G.consumeables.config.card_limit then
+				local _c = SMODS.add_card { key = 'c_payasaka_gacha', area = G.consumeables }
+				_c:juice_up()
+			end
+		end
+	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.joker_slot } }
 	end

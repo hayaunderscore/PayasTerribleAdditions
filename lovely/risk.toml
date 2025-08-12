@@ -65,58 +65,6 @@ end
 '''
 match_indent = true
 
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- TARGET: setting_blind effects'''
-position = 'before'
-payload = '''
-if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' then
-	for k, v in ipairs(G.GAME.risk_cards_risks) do
-		G.P_CENTERS[v.key].apply_risk(G.P_CENTERS[v.key], v.ability)
-		G.GAME.payasaka_risk_objects[#G.GAME.payasaka_risk_objects+1] = PTASaka.RiskObject(v.key)
-	end
-end
-for k, v in pairs(G.GAME.payasaka_risk_objects) do
-	v:calculate({setting_blind = true, blind = G.GAME.round_resets.blind})
-end
-
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''-- TARGET: main end_of_round evaluation'''
-position = 'before'
-payload = '''
-if G.GAME.risk_cards_risks and G.GAME.blind_on_deck == 'Boss' and not game_over then
-	for k_, v in ipairs(G.GAME.risk_cards_risks) do
-		G.P_CENTERS[v.key].apply_reward(G.P_CENTERS[v.key], v.ability)
-		if G.P_CENTERS[v.key].tier > 0 then
-			add_tag(Tag('tag_payasaka_tier'..G.P_CENTERS[v.key].tier..'reward'))
-		end
-	end
-    G.GAME.risk_cards_risks = {}
-end
-if G.GAME.payasaka_risk_objects and G.GAME.blind_on_deck == 'Boss' and not game_over then
-	local persist = {}
-	for k_, v in pairs(G.GAME.payasaka_risk_objects) do
-		if v and not v.ability.persist then
-			v:remove()
-		elseif v and v.ability.persist then
-			persist[#persist+1] = v
-			G.GAME.risk_cards_risks[#G.GAME.risk_cards_risks+1] = {
-				key = v.center.key,
-				ability = PTASaka.deep_copy(v.ability.extra)
-			}
-		end
-	end
-	G.GAME.payasaka_risk_objects = persist
-end
-'''
-match_indent = true
-
 # Elusive
 [[patches]]
 [patches.pattern]
