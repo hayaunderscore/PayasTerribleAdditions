@@ -4,43 +4,45 @@ local function SigmaOrNah()
 	return true
 end
 
-SMODS.Challenge {
-	key = 'stuckrock',
-	jokers = {
-		{ id = "j_payasaka_locomotive", eternal = SigmaOrNah(), akyrs_sigma = true, pinned = true }
-	},
-	restrictions = {
-		banned_cards = {
-			{ id = 'p_celestial_normal_1', ids = {
-				'p_celestial_normal_1', 'p_celestial_normal_2', 'p_celestial_normal_3', 'p_celestial_normal_4', 'p_celestial_jumbo_1', 'p_celestial_jumbo_2', 'p_celestial_mega_1', 'p_celestial_mega_2',
-			} },
-			{ id = 'p_standard_normal_1', ids = {
-				'p_standard_normal_1', 'p_standard_normal_2', 'p_standard_normal_3', 'p_standard_normal_4', 'p_standard_jumbo_1', 'p_standard_jumbo_2', 'p_standard_mega_1', 'p_standard_mega_2',
-			} },
-			{
-				id = 'c_hanged_man',
-			},
-			{
-				id = 'c_heirophant',
-			},
-			{
-				id = 'c_lovers',
-			},
-			{
-				id = 'c_world',
-			},
-			{
-				id = 'c_sun',
-			},
-			{
-				id = 'c_star',
-			},
-			{
-				id = 'c_moon',
-			},
+if PTASaka.Mod.config["Ahead"] then
+	SMODS.Challenge {
+		key = 'stuckrock',
+		jokers = {
+			{ id = "j_payasaka_locomotive", eternal = SigmaOrNah(), akyrs_sigma = true, pinned = true }
+		},
+		restrictions = {
+			banned_cards = {
+				{ id = 'p_celestial_normal_1', ids = {
+					'p_celestial_normal_1', 'p_celestial_normal_2', 'p_celestial_normal_3', 'p_celestial_normal_4', 'p_celestial_jumbo_1', 'p_celestial_jumbo_2', 'p_celestial_mega_1', 'p_celestial_mega_2',
+				} },
+				{ id = 'p_standard_normal_1', ids = {
+					'p_standard_normal_1', 'p_standard_normal_2', 'p_standard_normal_3', 'p_standard_normal_4', 'p_standard_jumbo_1', 'p_standard_jumbo_2', 'p_standard_mega_1', 'p_standard_mega_2',
+				} },
+				{
+					id = 'c_hanged_man',
+				},
+				{
+					id = 'c_heirophant',
+				},
+				{
+					id = 'c_lovers',
+				},
+				{
+					id = 'c_world',
+				},
+				{
+					id = 'c_sun',
+				},
+				{
+					id = 'c_star',
+				},
+				{
+					id = 'c_moon',
+				},
+			}
 		}
 	}
-}
+end
 
 if MoreFluff then
 	SMODS.Challenge {
@@ -49,17 +51,19 @@ if MoreFluff then
 	}
 end
 
-SMODS.Challenge {
-	key = 'dreamfest',
-	jokers = {
-		{ id = "j_payasaka_almondeye", eternal = SigmaOrNah(), akyrs_sigma = true, payasaka_status = {["payasaka_awful"] = true} }
-	},
-	rules = {
-		custom = {
-			{ id = 'payasaka_dream_fest_indicator', value = true }
+if PTASaka.Mod.config["Ahead"] then
+	SMODS.Challenge {
+		key = 'dreamfest',
+		jokers = {
+			{ id = "j_payasaka_almondeye", eternal = SigmaOrNah(), akyrs_sigma = true, payasaka_status = {["payasaka_awful"] = true} }
+		},
+		rules = {
+			custom = {
+				{ id = 'payasaka_dream_fest_indicator', value = true }
+			}
 		}
 	}
-}
+end
 
 if AKYRS then
 	AKYRS.HardcoreChallenge {
