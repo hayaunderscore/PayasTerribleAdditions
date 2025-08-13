@@ -262,8 +262,13 @@ local function create_credit(_key, colour, idx)
 				temp_blind.config.h_popup = create_UIBox_credit_popup(_key, colour, {})
 				temp_blind.config.h_popup_config = { align = 'cl', offset = { x = -0.1, y = 0 }, parent = temp_blind }
 				Node.hover(temp_blind)
-				temp_blind.children.h_popup:set_role({ major = temp_blind.children.h_popup, role_type = 'Major', draw_major =
-				temp_blind.children.h_popup, xy_bond = 'Strong' })
+				temp_blind.children.h_popup:set_role({
+					major = temp_blind.children.h_popup,
+					role_type = 'Major',
+					draw_major =
+						temp_blind.children.h_popup,
+					xy_bond = 'Strong'
+				})
 			end
 		end
 		if not temp_blind.start_T then
@@ -577,6 +582,181 @@ local tabs = function()
 			label = "Credits",
 			chosen = false,
 			tab_definition_function = function()
+				local credits = {
+					{
+						key = "credit_haya",
+						colour = HEX('644c86'),
+						pos = { x = 0, y = 0 }
+					},
+					{
+						key = "credit_ari",
+						colour = HEX('469274'),
+						pos = { x = 0, y = 1 }
+					},
+					{
+						key = "credit_loggers",
+						colour = HEX('864b1b'),
+						pos = { x = 0, y = 2 }
+					},
+					{
+						key = "credit_aikoyori",
+						colour = HEX('85a468'),
+						pos = { x = 0, y = 3 }
+					},
+					{
+						key = "credit_airrice",
+						colour = HEX('a1c5c4'),
+						pos = { x = 0, y = 4 }
+					},
+					{
+						key = "credit_kctm",
+						colour = HEX('58c8b1'),
+						pos = { x = 0, y = 5 }
+					},
+					{
+						key = "credit_canichat",
+						colour = HEX('ab8ed3'),
+						pos = { x = 0, y = 6 }
+					},
+					{
+						key = "credit_notmario",
+						colour = HEX('c2413a'),
+						pos = { x = 0, y = 7 }
+					},
+					{
+						key = "credit_missingnumber",
+						colour = HEX('9489a7'),
+						pos = { x = 0, y = 8 }
+					},
+				}
+				local credit_layout = { 2, 4, 3 }
+				G.your_collection = {}
+				local deck_tables = {}
+				for j = 1, #credit_layout do
+					G.your_collection[j] = CardArea(
+						G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
+						math.max(credit_layout[j], 3) * 1.55,
+						0.95 * 1.33,
+						{ card_limit = credit_layout[j], type = 'title_2', highlight_limit = 0, collection = true })
+					if j == 1 then
+						table.insert(deck_tables, {
+							n = G.UIT.R,
+							config = { align = "cm", padding = 0.2 },
+							nodes = {
+								{
+									n = G.UIT.O,
+									config = {
+										object = DynaText {
+											string = "Credits",
+											float = true,
+											pop_in = 0,
+											pop_in_rate = 4,
+											silent = true,
+											shadow = true,
+											scale = 1,
+											colours = { G.C.EDITION }
+										}
+									}
+								}
+							}
+						})
+					end
+					if j == 3 then
+						table.insert(deck_tables,
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									{
+										n = G.UIT.O,
+										config = {
+											object = DynaText {
+												string = "Many thanks to",
+												float = true,
+												pop_in = 0,
+												pop_in_rate = 4,
+												silent = true,
+												shadow = true,
+												scale = 0.5,
+												colours = { SMODS.Gradients["payasaka_prismatic_gradient"] }
+											}
+										}
+									}
+								}
+							}
+						)
+					end
+					table.insert(deck_tables,
+						{
+							n = G.UIT.R,
+							config = { align = "cm", padding = 0, no_fill = true },
+							nodes = {
+								{ n = G.UIT.O, config = { object = G.your_collection[j] } },
+							}
+						}
+					)
+				end
+				for k, v in pairs(credits) do
+					---@type CardArea
+					---@diagnostic disable-next-line: assign-type-mismatch
+					local area = G.your_collection[1]
+					for _, a in pairs(G.your_collection) do
+						if #a.cards < a.config.card_limit then
+							area = a
+							break
+						end
+					end
+					local temp_blind = AnimatedSprite(area.T.x + area.T.w / 2, area.T.y, 1.3, 1.3,
+						G.ANIMATION_ATLAS['payasaka_JOE_CreditChips'],
+						v.pos)
+					temp_blind.states.click.can = false
+					temp_blind.states.drag.can = false
+					temp_blind.states.hover.can = true
+					local card = Card(area.T.x + area.T.w / 2, area.T.y, 1.3, 1.3, G.P_CARDS.empty, G.P_CENTERS.c_base)
+					temp_blind.states.click.can = false
+					card.states.drag.can = false
+					card.states.hover.can = true
+					card.children.center = temp_blind
+					temp_blind:set_role({ major = card, role_type = 'Glued', draw_major = card })
+					card.set_sprites = function(...)
+						local args = { ... }
+						if not args[1].animation then return end -- fix for debug unlock
+						local c = card.children.center
+						Card.set_sprites(...)
+						card.children.center = c
+					end
+					temp_blind:define_draw_steps({
+						{ shader = 'dissolve', shadow_height = 0.05 },
+						{ shader = 'dissolve' }
+					})
+					temp_blind.float = true
+					card.states.collide.can = true
+					card.config.blind = v
+					card.config.force_focus = true
+					card.hover = function()
+						if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then
+							if not card.hovering and card.states.visible then
+								card.hovering = true
+								card.hover_tilt = 3
+								card:juice_up(0.05, 0.02)
+								play_sound('chips1', math.random() * 0.1 + 0.55, 0.12)
+								card.config.h_popup = create_UIBox_credit_popup(v.key, v.colour, {})
+								card.config.h_popup_config = card:align_h_popup()
+								Node.hover(card)
+								if card.children.alert then
+									card.children.alert:remove()
+									card.children.alert = nil
+									card.config.blind.alerted = true
+									G:save_progress()
+								end
+							end
+						end
+						card.stop_hover = function()
+							card.hovering = false; Node.stop_hover(card); card.hover_tilt = 0
+						end
+					end
+					area:emplace(card)
+				end
 				return {
 					n = G.UIT.ROOT,
 					config = {
@@ -592,77 +772,7 @@ local tabs = function()
 						{
 							n = G.UIT.C,
 							config = { align = "tm" },
-							nodes = {
-								{
-									n = G.UIT.R,
-									config = { align = "cm", padding = 0.2 },
-									nodes = {
-										{
-											n = G.UIT.O,
-											config = {
-												object = DynaText {
-													string = "Credits",
-													float = true,
-													pop_in = 0,
-													pop_in_rate = 4,
-													silent = true,
-													shadow = true,
-													scale = 1,
-													colours = { G.C.EDITION }
-												}
-											}
-										}
-									}
-								},
-								{
-									n = G.UIT.R,
-									config = { align = "cm", padding = 0.1 },
-									nodes = {
-										create_credit("credit_haya", HEX('644c86'), 0),
-										create_credit("credit_ari", HEX('469274'), 1),
-									}
-								},
-								{
-									n = G.UIT.R,
-									config = { align = "cm", padding = 0.1 },
-									nodes = {
-										create_credit("credit_loggers", HEX('864b1b'), 2),
-										create_credit("credit_aikoyori", HEX('85a468'), 3),
-										create_credit("credit_airrice", HEX('a1c5c4'), 4),
-										create_credit("credit_kctm", HEX('58c8b1'), 5),
-									}
-								},
-								{
-									n = G.UIT.R,
-									config = { align = "cm", padding = 0.2 },
-									nodes = {
-										{
-											n = G.UIT.O,
-											config = {
-												object = DynaText {
-													string = "Many thanks to",
-													float = true,
-													pop_in = 0,
-													pop_in_rate = 4,
-													silent = true,
-													shadow = true,
-													scale = 0.5,
-													colours = { SMODS.Gradients["payasaka_prismatic_gradient"] }
-												}
-											}
-										}
-									}
-								},
-								{
-									n = G.UIT.R,
-									config = { align = "cm", padding = 0.1 },
-									nodes = {
-										create_credit("credit_canichat", HEX('ab8ed3'), 6),
-										create_credit("credit_notmario", HEX('c2413a'), 7),
-										create_credit("credit_missingnumber", HEX('9489a7'), 8),
-									}
-								},
-							}
+							nodes = deck_tables
 						}
 					}
 				}
