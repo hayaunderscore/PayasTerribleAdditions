@@ -88,19 +88,6 @@ function Game:start_run(args)
 
 	sr(self, args)
 
-	-- Maximus compat
-	if G.GAME.modifiers.mxms_nuclear_size then
-		G.GAME.modifiers.mxms_nuclear_size = false
-		if not Entropy then
-			G.GAME.payasaka_exponential_count = G.GAME.payasaka_exponential_count + 1
-			PTASaka.recalc_chips_mult_shit("^", G.GAME.payasaka_exponential_count)
-		else
-			G.GAME.paya_operator = G.GAME.paya_operator + 1
-			PTASaka.recalc_chips_mult_shit("^", G.GAME.paya_operator)
-		end
-		G.GAME.modifiers.mxms_paya_compat = true
-	end
-
 	-- Cast proper initialization
 	local merged = G.P_BLINDS['bl_payasaka_question']
 	if G.GAME.payasaka_merged_boss_keys and next(G.GAME.payasaka_merged_boss_keys) then
@@ -869,24 +856,38 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		})
 		local rand = pseudorandom('aww_random_effect', 1, 3)
 		if rand == 1 and amount then
-			if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
-			mult = mod_mult(mult * amount)
-			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
-			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus,
-				'x_mult', amount, percent)
+			key = 'xmult'
 		elseif rand == 2 and amount then
-			if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
-			hand_chips = mod_chips(hand_chips * amount)
-			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
-			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus,
-				'x_chips', amount, percent)
+			key = 'xchips'
 		elseif rand == 3 and amount then
-			if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
-			ease_dollars(amount)
-			card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus,
-				'dollars', amount, percent)
+			key = 'dollars'
 		end
-		return true
+	end
+
+	-- Multiplier
+	local marketpliers = SMODS.find_card("j_payasaka_markiplier_punch_gif")
+	if G and G.GAME and SMODS.Scoring_Parameter_Calculation[key] then
+		for i = 1, #marketpliers do
+			local m = marketpliers[i]
+			local odds = 0
+			if SMODS.Scoring_Parameter_Calculation[key] == "mult" then
+				odds = m.ability.extra.xmult_odds
+			end
+			if SMODS.Scoring_Parameter_Calculation[key] == "chips" then
+				odds = m.ability.extra.xchips_odds
+			end
+			if SMODS.pseudorandom_probability(m, "payasaka_multiplier_xchips", 1, odds) then
+				card_eval_status_text(m, 'extra', nil, percent, nil,
+					{ message = "Multiplied!", colour = G.C.DARK_EDITION, extrafunc = function() play_sound("payasaka_markiplier_ngahh", 1, 0.5) end })
+				if SMODS.Scoring_Parameter_Calculation[key] == "mult" then
+					key = 'xmult'
+				end
+				if SMODS.Scoring_Parameter_Calculation[key] == "chips" then
+					key = 'xchips'
+				end
+				break
+			end
+		end
 	end
 
 	-- Vash's prevent_remove
@@ -1581,18 +1582,16 @@ end
 
 local old_mod_chips = mod_chips
 function mod_chips(_chips)
-	_chips = _chips *
-		pseudorandom("payasaka_tmtrainer_randomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-			G.GAME.payasaka_tmtrainer_high_rnd or 1)
-	return old_mod_chips(_chips)
+	local ret = old_mod_chips(_chips)
+	SMODS.Scoring_Parameters["payasaka_misc"].current = (_chips + (mult or 0)) / 2
+	return ret
 end
 
 local old_mod_mult = mod_mult
 function mod_mult(_mult)
-	_mult = _mult *
-		pseudorandom("payasaka_tmtrainer_randomness", G.GAME.payasaka_tmtrainer_low_rnd or 1,
-			G.GAME.payasaka_tmtrainer_high_rnd or 1)
-	return old_mod_mult(_mult)
+	local ret = old_mod_mult(_mult)
+	SMODS.Scoring_Parameters["payasaka_misc"].current = ((hand_chips or 0) + _mult) / 2
+	return ret
 end
 
 local old_juice_up = Moveable.juice_up

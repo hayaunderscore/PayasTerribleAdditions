@@ -554,10 +554,9 @@ return {
 					"{C:edition,s:0.5}Yonii \"Paya\" Hayasaka"
 				},
 				text = {
-					"{C:green}#1# in #2#{} chance of",
-					"changing the {C:attention}operator",
-					"from {C:red}X{} to {C:white,X:dark_edition}^{} upon",
-					"selecting a blind",
+					"Adds a new {C:attention}scoring value",
+					"based on the {C:attention}average{} of",
+					"your chips and mult",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Self insert joker"

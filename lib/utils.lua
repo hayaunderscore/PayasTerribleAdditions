@@ -3,7 +3,7 @@
 -- Talisman,,,,
 to_big = to_big or function(a) return a end
 is_number = is_number or function(a) return type(a) == "number" end
-to_number = to_number or function(a) return a end
+to_number = to_number or function(a) return type(a) == "number" and a or tonumber(a) end
 -- Override for lenient_bignum since it is a BITCH
 lenient_bignum = function(a)
 	if Talisman then
@@ -366,10 +366,8 @@ end
 ---@param og_arrow? number Original `arrow` during recursive calls.
 ---@return number
 function PTASaka.arrow(arrow, val1, val2, og_arrow)
-	-- Small compat with Entropy
-	if Entropy and G.GAME.hand_operator then
-		G.GAME.hand_operator = (G.GAME.hand_operator or 0)
-		return Entropy.get_chipmult_score(val1, val2)
+	if val1 == hand_chips and val2 == mult then
+		return SMODS.calculate_round_score(false)
 	end
 	og_arrow = og_arrow or 1
 	local val = val1

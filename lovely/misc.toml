@@ -685,3 +685,120 @@ if v.payasaka_status and next(v.payasaka_status) then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''for _, key in ipairs(self.parameters) do'''
+position = 'before'
+payload = '''
+if G and G.GAME and G.GAME.payasaka_misc_enabled then
+	SMODS.Calculation_Controls["payasaka_misc"] = true
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''G.GAME.current_round.current_hand[key] = SMODS.Scoring_Parameters[key].default_value'''
+position = 'before'
+payload = '''
+if G and G.GAME and G.GAME.payasaka_misc_enabled then
+	G.GAME.current_round.current_hand["payasaka_misc"] = SMODS.Scoring_Parameters["payasaka_misc"].default_value
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''SMODS.GUI.mult_container(scale)'''
+position = 'at'
+payload = '''
+SMODS.GUI.mult_container(scale),
+G.GAME.payasaka_misc_enabled and SMODS.GUI.operator(scale),
+G.GAME.payasaka_misc_enabled and {
+					n = G.UIT.C,
+					config = { align = 'cm', id = 'hand_misc' },
+					nodes = {
+						SMODS.GUI.score_container({
+							type = 'payasaka_misc',
+							scale = scale,
+							colour = G.C.PAYA_PURPLE
+						})
+					}
+				},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''function SMODS.GUI.hand_chips_container(scale)'''
+position = 'after'
+payload = '''
+scale = G.GAME.payasaka_misc_enabled and (scale / 1.6) or scale
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''type = 'chips',
+            text = 'chip_text',
+            align = 'cr','''
+position = 'after'
+payload = '''
+scale = scale,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''
+type = 'mult'
+'''
+position = 'at'
+payload = '''
+type = 'mult',
+align = G.GAME.payasaka_misc_enabled and 'cm' or 'cl',
+scale = scale,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''
+local w = args.w or 2
+local h = args.h or 1
+'''
+position = 'at'
+payload = '''
+local w = (args.w or 2)*(scale*2.5)
+local h = (args.h or 1)*(scale*2.5)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''return G.GAME.current_scoring_calculation:func(SMODS.get_scoring_parameter('chips', flames), SMODS.get_scoring_parameter('mult', flames), flames)'''
+position = 'at'
+payload = '''
+local score = G.GAME.current_scoring_calculation:func(SMODS.get_scoring_parameter('chips', flames), SMODS.get_scoring_parameter('mult', flames), flames)
+return G.GAME.current_scoring_calculation:func(score, (SMODS.get_scoring_parameter('chips', flames)+SMODS.get_scoring_parameter('mult', flames))/2, flames)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''for name, parameter in pairs(SMODS.Scoring_Parameters) do'''
+position = 'before'
+payload = '''
+vals['payasaka_misc'] = (G.GAME.current_round.current_hand.chips + G.GAME.current_round.current_hand.mult) / 2
+'''
+match_indent = true
