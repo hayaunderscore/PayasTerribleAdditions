@@ -21,12 +21,12 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent and not context.blueprint_card then
 			if context.other_card and context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
-				card.ability.extra.xmult = card.ability.extra.xmult - card.ability.extra.decrease
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "xmult",
 					scalar_value = "decrease",
-					operation = "-"
+					operation = "-",
+					no_message = true,
 				})
 				if card.ability.extra.xmult <= 1 then
 					card.payasaka_nonexistent = true

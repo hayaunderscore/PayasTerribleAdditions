@@ -29,15 +29,11 @@ SMODS.Joker {
 			-- light suits
 			local other = context.other_card
 			if other and (not other.debuff) and (other:is_suit('Diamonds') or other:is_suit('Hearts')) then
-				card.ability.extra.givechips = card.ability.extra.givechips + card.ability.extra.incchips
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "givechips",
 					scalar_value = "incchips",
 				})
-				return {
-					message = localize("k_upgrade_ex")
-				}
 			elseif other and other.debuff then
 				return {
 					message = localize('k_debuffed')
@@ -112,15 +108,11 @@ SMODS.Joker {
 			-- dark suits
 			local other = context.other_card
 			if other and (not other.debuff) and (other:is_suit('Spades') or other:is_suit('Clubs')) then
-				card.ability.extra.givemult = card.ability.extra.givemult + card.ability.extra.incmult
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "givemult",
 					scalar_value = "incmult",
 				})
-				return {
-					message = localize("k_upgrade_ex")
-				}
 			elseif other and other.debuff then
 				return {
 					message = localize('k_debuffed')

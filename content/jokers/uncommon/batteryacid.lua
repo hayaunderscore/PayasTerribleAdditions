@@ -40,12 +40,12 @@ SMODS.Joker {
 			}
 		end
 		if context.end_of_round and not context.repetition and context.game_over == false and not context.blueprint_card then
-			card.ability.extra.xblind = card.ability.extra.xblind - card.ability.extra.decrease
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "xblind",
 				scalar_value = "decrease",
-				operation = "-"
+				operation = "-",
+				no_message = true,
 			})
 			if card.ability.extra.xblind <= 1 then
 				G.E_MANAGER:add_event(Event({

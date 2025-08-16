@@ -23,12 +23,12 @@ SMODS.Joker {
 			card.ability.immutable.timer_till_upgrade_attempt = 2
 			-- roll and see if we should upgrade. atleast 1 in 6 chance
 			if pseudorandom('kitasan') < 1/6 then
-				card.ability.extra.xmult = card.ability.extra.xmult + (card.ability.extra.xmult_gain * (2 ^ (#SMODS.find_card('j_payasaka_kitasan') - 1)))
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "xmult",
 					scalar_table = {gain = (card.ability.extra.xmult_gain * (2 ^ (#SMODS.find_card('j_payasaka_kitasan') - 1)))},
 					scalar_value = "gain",
+					no_message = true,
 				})
 				card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('k_upgrade_ex'), instant = true })
 			end

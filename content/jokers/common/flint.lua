@@ -63,19 +63,19 @@ SMODS.Joker {
 						if light == dark then gain = gain + card.ability.extra.mult end
 					end
 				end
-				card.ability.extra.cmult = card.ability.extra.cmult + gain
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "cmult",
 					scalar_table = {gain = gain},
-					scalar_value = "gain"
+					scalar_value = "gain",
+					message_key = 'a_mult',
 				})
-				if gain > 0 then
-					return {
-						message = localize { type = 'variable', key = 'a_mult', vars = { gain } },
-						sound = "payasaka_flint"
-					}
-				end
+				G.E_MANAGER:add_event(Event{
+					func = function()
+						play_sound('payasaka_flint')
+						return true
+					end
+				})
 			end
 		end
 		if context.joker_main or context.forcetrigger then

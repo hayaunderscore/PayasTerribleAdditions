@@ -789,6 +789,7 @@ pattern = '''return G.GAME.current_scoring_calculation:func(SMODS.get_scoring_pa
 position = 'at'
 payload = '''
 local score = G.GAME.current_scoring_calculation:func(SMODS.get_scoring_parameter('chips', flames), SMODS.get_scoring_parameter('mult', flames), flames)
+if not G.GAME.payasaka_misc_enabled then return score end
 return G.GAME.current_scoring_calculation:func(score, (SMODS.get_scoring_parameter('chips', flames)+SMODS.get_scoring_parameter('mult', flames))/2, flames)
 '''
 match_indent = true

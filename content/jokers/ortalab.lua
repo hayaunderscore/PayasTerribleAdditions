@@ -25,12 +25,12 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and not card.payasaka_nonexistent then
 			if context.other_card and context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs") then
-				card.ability.extra.xchips = card.ability.extra.xchips - card.ability.extra.decrease
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "xchips",
 					scalar_value = "decrease",
 					operation = "-",
+					no_message = true,
 				})
 				if card.ability.extra.xchips <= 1 then
 					card.payasaka_nonexistent = true

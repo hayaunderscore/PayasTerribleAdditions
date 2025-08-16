@@ -37,15 +37,11 @@ SMODS.Joker {
 				end
 			end
 			if seven and six and five then
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_gain
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "xmult",
 					scalar_value = "xmult_gain",
 				})
-				return {
-					message = localize('k_upgrade_ex')
-				}
 			end
 		end
 		if context.joker_main or context.forcetrigger then

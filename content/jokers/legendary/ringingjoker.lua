@@ -14,27 +14,22 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if not context.blueprint_card_card then
 			if context.setting_blind or context.selling_card or context.buying_card or context.using_consumeable or context.open_booster or context.ending_booster then
-				card.ability.extra.current_mult = card.ability.extra.current_mult + card.ability.extra.add_amt
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "current_mult",
 					scalar_value = "add_amt",
 				})
-				return {
-					message = localize('k_upgrade_ex')
-				}
 			end
 			if context.skip_blind or context.skipping_booster then
-				card.ability.extra.current_mult = card.ability.extra.current_mult - card.ability.extra.dec_amt
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "current_mult",
 					scalar_value = "dec_amt",
-					operation = "-"
+					operation = "-",
+					scaling_message = {
+						message = localize('k_payasaka_phil_fail')
+					}
 				})
-				return {
-					message = localize('k_payasaka_phil_fail')
-				}
 			end
 		end
 		if context.joker_main or context.forcetrigger then

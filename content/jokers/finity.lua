@@ -211,11 +211,11 @@ SMODS.Joker {
 					return true
 				end
 			})
-			card.ability.extra.xchips = card.ability.extra.xchips + card.ability.extra.xchip_mod
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "xchips",
 				scalar_value = "xchip_mod",
+				no_message = true,
 			})
 		end
 	end,

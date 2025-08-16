@@ -65,16 +65,11 @@ SMODS.Joker {
 		if (context.individual and context.cardarea == G.play and not context.game_over) and not context.blueprint_card then
 			local other_card = context.other_card
 			if other_card and (other_card:is_suit('Spades') or other_card:is_suit('Clubs')) then
-				card.ability.extra.planet_multiplier = card.ability.extra.planet_multiplier + card.ability.extra.chip_gain
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "planet_multiplier",
 					scalar_value = "chip_gain",
 				})
-				return {
-					message = localize('k_upgrade_ex'),
-					message_card = context.blueprint_card or card,
-				}
 			end
 		end
 		if context.joker_main or context.forcetrigger then
