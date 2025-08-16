@@ -839,7 +839,7 @@ PTASaka.Reward {
 	key = 'meld',
 	atlas = 'JOE_Risk',
 	pos = { x = 1, y = 3 },
-	config = { extra = { max_highlighted = 4, min_highlighted = 2 } },
+	config = { extra = { amount = 2 }, immutable = { max_highlighted = 1 } },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
@@ -850,45 +850,45 @@ PTASaka.Reward {
 				return true
 			end
 		}))
-		for i = 1, #G.hand.highlighted do
-			local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+		G.GAME.payasaka_meld_used = (G.GAME.payasaka_meld_used or 0) + 1
+		local cards = PTASaka.FH.filter(G.hand.cards, function(c)
+			return c ~= G.hand.highlighted[1]
+		end)
+		local changed = {}
+		for i = 1, math.min(#cards, card.ability.extra.amount) do
+			local _, k = pseudorandom_element(cards, 'meld_lmao_'..G.GAME.payasaka_meld_used)
+			table.insert(changed, table.remove(cards, k))
+		end
+		for i = 1, #changed do
+			local percent = 1.15 - (i - 0.999) / (#changed - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
 				delay = 0.15,
 				func = function()
-					G.hand.highlighted[i]:flip(); play_sound('card1', percent); G.hand.highlighted[i]:juice_up(0.3, 0.3); return true
+					changed[i]:flip(); play_sound('card1', percent); changed[i]:juice_up(0.3, 0.3); return true
 				end
 			}))
 		end
 		delay(0.2)
-		local rightmost = G.hand.highlighted[1]
-		for i = 1, #G.hand.highlighted do
-			if G.hand.highlighted[i].T.x > rightmost.T.x then
-				rightmost = G.hand
-					.highlighted[i]
-			end
-		end
-		for i = 1, #G.hand.highlighted do
+		for i = 1, #changed do
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
 				delay = 0.1,
 				func = function()
-					if G.hand.highlighted[i] ~= rightmost then
-						---@type Card
-						local _c = G.hand.highlighted[i]
-						assert(SMODS.change_base(_c, nil, rightmost.base.value))
-					end
+					---@type Card
+					local _c = changed[i]
+					assert(SMODS.change_base(_c, nil, G.hand.highlighted[1].base.value))
 					return true
 				end
 			}))
 		end
-		for i = 1, #G.hand.highlighted do
-			local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+		for i = 1, #changed do
+			local percent = 0.85 + (i - 0.999) / (#changed - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
 				delay = 0.15,
 				func = function()
-					G.hand.highlighted[i]:flip(); play_sound('tarot2', percent, 0.6); G.hand.highlighted[i]:juice_up(0.3,
+					changed[i]:flip(); play_sound('tarot2', percent, 0.6); changed[i]:juice_up(0.3,
 						0.3); return true
 				end
 			}))
@@ -903,12 +903,12 @@ PTASaka.Reward {
 		delay(0.5)
 	end,
 	can_use = function(self, card)
-		return card.ability.extra.max_highlighted >= #G.hand.highlighted and
+		return card.ability.immutable.max_highlighted >= #G.hand.highlighted and
 			#G.hand.highlighted >= (card.ability.extra.min_highlighted or 1)
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card.ability.extra.max_highlighted }
+			vars = { card.ability.immutable.max_highlighted, card.ability.extra.amount }
 		}
 	end
 }

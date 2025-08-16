@@ -54,6 +54,14 @@ SMODS.Joker {
 					blind_chips = G.HUD_blind:get_UIE_by_ID('HUD_blind_count'),
 					blind_spacer = G.HUD:get_UIE_by_ID('blind_spacer')
 				}
+				attention_text({
+					text = "???",
+					scale = 1.2,
+					hold = 0.7,
+					cover = G.HUD:get_UIE_by_ID('hand_text_area'),
+					cover_colour = G.C.PAYA_PURPLE,
+					align = 'cm',
+				})
 				return true
 			end
 		})

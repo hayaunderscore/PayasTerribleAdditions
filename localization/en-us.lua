@@ -2477,9 +2477,9 @@ return {
 			c_payasaka_meld = {
 				name = "Meld",
 				text = {
-					"Convert up to {C:attention}#1#{} selected",
-					"cards into the {C:attention}rightmost",
-					"card's {C:attention}rank",
+					"Turn {C:attention}#2#{} random cards",
+					"held in hand to the",
+					"selected card's {C:attention}rank",
 				}
 			},
 			c_payasaka_harmony = {

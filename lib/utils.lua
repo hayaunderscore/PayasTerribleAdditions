@@ -35,6 +35,7 @@ PTASaka.MisprintizeForbidden = {
 	["d_size"] = true,
 	["h_size"] = true,
 	["immutable"] = true,
+	['min_highlighted'] = true,
 	--["x_mult"] = true,
 }
 
