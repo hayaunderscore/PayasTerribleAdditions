@@ -108,7 +108,7 @@ PTASaka.Status {
 	offset = { y = -6 },
 	--size = { w = 2, h = 2 },
 	draw = function(self, card, layer)
-		G.shared_stickers[self.key].true_scale = 0.25
+		--G.shared_stickers[self.key].true_scale = 0.25
 		PTASaka.Status.draw(self, card, layer)
 	end,
 	apply = function(self, card, val)
@@ -122,6 +122,26 @@ PTASaka.Status {
 			end)
 			PTASaka.create_proxy(card)
 		end
+		card.ability[self.key] = val
+	end
+}
+
+-- This isn't an actual status, so its hidden
+-- Playing
+SMODS.Atlas { key = "playingmark", path = "playing.png", px = 71, py = 95 }
+PTASaka.Status {
+	key = 'playing',
+	atlas = "playingmark",
+	pos = { x = 0, y = 0 },
+	badge_colour = HEX('7824c8'),
+	--scale = -0.75,
+	offset = { y = -6 },
+	--size = { w = 2, h = 2 },
+	no_collection = true,
+	in_pool = function()
+		return false
+	end,
+	apply = function(self, card, val)
 		card.ability[self.key] = val
 	end
 }

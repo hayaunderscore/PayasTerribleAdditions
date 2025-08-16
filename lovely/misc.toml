@@ -814,3 +814,44 @@ args.title or nil,
 args.title and {n=G.UIT.R, config={align = "cm", minh = 0.1}, nodes={}} or nil, 
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/misc_functions.lua'''
+pattern = '''if G.F_SOUND_THREAD then
+    G.SOUND_MANAGER.channel:push(G.ARGS.push)'''
+position = 'before'
+payload = '''
+if PTASaka.override_track then
+	desired_track = PTASaka.override_track
+	G.ARGS.push.desired_track = desired_track
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''engine/controller.lua'''
+pattern = '''if not G.SETTINGS.paused and G.hand and G.hand.highlighted[1] then '''
+position = 'before'
+payload = '''
+if self.hovering and self.hovering.target and self.hovering.target.config and self.hovering.target.config.center and self.hovering.target.ability and self.hovering.target.ability.set == "PTASet" then
+	local center = self.hovering.target.config.center
+	if center.pta_desired_track then
+		local was_playing = self.hovering.target.ability.status_payasaka_playing
+		if was_playing then
+			PTASaka.override_track = nil
+		else
+			PTASaka.override_track = center.pta_desired_track
+		end
+		if G.your_collection and G.your_collection[1] then
+			for k, v in pairs(G.your_collection[1].cards) do
+				PTASaka.set_status(v, "payasaka_playing", nil)
+			end
+		end
+		PTASaka.set_status(self.hovering.target, "payasaka_playing", not was_playing)
+		self.hovering.target:juice_up(0.1)
+	end
+end
+'''
+match_indent = true

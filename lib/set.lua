@@ -72,7 +72,7 @@ PTASaka.SetToggle {
 	key = 'experimental',
 	atlas = "JOE_Jokers2",
 	pos = { x = 4, y = 6 },
-	pta_associated_config = "Experimental",
+	pta_associated_config = "Experimental Features",
 	is_subcategory = "experimental",
 }
 -- Ahead Jokers
@@ -117,7 +117,7 @@ PTASaka.SetToggle {
 	key = 'music',
 	atlas = "JOE_Jokers",
 	pos = { x = 10, y = 6 },
-	pta_associated_config = "Music",
+	pta_associated_config = "Jukebox",
 	is_subcategory = "music",
 }
 -- Witty Comments
@@ -177,6 +177,7 @@ PTASaka.SetToggle {
 	shine_front_pos = true,
 	pta_associated_config = "Prismatic Music",
 	subcategory = "music",
+	pta_desired_track = "payasaka_music_prismatic"
 }
 -- Music: Main Theme (Demo Version)
 PTASaka.SetToggle {
@@ -185,6 +186,7 @@ PTASaka.SetToggle {
 	pos = { x = 3, y = 0 },
 	pta_associated_config = "Mechanic Music",
 	subcategory = "music",
+	pta_desired_track = "payasaka_music_mechanic",
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
 	end,
@@ -196,6 +198,7 @@ PTASaka.SetToggle {
 	pos = { x = 2, y = 1 },
 	pta_associated_config = "Property Music",
 	subcategory = "music",
+	pta_desired_track = "payasaka_music_property",
 	draw = function(self, card, layer)
 		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
 	end,
@@ -220,11 +223,18 @@ local create_UIBox_collection_subcategory = function(subcategory, title, rows)
 			count = 0
 		end
 		count = count + 1
-		rows[current_row] = count
+		rows[current_row] = 5
 	end
 	return SMODS.card_collection_UIBox(pool, rows, {
 		no_materialize = true,
 		hide_single_page = true,
+		h_mod = 1.18,
+		modify_card = function(card, center, i, j)
+			if PTASaka.override_track and center.pta_desired_track and PTASaka.override_track == center.pta_desired_track then
+				PTASaka.set_status(card, "payasaka_playing", true)
+			end
+		end,
+		--back_func = 'payasaka_back_music_subcategory',
 		title = {
 			n = G.UIT.R,
 			config = { align = "cm", no_fill = true, colour = G.C.CLEAR },
@@ -264,6 +274,7 @@ function Card:click()
 				self.config.center.requires_restart_confirmation = nil
 			end
 		else
+			play_sound("cardSlide1")
 			G.SETTINGS.paused = true
 			G.FUNCS.overlay_menu {
 				definition = create_UIBox_collection_subcategory(self.config.center.is_subcategory, self.config.center.pta_associated_config),

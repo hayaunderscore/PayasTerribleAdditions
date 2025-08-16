@@ -2792,6 +2792,13 @@ return {
 					"reduced by {C:attention}25%",
 				},
 			},
+			status_payasaka_playing = {
+				name = "Playing",
+				text = {
+					"This music track is",
+					"currently being played"
+				}
+			}
 		},
 		TagBag = {
 			c_payasaka_tagbagtest = {
@@ -3409,19 +3416,20 @@ return {
 					"{C:edition,s:0.6}Kool Cat the Martian"
 				},
 				text = {
-					"Music that plays for",
-					"{C:payasaka_prismatic_gradient}Prismatic Jokers",
+					"Music that plays while having",
+					"a {C:payasaka_prismatic_gradient}Prismatic Joker{}",
 					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=tZZu9HUf0-Y"
 				},
 			},
 			ptaset_payasaka_mechanic_music = {
 				name = {
-					"Main Theme (Demo Version)",
+					"Main Theme",
+					"{s:0.7}(Demo Version)",
 					"{C:edition,s:0.6}SiIvaGunner"
 				},
 				text = {
 					"Music that plays in the",
-					"Mechanic or Wild DOS menu",
+					"{C:spectral}Mechanic{} or {C:dark_edition}Wild DOS{} menu",
 					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=-mck1CdwXGs"
 				},
 			},
@@ -3697,6 +3705,7 @@ return {
 			status_payasaka_marked = "Marked",
 			status_payasaka_zzazz = "ZZAZZ",
 			status_payasaka_awful = "Awful",
+			status_payasaka_playing = "Playing",
 			k_payasaka_ahead = "Ahead",
 			k_payasaka_daeha = "Prismatic",
 			k_payasaka_thunderstruck = "Thunderstruck",
