@@ -2,7 +2,7 @@ return {
 	["Balanced-ish"] = false,
 	["Property Cards"] = true,
 	["Cross Mod Content"] = true,
-	["Music"] = true,
+	["Music"] = true, -- No longer used directly
 	["Witty Comments"] = true,
 	["Ahead"] = true,
 	["Risk Cards"] = true,
@@ -10,5 +10,9 @@ return {
 	["New Run Plus"] = false,
 	-- Subcategories for Experimental Features
 	["Fatty Mode"] = false,
-	["VERYFUNNYFEATURETHATNEEDSTOBEUNLOCKED"] = true
+	["VERYFUNNYFEATURETHATNEEDSTOBEUNLOCKED"] = true,
+	-- Subcategories for Music
+	["Prismatic Music"] = true,
+	["Mechanic Music"] = true,
+	["Property Music"] = true,
 }

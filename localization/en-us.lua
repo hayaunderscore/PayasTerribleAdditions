@@ -3403,6 +3403,39 @@ return {
 					"???"
 				}
 			},
+			ptaset_payasaka_prismatic_music = {
+				name = {
+					"THROWBACK",
+					"{C:edition,s:0.6}Kool Cat the Martian"
+				},
+				text = {
+					"Music that plays for",
+					"{C:payasaka_prismatic_gradient}Prismatic Jokers",
+					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=tZZu9HUf0-Y"
+				},
+			},
+			ptaset_payasaka_mechanic_music = {
+				name = {
+					"Main Theme (Demo Version)",
+					"{C:edition,s:0.6}SiIvaGunner"
+				},
+				text = {
+					"Music that plays in the",
+					"Mechanic or Wild DOS menu",
+					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=-mck1CdwXGs"
+				},
+			},
+			ptaset_payasaka_property_music = {
+				name = {
+					"balatro.mid",
+					"{C:edition,s:0.6}AirRice"
+				},
+				text = {
+					"Music that plays in",
+					"{C:property}Real Estate{} Packs",
+					"{C:inactive,s:0.6}https://www.youtube.com/watch?v=dskn803flbA"
+				},
+			},
 		},
 		PTACredits = {
 			credit_haya = {

@@ -487,7 +487,7 @@ SMODS.Sound({
 	select_music_track = function()
 		return (
 			(
-				PTASaka.Mod.config["Music"]
+				PTASaka.Mod.config["Mechanic Music"]
 				and (PTASaka.mechanic_menu or PTASaka.dos_menu)
 				and G.OVERLAY_MENU
 			)

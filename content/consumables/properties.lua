@@ -462,7 +462,7 @@ SMODS.Sound({
 	select_music_track = function()
 		return (
 				(
-					PTASaka.Mod.config["Music"]
+					PTASaka.Mod.config["Property Music"]
 					and booster_obj
 					and booster_obj.group_key
 					and booster_obj.group_key == 'k_property_pack'

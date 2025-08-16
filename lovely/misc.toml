@@ -803,3 +803,14 @@ payload = '''
 vals['payasaka_misc'] = (G.GAME.current_round.current_hand.chips + G.GAME.current_round.current_hand.mult) / 2
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''{n=G.UIT.R, config={align = "cm", r = 0.1, colour = G.C.BLACK, emboss = 0.05}, nodes=deck_tables}, '''
+position = 'before'
+payload = '''
+args.title or nil, 
+args.title and {n=G.UIT.R, config={align = "cm", minh = 0.1}, nodes={}} or nil, 
+'''
+match_indent = true

@@ -72,6 +72,7 @@ PTASaka.SetToggle {
 	key = 'experimental',
 	atlas = "JOE_Jokers2",
 	pos = { x = 4, y = 6 },
+	pta_associated_config = "Experimental",
 	is_subcategory = "experimental",
 }
 -- Ahead Jokers
@@ -116,7 +117,8 @@ PTASaka.SetToggle {
 	key = 'music',
 	atlas = "JOE_Jokers",
 	pos = { x = 10, y = 6 },
-	pta_associated_config = "Music"
+	pta_associated_config = "Music",
+	is_subcategory = "music",
 }
 -- Witty Comments
 PTASaka.SetToggle {
@@ -153,7 +155,7 @@ PTASaka.SetToggle {
 	subcategory = "experimental",
 	loc_vars = function(self, info_queue, card)
 		local vars = PTASaka.SetToggle.loc_vars(self, info_queue, card)
-		info_queue[#info_queue+1] = G.P_CENTERS.j_payasaka_oguri
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_payasaka_oguri
 		return vars
 	end
 }
@@ -165,11 +167,44 @@ PTASaka.SetToggle {
 	unlocked = false,
 	subcategory = "experimental",
 }
+-- Music: THROWBACK
+PTASaka.SetToggle {
+	key = 'prismatic_music',
+	atlas = "JOE_Jokers2",
+	pos = { x = 1, y = 6 },
+	soul_pos = { x = 2, y = 8 },
+	pta_front_pos = { x = 1, y = 8 },
+	shine_front_pos = true,
+	pta_associated_config = "Prismatic Music",
+	subcategory = "music",
+}
+-- Music: Main Theme (Demo Version)
+PTASaka.SetToggle {
+	key = 'mechanic_music',
+	atlas = "JOE_Tarots",
+	pos = { x = 3, y = 0 },
+	pta_associated_config = "Mechanic Music",
+	subcategory = "music",
+	draw = function(self, card, layer)
+		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+	end,
+}
+-- Music: balatro.mid
+PTASaka.SetToggle {
+	key = 'property_music',
+	atlas = 'JOE_Properties',
+	pos = { x = 2, y = 1 },
+	pta_associated_config = "Property Music",
+	subcategory = "music",
+	draw = function(self, card, layer)
+		card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+	end,
+}
 
 local start_up_values = PTASaka.deep_copy(PTASaka.Mod.config)
 
-local create_UIBox_collection_subcategory = function(subcategory, rows)
-	rows = rows or {5,5,5}
+local create_UIBox_collection_subcategory = function(subcategory, title, rows)
+	rows = rows or {}
 	-- filter out subcategory items
 	local pool = PTASaka.FH.filter(G.P_CENTER_POOLS.PTASet, function(v)
 		if v and v.subcategory and v.subcategory == subcategory then
@@ -177,11 +212,41 @@ local create_UIBox_collection_subcategory = function(subcategory, rows)
 		end
 		return false
 	end)
-    return SMODS.card_collection_UIBox(pool, rows, {
-        no_materialize = true,
-        h_mod = 0.95,
+	local current_row = 1
+	local count = 0
+	for k, v in pairs(pool) do
+		if count > 5 then
+			current_row = current_row + 1
+			count = 0
+		end
+		count = count + 1
+		rows[current_row] = count
+	end
+	return SMODS.card_collection_UIBox(pool, rows, {
+		no_materialize = true,
 		hide_single_page = true,
-    })
+		title = {
+			n = G.UIT.R,
+			config = { align = "cm", no_fill = true, colour = G.C.CLEAR },
+			nodes = {
+				{
+					n = G.UIT.O,
+					config = {
+						object = DynaText {
+							string = title,
+							float = true,
+							pop_in = 0,
+							pop_in_rate = 4,
+							silent = true,
+							shadow = true,
+							scale = 0.7,
+							colours = { G.C.EDITION }
+						}
+					}
+				},
+			}
+		},
+	})
 end
 
 local cardClick = Card.click
@@ -189,7 +254,7 @@ function Card:click()
 	if self.ability.set == "PTASet" and self.config.center.unlocked then
 		if not self.config.center.is_subcategory then
 			PTASaka.Mod.config[self.config.center.pta_associated_config] = not PTASaka.Mod.config
-			[self.config.center.pta_associated_config]
+				[self.config.center.pta_associated_config]
 			self.debuff = not PTASaka.Mod.config[self.config.center.pta_associated_config]
 			self:juice_up(0.7)
 			play_sound('tarot2')
@@ -201,7 +266,7 @@ function Card:click()
 		else
 			G.SETTINGS.paused = true
 			G.FUNCS.overlay_menu {
-				definition = create_UIBox_collection_subcategory("experimental", {2}),
+				definition = create_UIBox_collection_subcategory(self.config.center.is_subcategory, self.config.center.pta_associated_config),
 			}
 		end
 	else
