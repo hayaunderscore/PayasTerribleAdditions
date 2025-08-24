@@ -861,3 +861,19 @@ if self.hovering and self.hovering.target and self.hovering.target.config and se
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "badges.mod_set = nil"
+position = "before"
+match_indent = true
+payload = '''
+if card and card.ability then
+	for _, status in ipairs(PTASaka.Status.obj_buffer) do
+		if card.ability[status] and status ~= "status_payasaka_playing" then
+			SMODS.create_mod_badges(PTASaka.Statuses[status], badges)
+		end
+	end
+end
+'''

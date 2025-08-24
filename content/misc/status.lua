@@ -12,10 +12,20 @@ PTASaka.Status {
 				remove = true
 			}
 		end
-		if (context.discard and context.other_card == card) or (context.after and card.area ~= G.hand) or (context.end_of_round and context.other_card == card) then
+		if (context.discard and context.other_card == card) or (context.after and card.area ~= G.hand) or (context.end_of_round) then
 			self:apply(card, nil)
 		end
 	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 -- Frozen
@@ -24,7 +34,7 @@ PTASaka.Status {
 	atlas = "JOE_Enhancements",
 	pos = { x = 7, y = 0 },
 	badge_colour = HEX('7adfff'),
-	scale = 0.1,
+	--scale = 0.1,
 	calculate = function(self, card, context)
 		if context.payasaka_play_to_discard and context.other_card == card then
 			if card.ability.pta_unfreeze then
@@ -36,15 +46,32 @@ PTASaka.Status {
 				target = G.hand
 			}
 		end
-		if (context.discard and context.other_card == card) or (context.end_of_round and context.other_card == card) then
+		if (context.discard and context.other_card == card) or (context.end_of_round) then
 			PTASaka.freeze_card(card, nil, true, true)
 		end
 	end,
 	draw = function(self, card, layer)
 		if (card.ability.pta_frozen or card.ability.pta_force_draw_frozen) and not card.ability.pta_hide_frozen_sprite then
+			local old_mode = love.graphics.getBlendMode()
+			if card.config.center_key == "m_payasaka_ice" then
+				love.graphics.setBlendMode("add")
+			end
 			PTASaka.Status.draw(self, card, layer)
+			if card.config.center_key == "m_payasaka_ice" then
+				love.graphics.setBlendMode(old_mode)
+			end
 		end
-	end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'Mr. Logan',
+			colour = HEX('c1410e')
+		},
+	},
 }
 
 -- Make sure marked and frozen never persist
@@ -123,7 +150,13 @@ PTASaka.Status {
 			PTASaka.create_proxy(card)
 		end
 		card.ability[self.key] = val
-	end
+	end,
+	pta_credit = {
+		art = {
+			credit = 'AchiiroMako',
+			colour = HEX('f4900c')
+		},
+	},
 }
 
 -- This isn't an actual status, so its hidden

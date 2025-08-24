@@ -130,7 +130,7 @@ function SMODS.create_mod_badges(obj, badges)
 	local target_badge = 0
 	local base_scale = 0.9
 	for i = 1, #badges do
-		if badges[i].nodes[1].nodes[2].config.object.string == 'TerrAddt' then
+		if badges[i].nodes and badges[i].nodes[1] and badges[i].nodes[1].nodes and badges[i].nodes[1].nodes[2] and badges[i].nodes[1].nodes[2].config.object.string == 'TerrAddt' then
 			target_badge = i
 			base_scale = badges[i].nodes[1].nodes[2].config.object.scale * 3.03
 			--print("Badge found!")

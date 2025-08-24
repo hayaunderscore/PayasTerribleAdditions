@@ -220,8 +220,8 @@ SMODS.Enhancement {
 			colour = HEX('09d707')
 		},
 		art = {
-			credit = 'ariyi',
-			colour = HEX('09d707')
+			credit = 'Mr. Logan',
+			colour = HEX('c1410e')
 		},
 	},
 	calculate = function(self, card, context)
