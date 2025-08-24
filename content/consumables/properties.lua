@@ -96,7 +96,7 @@ PTASaka.Property = SMODS.Consumable:extend {
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		local dummy = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
+		local dummy = { key = "dd_payasaka_property_card", set = "DescriptionDummy" }
 		dummy.vars = { card.sell_cost, card.ability.extra.money }
 		info_queue[#info_queue+1] = dummy
 	end,

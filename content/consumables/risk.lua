@@ -139,7 +139,7 @@ PTASaka.Risk = SMODS.Consumable:extend {
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-		local dd = PTASaka.DescriptionDummies["dd_payasaka_risk"]
+		local dd = { key = "dd_payasaka_risk", set = "DescriptionDummy" }
 		dd.vars = { localize { type = 'name_text', set = reward_sets[self.tier].set, key = reward_sets[self.tier].key } }
 		info_queue[#info_queue+1] = dd
 	end,

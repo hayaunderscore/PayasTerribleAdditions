@@ -39,7 +39,7 @@ pattern = '''desc_nodes.background_colour = res.background_colour'''
 position = 'before'
 payload = '''
 if card and card.is_ahead and card:is_ahead() then
-	info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_ahead"]
+	info_queue[#info_queue+1] = { key = "dd_payasaka_ahead", set = "DescriptionDummy" }
 end
 '''
 match_indent = true
@@ -52,7 +52,7 @@ pattern = '''if first_pass and not (_c.set == 'Edition') and badges then'''
 position = 'before'
 payload = '''
 if card and card.config and card.config.center and (not card.config.center.mod) and card.is_ahead and card:is_ahead() and _c.set ~= "Booster" then
-	info_queue[#info_queue+1] = PTASaka.DescriptionDummies["dd_payasaka_ahead"]
+	info_queue[#info_queue+1] = { key = "dd_payasaka_ahead", set = "DescriptionDummy" }
 end
 '''
 match_indent = true

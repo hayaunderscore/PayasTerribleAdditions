@@ -24,7 +24,7 @@ PTASaka.DescriptionDummy = SMODS.Center:extend {
 }
 
 function PTASaka.generate_ui_for_info_queue(key, set, desc_nodes, specific_vars)
-	desc_nodes.title = localize({ type = 'name_text', set = set, key = key })
+	--desc_nodes.title = localize({ type = 'name_text', set = set, key = key })
 	localize { type = 'descriptions', set = set, key = key, nodes = desc_nodes, vars = specific_vars }
 end
 

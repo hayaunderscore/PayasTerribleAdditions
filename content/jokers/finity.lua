@@ -168,7 +168,7 @@ SMODS.Joker {
 	end,
 	loc_vars = function(self, info_queue, card)
 		if not PTASaka.is_cryptid then
-			local dd = PTASaka.DescriptionDummies["dd_payasaka_manifold_limiter"]
+			local dd = { key = "dd_payasaka_manifold_limiter", set = "DescriptionDummy" }
 			dd.vars = { card.ability.extra.max }
 			info_queue[#info_queue+1] = dd
 		end

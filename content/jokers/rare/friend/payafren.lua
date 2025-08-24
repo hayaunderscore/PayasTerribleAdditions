@@ -71,7 +71,7 @@ SMODS.Joker {
 		for k, v in pairs(perma_bonuses) do
 			vars[#vars+1] = v == 'perma_balance' and card.ability.extra[v]*100 or card.ability.extra[v]
 		end
-		local desc = PTASaka.DescriptionDummies["dd_payasaka_paya_variables"]
+		local desc = { key = "dd_payasaka_paya_variables", set = "DescriptionDummy" }
 		desc.vars = vars
 		info_queue[#info_queue+1] = desc
 		return { vars = { } }

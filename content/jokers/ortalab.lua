@@ -327,7 +327,7 @@ SMODS.Joker {
 	end,
 	loc_vars = function(self, info_queue, card)
 		local extra = card.ability.extra
-		local dd = PTASaka.DescriptionDummies["dd_payasaka_missingno_finity"]
+		local dd = { key = "dd_payasaka_missingno_finity", set = "DescriptionDummy" }
 		local num, den = SMODS.get_probability_vars(card, 1, extra.finity_odds)
 		dd.vars = { card.ability.cry_rigged and den or num, den }
 		info_queue[#info_queue+1] = dd

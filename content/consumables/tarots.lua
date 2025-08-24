@@ -92,7 +92,7 @@ if PTASaka.Mod.config["Property Cards"] then
 			}))
 		end,
 		loc_vars = function(self, info_queue, card)
-			local dummy = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
+			local dummy = { key = "dd_payasaka_property_card", set = "DescriptionDummy" }
 			dummy.vars = { "??", "??" }
 			info_queue[#info_queue + 1] = dummy
 			return {
@@ -144,7 +144,7 @@ if PTASaka.Mod.config["Property Cards"] then
 				delay(0.6)
 			end,
 			loc_vars = function(self, info_queue, card)
-				local dummy = PTASaka.DescriptionDummies["dd_payasaka_property_card"]
+				local dummy = { key = "dd_payasaka_property_card", set = "DescriptionDummy" }
 				dummy.vars = { "??", "??" }
 				info_queue[#info_queue + 1] = dummy
 				return { vars = { card.ability.extra.count } }
