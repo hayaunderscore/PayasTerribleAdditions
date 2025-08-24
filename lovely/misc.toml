@@ -800,7 +800,7 @@ target = '''functions/common_events.lua'''
 pattern = '''for name, parameter in pairs(SMODS.Scoring_Parameters) do'''
 position = 'before'
 payload = '''
-if vals and G.GAME.current_round.current_hand.chips and G.GAME.current_round.current_hand.mult and  then
+if vals and G.GAME.current_round.current_hand.chips and G.GAME.current_round.current_hand.mult then
 	if is_number(G.GAME.current_round.current_hand.chips) and is_number(G.GAME.current_round.current_hand.mult) then
 		vals['payasaka_misc'] = (G.GAME.current_round.current_hand.chips + G.GAME.current_round.current_hand.mult) / 2
 	else
