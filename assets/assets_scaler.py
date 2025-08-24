@@ -2,6 +2,7 @@
 
 import sys, os
 from PIL import Image
+from PIL import ImageChops
 import pathlib
 
 
@@ -31,6 +32,23 @@ def average_color_of_neighbors(img, x, y):
         return (r_total // count, g_total // count, b_total // count, 255)
     else:
         return (0, 0, 0, 0)
+
+# https://stackoverflow.com/a/68402702
+def are_images_equal(img1, img2):
+    equal_size = img1.height == img2.height and img1.width == img2.width
+
+    if img1.mode == img2.mode == "RGBA":
+        img1_alphas = [pixel[3] for pixel in img1.getdata()]
+        img2_alphas = [pixel[3] for pixel in img2.getdata()]
+        equal_alphas = img1_alphas == img2_alphas
+    else:
+        equal_alphas = True
+
+    equal_content = not ImageChops.difference(
+        img1.convert("RGB"), img2.convert("RGB")
+    ).getbbox()
+
+    return equal_size and equal_alphas and equal_content
 
 def process_image(path):
     img = Image.open(path).convert("RGBA")
@@ -76,16 +94,22 @@ def process_and_upscale(input_path, input_directory, upscale_directory):
 
     print("Processing image: " + input_path)
     processed_image = process_image(input_path)
-    processed_image.save(output_path, "PNG")
-
-    print("Upscaling image: " + output_path)
+    # processed_image.save(output_path, "PNG")
+    
     upscaled_image = upscale_image(processed_image)
+    try:
+        currently_upscaled = Image.open(output_path).convert("RGBA")
+        if currently_upscaled and are_images_equal(currently_upscaled, upscaled_image):
+            print("Upscaled images are the same. Skipping...")
+            return
+    except:
+        print("Upscaling image: " + output_path)
     upscaled_image.save(output_path, "PNG")
 
 def process_directory(input_directory, upscale_directory):
     print("Processing directory: " + input_directory)
 
-    clear_directory(upscale_directory)
+    # clear_directory(upscale_directory)
 
     for root, _, files in os.walk(input_directory):
         for file in files:
