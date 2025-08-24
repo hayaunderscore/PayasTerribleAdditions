@@ -99,7 +99,9 @@ SMODS.Joker {
 		if not (self.discovered and not self.bypass_discovery_center) then return end
 		---@type Sprite
 		local spr = card.children.center
-		spr:set_sprite_pos({ x = self.pos.x + ((card.ability or self.config).immutable or { sprite_state = 0 }).sprite_state, y = self.pos.y })
+		if spr then
+			spr:set_sprite_pos({ x = self.pos.x + ((card.ability or self.config).immutable or { sprite_state = 0 }).sprite_state, y = self.pos.y })
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
