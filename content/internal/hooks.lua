@@ -1580,20 +1580,6 @@ function play_sound(sound, per, vol)
 	return old_play_sound(sound, per, vol)
 end
 
-local old_mod_chips = mod_chips
-function mod_chips(_chips)
-	local ret = old_mod_chips(_chips)
-	SMODS.Scoring_Parameters["payasaka_misc"].current = (_chips + (mult or 0)) / 2
-	return ret
-end
-
-local old_mod_mult = mod_mult
-function mod_mult(_mult)
-	local ret = old_mod_mult(_mult)
-	SMODS.Scoring_Parameters["payasaka_misc"].current = ((hand_chips or 0) + _mult) / 2
-	return ret
-end
-
 local old_juice_up = Moveable.juice_up
 function Moveable:juice_up(amt, rot)
 	old_juice_up(self, amt, rot)
