@@ -9,7 +9,7 @@
 	"display_name": "TerrAddt",
 	"badge_colour": "515aa8",
 	"badge_text_colour": "",
-	"version": "1.0.0",
+	"version": "0.99.0-alpha",
 	"dependencies": [
 		"Steamodded (>=1.0.0~BETA-0822d)", 
 		"Lovely (*)", 
