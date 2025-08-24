@@ -1,3 +1,5 @@
+-- This is left here for reference. This is no longer used by the mod.
+
 -- Thou shan't be loaded twice!
 if not q_rankloader then
 	q_rankloader = {}
