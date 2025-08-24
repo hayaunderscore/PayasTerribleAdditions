@@ -32,6 +32,7 @@ SMODS.Consumable {
 	atlas = "JOE_Tarots",
 	pos = { x = 3, y = 1 },
 	config = { extra = 10, choose = 5 },
+	immutable = true,
 	update_pack = function(self, dt)
 		if G.buttons then
 			G.buttons:remove(); G.buttons = nil
