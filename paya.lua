@@ -43,16 +43,17 @@ SMODS.Atlas { key = "JOE_Blinds", path = "blinders.png", px = 34, py = 34, atlas
 SMODS.Atlas { key = "JOE_CreditChips", path = "creditchips.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 21 }
 
 -- Tarots and Spectrals
-SMODS.Atlas { key = "JOE_Tarots", path = "tarots.png", px = 71, py = 95 }
-SMODS.Atlas { key = "JOE_Tarots_Adjust", path = "tarots.png", px = 85, py = 95 }
+SMODS.Atlas { key = "JOE_Tarots", path = "consumables/tarots.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Tarots_Adjust", path = "consumables/tarots.png", px = 85, py = 95 }
 
 -- Property atlas(es)
-SMODS.Atlas { key = "JOE_Properties", path = "properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
-SMODS.Atlas { key = "JOE_Boosters", path = "properties_boosters.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Properties", path = "consumables/properties.png", px = 71, py = 95 } -- This also includes the Greed tarot!
+SMODS.Atlas { key = "JOE_Boosters", path = "boosters.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_UltraBoosters", path = "ultra.png", px = 71, py = 95 }
-SMODS.Atlas { key = "JOE_DOS", path = "dos.png", px = 71, py = 95 }
-SMODS.Atlas { key = "JOE_Risk", path = "risk.png", px = 71, py = 95 }
-SMODS.Atlas { key = "tagbag", path = "tagbag.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_DOS", path = "consumables/dos.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Risk", path = "consumables/risk.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Reward", path = "consumables/reward.png", px = 71, py = 95 }
+SMODS.Atlas { key = "tagbag", path = "consumables/tagbag.png", px = 71, py = 95 }
 
 -- Voucher atlas
 SMODS.Atlas { key = "JOE_Vouchers", path = "vouchers.png", px = 71, py = 95 }
@@ -62,15 +63,15 @@ SMODS.Atlas { key = "JOE_Decks", path = "backs.png", px = 71, py = 95 }
 
 -- Enhancement atlas
 SMODS.Atlas { key = "JOE_Enhancements", path = "enhancements.png", px = 71, py = 95 }
-SMODS.Atlas { key = "sharpmark", path = "sharpmark.png", px = 97, py = 97 }
-SMODS.Atlas { key = "awfulmark", path = "awfulmark.png", px = 71, py = 95 }
+SMODS.Atlas { key = "sharpmark", path = "status/sharpmark.png", px = 97, py = 97 }
+SMODS.Atlas { key = "awfulmark", path = "status/awfulmark.png", px = 71, py = 95 }
 
 -- Tags atlas
 SMODS.Atlas { key = "JOE_Tags", path = "tags.png", px = 34, py = 34 }
 
 -- Cross mod content
-SMODS.Atlas { key = "JOE_Rotarots", path = "mf/rotarots.png", px = 107, py = 107 }
-SMODS.Atlas { key = "JOE_Colours", path = "mf/colours.png", px = 71, py = 95 }
+SMODS.Atlas { key = "JOE_Rotarots", path = "consumables/rotarots.png", px = 107, py = 107 }
+SMODS.Atlas { key = "JOE_Colours", path = "consumables/colours.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Sleeves", path = "sleeves.png", px = 73, py = 95 }
 SMODS.Atlas { key = "REVO_JOE_Printers", path = "revo/printers.png", px = 71, py = 95 }
 SMODS.Atlas { key = "JOE_Exotic", path = "cryptid/exotics.png", px = 71, py = 95 }

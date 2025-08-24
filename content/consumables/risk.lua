@@ -168,7 +168,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'hinder',
 	atlas = "JOE_Risk",
-	pos = { x = 0, y = 1 },
+	pos = { x = 0, y = 0 },
 	config = { extra = { debuff = 10 } },
 	tier = 1,
 	apply_risk = function(self, ability)
@@ -230,7 +230,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'hollow',
 	atlas = "JOE_Risk",
-	pos = { x = 2, y = 1 },
+	pos = { x = 1, y = 0 },
 	tier = 1,
 	pta_credit = {
 		art = {
@@ -260,7 +260,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'leak',
 	atlas = "JOE_Risk",
-	pos = { x = 3, y = 1 },
+	pos = { x = 2, y = 0 },
 	config = { extra = { money = 1 } },
 	tier = 1,
 	pta_credit = {
@@ -298,7 +298,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'shrink',
 	atlas = "JOE_Risk",
-	pos = { x = 3, y = 2 },
+	pos = { x = 3, y = 0 },
 	tier = 1,
 	pta_credit = {
 		art = {
@@ -322,7 +322,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'genesis',
 	atlas = "JOE_Risk",
-	pos = { x = 4, y = 2 },
+	pos = { x = 4, y = 0 },
 	config = { extra = { cards = 7 } },
 	tier = 1,
 	pta_credit = {
@@ -349,7 +349,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'burden',
 	atlas = "JOE_Risk",
-	pos = { x = 0, y = 3 },
+	pos = { x = 5, y = 0 },
 	tier = 1,
 	pta_credit = {
 		art = {
@@ -375,7 +375,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'ethereal',
 	atlas = "JOE_Risk",
-	pos = { x = 1, y = 3 },
+	pos = { x = 6, y = 0 },
 	tier = 1,
 	pta_credit = {
 		art = {
@@ -401,7 +401,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'cyclone',
 	atlas = "JOE_Risk",
-	pos = { x = 2, y = 3 },
+	pos = { x = 7, y = 0 },
 	tier = 1,
 	pta_credit = {
 		art = {
@@ -429,7 +429,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'perpetuate',
 	atlas = "JOE_Risk",
-	pos = { x = 4, y = 3 },
+	pos = { x = 8, y = 0 },
 	tier = 1,
 	pta_credit = {
 		art = {
@@ -453,7 +453,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'crime',
 	atlas = "JOE_Risk",
-	pos = { x = 3, y = 0 },
+	pos = { x = 0, y = 1 },
 	config = { extra = { hand_neg = 1 } },
 	tier = 2,
 	pta_credit = {
@@ -481,7 +481,7 @@ PTASaka.Risk {
 PTASaka.Risk {
 	key = 'doubledown',
 	atlas = "JOE_Risk",
-	pos = { x = 0, y = 0 },
+	pos = { x = 1, y = 1 },
 	tier = 2,
 	apply_risk = function(self, ability)
 		G.E_MANAGER:add_event(Event {
@@ -503,7 +503,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'decay',
 	atlas = "JOE_Risk",
-	pos = { x = 0, y = 2 },
+	pos = { x = 2, y = 1 },
 	tier = 2,
 	pta_credit = {
 		art = {
@@ -547,7 +547,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'stunted',
 	atlas = "JOE_Risk",
-	pos = { x = 4, y = 1 },
+	pos = { x = 3, y = 1 },
 	config = { extra = { chance = 2 } },
 	tier = 2,
 	pta_credit = {
@@ -610,7 +610,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'backfire',
 	atlas = "JOE_Risk",
-	pos = { x = 3, y = 3 },
+	pos = { x = 4, y = 1 },
 	config = { extra = { chance = 2 } },
 	tier = 2,
 	pta_credit = {
@@ -645,7 +645,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'elusive',
 	atlas = "JOE_Risk",
-	pos = { x = 1, y = 2 },
+	pos = { x = 5, y = 1 },
 	tier = 2,
 	pta_credit = {
 		art = {
@@ -680,7 +680,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'cast',
 	atlas = "JOE_Risk",
-	pos = { x = 2, y = 0 },
+	pos = { x = 0, y = 2 },
 	tier = 3,
 	can_calculate_outside_of_boss = true,
 	use = function(self, card, area, copier)
@@ -796,7 +796,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'elysium',
 	atlas = "JOE_Risk",
-	pos = { x = 1, y = 1 },
+	pos = { x = 1, y = 2 },
 	tier = 3,
 	pta_credit = {
 		art = {
@@ -909,7 +909,7 @@ PTASaka.Risk {
 	set = 'Risk',
 	key = 'flow',
 	atlas = "JOE_Risk",
-	pos = { x = 0, y = 4 },
+	pos = { x = 3, y = 2 },
 	tier = 3,
 	pta_credit = {
 		art = {
@@ -949,7 +949,7 @@ PTASaka.Risk {
 	set = 'Spectral',
 	key = 'showdown',
 	atlas = "JOE_Risk",
-	pos = { x = 1, y = 0 },
+	pos = { x = 4, y = 2 },
 	config = { extra = {} },
 	hidden = true,
 	soul_set = 'Risk',
@@ -1126,20 +1126,20 @@ PTASaka.make_pyrox_boosters('moji',
 	}, 2
 )
 ]]
-local rpox = 5
+local rpox = 0
 PTASaka.make_boosters('risk',
 	{
-		{ x = rpox,   y = 0 },
-		{ x = rpox + 1, y = 0 },
+		{ x = rpox,   y = 1 },
+		{ x = rpox + 1, y = 1 },
 	},
 	{
-		{ x = rpox + 2, y = 0 },
+		{ x = rpox + 2, y = 1 },
 	},
 	{
-		{ x = rpox + 3, y = 0 },
+		{ x = rpox + 3, y = 1 },
 	},
 	{
-		atlas = 'JOE_Risk',
+		atlas = 'JOE_Boosters',
 		kind = 'Risk',
 		weight = 0.6,
 		create_card = function(self, card, i)

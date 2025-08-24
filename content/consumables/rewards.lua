@@ -14,7 +14,7 @@ local offs = {
 
 SMODS.UndiscoveredSprite {
 	key = 'Reward',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	path = 'risk.png',
 	pos = { x = 0, y = 7 },
 	px = 71, py = 95,
@@ -30,7 +30,7 @@ G.C.SECONDARY_SET.Reward = HEX('9dccf2')
 ---@overload fun(self: Reward): Reward
 PTASaka.Reward = SMODS.Consumable:extend {
 	set = 'Reward',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	config = { extra = {} },
 	no_doe = true,
 	pta_credit = {
@@ -47,6 +47,7 @@ PTASaka.Reward = SMODS.Consumable:extend {
 	in_pool = function(self, args)
 		return true
 	end,
+	--[[ 
 	register = function(self)
 		if self.atlas == 'payasaka_JOE_Risk' then
 			self.pos.x = self.pos.x + offs.x
@@ -58,6 +59,7 @@ PTASaka.Reward = SMODS.Consumable:extend {
 		end
 		SMODS.Consumable.register(self)
 	end,
+	]]
 	inject = function(self, i)
 		if self.pta_hidden_set then
 			table.insert(self.pseudo_legendaries, self)
@@ -71,7 +73,7 @@ PTASaka.Reward = SMODS.Consumable:extend {
 
 PTASaka.Reward {
 	key = 'conform',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 0, y = 0 },
 	config = { extra = { max_highlighted = 4, min_highlighted = 2 } },
 	use = function(self, card, area, copier)
@@ -149,7 +151,7 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'chance',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 1, y = 0 },
 	config = { extra = { mul = 3 } },
 	use = function(self, card, area, copier)
@@ -182,7 +184,7 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'hone',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 2, y = 0 },
 	config = { extra = { level = 1 } },
 	use = function(self, card, area, copier)
@@ -221,8 +223,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'bloom',
-	atlas = 'JOE_Risk',
-	pos = { x = 3, y = 2 },
+	atlas = 'JOE_Reward',
+	pos = { x = 3, y = 0 },
 	config = { max_highlighted = 1, extra = 2 },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
@@ -254,8 +256,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'metalicize',
-	atlas = 'JOE_Risk',
-	pos = { x = 3, y = 0 },
+	atlas = 'JOE_Reward',
+	pos = { x = 4, y = 0 },
 	use = function(self, card, area, copier)
 		local edition = poll_edition('wheel_of_fortune', nil, true, true)
 		---@type Card[]
@@ -297,8 +299,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'shine',
-	atlas = 'JOE_Risk',
-	pos = { x = 4, y = 0 },
+	atlas = 'JOE_Reward',
+	pos = { x = 5, y = 0 },
 	config = { extra = { max_highlighted = 4, min_highlighted = 1 } },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
@@ -377,7 +379,7 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'parlay',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 0, y = 1 },
 	config = { extra = { amount = 2 } },
 	use = function(self, card, area, copier)
@@ -430,7 +432,7 @@ end
 
 PTASaka.Reward {
 	key = 'remember',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 1, y = 1 },
 	use = function(self, card, area, copier)
 		---@type SMODS.Voucher[]
@@ -498,7 +500,7 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'dream',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 2, y = 1 },
 	use = function(self, card, area, copier)
 		SMODS.add_card { set = "Joker", edition = "e_negative", area = G.jokers }
@@ -513,7 +515,7 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'sprint',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 3, y = 1 },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event {
@@ -554,7 +556,7 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'sulfur',
-	atlas = 'JOE_Risk',
+	atlas = 'JOE_Reward',
 	pos = { x = 4, y = 1 },
 	config = { extra = { max_highlighted = 4, min_highlighted = 1 } },
 	use = function(self, card, area, copier)
@@ -602,8 +604,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'enlighten',
-	atlas = 'JOE_Risk',
-	pos = { x = 2, y = 2 },
+	atlas = 'JOE_Reward',
+	pos = { x = 5, y = 1 },
 	config = { extra = { amt = 3 } },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
@@ -655,8 +657,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'legacy',
-	atlas = 'JOE_Risk',
-	pos = { x = 1, y = 2 },
+	atlas = 'JOE_Reward',
+	pos = { x = 0, y = 2 },
 	config = { extra = { amt = 1 } },
 	use = function(self, card, area, copier)
 		local eligibleJokers = {}
@@ -721,8 +723,8 @@ PTASaka.rarity_upgrades = {
 
 PTASaka.Reward {
 	key = 'rebirth',
-	atlas = 'JOE_Risk',
-	pos = { x = 4, y = 2 },
+	atlas = 'JOE_Reward',
+	pos = { x = 1, y = 2 },
 	config = { extra = { max_highlighted = 1, min_highlighted = 1 } },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
@@ -791,8 +793,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'recall',
-	atlas = 'JOE_Risk',
-	pos = { x = 0, y = 3 },
+	atlas = 'JOE_Reward',
+	pos = { x = 2, y = 2 },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
@@ -837,8 +839,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'meld',
-	atlas = 'JOE_Risk',
-	pos = { x = 1, y = 3 },
+	atlas = 'JOE_Reward',
+	pos = { x = 3, y = 2 },
 	config = { extra = { amount = 2 }, immutable = { max_highlighted = 1 } },
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(Event({
@@ -915,8 +917,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'harmony',
-	atlas = 'JOE_Risk',
-	pos = { x = 2, y = 3 },
+	atlas = 'JOE_Reward',
+	pos = { x = 4, y = 2 },
 	use = function(self, card, area, copier)
 		local enhancement = SMODS.poll_enhancement({ key = 'harmony_proc', guaranteed = true })
 		G.E_MANAGER:add_event(Event({
@@ -970,8 +972,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'companion',
-	atlas = 'JOE_Risk',
-	pos = { x = 3, y = 3 },
+	atlas = 'JOE_Reward',
+	pos = { x = 5, y = 2 },
 	use = function(self, card, area, copier)
 		SMODS.add_card { set = "Friend", area = G.jokers }
 		play_sound('timpani')
@@ -985,8 +987,8 @@ PTASaka.Reward {
 
 PTASaka.Reward {
 	key = 'purify',
-	atlas = 'JOE_Risk',
-	pos = { x = 6, y = 4 },
+	atlas = 'JOE_Reward',
+	pos = { x = 2, y = 5 },
 	no_collection = true,
 	config = { extra = { max_highlighted = 1 } },
 	can_use = function(self, card)
@@ -1081,7 +1083,7 @@ end
 function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, max)
 	return PTASaka.Reward {
 		key = key,
-		atlas = 'JOE_Risk',
+		atlas = 'JOE_Reward',
 		pos = pos,
 		config = { extra = { max_highlighted = max or 2, min_highlighted = 1, ability = center } },
 		pta_hidden_set = hidden_set or "Tarot",
@@ -1167,15 +1169,16 @@ function PTASaka.create_reward_tarot(key, pos, center, hidden_set, hidden_pos, m
 end
 
 -- These are tarots technically
-PTASaka.create_reward_tarot('spirit', { x = 5, y = -1 }, "m_payasaka_volatile", "Tarot", { x = 4, y = 4 })
-PTASaka.create_reward_tarot('truth', { x = 6, y = 0 }, "m_payasaka_true", "Tarot", { x = 0, y = 4 })
-PTASaka.create_reward_tarot('righteousmind', { x = 7, y = -1 }, "m_payasaka_mimic", "Tarot", { x = 1, y = 4 }, 1)
-PTASaka.create_reward_tarot('health', { x = 5, y = 0 }, "m_payasaka_laser", "Tarot", { x = 2, y = 4 })
+PTASaka.create_reward_tarot('spirit', { x = 0, y = 3 }, "m_payasaka_volatile", "Tarot", { x = 0, y = 4 })
+PTASaka.create_reward_tarot('truth', { x = 1, y = 3 }, "m_payasaka_true", "Tarot", { x = 1, y = 4 })
+PTASaka.create_reward_tarot('righteousmind', { x = 2, y = 3 }, "m_payasaka_mimic", "Tarot", { x = 2, y = 4 }, 1)
+PTASaka.create_reward_tarot('health', { x = 3, y = 3 }, "m_payasaka_laser", "Tarot", { x = 3, y = 4 })
 
 PTASaka.Reward {
 	key = 'mind',
-	atlas = 'JOE_Risk',
-	pos = { x = 0, y = 2 },
+	atlas = 'JOE_Reward',
+	pos = { x = 0, y = 5 },
+	soul_pos = { x = 1, y = 5 },
 	hidden = true,
 	soul_set = 'Reward',
 	config = { extra = 2, choose = 1 },
@@ -1284,14 +1287,14 @@ PTASaka.Reward {
 
 PTASaka.make_boosters('moji',
 	{
-		{ x = 0, y = 3 },
-		{ x = 1, y = 3 },
+		{ x = 0, y = 2 },
+		{ x = 1, y = 2 },
 	},
 	{
-		{ x = 0, y = 4 },
+		{ x = 2, y = 2 },
 	},
 	{
-		{ x = 1, y = 4 },
+		{ x = 3, y = 2 },
 	},
 	{
 		atlas = 'JOE_Boosters',

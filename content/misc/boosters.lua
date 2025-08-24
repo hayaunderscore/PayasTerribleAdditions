@@ -4,17 +4,17 @@
 
 PTASaka.make_boosters('friend',
 	{
-		{ x = 1, y = 5 },
-		{ x = 2, y = 5 },
+		{ x = 0, y = 3 },
+		{ x = 1, y = 3 },
 	},
 	{
-		{ x = 3, y = 5 }
+		{ x = 2, y = 3 }
 	},
 	{
-		{ x = 4, y = 5 }
+		{ x = 3, y = 3 }
 	},
 	{
-		atlas = "JOE_Risk",
+		atlas = "JOE_Boosters",
 		kind = 'Friend',
 		weight = 0,
 		select_card = 'jokers',
@@ -37,10 +37,10 @@ PTASaka.make_boosters('friend',
 
 PTASaka.make_boosters('voucher',
 	{
-		{ x = 2, y = 0, cost = 10 },
+		{ x = 0, y = 4, cost = 10 },
 	},
 	{
-		{ x = 2, y = 1, cost = 18 }
+		{ x = 1, y = 4, cost = 18 }
 	},
 	{},
 	{

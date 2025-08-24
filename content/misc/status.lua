@@ -128,7 +128,7 @@ PTASaka.Status {
 
 -- This isn't an actual status, so its hidden
 -- Playing
-SMODS.Atlas { key = "playingmark", path = "playing.png", px = 71, py = 95 }
+SMODS.Atlas { key = "playingmark", path = "status/playing.png", px = 71, py = 95 }
 PTASaka.Status {
 	key = 'playing',
 	atlas = "playingmark",
