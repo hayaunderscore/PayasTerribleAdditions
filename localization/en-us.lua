@@ -3682,6 +3682,7 @@ return {
 			pta_idea_credit = { "Idea: #1#" },
 			pta_code_credit = { "Code: #1#" },
 			a_tallymult = "&#1# Mult",
+			a_irisu_joker_slot = "+#1# Slot?",
 			a_whatchips = "#1# Chips",
 		},
 		labels = {

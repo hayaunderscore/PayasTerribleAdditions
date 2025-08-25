@@ -1,10 +1,11 @@
 -- Check if card cannot be destroyed (by Eternal or other woes...)
 ---@param card Card
-local function cannot_destroy(card)
+local function cannot_destroy(card, irisu)
 	if card.ability.eternal then return true end
 	if card.ability.cry_absolute then return true end
 	if card.ability.entr_aleph then return true end
 	if card.ability.akyrs_sigma then return true end
+	if SMODS.is_eternal(card, irisu) then return true end
 	return false
 end
 
@@ -66,7 +67,7 @@ function G.FUNCS.payasaka_open_irisu_deck(e)
 		G.ROOM.T.h,
 		G.CARD_W * 5 * 1.1,
 		G.CARD_H * 1.1,
-		{ card_limit = 5, type = 'joker', highlight_limit = 1 }
+		{ card_limit = 5, type = "title", highlight_limit = 1 }
 	)
 	if irisu_area then
 		for _, v in pairs(irisu_area.cards) do
@@ -121,6 +122,7 @@ SMODS.Joker {
 	blueprint_compat = true,
 	unlocked = true,
 	discovered = true,
+	config = { extra = { stored_joker_slots = 0 } },
 	pta_custom_use = function(card)
 		return {
 			n = G.UIT.C,
@@ -137,20 +139,20 @@ SMODS.Joker {
 							nodes = {
 								{
 									n = G.UIT.C,
-									config = { align = "cm" },
+									config = { align = "cl" },
 									nodes = {
 										{
 											n = G.UIT.R,
 											config = { align = "cm" },
 											nodes = {
-												{ n = G.UIT.T, config = { text = "PEEK", colour = G.C.UI.TEXT_LIGHT, scale = 0.35, shadow = true } },
+												{ n = G.UIT.T, config = { text = "LOOK", colour = G.C.UI.TEXT_LIGHT, scale = 0.35, shadow = true } },
 											}
 										},
 										{
 											n = G.UIT.R,
-											config = { align = "cm" },
+											config = { align = "cl" },
 											nodes = {
-												{ n = G.UIT.T, config = { text = "CARDS", colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true } },
+												{ n = G.UIT.T, config = { text = "INSIDE", colour = G.C.UI.TEXT_LIGHT, scale = 0.35, shadow = true } },
 											}
 										},
 									}
@@ -180,7 +182,7 @@ SMODS.Joker {
 		---@type CardArea
 		local irisu_area = G["payasaka_irisu_" .. tostring(card.sort_id)]
 		local rets = {}
-		if context.setting_blind then
+		if context.setting_blind and not context.retrigger_joker then
 			if not G["payasaka_irisu_" .. tostring(card.sort_id)] then
 				irisu_area = PTASaka.create_storage_area("payasaka_irisu_" .. tostring(card.sort_id), 1e300, card.sort_id)
 				-- Save this sort_id to the save
@@ -203,7 +205,7 @@ SMODS.Joker {
 				copy:set_debuff(false)
 				copy:add_to_deck()
 				irisu_area:emplace(copy)
-				if not cannot_destroy(removed) then
+				if not cannot_destroy(removed, card) then
 					removed.getting_sliced = true
 					G.GAME.joker_buffer = G.GAME.joker_buffer - 1
 					G.E_MANAGER:add_event(Event({
@@ -215,23 +217,43 @@ SMODS.Joker {
 							return true
 						end
 					}))
-					return {
+					SMODS.calculate_effect({
 						message = "Gone!",
 						card = removed,
 						colour = G.C.SECONDARY_SET.Risk,
 						no_juice = true,
+					}, card)
+					-- Negative? Fuck you add an additional joker slot
+					-- This was originally intended before SMODS fixed it
+					if removed.edition and removed.edition.negative then
+						local value = { value = 1 }
+						SMODS.scale_card(card, {
+							ref_table = G.jokers.config,
+							ref_value = "card_limit",
+							scalar_table = value,
+							scalar_value = "value",
+							message_key = 'a_irisu_joker_slot',
+						})
+						SMODS.scale_card(card, {
+							ref_table = card.ability.extra,
+							ref_value = "stored_joker_slots",
+							scalar_table = value,
+							scalar_value = "value",
+							no_message = true
+						})
+					end
+				else
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							card:juice_up(0.8, 0.8)
+							return true
+						end
+					}))
+					rets[#rets+1] = {
+						message = localize('k_duplicated_ex'),
+						card = removed,
 					}
 				end
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						card:juice_up(0.8, 0.8)
-						return true
-					end
-				}))
-				rets[#rets+1] = {
-					message = localize('k_duplicated_ex'),
-					card = removed,
-				}
 			end
 		end
 		if irisu_area and irisu_area.cards then
@@ -252,4 +274,10 @@ SMODS.Joker {
 		end
 		if next(rets) then return PTASaka.recursive_extra(rets, 1) end
 	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.stored_joker_slots
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.stored_joker_slots
+	end
 }
