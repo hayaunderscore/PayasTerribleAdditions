@@ -4,7 +4,8 @@ PTASaka.Mod = SMODS.current_mod
 local conf = PTASaka.Mod.config
 
 -- i love jonh debugpkus
-assert(SMODS.current_mod.lovely, "Lovely patches were not loaded.\nMake sure your mod folder is not nested (there should be a bunch of files in the mod folder and not just another folder).")
+assert(SMODS.current_mod.lovely,
+	"Lovely patches were not loaded.\nMake sure your mod folder is not nested (there should be a bunch of files in the mod folder and not just another folder).")
 
 local nil_sane = function(val, def)
 	if val == nil then val = def end
@@ -253,3 +254,12 @@ assert(SMODS.load_file("lib/ui.lua"))()
 
 -- Scale library
 assert(SMODS.load_file("lib/scale.lua"))()
+
+for _, mod in pairs(SMODS.Mods) do
+	if mod.can_load and mod.path and not mod.meta_mod and mod.payasaka_crossmod_file and NFS.getInfo(mod.path..mod.payasaka_crossmod_file) and mod ~= PTASaka.Mod then
+		pcall(function()
+			local p = SMODS.load_file(mod.payasaka_crossmod_file, mod.id)
+			if p then p() end
+		end)
+	end
+end

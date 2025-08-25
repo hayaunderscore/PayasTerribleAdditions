@@ -242,3 +242,14 @@ else
 end
 '''
 match_indent = true
+
+# Allow easier cross mod
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/loader.lua"]'''
+pattern = '''config_file = {type = 'string', default = 'config.lua' },'''
+position = 'after'
+payload = '''
+payasaka_crossmod_file = {type = 'string', default = 'pta.lua' },
+'''
+match_indent = true
