@@ -299,6 +299,9 @@ SMODS.Enhancement {
 					local c = card.area.cards[i]
 					---@type Card
 					local l = card.area.cards[i-1]
+					if c == card and not l then
+						card.ability.card_copied = -1
+					end
 					if c == card and l then
 						if card.ability.last_card_copied ~= card.ability.card_copied then
 							local _atlas, _pos = get_front_spriteinfo((l.ability.conf_card or l.config.card))

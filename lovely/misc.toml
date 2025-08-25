@@ -353,10 +353,10 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS _ "src/card_draw.lua"]'''
-pattern = '''if self.children.front and (self.ability.delayed or (self.ability.effect ~= 'Stone Card' and not self.config.center.replace_base_card)) then'''
+pattern = '''if self.children.front and (self.ability.delayed or not self:should_hide_front()) then'''
 position = 'at'
 payload = '''
-if self.children.front and (self.area and not self.area.config.collection) and (self.ability.delayed or self.ability.effect ~= 'Stone Card') and (self.ability.mimic_card or self.config.center_key == "m_payasaka_mimic") then
+if self.children.front and (self.area and not self.area.config.collection) and (self.ability.delayed or not self:should_hide_front()) and (self.ability.mimic_card or self.config.center_key == "m_payasaka_mimic") then
 	--self.children.front:draw_shader('dissolve')
 	if self.ARGS.send_to_shader then
 		self.ARGS.send_to_shader[3] = self.ability.mimic_effect or 0
@@ -365,7 +365,7 @@ if self.children.front and (self.area and not self.area.config.collection) and (
 	if self.ARGS.send_to_shader then
 		self.ARGS.send_to_shader[3] = nil
 	end
-elseif self.children.front and (self.ability.delayed or (self.ability.effect ~= 'Stone Card' and not self.config.center.replace_base_card)) then
+elseif self.children.front and (self.ability.delayed or not self:should_hide_front()) then
 '''
 match_indent = true
 
