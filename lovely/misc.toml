@@ -877,3 +877,26 @@ if card and card.ability then
 	end
 end
 '''
+
+# Is This Your Card?
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''SMODS.bypass_create_card_edition = t.no_edition or t.edition'''
+position = 'before'
+payload = '''
+if t.use_cards_on_deck then
+	-- find a random card in deck
+	local c = pseudorandom_element(G.playing_cards, pseudorandom('ityc' .. (t.key_append or '') .. G.GAME.round_resets.ante))
+	t.set = next(SMODS.get_enhancements(c)) and "Enhanced" or "Base"
+    t.area = t.area or G.hand
+	t.suit = c.base.suit and SMODS.Suits[c.base.suit].card_key or t.suit
+	t.rank = c.base.value and SMODS.Ranks[c.base.value].card_key or t.rank
+    t.front = (t.suit and t.rank and (t.suit .. "_" .. t.rank)) or nil
+	t.seal = c.seal or nil
+	t.edition = c.edition and 'e_'..(c.edition.type) or nil
+	t.no_edition = t.edition == nil
+	t.key = c.config.center_key
+end
+'''
+match_indent = true

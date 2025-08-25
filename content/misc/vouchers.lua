@@ -395,7 +395,17 @@ SMODS.Voucher {
 		local ab = card.ability or self.config or { odds = 2 }
 		local num, den = SMODS.get_probability_vars(card, 1, ab.odds)
 		return { vars = { num, den } }
-	end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 SMODS.Voucher {
@@ -424,8 +434,105 @@ SMODS.Voucher {
 		local ab = card.ability or self.config or { odds = 2 }
 		local num, den = SMODS.get_probability_vars(card, 1, ab.odds)
 		return { vars = { num, den } }
-	end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
+
+SMODS.Voucher {
+	key = 'deck_builder',
+	atlas = "JOE_Vouchers",
+	pos = { x = 4, y = 2 },
+	cost = 10,
+	redeem = function (self, voucher)
+		if G.shop_booster then
+			local size = pseudorandom_element({ "normal", "jumbo", "mega" },
+				'deck_builder_size_' .. G.GAME.round_resets.ante)
+			local skin = pseudorandom('deck_builder_skin_' .. G.GAME.round_resets.ante, 1, size == "normal" and 4 or 2)
+			SMODS.add_booster_to_shop("p_standard_" .. size .. "_" .. skin)
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.starting_shop then
+			local size = pseudorandom_element({ "normal", "jumbo", "mega" },
+				'deck_builder_size_' .. G.GAME.round_resets.ante)
+			local skin = pseudorandom('deck_builder_skin_' .. G.GAME.round_resets.ante, 1, size == "normal" and 4 or 2)
+			SMODS.add_booster_to_shop("p_standard_" .. size .. "_" .. skin)
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.p_standard_normal_1
+		return { vars = { localize { type = 'name_text', set = 'Other', key = 'p_standard_normal' } } }
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+}
+
+SMODS.Voucher {
+	key = 'ityc',
+	atlas = "JOE_Vouchers",
+	pos = { x = 5, y = 2 },
+	cost = 10,
+	requires = { "v_payasaka_deck_builder" },
+	config = { extra = 1 },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.p_standard_normal_1
+		return { vars = { localize { type = 'name_text', set = 'Other', key = 'p_standard_normal' }, card.ability.extra } }
+	end,
+	redeem = function(self, voucher)
+		if G.shop_booster then
+			for k, v in pairs(G.shop_booster.cards) do
+				if v.config.center and v.config.center.kind == "Standard" then
+					v.ability.choose = v.ability.choose + voucher.ability.extra
+				end
+			end
+		end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+}
+
+SMODS.Booster:take_ownership_by_kind('Standard', {
+	create_card = function(self, card, i)
+		local _edition = poll_edition('standard_edition' .. G.GAME.round_resets.ante, 2, true)
+		local _seal = SMODS.poll_seal({ mod = 10 })
+		return { set = (pseudorandom(pseudoseed('stdset' .. G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", edition =
+		_edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sta", use_cards_on_deck = G.GAME.used_vouchers["v_payasaka_ityc"] }
+	end,
+	set_ability = function(self, card, initial, delay_sprites)
+		if G.GAME.used_vouchers["v_payasaka_ityc"] then
+			for k, v in pairs(G.vouchers and G.vouchers.cards or {}) do
+				if v.config.center_key == "v_payasaka_ityc" then
+					card.ability.choose = card.ability.choose + v.ability.extra
+				end
+			end
+		end
+	end
+}, true)
 
 SMODS.Voucher {
 	key = "equilibrium",

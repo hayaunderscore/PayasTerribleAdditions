@@ -2648,6 +2648,21 @@ return {
 					"a Joker is {C:attention}sold{} or {C:attention}destroyed{}"
 				}
 			},
+			v_payasaka_deck_builder = {
+				name = "Deck Builder",
+				text = {
+					"Shop has an additional",
+					"{C:attention}#1#{} for sale"
+				}
+			},
+			v_payasaka_ityc = {
+				name = "Is This Your Card?",
+				text = {
+					"#1#s always use",
+					"cards from your {C:attention}own deck{}",
+					"{C:attention}+#2#{} #1# pick"
+				}
+			}
 		},
 		Property = {
 			c_payasaka_brownproperty = {
