@@ -150,7 +150,7 @@ PTASaka.SetToggle {
 PTASaka.SetToggle {
 	key = 'fatty',
 	atlas = "JOE_Jokers2",
-	pos = { x = 2, y = 7 },
+	pos = { x = 3, y = 7 },
 	pta_associated_config = "Fatty Mode",
 	subcategory = "experimental",
 	loc_vars = function(self, info_queue, card)
@@ -163,7 +163,7 @@ PTASaka.SetToggle {
 PTASaka.SetToggle {
 	key = 'hidden',
 	atlas = "JOE_Jokers2",
-	pos = { x = 2, y = 7 },
+	pos = { x = 3, y = 7 },
 	unlocked = false,
 	subcategory = "experimental",
 }
