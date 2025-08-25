@@ -535,6 +535,61 @@ SMODS.Booster:take_ownership_by_kind('Standard', {
 }, true)
 
 SMODS.Voucher {
+	key = 'storage',
+	atlas = "JOE_Vouchers",
+	pos = { x = 2, y = 2 },
+	cost = 10,
+	config = { extra = { slot = 1 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.slot } }
+	end,
+	-- This would be in calculate if it wasn't in real time
+	update = function(self, card, dt)
+		if G.STAGE ~= G.STAGES.RUN then return end
+		if not G.jokers then return end
+		if not G.GAME.used_vouchers[self.key] then return end
+		if card.area ~= G.vouchers then return end
+		local len = #G.jokers.cards
+		local over = len >= G.jokers.config.card_limit
+		local cond = not G.GAME.used_vouchers["v_payasaka_hangar"] or (G.GAME.blind_on_deck == "Small" or G.GAME.blind_on_deck == "Big")
+		for k, v in pairs(G.jokers.cards) do
+			SMODS.debuff_card(v, k == len and over and cond, "storage_debuff")
+		end
+	end,
+	redeem = function(self, voucher)
+		G.jokers.config.card_limit = G.jokers.config.card_limit + voucher.ability.extra.slot
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+}
+
+SMODS.Voucher {
+	key = 'hangar',
+	atlas = "JOE_Vouchers",
+	pos = { x = 3, y = 2 },
+	cost = 10,
+	requires = { "v_payasaka_storage" },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+}
+
+SMODS.Voucher {
 	key = "equilibrium",
 	atlas = 'JOE_Vouchers',
 	pos = { x = 4, y = 0 },

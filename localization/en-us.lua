@@ -2662,6 +2662,22 @@ return {
 					"cards from your {C:attention}own deck{}",
 					"{C:attention}+#2#{} #1# pick"
 				}
+			},
+			v_payasaka_storage = {
+				name = "Expanded Storage",
+				text = {
+					"{C:dark_edition}+#1#{} Joker slot",
+					"{C:attention}Rightmost{} Joker is {C:attention}debuffed",
+					"when no Joker slots left"
+				}
+			},
+			v_payasaka_hangar = {
+				name = "Advanced Hangar",
+				text = {
+					"{C:attention}Rightmost{} Joker is",
+					"only {C:attention}debuffed during",
+					"{C:attention}Small{} and {C:attention}Big{} Blinds"
+				}
 			}
 		},
 		Property = {
