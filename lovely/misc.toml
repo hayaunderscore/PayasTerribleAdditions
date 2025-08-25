@@ -242,6 +242,12 @@ if (G.GAME.payasaka_scored_naneinfs or 0) >= 9 then
 	end
 	return true
 end
+if G.GAME.payasaka_construct and PTASaka.logged_chips and PTASaka.logged_chips < G.GAME.blind.chips then
+	G.STATE = G.STATES.DRAW_TO_HAND
+	G.STATE_COMPLETE = false
+	PTASaka.logged_chips = nil
+	return true
+end
 '''
 match_indent = true
 

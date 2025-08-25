@@ -34,6 +34,7 @@ SMODS.Blind {
 						delay = 0.5,
 						func = (function(t) return math.floor(t) end)
 					}))
+					PTASaka.logged_chips = G.GAME.chips - (G.GAME.blind.chips/10)
 					return true
 				end
 			})
