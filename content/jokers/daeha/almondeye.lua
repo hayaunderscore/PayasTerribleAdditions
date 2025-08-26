@@ -77,16 +77,27 @@ SMODS.Joker {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+		-- if the current blinds are already boss blinds then     dont
+		if G.P_BLINDS[G.GAME.round_resets.blind_choices.Big] and G.P_BLINDS[G.GAME.round_resets.blind_choices.Big].boss then
+			return
+		end
 		G.GAME.round_resets.blind_choices.Big = get_new_boss()
 		G.GAME.round_resets.blind_choices.Small = get_new_boss()
 		pseudoreroll_blind("Big")
 		pseudoreroll_blind("Small")
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.GAME.round_resets.blind_choices.Big = "bl_big"
-		G.GAME.round_resets.blind_choices.Small = "bl_small"
-		pseudoreroll_blind("Big")
-		pseudoreroll_blind("Small")
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				if not next(SMODS.find_card(self.key)) then
+					G.GAME.round_resets.blind_choices.Big = "bl_big"
+					G.GAME.round_resets.blind_choices.Small = "bl_small"
+					pseudoreroll_blind("Big")
+					pseudoreroll_blind("Small")
+				end
+				return true
+			end
+		})
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xscore } }
