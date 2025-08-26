@@ -1484,7 +1484,8 @@ return {
 					"Adds double the {C:attention}average{} of",
 					"all {C:attention}discovered{} poker hands",
 					"to Chips and Mult",
-					"{C:inactive,s:0.8}(Does not include secret hands)"
+					"{C:inactive,s:0.8}(Does not include secret hands)",
+					"{C:inactive,s:0.8}(Currently {C:chips,s:0.8}+#1#{C:inactive,s:0.8} and {C:mult,s:0.8}+#2#{C:inactive,s:0.8})"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}challenpoints.ogg",
