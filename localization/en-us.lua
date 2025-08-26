@@ -1693,6 +1693,15 @@ return {
 					}
 				}
 			},
+			j_payasaka_windysummer = {
+				name = "WINDY SUMMER",
+				text = {
+					"Adds the {C:attention}second-to-last{} card",
+					"in your {C:attention}discard pile{} to",
+					"the current played hand",
+					"{C:inactive}(Currently {C:light_black}#1#{C:inactive} of {V:1}#2#{C:inactive})"
+				}
+			},
 			j_payasaka_chicot = {
 				name = "Chicot",
 				text = {
