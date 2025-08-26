@@ -274,7 +274,7 @@ if finity_exists then f_dependency[#f_dependency+1] = 'finity' end
 -- Joyous Spring -> MissingNo.
 SMODS.Joker {
 	key = 'missingno',
-	config = { extra = { finity_count = 441, finity_mult = 1, finity_odds = 8 } },
+	config = { extra = { finity_count = 531, finity_mult = 1, finity_odds = 8 } },
 	rarity = 4,
 	atlas = "JOE_Jokers",
 	pos = { x = 6, y = 3 },
