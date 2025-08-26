@@ -2660,7 +2660,7 @@ return {
 				text = {
 					"#1#s always use",
 					"cards from your {C:attention}own deck{}",
-					"{C:attention}+#2#{} #1# pick"
+					"{C:attention}+#2#{} #1# card"
 				}
 			},
 			v_payasaka_storage = {

@@ -457,7 +457,9 @@ SMODS.Voucher {
 			local size = pseudorandom_element({ "normal", "jumbo", "mega" },
 				'deck_builder_size_' .. G.GAME.round_resets.ante)
 			local skin = pseudorandom('deck_builder_skin_' .. G.GAME.round_resets.ante, 1, size == "normal" and 4 or 2)
-			SMODS.add_booster_to_shop("p_standard_" .. size .. "_" .. skin)
+			local c = SMODS.add_booster_to_shop("p_standard_" .. size .. "_" .. skin)
+			c.ability.couponed = true
+			c:set_cost()
 		end
 	end,
 	calculate = function(self, card, context)
@@ -465,7 +467,9 @@ SMODS.Voucher {
 			local size = pseudorandom_element({ "normal", "jumbo", "mega" },
 				'deck_builder_size_' .. G.GAME.round_resets.ante)
 			local skin = pseudorandom('deck_builder_skin_' .. G.GAME.round_resets.ante, 1, size == "normal" and 4 or 2)
-			SMODS.add_booster_to_shop("p_standard_" .. size .. "_" .. skin)
+			local c = SMODS.add_booster_to_shop("p_standard_" .. size .. "_" .. skin)
+			c.ability.couponed = true
+			c:set_cost()
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -499,7 +503,7 @@ SMODS.Voucher {
 		if G.shop_booster then
 			for k, v in pairs(G.shop_booster.cards) do
 				if v.config.center and v.config.center.kind == "Standard" then
-					v.ability.choose = v.ability.choose + voucher.ability.extra
+					v.ability.extra = v.ability.extra + voucher.ability.extra
 				end
 			end
 		end
@@ -527,7 +531,7 @@ SMODS.Booster:take_ownership_by_kind('Standard', {
 		if G.GAME.used_vouchers["v_payasaka_ityc"] then
 			for k, v in pairs(G.vouchers and G.vouchers.cards or {}) do
 				if v.config.center_key == "v_payasaka_ityc" then
-					card.ability.choose = card.ability.choose + v.ability.extra
+					card.ability.extra = card.ability.extra + v.ability.extra
 				end
 			end
 		end
