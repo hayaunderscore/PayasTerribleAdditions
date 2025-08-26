@@ -1601,8 +1601,9 @@ return {
 					"{C:edition,s:0.5}Haru Urara"
 				},
 				text = {
-					"Cards held in {C:attention}hand{} also",
-					"count as being {C:attention}unscored"
+					"This Joker gains {C:chips}+#2#{} Chips",
+					"for each {C:attention}unscored{} card",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
 				},
 			},
 			j_payasaka_ichiro = {
@@ -1675,6 +1676,21 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Score",
 					"All blinds are {C:dark_edition}Boss Blinds",
+				}
+			},
+			j_payasaka_jlm = {
+				name = "A Jimbo Like Me",
+				text = {
+					{
+						"Scored cards have a",
+						"{C:green}#1# in #2#{} chance of",
+						"giving {X:mult,C:white}X#3#{} Mult",
+					},
+					{
+						"Odds {C:attention}increase{} by {C:attention}#4#",
+						"each time it {C:attention}fails{}",
+						"Resets when {C:attention}triggered{}"
+					}
 				}
 			},
 			j_payasaka_chicot = {
@@ -3714,6 +3730,7 @@ return {
 			pta_code_credit = { "Code: #1#" },
 			a_tallymult = "&#1# Mult",
 			a_irisu_joker_slot = "+#1# Slot?",
+			a_jlm_odds = "+#1# Odds",
 			a_whatchips = "#1# Chips",
 		},
 		labels = {
