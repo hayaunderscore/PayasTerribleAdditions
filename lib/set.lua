@@ -206,6 +206,11 @@ PTASaka.SetToggle {
 
 local start_up_values = PTASaka.deep_copy(PTASaka.Mod.config)
 
+G.FUNCS.payasaka_back_music_subcategory = function(...)
+	PTASaka.dummy_collection_menu = nil
+	G.FUNCS[G.ACTIVE_MOD_UI and "openModUI_"..G.ACTIVE_MOD_UI.id or 'your_collection']()
+end
+
 local create_UIBox_collection_subcategory = function(subcategory, title, rows)
 	rows = rows or {}
 	-- filter out subcategory items
@@ -234,7 +239,7 @@ local create_UIBox_collection_subcategory = function(subcategory, title, rows)
 				PTASaka.set_status(card, "payasaka_playing", true)
 			end
 		end,
-		--back_func = 'payasaka_back_music_subcategory',
+		back_func = 'payasaka_back_music_subcategory',
 		title = {
 			n = G.UIT.R,
 			config = { align = "cm", no_fill = true, colour = G.C.CLEAR },
@@ -276,6 +281,7 @@ function Card:click()
 		else
 			play_sound("cardSlide1")
 			G.SETTINGS.paused = true
+			PTASaka.dummy_collection_menu = true
 			G.FUNCS.overlay_menu {
 				definition = create_UIBox_collection_subcategory(self.config.center.is_subcategory, self.config.center.pta_associated_config),
 			}

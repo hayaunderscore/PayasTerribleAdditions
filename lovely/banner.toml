@@ -10,7 +10,7 @@ target = '''=[SMODS banner "src/ui.lua"]'''
 pattern = 'local compatibile, incompatible_list = mod.check_compatibility()'
 position = "after"
 payload = '''
-if PTASaka.mechanic_menu or PTASaka.dos_menu then return {} end
+if PTASaka.mechanic_menu or PTASaka.dos_menu or PTASaka.dummy_collection_menu then return {} end
 '''
 match_indent = true
 times = 1
@@ -22,7 +22,21 @@ target = '''=[SMODS banner "src/ui.lua"]'''
 pattern = 'if t and t.nodes and mod.view_type ~= "" then'
 position = "before"
 payload = '''
-if PTASaka.mechanic_menu or PTASaka.dos_menu then return t end
+if PTASaka.mechanic_menu or PTASaka.dos_menu or PTASaka.dummy_collection_menu then return t end
+'''
+match_indent = true
+times = 1
+
+# Do not allow right click override on Jukebox
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS banner "src/ui.lua"]'''
+pattern = 'if G.CONTROLLER.locks.frame or not G.OVERLAY_MENU or G.OVERLAY_MENU.REMOVED then'
+position = "before"
+payload = '''
+if PTASaka and (PTASaka.mechanic_menu or PTASaka.dos_menu or PTASaka.dummy_collection_menu) then
+	return false
+end
 '''
 match_indent = true
 times = 1
