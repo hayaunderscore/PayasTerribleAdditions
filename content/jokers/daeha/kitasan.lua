@@ -46,5 +46,5 @@ SMODS.Joker {
 			vars = { card.ability.extra.xmult_gain, card.ability.extra.xmult }
 		}
 	end,
-	shine_front_pos = true,
+	--shine_front_pos = true,
 }

@@ -906,3 +906,49 @@ if t.use_cards_on_deck then
 end
 '''
 match_indent = true
+
+# Allow stencil on the canvas
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''love.graphics.setCanvas{self.CANVAS}'''
+position = "at"
+payload = '''
+love.graphics.setCanvas({self.CANVAS, stencil = true})
+'''
+match_indent = true
+overwrite = false
+
+# Kitasan Black's soul graphic is clipped to the main card
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''if type(self.config.center.soul_pos.draw) == 'function' then'''
+position = 'before'
+payload = '''
+-- exclusive to kitasan, clip the front
+if self.config.center_key == "j_payasaka_kitasan" then
+	local function stencil_draw()
+		self.children.center.VT.scale = self.children.center.VT.scale * 0.95
+		self.children.center:draw_shader('dissolve')
+		self.children.center.VT.scale = self.children.center.VT.scale / 0.95
+	end
+	love.graphics.stencil(stencil_draw, "replace", 1)
+	love.graphics.setStencilTest("greater", 0)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''        self.children.floating_sprite:draw_shader(edition.shader, nil, nil, nil, self.children.center, scale_mod, rotate_mod)                    
+                end
+            end'''
+position = 'after'
+payload = '''
+if self.config.center_key == "j_payasaka_kitasan" then
+	love.graphics.setStencilTest()
+end
+'''
+match_indent = true

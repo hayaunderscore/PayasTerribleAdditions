@@ -1562,7 +1562,8 @@ return {
 			},
 			j_payasaka_kitasan = {
 				name = {
-					"{f:5}キタサンブラック",
+					"{C:dark_edition,s:0.6}[Fire on Your Heels]",
+					"{f:5,E:1}キタサンブラック",
 					"{C:edition,s:0.5}Kitasan Black"
 				},
 				text = {
