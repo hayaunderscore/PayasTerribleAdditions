@@ -632,7 +632,7 @@ end
 ---@param c Card
 function PTASaka.create_soul_aura_for_card(c)
 	if not c.pta_trick_sprite then
-		c.pta_trick_sprite_args = c.pta_trick_sprite_args or {
+		c.pta_trick_sprite_args = {
 			intensity = 0,
 			real_intensity = 0,
 			intensity_vel = 0,
@@ -647,15 +647,22 @@ function PTASaka.create_soul_aura_for_card(c)
 		c.pta_trick_sprite.states.click.can = false
 		c.pta_trick_sprite.scale = { x = 1.2, y = 1.2 }
 		c.pta_trick_sprite.role.offset = { x = -0.1, y = -0.2 }
+		local function create_func(ref_table, ref_value, default)
+			return function()
+				return ref_table and ref_table[ref_value] and ref_table[ref_value] or default or 0
+			end
+		end
 		c.pta_trick_sprite:define_draw_steps({ {
 			shader = 'flame',
 			send = {
-				{ name = 'time',            ref_table = c.pta_trick_sprite_args, ref_value = 'timer' },
-				{ name = 'amount',          ref_table = c.pta_trick_sprite_args, ref_value = 'real_intensity' },
-				{ name = 'image_details',   ref_table = c.pta_trick_sprite,      ref_value = 'image_dims' },
-				{ name = 'texture_details', ref_table = c.pta_trick_sprite.RETS, ref_value = 'get_pos_pixel' },
-				{ name = 'colour_1',        ref_table = c.pta_trick_sprite_args, ref_value = 'colour_1' },
-				{ name = 'colour_2',        ref_table = c.pta_trick_sprite_args, ref_value = 'colour_2' },
+				{ name = 'time',            func = function ()
+					return G.TIMERS.REAL or 0
+				end },
+				{ name = 'amount',          func = create_func(c.pta_trick_sprite_args, "real_intensity", 0) },
+				{ name = 'image_details',   func = create_func(c.pta_trick_sprite, "image_dims", {0, 0}) },
+				{ name = 'texture_details', func = create_func(c.pta_trick_sprite.RETS, "get_pos_pixel", {0, 0}) },
+				{ name = 'colour_1',        func = create_func(c.pta_trick_sprite_args, "colour_1", G.C.UI_CHIPS) },
+				{ name = 'colour_2',        func = create_func(c.pta_trick_sprite_args, "colour_2", G.C.UI_CHIPS) },
 				{ name = 'id',              val = c.pta_trick_sprite.ID },
 			}
 		} })
