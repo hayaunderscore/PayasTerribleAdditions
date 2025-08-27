@@ -5,8 +5,14 @@ SMODS.Joker {
 	atlas = "JOE_Jokers2",
 	pos = { x = 0, y = 0 },
 	cost = 6,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.before then
 			G.E_MANAGER:add_event(Event{

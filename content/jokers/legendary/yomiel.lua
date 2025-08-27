@@ -7,6 +7,12 @@ SMODS.Joker {
 	cost = 25,
 	blueprint_compat = true,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.before then
 			G.E_MANAGER:add_event(Event {
