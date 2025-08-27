@@ -60,7 +60,7 @@ SMODS.Joker {
 				message = localize('k_upgrade_ex')
 			}
 		end
-		if context.press_play then
+		if context.press_play and not context.blueprint_card then
 			juice_card_endless(card, nil, card.sort_id, true)
 		end
 		if context.selling_self and card.area and not context.blueprint_card then

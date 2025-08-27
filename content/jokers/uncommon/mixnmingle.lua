@@ -20,7 +20,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers2",
 	pos = { x = 4, y = 5 },
 	cost = 6,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = false,
 	config = { extra = { xmult_gain = 0.02, xmult = 1 } },
 	--[[

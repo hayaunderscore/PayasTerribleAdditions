@@ -7,7 +7,7 @@ SMODS.Joker {
 	soul_pos = { x = 4, y = 1 },
 	pta_front_pos = { x = 5, y = 1 },
 	cost = 6,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	config = { extra = { odds = 3 } },
 	pta_credit = {

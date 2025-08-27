@@ -6,7 +6,7 @@ SMODS.Joker {
 	cost = 10,
 	unlocked = true,
 	discovered = true,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	--eternal_compat = false, -- Needed for Stuck challenge
 	perishable_compat = false,

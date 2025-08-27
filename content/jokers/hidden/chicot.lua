@@ -52,7 +52,7 @@ SMODS.Joker {
 	atlas = "JOE_Jokers2",
 	pos = { x = 0, y = 5 },
 	cost = 25,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = false,
 	no_doe = true,
 	no_collection = true,
@@ -79,7 +79,7 @@ SMODS.Joker {
 			}
 		end
 		-- go back to being chicot
-		if context.round_eval then
+		if context.round_eval and not context.blueprint_card then
 			-- Nuh uh
 			G.E_MANAGER:add_event(Event{
 				trigger = 'after',

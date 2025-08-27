@@ -68,7 +68,7 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.selling_self then
+		if context.selling_self and not context.blueprint_card then
 			if G.GAME.risk_cards_risks and next(G.GAME.risk_cards_risks) then
 				for _, v in pairs(G.GAME.payasaka_risk_objects) do
 					v.ability.persist = true
@@ -79,7 +79,7 @@ SMODS.Joker {
 			}
 		end
 		-- go back to being luchador
-		if context.round_eval then
+		if context.round_eval and not context.blueprint_card then
 			-- Nuh uh
 			G.E_MANAGER:add_event(Event{
 				trigger = 'after',

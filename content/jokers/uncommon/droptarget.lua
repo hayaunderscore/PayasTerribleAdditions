@@ -5,7 +5,7 @@ SMODS.Joker {
 	pos = { x = 6, y = 6 },
 	rarity = 2,
 	cost = 6,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = false,
 	config = { extra = { odds = 6, chips = 21, chips_add = 14 }, immutable = { sprite_state = 0, random_values = nil } },
 	pta_credit = {

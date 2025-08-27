@@ -15,7 +15,7 @@ SMODS.Joker {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.setting_blind then
+		if context.setting_blind and not context.blueprint_card then
 			if SMODS.pseudorandom_probability(card, 'miscom', 1, card.ability.extra.odds) then
 				card.ability.extra.triggered = true
 				return {

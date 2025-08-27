@@ -7,7 +7,7 @@ SMODS.Joker {
 	pos = { x = 6, y = 6 },
 	rarity = 3,
 	cost = 12,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	demicoloncompat = false,
 	pta_credit = {
 		idea = {
