@@ -46,6 +46,10 @@ SMODS.Sound { key = 'aeiou', path = 'aeiou' .. ".wav" }
 
 create_sound("snd_icespell")
 
+create_sound("sfx_success")
+SMODS.Sound { key = 'sfx_kitasan', path = 'sfx_kitasan' .. ".wav" }
+SMODS.Sound { key = 'sfx_aichan', path = 'sfx_aichan' .. ".wav" }
+
 -- Custom music for prismatic jokers
 SMODS.Sound({
 	key = "music_prismatic",

@@ -10,7 +10,7 @@ return {
 	["New Run Plus"] = false,
 	-- Subcategories for Experimental Features
 	["Fatty Mode"] = false,
-	["VERYFUNNYFEATURETHATNEEDSTOBEUNLOCKED"] = true,
+	["Support Card Animations"] = false,
 	-- Subcategories for Music
 	["Prismatic Music"] = true,
 	["Mechanic Music"] = true,

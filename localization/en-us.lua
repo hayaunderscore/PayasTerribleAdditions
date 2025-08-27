@@ -3468,6 +3468,14 @@ return {
 					"???"
 				}
 			},
+			ptaset_payasaka_harikitte = {
+				name = "Support Card Animations",
+				text = {
+					"Whether to enable {C:attention}support card",
+					"jumpscares for {C:dark_edition}Kitasan Black",
+					"and {C:dark_edition}Almond Eye."
+				}
+			},
 			ptaset_payasaka_prismatic_music = {
 				name = {
 					"THROWBACK",

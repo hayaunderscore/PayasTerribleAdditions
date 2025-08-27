@@ -72,8 +72,9 @@ SMODS.Joker {
 					return true
 				end
 			})
+			create_support_card_animation(self, "payasaka_sfx_aichan")
 			card_eval_status_text(card, 'extra', nil, nil, nil,
-				{ message = ("^%s Score"):format(number_format(card.ability.extra.xscore)), sound = "payasaka_coolgong", colour = G.C.PURPLE })
+				{ message = ("^%s Score"):format(number_format(card.ability.extra.xscore)), sound = "payasaka_sfx_success", colour = G.C.PURPLE })
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)

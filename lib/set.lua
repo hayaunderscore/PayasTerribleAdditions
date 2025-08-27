@@ -161,10 +161,12 @@ PTASaka.SetToggle {
 }
 -- ??? Will be used in place for SOMETHING...
 PTASaka.SetToggle {
-	key = 'hidden',
+	key = 'harikitte',
 	atlas = "JOE_Jokers2",
-	pos = { x = 3, y = 7 },
-	unlocked = false,
+	pos = { x = 1, y = 6 },
+	soul_pos = { x = 2, y = 8 },
+	pta_front_pos = { x = 1, y = 8 },
+	pta_associated_config = "Support Card Animations",
 	subcategory = "experimental",
 }
 -- Music: THROWBACK
