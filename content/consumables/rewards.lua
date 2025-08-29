@@ -47,7 +47,7 @@ PTASaka.Reward = SMODS.Consumable:extend {
 	in_pool = function(self, args)
 		return true
 	end,
-	--[[ 
+	--[[
 	register = function(self)
 		if self.atlas == 'payasaka_JOE_Risk' then
 			self.pos.x = self.pos.x + offs.x
@@ -549,8 +549,8 @@ PTASaka.Reward {
 		return true
 	end,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = { key = 'c_payasaka_tagbagtest', set = 'TagBag', vars = { "[Tag]" } }
-		return { vars = { } }
+		info_queue[#info_queue + 1] = { key = 'c_payasaka_tagbagtest', set = 'TagBag', vars = { "[Tag]" } }
+		return { vars = {} }
 	end
 }
 
@@ -858,7 +858,7 @@ PTASaka.Reward {
 		end)
 		local changed = {}
 		for i = 1, math.min(#cards, card.ability.extra.amount) do
-			local _, k = pseudorandom_element(cards, 'meld_lmao_'..G.GAME.payasaka_meld_used)
+			local _, k = pseudorandom_element(cards, 'meld_lmao_' .. G.GAME.payasaka_meld_used)
 			table.insert(changed, table.remove(cards, k))
 		end
 		for i = 1, #changed do
@@ -1178,7 +1178,17 @@ PTASaka.Reward {
 	key = 'mind',
 	atlas = 'JOE_Reward',
 	pos = { x = 0, y = 5 },
-	soul_pos = { x = 1, y = 5 },
+	soul_pos = { x = 1, y = 5, draw = function(card, scale_mod, rotate_mod)
+		scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
+		0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
+		(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
+		rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
+		0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+
+		card.children.floating_sprite:draw_shader('dissolve', 0, nil, nil, card.children.center, scale_mod, rotate_mod,
+			nil, 0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
+		card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod)
+	end },
 	hidden = true,
 	soul_set = 'Reward',
 	config = { extra = 2, choose = 1 },
