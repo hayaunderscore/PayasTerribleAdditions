@@ -109,7 +109,7 @@ function PTASaka.CheckVash()
 	return (next(SMODS.find_card('j_payasaka_vash')) or next(SMODS.find_card('j_payasaka_manhattan')) or next(SMODS.find_card('j_payasaka_contract')))
 end
 
-SMODS.calculation_keys[#SMODS.calculation_keys+1] = "prevent_remove"
+SMODS.other_calculation_keys[#SMODS.other_calculation_keys+1] = "prevent_remove"
 SMODS.silent_calculation.prevent_remove = true
 
 -- Check if Vash should destroy a Joker

@@ -56,6 +56,7 @@ SMODS.Joker {
 		if context.individual and context.cardarea == G.play and not context.end_of_round then
 			local bonus = pseudorandom_element(perma_bonuses, 'paya')
 			if context.other_card and card.ability.extra[bonus] then
+				context.other_card.ability[bonus] = context.other_card.ability[bonus] or 0
 				--print(bonus)
 				SMODS.scale_card(context.other_card, {
 					ref_table = context.other_card.ability,

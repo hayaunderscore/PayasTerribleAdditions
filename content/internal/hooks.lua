@@ -833,17 +833,17 @@ local pulmenti_redirect = {
 }
 
 -- Insert dummy repetitions in here
-table.insert(SMODS.calculation_keys, 1, "fake_repetitions")
+table.insert(SMODS.other_calculation_keys, 1, "fake_repetitions")
 -- Same with these, for enotsworrA and Phil
-table.insert(SMODS.calculation_keys, 1, "pf_chips")
-table.insert(SMODS.calculation_keys, 1, "pfchips")
-table.insert(SMODS.calculation_keys, 1, "pf_mult")
-table.insert(SMODS.calculation_keys, 1, "pfmult")
-table.insert(SMODS.calculation_keys, 1, "pf_chips_mult")
+table.insert(SMODS.other_calculation_keys, 1, "pf_chips")
+table.insert(SMODS.other_calculation_keys, 1, "pfchips")
+table.insert(SMODS.other_calculation_keys, 1, "pf_mult")
+table.insert(SMODS.other_calculation_keys, 1, "pfmult")
+table.insert(SMODS.other_calculation_keys, 1, "pf_chips_mult")
 -- exponential stuff for paya
-SMODS.calculation_keys[#SMODS.calculation_keys + 1] = "e_chips"
-SMODS.calculation_keys[#SMODS.calculation_keys + 1] = "e_mult"
-SMODS.calculation_keys[#SMODS.calculation_keys + 1] = "pta_balance"
+SMODS.other_calculation_keys[#SMODS.other_calculation_keys + 1] = "e_chips"
+SMODS.other_calculation_keys[#SMODS.other_calculation_keys + 1] = "e_mult"
+SMODS.other_calculation_keys[#SMODS.other_calculation_keys + 1] = "pta_balance"
 
 local calculate_individual_effect_hook = SMODS.calculate_individual_effect
 function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
@@ -1027,11 +1027,11 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 
 	if key == 'pta_balance' and amount then
 		if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
-		local balance_chips = mod_chips(hand_chips * amount)
-		local balance_mult = mod_mult(mult * amount)
+		local balance_chips = (hand_chips * amount)
+		local balance_mult = (mult * amount)
 		local avg = (balance_chips + balance_mult) / 2
-		hand_chips = hand_chips + (avg - balance_chips)
-		mult = mult + (avg - balance_mult)
+		hand_chips = mod_chips(hand_chips + (avg - balance_chips))
+		mult = mod_mult(mult + (avg - balance_mult))
 		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 		G.E_MANAGER:add_event(Event({
 			func = (function()
@@ -1086,15 +1086,17 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 
 	-- Phil and enotsworrA
 	if key == "pf_chips" or key == "pfchips" then
-		hand_chips = amount(hand_chips)
+		hand_chips = mod_chips(amount(hand_chips))
 		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 		return true
 	elseif key == "pf_mult" or key == "pfmult" then
-		mult = amount(mult)
+		mult = mod_mult(amount(mult))
 		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 		return true
 	elseif key == "pf_chips_mult" then
 		hand_chips, mult = amount(hand_chips, mult)
+		hand_chips = mod_chips(hand_chips)
+		mult = mod_mult(mult)
 		update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 		return true
 	end

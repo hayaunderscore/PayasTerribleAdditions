@@ -398,8 +398,8 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS _ "src/game_object.lua"]'''
-pattern = '''if specific_vars and specific_vars.bonus_p_dollars then'''
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''if specific_vars and specific_vars.bonus_repetitions then'''
 position = 'before'
 payload = '''
 if specific_vars and specific_vars.bonus_e_chips then

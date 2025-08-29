@@ -1,4 +1,4 @@
-SMODS.calculation_keys[#SMODS.calculation_keys+1] = 'prevent_remove'
+SMODS.other_calculation_keys[#SMODS.other_calculation_keys+1] = 'prevent_remove'
 
 -- Vash the Stampede
 SMODS.Joker {
