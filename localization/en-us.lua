@@ -1621,10 +1621,11 @@ return {
 			j_payasaka_across_the_world = {
 				name = "Across the World",
 				text = {
-					"Buffoon Packs in the shop",
-					"have a {C:green}#1# in #2#{} chance",
-					"of being {C:attention}replaced{} with a",
-					"corresponding {C:payasaka_friend}Friend{} Pack"
+					"Shop has an additional",
+					"{C:attention}Buffoon Pack{} for sale",
+					"{C:green}#1# in #2#{} chance of",
+					"spawning a corresponding",
+					"{C:payasaka_friend}Friend{} Pack instead"
 				},
 			},
 			j_payasaka_sinisterpotion = {
@@ -1744,7 +1745,7 @@ return {
 			bl_payasaka_question = {
 				name = 'The Cast', text = { "Fusion of the blinds", "#1#" }
 			},
-			bl_payasaka_question_alt = { name = 'The Cast', text = { "You shouldn't spoil", "yourself, now..." } },
+			bl_payasaka_question_alt = { name = 'The Cast', text = { "Fuses 2 showdown", "boss blinds" } },
 			bl_payasaka_prelude = {
 				name = 'Prelude Blind',
 				text = {
