@@ -1022,7 +1022,7 @@ PTASaka.Risk {
 		]]
 		SMODS.add_card {
 			key = 'c_payasaka_mind',
-			edition = 'e_negative'
+			no_edition = true
 		}
 		G.GAME.payasaka_cannot_reroll = nil
 	end

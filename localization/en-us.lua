@@ -2218,8 +2218,7 @@ return {
 				text = {
 					"{C:attention}Transforms{} the boss",
 					"blind to a {C:attention}showdown",
-					"boss blind for a",
-					"{C:dark_edition}Negative{} {C:reward}Mind"
+					"boss blind",
 				}
 			},
 			c_payasaka_center = {
