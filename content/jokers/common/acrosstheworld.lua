@@ -5,7 +5,7 @@ SMODS.Joker {
 	rarity = 1,
 	atlas = "JOE_Jokers2",
 	pos = { x = 0, y = 8 },
-	cost = 8,
+	cost = 4,
 	blueprint_compat = false,
 	demicoloncompat = false,
 	pta_credit = {
