@@ -2564,6 +2564,14 @@ return {
 					"{C:attention}#2#s",
 				}
 			},
+			c_payasaka_dominion = {
+				name = "Desirable Dominion",
+				text = {
+					"Enhances {C:attention}#1#",
+					"selected cards to",
+					"{C:attention}#2#s",
+				}
+			},
 			c_payasaka_purify = {
 				name = "{C:edition}Purify",
 				text = {

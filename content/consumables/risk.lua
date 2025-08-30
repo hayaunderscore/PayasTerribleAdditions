@@ -44,7 +44,7 @@ SMODS.UndiscoveredSprite {
 	key = 'Risk',
 	atlas = 'JOE_Risk',
 	path = 'risk.png',
-	pos = { x = 0, y = 6 },
+	pos = { x = 8, y = 2 },
 	px = 71, py = 95,
 }
 
