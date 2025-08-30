@@ -1725,6 +1725,12 @@ return {
 				},
 				-- These guys don't have comments
 			},
+			j_payasaka_nihil = {
+				name = "Noli me eligere.",
+				text = {
+					"?"
+				}
+			},
 			j_payasaka_pulmenti = {
 				name = "Numerus Pulmenti",
 				text = {

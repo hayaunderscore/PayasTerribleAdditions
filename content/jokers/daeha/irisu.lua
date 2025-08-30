@@ -183,6 +183,31 @@ SMODS.Joker {
 		local irisu_area = G["payasaka_irisu_" .. tostring(card.sort_id)]
 		local rets = {}
 		if context.setting_blind and not context.retrigger_joker then
+			if G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks >= 10 and G.GAME.blind.boss then
+				-- Nuh uh
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.2,
+					func = function()
+						card:flip()
+						return true
+					end
+				})
+				G.E_MANAGER:add_event(Event{
+					trigger = 'after',
+					delay = 0.2,
+					func = function()
+						card:set_ability("j_payasaka_nihil")
+						ease_background_colour_blind(G.STATE)
+						play_sound('tarot2')
+						card:flip()
+						return true
+					end
+				})
+				SMODS.calculate_effect({ message = "Transformed!" }, card)
+				check_for_unlock({ type = 'payasaka_encounter_thunderstruck' })
+				return nil, true
+			end
 			if not G["payasaka_irisu_" .. tostring(card.sort_id)] then
 				irisu_area = PTASaka.create_storage_area("payasaka_irisu_" .. tostring(card.sort_id), 1e300, card.sort_id)
 				-- Save this sort_id to the save
@@ -227,20 +252,15 @@ SMODS.Joker {
 					-- This was originally intended before SMODS fixed it
 					if removed.edition and removed.edition.negative then
 						local value = { value = 1 }
+						local old = card.ability.card_limit
 						SMODS.scale_card(card, {
-							ref_table = G.jokers.config,
+							ref_table = card.ability,
 							ref_value = "card_limit",
 							scalar_table = value,
 							scalar_value = "value",
 							message_key = 'a_irisu_joker_slot',
 						})
-						SMODS.scale_card(card, {
-							ref_table = card.ability.extra,
-							ref_value = "stored_joker_slots",
-							scalar_table = value,
-							scalar_value = "value",
-							no_message = true
-						})
+						card.area:handle_card_limit(card.ability.card_limit-old, card.ability.extra_slots_used)
 					end
 				else
 					G.E_MANAGER:add_event(Event({
@@ -253,6 +273,20 @@ SMODS.Joker {
 						message = localize('k_duplicated_ex'),
 						card = removed,
 					}
+					-- Negative? Fuck you add an additional joker slot
+					-- This was originally intended before SMODS fixed it
+					if removed.edition and removed.edition.negative then
+						local value = { value = 1 }
+						local old = card.ability.card_limit
+						SMODS.scale_card(card, {
+							ref_table = card.ability,
+							ref_value = "card_limit",
+							scalar_table = value,
+							scalar_value = "value",
+							message_key = 'a_irisu_joker_slot',
+						})
+						card.area:handle_card_limit(card.ability.card_limit-old, card.ability.extra_slots_used)
+					end
 				end
 			end
 		end
@@ -274,10 +308,12 @@ SMODS.Joker {
 		end
 		if next(rets) then return PTASaka.recursive_extra(rets, 1) end
 	end,
+	--[[
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.stored_joker_slots
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.stored_joker_slots
 	end
+	]]
 }
