@@ -144,6 +144,31 @@ if PTASaka.Font then
 	}
 end
 
+SMODS.DynaTextEffects = {}
+SMODS.DynaTextEffect = SMODS.GameObject:extend {
+	obj_table = SMODS.DynaTextEffects,
+	set = 'DynaTextEffects',
+	obj_buffer = {},
+	disable_mipmap = false,
+	required_params = {
+		'key',
+		'func',
+	},
+	func = function(dynatext, index, letter)
+	end,
+	register = function(self)
+		if self.registered then
+			sendWarnMessage(('Detected duplicate register call on object %s'):format(self.key), self.set)
+			return
+		end
+		self.name = self.key
+		SMODS.Font.super.register(self)
+	end,
+	inject = function(self)
+	end,
+	process_loc_text = function() end,
+}
+
 -- MAIN CODE --
 
 -- Utilities
@@ -256,7 +281,7 @@ assert(SMODS.load_file("lib/ui.lua"))()
 assert(SMODS.load_file("lib/scale.lua"))()
 
 for _, mod in pairs(SMODS.Mods) do
-	if mod.can_load and mod.path and not mod.meta_mod and mod.payasaka_crossmod_file and NFS.getInfo(mod.path..mod.payasaka_crossmod_file) and mod ~= PTASaka.Mod then
+	if mod.can_load and mod.path and not mod.meta_mod and mod.payasaka_crossmod_file and NFS.getInfo(mod.path .. mod.payasaka_crossmod_file) and mod ~= PTASaka.Mod then
 		pcall(function()
 			local p = SMODS.load_file(mod.payasaka_crossmod_file, mod.id)
 			if p then p() end

@@ -952,3 +952,106 @@ if self.config.center_key == "j_payasaka_kitasan" then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/misc_functions.lua'''
+pattern = '''function prep_draw(moveable, scale, rotate, offset)
+    love.graphics.push()'''
+position = 'after'
+payload = '''
+-- nihil related offsetting
+if PTASaka.NihilEffects() then
+	love.graphics.translate((G.TIMERS.REAL*123.33412*((moveable.ID or 1)/1.14212 or 12.5123152)%3)-1, (G.TIMERS.REAL*321.33412*((moveable.ID or 1)/2.14212 or 54.5123152)%3)-1)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''{name = 'colour_1', ref_table = G.C, ref_value = 'RED'},
+            {name = 'colour_2', ref_table = G.C, ref_value = 'BLUE'},'''
+position = 'at'
+payload = '''
+{name = 'colour_1', ref_table = G.C, ref_value = PTASaka.NihilEffects() and 'NIHIL_BLACK' or 'RED'},
+{name = 'colour_2', ref_table = G.C, ref_value = PTASaka.NihilEffects() and 'NIHIL_BLACK_2' or 'BLUE'},
+'''
+match_indent = true
+
+# implementation of SMODS.DynaTextEffect
+# will be removed latr
+[[patches]]
+[patches.pattern]
+target = 'engine/text.lua'
+pattern = "if self.config.bump then letter.offset.y = (G.SETTINGS.reduced_motion and 0 or 1)*self.bump_amount*math.sqrt(self.scale)*7*math.max(0, (5+self.bump_rate)*math.sin(self.bump_rate*G.TIMERS.REAL+200*k) - 3 - self.bump_rate) end"
+position = "after"
+payload = '''if self.config.text_effect and SMODS.DynaTextEffects[self.config.text_effect] and type(SMODS.DynaTextEffects[self.config.text_effect].func) == "function" then
+    SMODS.DynaTextEffects[self.config.text_effect].func(self, k, letter) -- k is index
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = "          local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil"
+position = "after"
+payload = '''local text_effects'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = "            _bump = true; _spacing = 1"
+position = "after"
+payload = '''elseif SMODS.DynaTextEffects[part.control.E] then
+    text_effects = part.control.E'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = "            spacing = _spacing,"
+position = "after"
+payload = '''text_effect = text_effects,'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = "bump = not args.no_bump,"
+position = "after"
+payload = '''text_effect = SMODS.DynaTextEffects[part.control.E] and part.control.E,'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil'''
+position = 'after'
+payload = '''
+local text_effects
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''elseif part.control.E == '2' then
+                _bump = true; _spacing = 1'''
+position = 'after'
+payload = '''
+elseif SMODS.DynaTextEffects[part.control.E] then
+    text_effects = part.control.E
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''bump = _bump,'''
+position = 'after'
+payload = '''
+text_effect = text_effects,
+'''
+match_indent = true

@@ -333,6 +333,36 @@ SMODS.Enhancement {
 	end
 }
 
+SMODS.Enhancement {
+	name = "pta-Storm",
+	key = 'storm',
+	atlas = "JOE_Enhancements",
+	pos = { x = 9, y = 0 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
+	config = { x_mult = 2 },
+	calculate = function(self, card, context)
+		if context.hand_drawn and G.STATE == G.STATES.DRAW_TO_HAND then
+			for k, v in pairs(context.hand_drawn) do
+				if v == card then
+					SMODS.debuff_card(card, true, "storm_debuff")
+				end
+			end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_mult } }
+	end
+}
+
 local emplace_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped, ...)
 	if self ~= G.play then

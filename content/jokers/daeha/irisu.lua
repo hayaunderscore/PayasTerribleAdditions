@@ -67,7 +67,7 @@ function G.FUNCS.payasaka_open_irisu_deck(e)
 		G.ROOM.T.h,
 		G.CARD_W * 5 * 1.1,
 		G.CARD_H * 1.1,
-		{ card_limit = 5, type = "title", highlight_limit = 1 }
+		{ card_limit = 5, type = "joker", highlight_limit = 1 }
 	)
 	if irisu_area then
 		for _, v in pairs(irisu_area.cards) do
@@ -183,7 +183,7 @@ SMODS.Joker {
 		local irisu_area = G["payasaka_irisu_" .. tostring(card.sort_id)]
 		local rets = {}
 		if context.setting_blind and not context.retrigger_joker then
-			if G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks >= 10 and G.GAME.blind.boss then
+			if G.GAME.risk_cards_risks and #G.GAME.risk_cards_risks >= 10 and G.GAME.blind.boss and not card.ability.nihil then
 				-- Nuh uh
 				G.E_MANAGER:add_event(Event{
 					trigger = 'after',
@@ -198,14 +198,19 @@ SMODS.Joker {
 					delay = 0.2,
 					func = function()
 						card:set_ability("j_payasaka_nihil")
+						play_sound("payasaka_sfx_b", 1, 0.5)
 						ease_background_colour_blind(G.STATE)
 						play_sound('tarot2')
 						card:flip()
+						card.ability.nihil = true
+						G.GAME.payasaka_nihil_enabled = true
+						--G.GLOBALIZE_NIHIL_EFFECTS = true
 						return true
 					end
 				})
 				SMODS.calculate_effect({ message = "Transformed!" }, card)
 				check_for_unlock({ type = 'payasaka_encounter_thunderstruck' })
+				check_for_unlock({ type = 'payasaka_encounter_nihil' })
 				return nil, true
 			end
 			if not G["payasaka_irisu_" .. tostring(card.sort_id)] then

@@ -2,6 +2,11 @@
 
 PTASaka.Mod.calculate = function(self, context)
 	if context.after then
+		for k, v in pairs(G.hand.cards) do
+			if SMODS.has_enhancement(v, "m_payasaka_storm") then
+				SMODS.debuff_card(v, false, "storm_debuff")
+			end
+		end
 		-- Return cardarea state & Wild Two revert
 		PTASaka.dos_cardarea.disabled = G.GAME.payasaka_dos_should_return
 		G.E_MANAGER:add_event(Event({

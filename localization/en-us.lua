@@ -1533,6 +1533,9 @@ return {
 					"{X:attention,C:white}X#1#{} Speed",
 					"{C:inactive,s:0.8}Speed of what????",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Bakushin! Bakushin! Bakushinshin!",
+				}
 			},
 			j_payasaka_manhattan = {
 				name = {
@@ -1546,6 +1549,9 @@ return {
 					"a {C:attention}random{} Food Joker",
 					"and {C:red,E:1}prevent destruction"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Caaafeee~",
+				}
 			},
 			j_payasaka_oguri = {
 				name = {
@@ -1559,6 +1565,9 @@ return {
 					"{C:inactive,s:0.8}Does not include",
 					"{C:inactive,s:0.8}run scaling jokers"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}fatty (affectionate)",
+				}
 			},
 			j_payasaka_kitasan = {
 				name = {
@@ -1578,6 +1587,9 @@ return {
 						"this Joker currently owned",
 					}
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}HARIKITTE IKOU!",
+				}
 			},
 			j_payasaka_catchan = {
 				name = "Catchan",
@@ -1587,6 +1599,9 @@ return {
 					"a boss blind",
 					"{C:inactive}(Currently {C:attention}+#2#{C:inactive} Hand Size)",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}This ends now..?",
+				}
 			},
 			j_payasaka_kacey = {
 				name = "Kacey",
@@ -1595,6 +1610,9 @@ return {
 					"in the shop to be",
 					"one {C:attention}tier{} higher",
 					"{C:inactive,s:0.8}(e.g. Jumbo -> Mega)"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
 				}
 			},
 			j_payasaka_haru = {
@@ -1607,6 +1625,9 @@ return {
 					"for each {C:attention}unscored{} card",
 					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}daughter",
+				}
 			},
 			j_payasaka_ichiro = {
 				name = {
@@ -1616,6 +1637,9 @@ return {
 				text = {
 					"First Voucher in the shop is",
 					"replaced with a {C:attention}Voucher Pack",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
 				}
 			},
 			j_payasaka_across_the_world = {
@@ -1627,12 +1651,18 @@ return {
 					"spawning a corresponding",
 					"{C:payasaka_friend}Friend{} Pack instead"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Across town! Across the country!",
+				}
 			},
 			j_payasaka_sinisterpotion = {
 				name = "Sinister Potion",
 				text = {
 					"Has a {C:legendary,E:1}random effect{}",
 					"{C:inactive}Buy my Sinister Potion!"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}The Sinister Potion!",
 				}
 			},
 			j_payasaka_gungho = {
@@ -1643,6 +1673,9 @@ return {
 					"drawn cards to be",
 					"{C:attention}marked for death"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
+				}
 			},
 			j_payasaka_contract = {
 				name = "Contract Killer",
@@ -1652,6 +1685,9 @@ return {
 					"{C:attention}Destroyed{} cards",
 					"each give {C:money}$#1#"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
+				}
 			},
 			j_payasaka_snowyday = {
 				name = "Snowy Day",
@@ -1660,6 +1696,9 @@ return {
 					"Freezes the first card",
 					"in {C:attention}scored hand",
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
+				}
 			},
 			j_payasaka_blizzard = {
 				name = "Blizzard",
@@ -1670,6 +1709,9 @@ return {
 					"Frozen cards retrigger",
 					"{C:attention}#3#{} additional times"
 				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
+				}
 			},
 			j_payasaka_almondeye = {
 				name = {
@@ -1679,6 +1721,9 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Score",
 					"All blinds are {C:dark_edition}Boss Blinds",
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}I will not lose..!",
 				}
 			},
 			j_payasaka_jlm = {
@@ -1694,6 +1739,9 @@ return {
 						"each time it {C:attention}fails{}",
 						"Resets when {C:attention}triggered{}"
 					}
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}PLACEHOLDER TEXT",
 				}
 			},
 			j_payasaka_windysummer = {
@@ -1703,6 +1751,10 @@ return {
 					"in your {C:attention}discard pile{} to",
 					"the current played hand",
 					"{C:inactive}(Currently {C:light_black}#1#{C:inactive} of {V:1}#2#{C:inactive})"
+				},
+				payasaka_comment = {
+					"{C:inactive,s:0.8}Looking less like summer here",
+					"{C:inactive,s:0.8}and more like winter",
 				}
 			},
 			j_payasaka_chicot = {
@@ -1726,9 +1778,11 @@ return {
 				-- These guys don't have comments
 			},
 			j_payasaka_nihil = {
-				name = "Noli me eligere.",
+				name = "{E:payasaka_glitching}#1#",
 				text = {
-					"?"
+					"{C:red,E:payasaka_glitching}Destroys{E:payasaka_glitching} a random Joker",
+					"{E:payasaka_glitching}and takes their {C:attention,E:payasaka_glitching}abilities",
+					"{E:payasaka_glitching}upon setting the blind",
 				}
 			},
 			j_payasaka_pulmenti = {
@@ -1908,6 +1962,20 @@ return {
 					"scored and unscored",
 					"{C:chips}+#1#{} chips per",
 					"scored card"
+				}
+			},
+			m_payasaka_storm = {
+				name = "Storm Card",
+				text = {
+					{
+						"{X:mult,C:white}X#1#{} Mult",
+						"when played",
+					},
+					{
+						"{C:red}Debuffed{} when drawn",
+						"{C:attention}Undebuffed{} when held",
+						"in hand after {C:attention}playing"
+					}
 				}
 			},
 		},
@@ -2470,7 +2538,7 @@ return {
 				},
 			},
 			c_payasaka_mind = {
-				name = "Mind",
+				name = "The Mind",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:joker} {C:purple,E:1}Legendary{} {C:joker}Jokers{}",
@@ -2564,6 +2632,14 @@ return {
 			},
 			c_payasaka_health = {
 				name = "Perfect Health",
+				text = {
+					"Enhances {C:attention}#1#",
+					"selected cards to",
+					"{C:attention}#2#s",
+				}
+			},
+			c_payasaka_devotion = {
+				name = "Holy Devotion",
 				text = {
 					"Enhances {C:attention}#1#",
 					"selected cards to",

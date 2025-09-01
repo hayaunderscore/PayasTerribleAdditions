@@ -1173,6 +1173,7 @@ PTASaka.create_reward_tarot('spirit', { x = 0, y = 3 }, "m_payasaka_volatile", "
 PTASaka.create_reward_tarot('truth', { x = 1, y = 3 }, "m_payasaka_true", "Tarot", { x = 1, y = 4 })
 PTASaka.create_reward_tarot('righteousmind', { x = 2, y = 3 }, "m_payasaka_mimic", "Tarot", { x = 2, y = 4 }, 1)
 PTASaka.create_reward_tarot('health', { x = 3, y = 3 }, "m_payasaka_laser", "Tarot", { x = 3, y = 4 })
+PTASaka.create_reward_tarot('devotion', { x = 4, y = 3 }, "m_payasaka_storm", "Tarot", { x = 4, y = 4 })
 PTASaka.create_reward_tarot('dominion', { x = 5, y = 3 }, "m_payasaka_score", "Tarot", { x = 5, y = 4 })
 
 PTASaka.Reward {
