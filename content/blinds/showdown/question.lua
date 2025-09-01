@@ -14,7 +14,7 @@ SMODS.Blind {
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 10 },
 	dollars = 8,
-	mult = 2,
+	mult = 1.5,
 	boss = {
 		min = 0, max = 1999, showdown = true,
 		merged_keys = {},

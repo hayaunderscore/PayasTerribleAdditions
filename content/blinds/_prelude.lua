@@ -3,7 +3,7 @@ SMODS.Blind {
 	atlas = "JOE_Blinds",
 	pos = { x = 0, y = 2 },
 	dollars = 6,
-	mult = 2,
+	mult = 1.5,
 	boss_colour = HEX('7b194e'),
 	boss = { min = 0 },
 	set_blind = function(self)

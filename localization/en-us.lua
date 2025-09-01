@@ -1871,7 +1871,7 @@ return {
 				}
 			},
 			bl_payasaka_showdown_the_nameless = {
-				name = "The Nameless",
+				name = "Colorless Canvas",
 				text = {
 					"#1# in #2# chance of",
 					"washing out drawn cards"
