@@ -1,6 +1,15 @@
 local dep = {'ortalab'}
 if not Ortalab then dep = nil end
 
+-- Adds a key to the exclusion pool
+-- Only way to make these appear in ortalab-only mode atm
+local function ortlab_exclude(key)
+	if Ortalab and Ortalab.ortalab_only_inclusion then
+		-- why isnt this a key-value dict. that would make more sense imo
+		Ortalab.ortalab_only_inclusion[#Ortalab.ortalab_only_inclusion+1] = key
+	end
+end
+
 -- Monster Energy -> Baja Blast
 SMODS.Joker {
 	key = 'bajablast',
@@ -74,6 +83,7 @@ SMODS.Joker {
 		end
 	end
 }
+ortlab_exclude("j_payasaka_bajablast")
 
 local function find_joker_by_sort_id(id)
 	for i = 1, #G.jokers.cards do
@@ -131,6 +141,7 @@ SMODS.Joker {
 		}
 	end
 }
+ortlab_exclude("j_payasaka_scrapped")
 
 -- Photocopier -> Photobinder
 SMODS.Joker {
@@ -232,6 +243,7 @@ SMODS.Joker {
 		end
 	end
 }
+ortlab_exclude("j_payasaka_photobinder")
 
 -- Arrowstone -> Club Cleaver
 if PTASaka.Mod.config["Ahead"] then
@@ -265,6 +277,7 @@ SMODS.Joker {
 		end
 	end
 }
+ortlab_exclude("j_payasaka_clubcleaver")
 end
 
 local finity_exists = next(SMODS.find_mod('finity'))
@@ -336,3 +349,4 @@ SMODS.Joker {
 		}
 	end
 }
+ortlab_exclude("j_payasaka_missingno")
