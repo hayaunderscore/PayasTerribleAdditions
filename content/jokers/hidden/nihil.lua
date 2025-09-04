@@ -47,7 +47,7 @@ SMODS.Joker {
 	discovered = true,
 	unlocked = true,
 	immutable = true,
-	config = { skip_sound_timer = 4, skip_sound = 0, initial_anim = 1, cool_pos = { x = 8, y = 3 } },
+	config = { skip_sound_timer = 4, skip_sound = 0, initial_anim = 2, cool_pos = { x = 8, y = 3 } },
 	pta_custom_use = function(card)
 		return {
 			n = G.UIT.C,
@@ -210,6 +210,11 @@ SMODS.Sound {
 	path = "sfx_jumpscare.ogg"
 }
 
+SMODS.Shader {
+	key = 'grayscale',
+	path = 'grayscale.fs'
+}
+
 local start_run_ref = Game.start_run
 function Game:start_run(args)
 	start_run_ref(self, args)
@@ -231,6 +236,22 @@ function Game:delete_run()
 		end
 	end
 	delete_run_ref(self)
+end
+
+-- Draw radial gradient and funny fade
+local draw_ref = Game.draw
+function Game:draw()
+	draw_ref(self)
+	if G.STAGE ~= G.STAGES.MAIN_MENU then return end
+	if not G.GLOBALIZE_NIHIL_EFFECTS then return end
+
+	love.graphics.setShader(G.SHADERS["payasaka_grayscale"])
+	if G.AA_CANVAS then
+		love.graphics.draw(G.AA_CANVAS)
+	else
+		love.graphics.draw(G.CANVAS)
+	end
+	love.graphics.setShader()
 end
 
 local funny_str = "!\"#$%&'()+-*,./\\:;<=>?[]^_~"
