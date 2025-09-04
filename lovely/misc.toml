@@ -647,7 +647,7 @@ if next(SMODS.find_card("j_payasaka_almondeye")) and G.GAME.blind_on_deck ~= 'Bo
 	elseif G.GAME.blind_on_deck == 'Big' then
 		G.GAME.round_resets.blind_states.Big = 'Defeated'
 	end
-elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_small then
+elseif G.GAME.round_resets.blind_states.Small == 'Current' then
 '''
 match_indent = true
 
