@@ -14,6 +14,12 @@ SMODS.Joker {
 	cost = 8,
 	blueprint_compat = true,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			if SMODS.pseudorandom_probability(card, 'payasaka_tentens', 1, card.ability.extra.odds) then
