@@ -8,25 +8,16 @@ SMODS.Joker {
 	cost = 25,
 	blueprint_compat = false,
 	demicoloncompat = false,
-	pta_usable = true,
-	use = function(self, card, copier)
-		delay(0.5)
-		local hands = {}
-		local cards = G.hand.cards
-		hands = PTASaka.FH.merge(hands, PTASaka.FH.possible_straights(cards))
-		hands = PTASaka.FH.merge(hands, PTASaka.FH.possible_flushes(cards))
-		hands = PTASaka.FH.merge(hands, PTASaka.FH.best_ofakinds(cards))
-		table.sort(hands, PTASaka.FH.is_better_hand)
-		G.E_MANAGER:add_event(Event {
-			func = function()
-				PTASaka.FH.select_hand(PTASaka.FH.next_best_hand(hands, G.hand.cards, PTASaka.FH.ranksuit))
-				return true
-			end
-		})
-		delay(0.5)
-		draw_card(G.play, G.jokers, nil, 'up', nil, card)
-	end,
-	can_use = function(self, card)
-		return G.STATE == G.STATES.SELECTING_HAND
-	end
 }
+
+local showman_ref = SMODS.showman
+function SMODS.showman(card_key)
+	if next(SMODS.find_card("j_payasaka_rei")) and next(SMODS.find_card(card_key)) then
+		return true
+	end
+	return showman_ref(card_key)
+end
+
+function PTASaka.rei(card_key)
+	return next(SMODS.find_card(card_key))
+end

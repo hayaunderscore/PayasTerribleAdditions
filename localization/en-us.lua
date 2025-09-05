@@ -673,9 +673,9 @@ return {
 			j_payasaka_rei = {
 				name = "Nomasa Rei",
 				text = {
-					"Selects the {C:attention}best{} possible",
-					"hand type to play when {C:attention}used",
-					"{C:inactive,s:0.8}Does not support modded poker hands"
+					"{C:attention}Owned{} Jokers may appear",
+					"multiple times at a",
+					"much {C:attention}higher{} rate"
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}blue archive refereeeence"

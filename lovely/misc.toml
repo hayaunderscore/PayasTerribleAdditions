@@ -182,6 +182,39 @@ end
 '''
 match_indent = true
 
+# Rei will periodically replace the final joker selected to something else
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''center = G.P_CENTERS[center]'''
+position = 'before'
+payload = '''
+local contains = function(tbl, a)
+	for k, v in pairs(tbl) do
+		if v == a then return true end
+	end
+	return false
+end
+local old_center = center
+if _type == 'Joker' or G.P_CENTERS[center].set == "Joker" then
+	if next(SMODS.find_card("j_payasaka_rei")) 
+		and not PTASaka.rei(center) 
+		and pseudorandom("reiroll_"..G.GAME.round_resets.ante) < 0.35 
+	then
+		-- filter out rei herself obviously
+		local valid_jokers = {}
+		for k, v in pairs(G.jokers.cards) do
+			if v.config.center_key ~= "j_payasaka_rei" and not contains(valid_jokers, v.config.center_key) then
+				valid_jokers[#valid_jokers+1] = v.config.center_key
+			end
+		end
+		-- get a random center from that
+		center = pseudorandom_element(valid_jokers, "reipick_"..G.GAME.round_resets.ante) or old_center
+	end
+end
+'''
+match_indent = true
+
 # Desperado
 [[patches]]
 [patches.pattern]
