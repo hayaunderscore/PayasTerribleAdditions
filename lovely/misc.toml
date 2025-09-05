@@ -196,7 +196,7 @@ local contains = function(tbl, a)
 	return false
 end
 local old_center = center
-if _type == 'Joker' or G.P_CENTERS[center].set == "Joker" then
+if _type == 'Joker' or (G.P_CENTERS[center] and G.P_CENTERS[center].set == "Joker") then
 	if next(SMODS.find_card("j_payasaka_rei")) 
 		and not PTASaka.rei(center) 
 		and pseudorandom("reiroll_"..G.GAME.round_resets.ante) < 0.35 
