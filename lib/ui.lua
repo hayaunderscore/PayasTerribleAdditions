@@ -178,7 +178,7 @@ function SMODS.create_mod_badges(obj, badges)
 	end
 	local scales = {}
 	local min_scale = 1
-	local strings = { "TerrAddt" }
+	local strings = { PTASaka.Mod.display_name }
 	local dtxt = {}
 	local colours = { G.C.PAYA_PURPLE }
 	local gradient = G.C.BADGE_TEMP_BG
