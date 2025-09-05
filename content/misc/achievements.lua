@@ -5,7 +5,7 @@ SMODS.Achievement {
 	atlas = "ticket",
 	unlock_condition = function(self, args)
 		if args and args.type == 'payasaka_gacha_select' then
-			if args.card and args.card.config.center and args.card.config.center.rarity == "payasaka_daeha" then
+			if args.card and args.card.config.center and args.card:is_rarity("payasaka_daeha") then
 				return true
 			end
 		end

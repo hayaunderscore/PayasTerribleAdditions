@@ -308,8 +308,8 @@ end
 function Card:is_ahead()
 	if next(SMODS.find_card("j_payasaka_niveusterras")) then return true end
 	if self.ability.name == "Arrowhead" then return true end
-	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self.config.center.rarity == "payasaka_ahead" then return true end
-	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self.config.center.rarity == "payasaka_daeha" then return true end
+	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self:is_rarity("payasaka_ahead") then return true end
+	if self.config and self.config.center and type(self.config.center.rarity) == 'string' and self:is_rarity("payasaka_daeha") then return true end
 	return false
 end
 

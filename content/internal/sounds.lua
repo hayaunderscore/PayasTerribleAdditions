@@ -57,7 +57,7 @@ SMODS.Sound({
 	select_music_track = function()
 		if G.jokers and PTASaka.Mod.config["Prismatic Music"] then
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] and G.jokers.cards[i].config.center.rarity == "payasaka_daeha" then
+				if G.jokers.cards[i] and G.jokers.cards[i]:is_rarity("payasaka_daeha") then
 					return math.huge
 				end
 			end

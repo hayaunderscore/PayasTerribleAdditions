@@ -440,7 +440,7 @@ G.FUNCS.gacha_select_card = function(e)
 				c1:flip()
 			end
 			G[c1.ability.set == "Joker" and "jokers" or "consumeables"]:emplace(c1)
-			if c1.config.center.key ~= "j_payasaka_dud" then
+			if not c1:is_rarity("payasaka_dud") then
 				SMODS.calculate_context({ payasaka_taking_gacha = true, card = c1, area = G
 				[c1.ability.set == "Joker" and "jokers" or "consumeables"] })
 			end
