@@ -265,7 +265,13 @@ SMODS.Back {
 	unlocked = true,
 	apply = function(self, back)
 		G.GAME.payasaka_only_risk = true
-	end
+	end,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 SMODS.Back {
@@ -291,6 +297,16 @@ SMODS.Back {
 		})
 		G.GAME.payasaka_erratic_ultra = true
 	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 SMODS.Back {
@@ -362,7 +378,13 @@ SMODS.Back {
 				end
 			end,
 		}))
-	end
+	end,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 end
 -- Dummy deck to be displayed in the main mod menu
@@ -397,7 +419,13 @@ SMODS.Back {
 				return true
 			end
 		})
-	end
+	end,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 local function get_compat(center, sticker)
@@ -486,7 +514,17 @@ SMODS.Back {
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { localize { type = 'name_text', key = self.config.vouchers[1], set = "Voucher" }, localize { type = 'name_text', key = 'c_payasaka_purify', set = 'Reward' } } }
-	end
+	end,
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 }
 
 SMODS.Back {
@@ -496,12 +534,5 @@ SMODS.Back {
 	unlocked = true,
 	apply = function(self, back)
 		G.GAME.payasaka_deck_rate = 1.75
-	end
+	end,
 }
-
--- Fix for Bunco
-local create_blind_card = Card.create_blind_card
-function Card:create_blind_card()
-	if create_blind_card then return create_blind_card(self) end
-	return self
-end

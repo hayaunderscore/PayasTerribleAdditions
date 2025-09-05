@@ -61,10 +61,11 @@ return {
 				}
 			},
 			b_payasaka_prismatic = {
-				name = "Prismatic Deck",
+				name = "Kaleidoscopic Deck",
 				text = {
 					"Start with a random",
 					"{C:payasaka_prismatic_gradient}Prismatic{} Joker",
+					"{C:inactive,s:0.8}(Yes, this is the unbalanced deck)"
 				}
 			},
 			b_payasaka_dummy = {
