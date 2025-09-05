@@ -3,11 +3,18 @@ SMODS.Enhancement {
 	key = 'damp',
 	atlas = "JOE_Enhancements",
 	pos = { x = 0, y = 0 },
-	config = { x_chips = 1.5, x_mult = 1.5, odds = 8 },
+	config = { extra = { mult_odds = 2, odds = 8, x_mult = 2 } },
 	always_scores = true,
 	calculate = function(self, card, context)
+		if context.main_scoring and context.cardarea == G.play then
+			if SMODS.pseudorandom_probability(card, "damp_proc_"..G.GAME.round_resets.ante, 1, card.ability.extra.mult_odds) then
+				return {
+					x_mult = card.ability.extra.x_mult
+				}
+			end
+		end
 		if context.final_scoring_step and context.cardarea == G.play then
-			if SMODS.pseudorandom_probability(card, "payasaka_damp_card", 1, card.ability.odds) and not next(SMODS.find_card('j_payasaka_rainy')) then
+			if SMODS.pseudorandom_probability(card, "payasaka_damp_card", 1, card.ability.extra.odds) and not next(SMODS.find_card('j_payasaka_rainy')) then
 				G.E_MANAGER:add_event(Event {
 					delay = 0.2,
 					func = function()
@@ -22,9 +29,10 @@ SMODS.Enhancement {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_payasaka_wet
-		local num, den = SMODS.get_probability_vars(card, 1, card.ability.odds)
+		local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		local num2, den2 = SMODS.get_probability_vars(card, 1, card.ability.extra.mult_odds)
 		return {
-			vars = { card.ability.x_chips, card.ability.x_mult, num, den }
+			vars = { num2, den2, card.ability.extra.x_mult, num, den }
 		}
 	end
 }

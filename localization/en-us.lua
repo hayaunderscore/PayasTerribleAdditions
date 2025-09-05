@@ -1903,11 +1903,15 @@ return {
 			m_payasaka_damp = {
 				name = "Damp Card",
 				text = {
-					"{X:chips,C:white}X#1#{} Chips",
-					"{X:mult,C:white}X#2#{} Mult",
-					"{C:green}#3# in #4#{} chance to",
-					"turn into a",
-					"{C:attention}Wet Card{}",
+					{
+						"{C:green}#1# in #2#{} chance of",
+						"giving {X:mult,C:white}X#3#{} Mult",
+					},
+					{
+						"{C:green}#4# in #5#{} chance to turn",
+						"into a {C:attention}Wet Card{}",
+						"after scoring",
+					}
 				}
 			},
 			m_payasaka_wet = {
@@ -1922,14 +1926,14 @@ return {
 			m_payasaka_volatile = {
 				name = "Volatile Card",
 				text = {
-					"{X:mult,C:white}X#1#{} Mult if",
-					"played but unscored",
+					"{X:mult,C:white}X#1#{} Mult if played",
+					"but {C:attention}doesn't score",
 				}
 			},
 			m_payasaka_laser = {
 				name = "Laser Card",
 				text = {
-					"{C:legendary}Balance{} {C:attention}#1#%{} of",
+					"{C:legendary}Balances{} {C:attention}#1#%{} of",
 					"{C:chips}Chips{} and {C:mult}Mult{}",
 				}
 			},
@@ -1959,10 +1963,14 @@ return {
 			m_payasaka_score = {
 				name = "Score Card",
 				text = {
-					"Counts as both",
-					"scored and unscored",
-					"{C:chips}+#1#{} chips per",
-					"scored card"
+					{
+						"Card counts as both",
+						"scored and unscored",
+					},
+					{
+						"{C:chips}+#1#{} chips per",
+						"scored card"
+					}
 				}
 			},
 			m_payasaka_storm = {
