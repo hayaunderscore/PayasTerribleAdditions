@@ -271,61 +271,6 @@ local function create_UIBox_credit_popup(key, colour, vars)
 	}
 end
 
-local function create_credit(_key, colour, idx)
-	local temp_blind = AnimatedSprite(0, 0, 1.3, 1.3, G.ANIMATION_ATLAS['payasaka_JOE_CreditChips'],
-		{ x = 0, y = idx or 0 })
-	temp_blind:define_draw_steps({
-		{ shader = 'dissolve', shadow_height = 0.05 },
-		{ shader = 'dissolve' }
-	})
-	temp_blind.float = true
-	temp_blind.states.hover.can = true
-	temp_blind.states.drag.can = true
-	temp_blind.states.collide.can = true
-	temp_blind.config = { force_focus = true }
-	temp_blind:set_role({ major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak' })
-	temp_blind.hover = function()
-		if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then
-			if not temp_blind.hovering and temp_blind.states.visible then
-				temp_blind.hovering = true
-				temp_blind.hover_tilt = 3
-				temp_blind:juice_up(0.05, 0.02)
-				play_sound('chips1', math.random() * 0.1 + 0.55, 0.12)
-				temp_blind.config.h_popup = create_UIBox_credit_popup(_key, colour, {})
-				temp_blind.config.h_popup_config = { align = 'cl', offset = { x = -0.1, y = 0 }, parent = temp_blind }
-				Node.hover(temp_blind)
-				temp_blind.children.h_popup:set_role({
-					major = temp_blind.children.h_popup,
-					role_type = 'Major',
-					draw_major =
-						temp_blind.children.h_popup,
-					xy_bond = 'Strong'
-				})
-			end
-		end
-		if not temp_blind.start_T then
-			temp_blind.start_T = copy_table(temp_blind.T)
-		end
-	end
-	temp_blind.stop_drag = function()
-		Node.stop_drag(temp_blind);
-		temp_blind.T.x, temp_blind.T.y = temp_blind.start_T.x or temp_blind.T.x, temp_blind.start_T.y or temp_blind.T.y
-	end
-	temp_blind.stop_hover = function()
-		temp_blind.hovering = false; Node.stop_hover(temp_blind); temp_blind.hover_tilt = 0
-	end
-	return {
-		n = G.UIT.C,
-		config = {
-			align = "cm",
-			padding = 0.1,
-		},
-		nodes = {
-			{ n = G.UIT.O, config = { object = temp_blind, focus_with_object = true, role = { major = temp_blind, role_type = 'Major', draw_major = temp_blind, xy_bond = 'Weak' } } },
-		}
-	}
-end
-
 --#endregion
 
 --#region Mod tabs
@@ -671,6 +616,12 @@ local tabs = function()
 						0.95 * 1.33,
 						{ card_limit = credit_layout[j], type = 'title_2', highlight_limit = 0, collection = true })
 					if j == 1 then
+						table.insert(deck_tables,
+							{
+								n = G.UIT.R,
+								config = { align = "cm", minh = 0.15 }
+							}
+						)
 						table.insert(deck_tables, {
 							n = G.UIT.R,
 							config = { align = "cm", padding = 0.2 },
@@ -694,6 +645,18 @@ local tabs = function()
 						})
 					end
 					if j == 3 then
+						table.insert(deck_tables,
+							{
+								n = G.UIT.R,
+								config = { align = "cm", minh = 0.15 }
+							}
+						)
+						table.insert(deck_tables,
+							{
+								n = G.UIT.R,
+								config = { align = "cm", minw = 10, minh = 0.1, colour = G.C.L_BLACK, no_fill = true }
+							}
+						)
 						table.insert(deck_tables,
 							{
 								n = G.UIT.R,
@@ -727,6 +690,20 @@ local tabs = function()
 							}
 						}
 					)
+					table.insert(deck_tables,
+						{
+							n = G.UIT.R,
+							config = { align = "cm", minh = 0.11 }
+						}
+					)
+					if j == 3 then
+						table.insert(deck_tables,
+							{
+								n = G.UIT.R,
+								config = { align = "cm", minh = 0.15 }
+							}
+						)
+					end
 				end
 				for k, v in pairs(credits) do
 					---@type CardArea
@@ -797,7 +774,7 @@ local tabs = function()
 						r = 0.1,
 						minw = 10,
 						align = "cm",
-						--padding = 0.2,
+						--padding = 0.1,
 						colour = G.C.BLACK,
 					},
 					nodes = {
