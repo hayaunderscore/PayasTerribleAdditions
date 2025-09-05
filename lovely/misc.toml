@@ -705,7 +705,6 @@ type = type or 'Small'
 '''
 position = 'after'
 payload = '''
-type = type or 'Small'
 PTASaka.badge_bg_type = type
 '''
 match_indent = true
