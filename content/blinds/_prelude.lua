@@ -6,6 +6,16 @@ SMODS.Blind {
 	mult = 1.5,
 	boss_colour = HEX('7b194e'),
 	boss = { min = 0 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	set_blind = function(self)
 		G.GAME.payasaka_prelude = true
 	end,

@@ -87,27 +87,50 @@ end
 
 -- Colours
 G.C.PAYA_PURPLE = PTASaka.Mod.badge_colour
+local temp_badge_update = function(self, dt)
+	if #self.colours < 2 then return end
+	local timer = (G.TIMERS.REAL - self.created_time) % self.cycle
+	local start_index = math.ceil(timer * #self.colours / self.cycle)
+	local end_index = start_index == #self.colours and 1 or start_index + 1
+	local start_colour, end_colour = self.colours[start_index], self.colours[end_index]
+	local partial_timer = (timer % (self.cycle / #self.colours)) * #self.colours / self.cycle
+	for i = 1, 4 do
+		if self.interpolation == 'linear' then
+			self[i] = start_colour[i] + partial_timer * (end_colour[i] - start_colour[i])
+		elseif self.interpolation == 'trig' then
+			self[i] = start_colour[i] + 0.5 * (1 - math.cos(partial_timer * math.pi)) *
+				(end_colour[i] - start_colour[i])
+		end
+	end
+end
 G.C.BADGE_TEMP_BG = SMODS.Gradient {
 	key = 'badge_temp_bg',
 	colours = { G.C.PAYA_PURPLE, G.C.PAYA_PURPLE },
 	cycle = 1,
 	created_time = 0,
-	update = function(self, dt)
-		if #self.colours < 2 then return end
-		local timer = (G.TIMERS.REAL - self.created_time) % self.cycle
-		local start_index = math.ceil(timer * #self.colours / self.cycle)
-		local end_index = start_index == #self.colours and 1 or start_index + 1
-		local start_colour, end_colour = self.colours[start_index], self.colours[end_index]
-		local partial_timer = (timer % (self.cycle / #self.colours)) * #self.colours / self.cycle
-		for i = 1, 4 do
-			if self.interpolation == 'linear' then
-				self[i] = start_colour[i] + partial_timer * (end_colour[i] - start_colour[i])
-			elseif self.interpolation == 'trig' then
-				self[i] = start_colour[i] + 0.5 * (1 - math.cos(partial_timer * math.pi)) *
-					(end_colour[i] - start_colour[i])
-			end
-		end
-	end,
+	update = temp_badge_update,
+}
+G.C.BADGE_TEMP_BG_BLIND = {}
+G.C.BADGE_TEMP_BG_BLIND.Small = SMODS.Gradient {
+	key = 'badge_temp_bg_b1',
+	colours = { G.C.PAYA_PURPLE, G.C.PAYA_PURPLE },
+	cycle = 1,
+	created_time = 0,
+	update = temp_badge_update,
+}
+G.C.BADGE_TEMP_BG_BLIND.Big = SMODS.Gradient {
+	key = 'badge_temp_bg_b2',
+	colours = { G.C.PAYA_PURPLE, G.C.PAYA_PURPLE },
+	cycle = 1,
+	created_time = 0,
+	update = temp_badge_update,
+}
+G.C.BADGE_TEMP_BG_BLIND.Boss = SMODS.Gradient {
+	key = 'badge_temp_bg_b3',
+	colours = { G.C.PAYA_PURPLE, G.C.PAYA_PURPLE },
+	cycle = 1,
+	created_time = 0,
+	update = temp_badge_update,
 }
 
 local cmb = SMODS.create_mod_badges
@@ -158,10 +181,19 @@ function SMODS.create_mod_badges(obj, badges)
 	local strings = { "TerrAddt" }
 	local dtxt = {}
 	local colours = { G.C.PAYA_PURPLE }
+	local gradient = G.C.BADGE_TEMP_BG
+	if obj.set == "Blind" then
+		-- TODO: Support for Almond Eye which uses multiple boss blinds
+		if PTASaka.badge_bg_type then
+			gradient = G.C.BADGE_TEMP_BG_BLIND[PTASaka.badge_bg_type] or gradient
+		elseif obj.boss then
+			gradient = G.C.BADGE_TEMP_BG_BLIND.Boss
+		end
+	end
 	for k, v in pairs(cred) do
 		strings[#strings + 1] = localize { type = 'variable', key = 'pta_' .. k .. '_credit', vars = { v.credit } }[1]
 		colours[#colours + 1] = v.colour or G.C.PAYA_PURPLE
-		G.C.BADGE_TEMP_BG.cycle = 1.5 * (1.75 * #strings)
+		gradient.cycle = 1.5 * (1.75 * #strings)
 		--print("Localizing ... "..k)
 	end
 	for i = 1, #strings do
@@ -170,8 +202,8 @@ function SMODS.create_mod_badges(obj, badges)
 		dtxt[i] = { string = strings[i] }
 		--print("Calculating string length for string ... "..strings[i])
 	end
-	G.C.BADGE_TEMP_BG.colours = colours
-	G.C.BADGE_TEMP_BG.created_time = G.TIMERS.REAL
+	gradient.colours = colours
+	gradient.created_time = G.TIMERS.REAL
 	local badge = {
 		n = G.UIT.R,
 		config = { align = "cm" },
@@ -180,7 +212,7 @@ function SMODS.create_mod_badges(obj, badges)
 				n = G.UIT.R,
 				config = {
 					align = "cm",
-					colour = G.C.BADGE_TEMP_BG,
+					colour = gradient,
 					r = 0.1,
 					minw = 2,
 					minh = 0.36,

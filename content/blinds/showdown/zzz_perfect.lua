@@ -16,6 +16,12 @@ SMODS.Blind {
 	boss_colour = HEX('ff63ac'),
 	boss = { min = 39, showdown = true },
 	config = { funny = { mult = -0.25 } },
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	set_blind = function(self)
 		if G.GAME.round_resets.ante == 39 then
 			G.GAME.blind.chip_text = "TREE(3)"

@@ -20,6 +20,12 @@ SMODS.Blind {
 		merged_keys = {},
 	},
 	boss_colour = HEX('46585c'),
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	collection_loc_vars = function(self)
 		return { key = "bl_payasaka_question_alt" }
 	end,

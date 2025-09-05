@@ -14,6 +14,16 @@ SMODS.Blind {
 	mult = 2,
 	boss_colour = HEX('7c0000'),
 	boss = { min = 8, showdown = true },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, blind, context)
 		if not blind.disabled then
 			if context.before and #context.full_hand > 0 then

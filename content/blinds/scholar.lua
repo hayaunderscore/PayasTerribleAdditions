@@ -6,6 +6,12 @@ SMODS.Blind {
 	mult = 2,
 	boss = {min = 0, max = 1999},
 	boss_colour = HEX('344362'),
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	set_blind = function(self)
 		local ranks = {}
 		for k, v in pairs(G.playing_cards) do

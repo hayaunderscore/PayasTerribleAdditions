@@ -6,6 +6,12 @@ SMODS.Blind {
 	mult = 2,
 	boss_colour = HEX('d68ac1'),
 	boss = { min = 0, showdown = true, odds = 3 },
+	pta_credit = {
+		idea = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	calculate = function(self, blind, context)
 		if context.hand_drawn then
 			for k, v in pairs(context.hand_drawn) do

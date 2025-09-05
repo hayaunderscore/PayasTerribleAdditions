@@ -699,6 +699,19 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+type = type or 'Small'
+'''
+position = 'after'
+payload = '''
+type = type or 'Small'
+PTASaka.badge_bg_type = type
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = '''game.lua'''
 pattern = '''if v.eternal then _joker:set_eternal(true) end'''
 position = 'after'

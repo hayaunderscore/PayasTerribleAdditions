@@ -6,6 +6,12 @@ SMODS.Blind {
 	mult = 2,
 	boss = {min = 0, max = 1999},
 	boss_colour = HEX('4d3380'),
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	set_blind = function(self)
 		play_sound("payasaka_nether")
 		G.GAME.payasaka_nether_destroycards = true
