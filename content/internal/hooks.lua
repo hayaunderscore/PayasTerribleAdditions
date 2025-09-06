@@ -497,7 +497,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	---@type Card
 	local card = old_create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
-	if card and card.config.center.rarity == "payasaka_ahead" and card.config.center.key ~= "j_payasaka_nil" then
+	if card and card:is_rarity("payasaka_ahead") and card.config.center.key ~= "j_payasaka_nil" then
 		card:set_edition("e_foil", true, nil)
 	end
 	if card and card.config.center.pta_hidden_pos and spawned_via_hidden and card.ability then
