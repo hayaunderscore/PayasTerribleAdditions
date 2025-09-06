@@ -25,6 +25,7 @@ conf["New Run Plus"] = nil_sane(conf["New Run Plus"], false)
 
 -- hiii
 SMODS.optional_features.retrigger_joker = true
+SMODS.optional_features.post_trigger = true
 SMODS.optional_features.cardareas.deck = true
 SMODS.optional_features.cardareas.discard = true
 

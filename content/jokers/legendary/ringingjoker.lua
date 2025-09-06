@@ -2,7 +2,7 @@ SMODS.Joker {
 	name = "Ringing Joker",
 	key = "raceasaring",
 	config = {
-		extra = { add_amt = 0.2, dec_amt = 0.2, current_mult = 1 }
+		extra = { x_mult = 1.75 }
 	},
 	rarity = 4,
 	atlas = "JOE_Jokers",
@@ -12,33 +12,13 @@ SMODS.Joker {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if not context.blueprint_card_card then
-			if context.setting_blind or context.selling_card or context.buying_card or context.using_consumeable or context.open_booster or context.ending_booster then
-				SMODS.scale_card(card, {
-					ref_table = card.ability.extra,
-					ref_value = "current_mult",
-					scalar_value = "add_amt",
-				})
-			end
-			if context.skip_blind or context.skipping_booster then
-				SMODS.scale_card(card, {
-					ref_table = card.ability.extra,
-					ref_value = "current_mult",
-					scalar_value = "dec_amt",
-					operation = "-",
-					scaling_message = {
-						message = localize('k_payasaka_phil_fail')
-					}
-				})
-			end
-		end
-		if context.joker_main or context.forcetrigger then
+		if context.post_trigger and G.STATE == G.STATES.HAND_PLAYED then
 			return {
-				x_mult = card.ability.extra.current_mult
+				x_mult = card.ability.extra.x_mult
 			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.add_amt, card.ability.extra.dec_amt, card.ability.extra.current_mult } }
+		return { vars = { card.ability.extra.x_mult } }
 	end
 }

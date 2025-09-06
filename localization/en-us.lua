@@ -511,14 +511,8 @@ return {
 			j_payasaka_raceasaring = {
 				name = "Ringing Joker",
 				text = {
-					"Add {X:mult,C:white}X#1#{} Mult for",
-					"{C:attention}buying{}, {C:attention}selling{} or {C:attention}using{}",
-					"cards, vouchers and Booster",
-					"Packs or selecting a {C:attention}blind{}",
-					"Skipping a {C:attention}blind{} or skipping",
-					"a {C:attention}Booster Pack{} decreases",
-					"current Mult by {X:mult,C:white}X#2#{}",
-					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)",
+					"{X:mult,C:white}X#1#{} Mult each time",
+					"a Joker is {C:attention}triggered",
 				},
 				payasaka_comment = {
 					"{C:inactive,s:0.8}Not sponsored by",
