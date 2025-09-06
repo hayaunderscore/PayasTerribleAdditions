@@ -673,7 +673,9 @@ PTASaka.Reward {
 				if next(eligibleJokers) then
 					---@type Card
 					local joker = pseudorandom_element(eligibleJokers, 'legacy_proc')
-					joker:start_dissolve(G.C.RED)
+					if joker then
+						joker:start_dissolve()
+					end
 				end
 				card:juice_up(0.3, 0.5)
 				return true
