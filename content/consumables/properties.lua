@@ -41,6 +41,11 @@ function PTASaka.PropertyReset(key)
 	return key ~= "c_payasaka_niyaniya"
 end
 
+function PTASaka.PropertyResetFunc(card)
+	card.sell_cost = card.ability.extra.money
+	SMODS.calculate_effect({ message = localize('k_reset'), card = card }, card)
+end
+
 -- Base
 ---@class Property:SMODS.Consumable
 ---@field upgrade_use_effect? fun(self: Property|table, card: Card|table, context: CalcContext|table): table?, boolean? myeah
@@ -59,28 +64,25 @@ PTASaka.Property = SMODS.Consumable:extend {
 			-- Gain sell value
 			local gain = math.floor((card.ability.extra.gain * (((card.ability.house_status or 0))+1)))
 			card.sell_cost = card.sell_cost + gain
-			return {
+			SMODS.calculate_effect({
 				message = string.format("+$%s", number_format(gain)),
 				colour = G.C.MONEY
-			}
+			}, card)
 		end
-		-- Reset upon cashing out after a boss blind, and upgrade use effects...
-		if context.payasaka_cash_out and G.GAME.blind_on_deck == 'Boss' and PTASaka.PropertyReset(card.config.center.key) then
-			card.sell_cost = card.ability.extra.money
-			local use_effect = self:upgrade_use_effect(card, context)
-			return {
-				message = "Reset!",
-				card = card,
-				extra = use_effect and type(use_effect) == 'table' and use_effect or {}
-			}
+		local effects = {}
+		local use_effect = self:upgrade_use_effect(card, context)
+		if use_effect and type(use_effect) == "table" then
+			SMODS.calculate_effect(use_effect, card)
+			--effects[#effects+1] = use_effect
 		end
 		-- Monopolizer and Meritocracy give Mult and XMult respectively
 		if context.joker_main then
-			return {
+			effects[#effects+1] = {
 				mult = G.GAME.payasaka_monopolizer_mult,
 				x_mult = G.GAME.payasaka_monopolizer_x_mult
 			}
 		end
+		return next(effects) and effects or nil
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.sell_cost = card.ability.extra.money
@@ -98,6 +100,8 @@ PTASaka.Property = SMODS.Consumable:extend {
 		SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
 		local dummy = { key = "dd_payasaka_property_card", set = "DescriptionDummy" }
 		dummy.vars = { card.sell_cost, card.ability.extra.money }
+		local effect_vars = self:loc_vars({}, card)
+		info_queue[#info_queue+1] = { key = self.key, set = "PropertyEffects", vars = effect_vars and effect_vars.vars or {} }
 		info_queue[#info_queue+1] = dummy
 	end,
 }
@@ -114,6 +118,11 @@ PTASaka.Property {
 	end,
 	cost = 4,
 	use = function(self, card, area, copier) end,
+	upgrade_use_effect = function(self, card, context)
+		if context.before and context.scoring_name ~= card.ability.extra.poker_hand then
+			PTASaka.PropertyResetFunc(card)
+		end
+	end,
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand }
@@ -125,7 +134,7 @@ PTASaka.Property {
 	key = 'blueproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 1, y = 0 },
-	config = { extra = { money = 2, gain = 1, poker_hand = "Pair", max_highlighted = 1 } },
+	config = { extra = { money = 2, gain = 1, poker_hand = "Pair", max_highlighted = 1, count = 0, consume = 2 } },
 	unlocked = true,
 	discovered = true,
 	cost = 8,
@@ -189,18 +198,31 @@ PTASaka.Property {
 		end
 	end,
 	upgrade_use_effect = function(self, card, context)
-		card.ability.extra.max_highlighted = card.ability.extra.max_highlighted + 1
-		return {
-			message = localize('k_upgrade_ex'),
-			card = card,
-		}
+		if context.using_consumeable and context.consumeable ~= card then
+			card.ability.extra.count = card.ability.extra.count + 1
+			if card.ability.extra.count >= card.ability.extra.consume then
+				PTASaka.PropertyResetFunc(card)
+				card.ability.extra.max_highlighted = card.ability.extra.max_highlighted + 1
+				card.ability.extra.count = 0
+				return {
+					message = localize('k_upgrade_ex'),
+					card = card,
+				}
+			end
+			return {
+				message = card.ability.extra.count.."/"..card.ability.extra.consume,
+				card = card,
+			}
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		for _, thing in pairs(G.P_CENTER_POOLS["Edition"]) do
-			info_queue[#info_queue + 1] = thing
+			if thing ~= G.P_CENTERS.e_base then
+				info_queue[#info_queue + 1] = thing
+			end
 		end
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.max_highlighted }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.max_highlighted, card.ability.extra.consume }
 		}
 	end,
 }
@@ -223,11 +245,14 @@ PTASaka.Property {
 		end
 	end,
 	upgrade_use_effect = function(self, card, context)
-		card.ability.extra.food = card.ability.extra.food + 1
-		return {
-			message = localize('k_upgrade_ex'),
-			card = card,
-		}
+		if context.selling_card and context.card ~= card then
+			PTASaka.PropertyResetFunc(card)
+			card.ability.extra.food = card.ability.extra.food + 1
+			return {
+				message = localize('k_upgrade_ex'),
+				card = card,
+			}
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
@@ -240,7 +265,7 @@ PTASaka.Property {
 	key = 'orangeproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 3, y = 0 },
-	config = { extra = { money = 4, gain = 1, poker_hand = "Three of a Kind", tarots = 1 } },
+	config = { extra = { money = 4, gain = 1, poker_hand = "Three of a Kind", tarots = 1, count = 0, reset = 2 } },
 	unlocked = true,
 	discovered = true,
 	cost = 16,
@@ -254,15 +279,26 @@ PTASaka.Property {
 		end
 	end,
 	upgrade_use_effect = function(self, card, context)
-		card.ability.extra.tarots = card.ability.extra.tarots + 1
-		return {
-			message = localize('k_upgrade_ex'),
-			card = card,
-		}
+		if context.pre_discard then
+			card.ability.extra.count = card.ability.extra.count + 1
+			if card.ability.extra.count >= card.ability.extra.reset then
+				PTASaka.PropertyResetFunc(card)
+				card.ability.extra.tarots = card.ability.extra.tarots + 1
+				card.ability.extra.count = 0
+				return {
+					message = localize('k_upgrade_ex'),
+					card = card,
+				}
+			end
+			return {
+				message = card.ability.extra.count.."/"..card.ability.extra.reset,
+				card = card,
+			}
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.tarots }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.tarots, card.ability.extra.reset }
 		}
 	end,
 }
@@ -285,6 +321,11 @@ PTASaka.Property {
 		local card = create_card("Joker", G.jokers, false, 3, nil, nil, nil)
 		card:add_to_deck()
 		G.jokers:emplace(card)
+	end,
+	upgrade_use_effect = function(self, card, context)
+		if context.card_added and context.card:is_rarity("Rare") then
+			PTASaka.PropertyResetFunc(card)
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
@@ -321,11 +362,14 @@ PTASaka.Property {
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	upgrade_use_effect = function(self, card, context)
-		card.ability.extra.levels = card.ability.extra.levels + 1
-		return {
-			message = localize('k_upgrade_ex'),
-			card = card,
-		}
+		if context.before and not context.poker_hands["Flush"] then
+			PTASaka.PropertyResetFunc(card)
+			card.ability.extra.levels = card.ability.extra.levels + 1
+			return {
+				message = localize('k_upgrade_ex'),
+				card = card,
+			}
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
@@ -338,7 +382,7 @@ PTASaka.Property {
 	key = 'greenproperty',
 	atlas = 'JOE_Properties',
 	pos = { x = 0, y = 1 },
-	config = { extra = { money = 5, gain = 2, poker_hand = "Four of a Kind" } },
+	config = { extra = { money = 5, gain = 2, poker_hand = "Four of a Kind", levels = 1, count = 0, ante = 3 } },
 	unlocked = true,
 	discovered = true,
 	cost = 24,
@@ -349,14 +393,47 @@ PTASaka.Property {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		-- myeah
-		local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil)
-		card:add_to_deck()
-		G.jokers:emplace(card)
+		delay(0.5)
+		local eligible = {}
+		for k, v in pairs(G.P_CENTER_POOLS.Spectral) do
+			if v.hidden then eligible[#eligible+1] = v.key end
+		end
+		if next(eligible) then
+			for i = 1, card.ability.extra.levels do
+				G.E_MANAGER:add_event(Event{
+					delay = 0.3,
+					trigger = 'after',
+					func = function()
+						if #G.consumeables.cards < G.consumeables.config.card_limit then
+							SMODS.add_card { key = pseudorandom_element(eligible, "kiwami_"..G.GAME.round_resets.ante) }
+						end
+						return true
+					end
+				})
+			end
+		end
+	end,
+	upgrade_use_effect = function(self, card, context)
+		if context.ante_end and context.ante_change then
+			card.ability.extra.count = card.ability.extra.count + 1
+			if card.ability.extra.count >= card.ability.extra.ante then
+				PTASaka.PropertyResetFunc(card)
+				card.ability.extra.count = 0
+				card.ability.extra.levels = card.ability.extra.levels + 1
+				return {
+					message = localize('k_upgrade_ex'),
+					card = card,
+				}
+			end
+			return {
+				message = card.ability.extra.count.."/"..card.ability.extra.ante,
+				card = card,
+			}
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand }
+			vars = { card.ability.extra.money, card.ability.extra.gain, card.ability.extra.poker_hand, card.ability.extra.levels, card.ability.extra.ante }
 		}
 	end,
 }
@@ -377,6 +454,11 @@ PTASaka.Property {
 	end,
 	use = function(self, card, area, copier)
 		
+	end,
+	upgrade_use_effect = function(self, card, context)
+		if context.open_booster then
+			PTASaka.PropertyResetFunc(card)
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {

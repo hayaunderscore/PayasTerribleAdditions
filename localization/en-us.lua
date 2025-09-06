@@ -1990,7 +1990,17 @@ return {
 		},
 		DescriptionDummy = {
 			dd_payasaka_adultcard_area = { name = "Sold Jokers", text = { "{C:inactive,s:0.8}Jokers listed have a chance of triggering{}" } },
-			dd_payasaka_property_card = { name = "Property", text = { "Get {C:money}$#1#{} upon beating", "the Boss Blind", "Resets back to {C:money}$#2#{}", "after cashing out", "{C:inactive,s:0.8}Houses add additional", "{C:attention,s:0.8}sell value", "{C:inactive,s:0.8}Hotels are equivalent{}", "{C:inactive,s:0.8}to 5 houses{}" } },
+			dd_payasaka_property_card = { 
+				name = "Property", 
+				text = { 
+					"Get {C:money}$#1#{} upon beating",
+					"the Boss Blind",
+					"{C:inactive,s:0.8}Houses add additional",
+					"{C:attention,s:0.8}sell value",
+					"{C:inactive,s:0.8}Hotels are equivalent{}",
+					"{C:inactive,s:0.8}to 5 houses{}"
+				}
+			},
 			dd_payasaka_ahead = {
 				name = "Ahead",
 				text = {
@@ -2806,88 +2816,195 @@ return {
 				}
 			}
 		},
+		PropertyEffects = {
+			c_payasaka_brownproperty = {
+				name = "Effect",
+				text = {
+					"Does absolutely nothing"
+				}
+			},
+			c_payasaka_blueproperty = {
+				name = "Effect",
+				text = {
+					"Randomizes the {C:dark_edition}edition{}",
+					"of up to {C:attention}#4#{} selected cards",
+				}
+			},
+			c_payasaka_pinkproperty = {
+				name = "Effect",
+				text = {
+					"Creates {C:attention}#4#{} random",
+					"Food Jokers",
+				}
+			},
+			c_payasaka_orangeproperty = {
+				name = "Effect",
+				text = {
+					"Creates {C:attention}#4#{} {C:dark_edition}Negative",
+					"{C:tarot}Tarot{} cards",
+				}
+			},
+			c_payasaka_redproperty = {
+				name = "Effect",
+				text = {
+					"Creates a random",
+					"{C:red}Rare{} Joker",
+				}
+			},
+			c_payasaka_yellowproperty = {
+				name = "Effect",
+				text = {
+					"Levels up your {C:attention}most{}",
+					"{C:attention}played{} hand by {C:attention}#4#{}",
+				}
+			},
+			c_payasaka_greenproperty = {
+				name = "Effect",
+				text = {
+					"Creates {C:attention}#4#{} {C:dark_edition}Rare",
+					"{C:spectral}Spectral{} cards",
+					"{C:inactive}(Must have room)"
+				}
+			},
+			c_payasaka_darkblueproperty = {
+				name = "Effect",
+				text = {
+					"Does absolutely nothing..?"
+				}
+			},
+			c_payasaka_niyaniya = {
+				name = "Effect",
+				text = {
+					"Does absolutely nothing"
+				}
+			}
+		},
 		Property = {
 			c_payasaka_brownproperty = {
 				name = 'Joker Avenue',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"is a {C:attention}#3#{}",
-					"{C:inactive}Does nothing.",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"is a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} if",
+						"played hand is not",
+						"a {C:attention}#3#{}"
+					},
 				}
 			},
 			c_payasaka_blueproperty = {
 				name = 'Jest Road',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"Randomizes the {C:dark_edition}edition{}",
-					"of up to {C:attention}#4#{} selected",
-					"cards when used",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} after",
+						"using {C:attention}#5#{} consumables",
+						"Also upgrading effect",
+						"value by {C:attention}one{}"
+					},
 				}
 			},
 			c_payasaka_pinkproperty = {
 				name = 'Comic Mall',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"Creates {C:attention}#4#{} Food",
-					"Jokers when used",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} after",
+						"selling a card",
+						"Also upgrading effect",
+						"value by {C:attention}one{}"
+					}
 				}
 			},
 			c_payasaka_orangeproperty = {
 				name = 'Droll Street',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"Creates {C:attention}#4#{} {C:tarot}Tarot{}",
-					"cards when used",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} after",
+						"using {C:attention}#5#{} discards",
+						"Also upgrading effect",
+						"value by {C:attention}one{}"
+					}
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_redproperty = {
 				name = 'Virtue Square',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"Creates a {C:red}Rare{}",
-					"Joker when used",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} when",
+						"getting a {C:red}Rare{} Joker",
+					}
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_yellowproperty = {
 				name = 'Leicester Square',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"Levels up your {C:attention}most{}",
-					"{C:attention}played{} hand by {C:attention}#4#{}",
-					"levels when used",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} if",
+						"played hand does not",
+						"contain a {C:attention}#3#{}",
+						"Also upgrading effect",
+						"value by {C:attention}one{}"
+					}
 				}
 			},
 			c_payasaka_greenproperty = {
 				name = 'Wit Street',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"Creates a {C:dark_edition}Legendary{}",
-					"Joker when used",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{}",
+						"upon beating {C:attention}#5#{} antes",
+						"Also upgrading effect",
+						"value by {C:attention}one{}"
+					}
 					--"{C:inactive,s:0.8}(Must have room)",
 				}
 			},
 			c_payasaka_darkblueproperty = {
 				name = 'Mayfair',
 				text = {
-					"Sell value increases",
-					"by {C:money}$#2#{} if played hand",
-					"contains a {C:attention}#3#{}",
-					"{C:inactive,s:0.8}Does nothing..?",
+					{
+						"Sell value increases",
+						"by {C:money}$#2#{} if played hand",
+						"contains a {C:attention}#3#{}",
+					},
+					{
+						"Resets back to {C:money}$#2#{} upon",
+						"{C:attention}opening{} a booster pack",
+					}
 				}
 			},
 		},
