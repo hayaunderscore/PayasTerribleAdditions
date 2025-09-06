@@ -568,7 +568,10 @@ return {
 				}
 			},
 			j_payasaka_enotsworra = {
-				name = "enotsworrA",
+				name = {
+					"{f:payasaka_reversed}enotsworrA",
+					"{C:edition,s:0.5}[End of the Universe]"
+				},
 				text = {
 					"       cards     ",
 					"           give",
@@ -642,7 +645,10 @@ return {
 				}
 			},
 			j_payasaka_triahead = {
-				name = "Triahead",
+				name = {
+					"Triahead",
+					"{C:edition,s:0.5}????"
+				},
 				text = {
 					"Held and scored cards each",
 					"give {X:chips,C:white} X#1# {} Chips when scored",
@@ -1121,7 +1127,10 @@ return {
 				}
 			},
 			j_payasaka_iroyokia = {
-				name = "{f:payasaka_reversed}iroyokiA",
+				name = {
+					"{f:payasaka_reversed}iroyokiA",
+					"{C:edition,s:0.5}Robo-yori"
+				},
 				text = {
 					{
 						"Prevents {C:red}death{} by",
@@ -1185,7 +1194,10 @@ return {
 				}
 			},
 			j_payasaka_EVILgarb = {
-				name = "EVIL garb,,,",
+				name = {
+					"EVIL garb,,,",
+					"{C:edition,s:0.5}Screwd Impostor"
+				},
 				text = {
 					"On {C:attention}first hand{} of round,",
 					"all listed probabilities",
@@ -1300,7 +1312,10 @@ return {
 				}
 			},
 			j_payasaka_shinku = {
-				name = "Shonk",
+				name = {
+					"Shonk",
+					"{C:edition,s:0.5}Doodlemeister"
+				},
 				text = {
 					{
 						"Creates temporary {C:attention}copies",
@@ -1651,7 +1666,10 @@ return {
 				}
 			},
 			j_payasaka_sinisterpotion = {
-				name = "Sinister Potion",
+				name = {
+					"Sinister Potion",
+					"{C:edition,s:0.5}Class: Keter"
+				},
 				text = {
 					"Has a {C:legendary,E:1}random effect{}",
 					"{C:inactive}Buy my Sinister Potion!"
