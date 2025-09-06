@@ -110,15 +110,21 @@ PTASaka.Status {
 			card.ability = card.ability[self.key]
 		end
 		card.ability[self.key] = val and PTASaka.deep_copy(card.ability) or nil
+		-- oh my god bruh
+		if card.ability.consumeable then
+			card.ability.consumeable = PTASaka.deep_copy(card.ability.consumeable)
+		end
 		if val then
 			PTASaka.with_deck_effects(card, function(c)
-				PTASaka.Misprintize({
-					val = c.ability,
-					amt = 1,
-					func = function(value, amount)
-						return value * (pseudorandom('zzazz', 1, 1000) / 100)
-					end
-				})
+				if not c.config.center.immutable then
+					PTASaka.Misprintize({
+						val = c.ability,
+						amt = 1,
+						func = function(value, amount)
+							return value * (pseudorandom('zzazz', 1, 1000) / 100)
+						end
+					})
+				end
 			end)
 		end
 		PTASaka.create_proxy(card)
