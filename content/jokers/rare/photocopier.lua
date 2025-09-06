@@ -31,6 +31,12 @@ SMODS.Joker {
 	cost = 15,
 	blueprint_compat = false,
 	demicoloncompat = false,
+	pta_credit = {
+		art = {
+			credit = 'ariyi',
+			colour = HEX('09d707')
+		},
+	},
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.immutable.old_ids = {}
 		card.ability.immutable.payasaka_photocopied = {}
