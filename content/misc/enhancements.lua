@@ -238,6 +238,15 @@ function Card:should_hide_front()
 	if should_hide_front then return should_hide_front(self) end
 end
 
+local function find_joker_by_sort_id(id)
+	for i = 1, #G.hand.cards do
+		if G.hand.cards[i].sort_id == id then
+			return G.hand.cards[i]
+		end
+	end
+	return nil
+end
+
 SMODS.Enhancement {
 	name = "pta-Mimic",
 	key = 'mimic',
@@ -265,8 +274,14 @@ SMODS.Enhancement {
 				for i = 1, #card.area.cards do
 					---@type Card
 					local c = card.area.cards[i]
+					local idx = 1
 					---@type Card
-					local l = card.area.cards[i-1]
+					local l = card.area.cards[i-idx]
+					-- this is a mimic card, check the mimic card to its left
+					while l and l.config.center_key == "m_payasaka_mimic" do
+						idx = idx + 1
+						l = card.area.cards[i-idx]
+					end
 					if c == card and not l then
 						card.ability.card_copied = -1
 					end
@@ -329,7 +344,7 @@ SMODS.Enhancement {
 					left = card.area.cards[i-1]
 				end
 			end
-			if left and left.config.center_key ~= "m_payasaka_mimic" then
+			if left then
 				card:set_ability(left.config.center_key, false, true)
 				assert(SMODS.change_base(card, left.base.suit, left.base.value))
 				card.ability.mimic_card = true
