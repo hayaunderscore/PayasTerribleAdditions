@@ -672,7 +672,7 @@ PTASaka.Reward {
 				G.hand:change_size(card.ability.extra.amt)
 				if next(eligibleJokers) then
 					---@type Card
-					local joker = pseudorandom_element(eligibleJokers, 'legacy_proc')
+					local joker = pseudorandom_element(eligibleJokers, pseudoseed('legacy_proc_'..G.GAME.round_resets.ante))
 					if joker then
 						joker:start_dissolve()
 					end
