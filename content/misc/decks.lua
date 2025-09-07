@@ -4,40 +4,61 @@ SMODS.Back {
 	pos = { x = 0, y = 0 },
 	unlocked = true,
 	apply = function(self, back)
+		G.GAME.payasaka_dark_toggle = G.PROFILES[G.SETTINGS.profile].payasaka_shittim_toggle
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.payasaka_allow_reroll = true
 				if G.jokers then
-					SMODS.add_card({ key = "j_payasaka_buruakacard" })
+					local a = SMODS.add_card({ key = "j_payasaka_buruakacard" })
+					if G.GAME.payasaka_dark_toggle then
+						a.ability.cry_rigged = true
+					end
 					SMODS.add_card({ key = "j_payasaka_arona" })
 					SMODS.add_card({ key = "j_payasaka_plana" })
 					return true
 				end
 			end,
 		}))
-	end
+	end,
+	set_sprites = function(self, card, front)
+		local should_toggle = (G and G.GAME and card.area == G.deck and G.GAME.payasaka_dark_toggle) or G.PROFILES[G.SETTINGS.profile].payasaka_shittim_toggle or nil
+		self.pos.x = (should_toggle and 1 or 0)
+		if card.children.back then
+			card.children.back:set_sprite_pos({x = self.pos.x, y = self.pos.y})
+		end
+	end,
 }
 
-SMODS.Back {
-	key = 'dark_shittim',
-	atlas = "JOE_Decks",
-	pos = { x = 1, y = 0 },
-	unlocked = true,
-	apply = function(self, back)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.payasaka_allow_reroll = true
-				if G.jokers then
-					local shit = SMODS.add_card({ key = "j_payasaka_buruakacard" })
-					shit.ability.cry_rigged = true
-					SMODS.add_card({ key = "j_payasaka_arona", area = PTASaka.adultcard_cardarea })
-					SMODS.add_card({ key = "j_payasaka_plana", area = PTASaka.adultcard_cardarea })
-				end
-				return true
-			end,
-		}))
+local click_ref = Card.click
+function Card:click()
+	click_ref(self)
+	-- check if this card is the deck selection card
+	if
+		(not Galdur and self.back == 'viewed_back'
+			and G.GAME.viewed_back and G.GAME.viewed_back.effect
+			and G.GAME.viewed_back.effect.center.key == "b_payasaka_shittim") or
+		(Galdur and Galdur.run_setup and Galdur.run_setup.current_page == 1
+			and self.config.center_key == "b_payasaka_shittim"
+			and self.area == Galdur.run_setup.selected_deck_area)
+	then
+		G.PROFILES[G.SETTINGS.profile].payasaka_shittim_toggle = not G.PROFILES[G.SETTINGS.profile].payasaka_shittim_toggle
+		if Galdur then
+			self.config.center.pos.x = G.PROFILES[G.SETTINGS.profile].payasaka_shittim_toggle and 1 or 0
+		else
+			G.GAME.viewed_back.pos.x = G.PROFILES[G.SETTINGS.profile].payasaka_shittim_toggle and 1 or 0
+		end
 	end
-}
+end
+
+local start_run = Game.start_run
+function Game:start_run(args)
+	start_run(self, args)
+	if G.GAME and G.GAME.payasaka_dark_toggle then
+		G.P_CENTERS.b_payasaka_shittim.pos.x = 1
+	else
+		G.P_CENTERS.b_payasaka_shittim.pos.x = 0
+	end
+end
 
 local reroll_butan = {
 	{
