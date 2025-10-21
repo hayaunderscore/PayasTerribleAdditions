@@ -36,6 +36,19 @@ PTASaka.MisprintizeForbidden = {
 	["h_size"] = true,
 	["immutable"] = true,
 	['min_highlighted'] = true,
+	['hp_jtem_mood_config'] = true,
+	['hp_jtem_mood'] = true,
+	['hp_jtem_stats'] = true,
+	['hp_jtem_train_mult'] = true,
+	['hp_jtem_energy'] = true,
+	['speed'] = true,
+	['power'] = true,
+	['stamina'] = true,
+	['guts'] = true,
+	['wits'] = true,
+	["quantum"] = true,
+	["config"] = true, -- Here for quantum jokers.... You shouldn't modify this!
+    ["cards_req"] = true, -- Blue, Red and Yellow Deck Jokers
 	--["x_mult"] = true,
 }
 
@@ -1871,6 +1884,15 @@ function PTASaka.forcetrigger(card, context)
 		end
 	end
 	return results, post
+end
+
+local arer = add_round_eval_row
+function add_round_eval_row(config)
+	if config and config.name == "bottom" then
+		config.pyroxenes = G.EVAL_ROW_PYROXENES
+		G.EVAL_ROW_PYROXENES = nil
+	end
+	arer(config)
 end
 
 -- ui stuff Taken from Aikoyori thanks aikoyori

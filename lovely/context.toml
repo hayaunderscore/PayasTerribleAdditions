@@ -610,6 +610,7 @@ target = 'functions/UI_definitions.lua'
 pattern = '''for k, v in pairs(SMODS.Stickers) do'''
 position = 'before'
 payload = '''
+G.BADGE_COL = G.BADGE_COL or {}
 for k, v in pairs(PTASaka.Statuses) do
 	G.BADGE_COL[k] = v.badge_colour
 end
