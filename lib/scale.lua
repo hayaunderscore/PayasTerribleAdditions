@@ -25,6 +25,7 @@ PTASaka.invalid_scaling_keys = {
 	["selected_d6_face"] = true,
 	['next_joker'] = true, -- Adult Card
 	["quantum"] = true, -- Do NOT attempt to even bother
+	["children"] = true, -- Same with YOU
 	["config"] = true,
 }
 
@@ -77,6 +78,9 @@ function PTASaka.create_card_scale_proxy(card, tree, tbl, key, pass)
 	-- For now, dont make playing cards have a proxy
 	-- Tends to cause bugs with enhancements, plus we only need this for Jokers and consumables anyway...
 	if card.playing_card then return end
+	if card.ability.quantum_1 then return end -- FUCK OFF
+	if card.ability.quantum_2 then return end -- FUCK OFF
+	if card.quantum then return end
 	if card.ability.set == "Default" then return end
 	if card.ability.set == "Enhanced" then return end
 
@@ -208,6 +212,7 @@ function PTASaka.remove_card_scale_proxy(parent, tree, key)
 end
 
 function PTASaka.remove_proxy(self)
+	if not PTASaka.Mod.config["Fatty Mode"] then return end
 	if self.pta_ability_scaled then
 		PTASaka.remove_card_scale_proxy(self, self.pta_ability_scaled)
 		--self.pta_ability_scaled = nil
@@ -216,6 +221,7 @@ function PTASaka.remove_proxy(self)
 end
 
 function PTASaka.create_proxy(self)
+	if not PTASaka.Mod.config["Fatty Mode"] then return end
 	self.pta_ability_scaled = {}
 	PTASaka.create_card_scale_proxy(self, self.pta_ability_scaled)
 end
@@ -256,6 +262,7 @@ end
 
 local old_save = Card.save
 function Card:save()
+	if self.quantum or (self.ability and (self.ability.quantum_1 or self.ability.quantum_2)) then return old_save(self) end
 	PTASaka.remove_proxy(self)
 	local ret = old_save(self)
 	ret.ability = copy_table(self.ability)
@@ -265,6 +272,7 @@ end
 
 local old_load = Card.load
 function Card:load(cardTable, other_card)
+	if self.quantum or (self.ability and (self.ability.quantum_1 or self.ability.quantum_2)) then return old_load(self, cardTable, other_card) end
 	PTASaka.remove_proxy(self)
 	local ret = old_load(self, cardTable, other_card)
 	PTASaka.create_proxy(self)
