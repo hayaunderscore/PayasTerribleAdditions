@@ -25,6 +25,7 @@ PTASaka.invalid_scaling_keys = {
 	["selected_d6_face"] = true,
 	['next_joker'] = true, -- Adult Card
 	["quantum"] = true, -- Do NOT attempt to even bother
+	["config"] = true,
 }
 
 -- Table for keys whitelisted ONLY on the ability table
