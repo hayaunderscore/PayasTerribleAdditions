@@ -1,0 +1,22 @@
+{
+	"id": "pta",
+	"name": "Paya's Terrible Additions",
+	"author": ["haya", "ariyi"],
+	"description": "Yet another mod that adds whatever the hell I want to Balatro.",
+	"prefix": "pta",
+	"main_file": "PTA.lua",
+	"priority": 888,
+	"display_name": "P.T.A.",
+	"badge_colour": "515aa8",
+	"version": "0.99.3-rewrite",
+	"dependencies": [
+		"Steamodded (>=1.0.0~BETA-1224a)",
+		"Lovely (*)",
+		"Balatro (>=1.0.1o)"
+	],
+
+	"git_owner": "hayaunderscore",
+	"git_repo": "PayasTerribleAdditions",
+	"mod_path": "Mods/PayasTerribleAdditions",
+	"allow_redistribution": true
+}

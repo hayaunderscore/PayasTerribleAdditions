@@ -1,0 +1,56 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# context.pta_individual_debuffed
+# I really don't wanna use this patch but it works so fuck it
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''else
+            if scoring_hand then
+                if in_scoring then context.cardarea = G.play else context.cardarea = 'unscored' end
+            end
+            SMODS.score_card(card, context)
+        end'''
+position = "after"
+payload = '''
+if card.debuff then
+	if scoring_hand then
+		if in_scoring then context.cardarea = G.play else context.cardarea = 'unscored' end
+	end
+
+	local reps = { 1 }
+    local j = 1
+    while j <= #reps do
+        if reps[j] ~= 1 then
+            local _, eff = next(reps[j])
+            while eff.retrigger_flag do
+                SMODS.calculate_effect(eff, eff.card); j = j+1; _, eff = next(reps[j])
+            end
+            SMODS.calculate_effect(eff, eff.card)
+            percent = (percent or 0) + (percent_delta or 0.08)
+        end
+
+		local effects = {}
+		SMODS.calculate_context({pta_individual_debuffed = true, card = card, cardarea = context.cardarea}, effects)
+
+		local flags = SMODS.trigger_effects(effects, card)
+        if reps[j] == 1 and flags.calculated then
+            context.repetition = true
+            context.card_effects = effects
+			context.ignore_debuff = true
+			context.other_card = card
+            SMODS.calculate_repetitions(card, context, reps)
+			context.ignore_debuff = nil
+            context.repetition = nil
+            context.card_effects = nil
+        end
+        j = j + (flags.calculated and 1 or #reps)
+		context.other_card = nil
+	end
+end
+'''
+match_indent = true
+times = 1
