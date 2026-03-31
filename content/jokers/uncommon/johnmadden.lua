@@ -29,12 +29,21 @@ SMODS.Joker {
 						card:juice_up(0.7)
 						other:juice_up()
 						other.ability.john_madden_marked = true
-						local name = localize { type = 'name_text', key = other.config.center.key, set = 'Enhanced' }
-						if name == "ERROR" then name = "card" end
+						local centername = localize { type = 'name_text', key = other.config.center.key, set = 'Enhanced' }
+						if centername == "ERROR" then centername = "card" end
+						local frontname = localize(other.base.value, "ranks").." of "..localize(other.base.suit, "suits_plural")
+						if other.config.center.key == "m_stone" or G.P_CENTERS[other.config.center.key].replace_base_card then frontname = "" end
+						local editionname = ""
+						if other.edition then
+							editionname = localize{type = 'name_text', set = 'Edition', key = other.edition.key}
+						end
+						local sealname = ""
+						if other:get_seal() then
+							sealname = localize{type = 'name_text', set = 'Other', key = other:get_seal():lower().."_seal"}
+						end
 						PTASaka.DECTalk(
-							"John Madden thinks this "..other.base.value
-							.." of "..other.base.suit
-							.." "..name
+							"John Madden thinks this "..
+							editionname.." "..sealname.." "..frontname.." "..centername
 							.." is the best to play!"
 						)
 					end
