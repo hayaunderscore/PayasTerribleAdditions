@@ -32,8 +32,8 @@ SMODS.Joker {
 						local name = localize { type = 'name_text', key = other.config.center.key, set = 'Enhanced' }
 						if name == "ERROR" then name = "card" end
 						PTASaka.DECTalk(
-							"John Madden thinks this "..other.base.value
-							.." of "..other.base.suit
+							"John Madden thinks this "..localize(other.base.value, "ranks")
+							.." of "..localize(other.base.suit, "suits_plural")
 							.." "..name
 							.." is the best to play!"
 						)
